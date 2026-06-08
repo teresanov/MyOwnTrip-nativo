@@ -6,7 +6,7 @@ initShowcasePage("color");
 function swatch(name, hex) {
   return `
     <div class="swatch">
-      <div class="swatch__color" style="background:${hex}"></div>
+      <div class="swatch__color" style="background-color:${hex}" aria-hidden="true"></div>
       <div class="swatch__meta"><strong>${name}</strong><br><code>${hex}</code></div>
     </div>`;
 }
@@ -30,11 +30,16 @@ function extensionGrid(ext) {
     .join("");
 }
 
-document.getElementById("seeds-section").innerHTML = `
-  <h2>Fuente canónica</h2>
+const keyRoles = ["primary", "onPrimary", "tertiary", "onTertiary", "error", "onError", "surface", "onSurface"];
+
+document.getElementById("intro-section").innerHTML = `
   <p>Roles desde <code>${tokens.source}</code> · colección M3 · modos Light/Dark.</p>
-  <h3>Extensiones (no M3)</h3>
-  ${extensionGrid(tokens.extensions)}
+  <div class="callout">
+    <strong>Vista rápida Light:</strong>
+    <div class="card-grid" style="margin-top:12px;grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
+      ${keyRoles.map((role) => swatch(role, tokens.light[role])).join("")}
+    </div>
+  </div>
 `;
 
 document.getElementById("roles-section").innerHTML = `
@@ -42,6 +47,11 @@ document.getElementById("roles-section").innerHTML = `
   ${roleGrid(tokens.light)}
   <h2 style="margin-top:32px">Roles Dark</h2>
   ${roleGrid(tokens.dark)}
+`;
+
+document.getElementById("extensions-section").innerHTML = `
+  <h2>Extensiones (no M3)</h2>
+  ${extensionGrid(tokens.extensions)}
 `;
 
 const stateRows = Object.entries(tokens.stateLayers)
