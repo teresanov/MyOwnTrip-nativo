@@ -14,8 +14,10 @@ El repo `MyOwnTrip` construyó un DS custom (semánticos propios, Pencil, ARC) i
 5. **Surfaces:** `surfaceContainerLow` / `surfaceContainerHigh` para tiers secundarios.
 6. **Bordes:** solo `outline` / `outlineVariant`; sin `border/strong`.
 7. **Texto terciario:** eliminado; usar `onSurfaceVariant`.
-8. **MTB scheme:** Tonal Spot · seeds primary `#3D63D1`, secondary `#219A60`.
+8. **MTB scheme:** Tonal Spot — seeds y marca editorial en **ADR 002**.
 9. **Custom colors:** `success`, `warning`, `info` vía `LocalExtendedColors`; focus ring en iteración futura.
+
+> Seeds v0.1.0 (`#3D63D1` / `#219A60`) sustituidos por ADR 002 (`#1F3A5F`, paleta editorial).
 
 ## Consecuencias
 - Figma nuevo: **MyOwnTrip · Design System (M3 Native)** — sembrar con MTB (tarea de diseño en paralelo).

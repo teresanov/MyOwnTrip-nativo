@@ -19,18 +19,17 @@ Definir comportamiento de **UI en runtime** en Jetpack Compose que no cubren las
 
 | Tema | Fuente canónica |
 |------|-----------------|
-| Tokens de color / layout | `ds-governance.md`, `.cursor/rules/utilities/tokens-system.mdc` |
-| Binding y cierre de tarea DS | `.cursor/rules/utilities/ds-binding-governance.mdc` |
-| Color de iconos (`semantic/color/icon/*`) | `.cursor/rules/utilities/icon-color-consumption.mdc`, `policy/iconography.md` |
-| Tipografía (fuente, roles, Figma styles) | `policy/typography-guardrails.md` |
-| Touch target 48dp y foco visible | `knowledge/wcag-focus-touch-target.entry.json`, `ds-governance.md` |
-| `contentDescription` en iconos de producto | `components/MyOwnTripIcon.md` |
-| Composición de componentes canónicos | `.cursor/rules/components/composition.mdc` |
-| Offline-first, datos, JTBD | `.cursor/rules/myowntrip-development.mdc`, `docs/myowntrip-jtbd-flows.md` |
+| Color / state layers | `docs/design-system/color.md`, `.cursor/rules/m3-native-ui.mdc` |
+| Quality gates DS | `docs/design-system/governance.md` |
+| Tipografía (Fraunces / Inter) | `docs/design-system/typography.md` |
+| Iconos UI | `docs/design-system/iconography.md` |
+| Componentes M3 vs wrappers | `docs/design-system/components.md` |
+| Touch target 48dp y foco visible | WCAG 2.2; focus ring (futuro ADR) |
+| Offline-first, datos, JTBD | `.cursor/rules/myowntrip-development.mdc`, `docs/product/jtbd-flows.md` |
 
 **Gate del agente en Cursor:** `.cursor/rules/android-compose-ux.mdc` (obligatorio al tocar `app/src/main/**` y tests UI de Android).
 
-**Prioridad en conflicto:** `governance/source-of-truth-matrix.md`.
+**Prioridad en conflicto:** `docs/design-system/governance.md` (source of truth).
 
 ### Dónde documentar (flujo MyOwnTrip)
 
@@ -154,7 +153,7 @@ Box(modifier = Modifier.semantics { invisibleToUser() }) { ... }
 
 ### Iconos de producto
 
-Aplicar **`components/MyOwnTripIcon.md`** (`contentDescription` en acciones; `null` solo si es decorativo dentro de un control que ya tiene descripción). No repetir reglas de color de icono aquí.
+Aplicar **`docs/design-system/iconography.md`** (`contentDescription` en acciones; `null` solo si es decorativo dentro de un control que ya tiene descripción). Color vía `colorScheme`, no tokens custom.
 
 ### Orden de foco
 
@@ -203,10 +202,10 @@ IconButton(
     onClick = { showMoveMenu = true },
     modifier = Modifier.semantics { contentDescription = "Reordenar bloque" }
 ) {
-    MyOwnTripIcon(
-        icon = MyOwnTripIcons.Menu, // glyph de reordenar del catálogo cuando exista
+    Icon(
+        imageVector = Icons.Sharp.Menu,
         contentDescription = null,
-        size = MyOwnTripIconSize.Sm,
+        modifier = Modifier.size(24.dp),
     )
 }
 ```
@@ -217,20 +216,20 @@ IconButton(
 
 ## 6. Formularios accesibles con teclado
 
-Preferir **`MyOwnTripTextField`** en formularios de producto (tokens semánticos del DS). Los patrones de teclado y error aplican igual:
+Usar **`OutlinedTextField`** o **`TextField`** M3 en formularios. Errores con icono + texto (no solo color):
 
 ```kotlin
-MyOwnTripTextField(
+OutlinedTextField(
     value = name,
     onValueChange = { name = it },
-    label = "Nombre del restaurante",
+    label = { Text("Nombre del restaurante") },
     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     keyboardActions = KeyboardActions(
         onNext = { focusManager.moveFocus(FocusDirection.Down) }
     ),
 )
 
-MyOwnTripTextField(
+OutlinedTextField(
     value = notes,
     onValueChange = { notes = it },
     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -239,11 +238,19 @@ MyOwnTripTextField(
     ),
 )
 
-MyOwnTripTextField(
+OutlinedTextField(
     value = name,
     onValueChange = { name = it },
     isError = nameError != null,
-    supportingText = nameError,
+    supportingText = {
+        if (nameError != null) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Sharp.Error, contentDescription = null, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(4.dp))
+                Text(nameError)
+            }
+        }
+    },
 )
 ```
 
@@ -287,9 +294,10 @@ if (showDiscardDialog) {
 
 ## Checklist de cierre (pantallas / features)
 
+- [ ] Gate **`m3Canonical`** pasada (`docs/design-system/governance.md`).
 - [ ] Motion respeta `LocalReduceMotion` y duraciones M3.
 - [ ] Texto probado al 200% de escala del sistema sin cortes.
-- [ ] Semántica TalkBack: agrupación, estados, decorativos; iconos según `MyOwnTripIcon.md`.
+- [ ] Semántica TalkBack: agrupación, estados, decorativos; iconos según `docs/design-system/iconography.md`.
 - [ ] `enableEdgeToEdge` + `paddingValues` del `Scaffold` aplicados.
 - [ ] Swipe/drag con alternativa por tap.
 - [ ] Formularios: `ImeAction`, errores inline, componente canónico de campo cuando exista.

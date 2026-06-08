@@ -1,25 +1,59 @@
 ---
-description: "UI Material 3 nativa: colorScheme, state layers, sin DS custom del repo archivo."
+description: "UI Material 3 nativa editorial: colorScheme, typography, state layers, iconografía Sharp."
 globs:
   - "app/src/main/**/*.kt"
 alwaysApply: true
 ---
 
-# Material 3 nativo
+# Material 3 nativo — MyOwnTrip
+
+Brief: `docs/design-system/README.md` · ADR: `docs/decisions/002-brand-editorial-m3.md`
+
+## Marca (contexto)
+Viajero urbano organizado · estética editorial (Monocle/Wallpaper) · papel cálido · tipografía protagonista · acento rojo señal con moderación.
 
 ## Obligatorio
-- Consumir **`MaterialTheme.colorScheme`** y **`MaterialTheme.typography`**.
-- Componentes **`androidx.compose.material3.*`** salvo justificación documentada en ADR.
-- Estados interactivos = **state layers** del framework (hover 8%, pressed/focus 10%, disabled 38%/12%).
+
+### Color
+- Consumir **`MaterialTheme.colorScheme`** — roles M3 canónicos (`primary`, `onSurface`, `error`, …).
+- **Semantic-only:** UI usa roles, nunca primitivos MTB ni `AppColors` fuera de `Theme.kt`.
+- **State layers en runtime** (componentes M3 o Modifier compartido en custom):
+  - hover 8% · focus 10% · pressed 10% · dragged 16%
+  - disabled contenido 38% · disabled contenedor 12%
+- **Error:** icono + texto siempre; nunca comunicar error solo por color.
+- `tertiary` = acento de marca; `error` = validación (rojos distintos a propósito).
+
+### Tipografía
+- **`MaterialTheme.typography`** mapeado a Fraunces (Display/Headline) + Inter (Title/Body/Label).
+- Serif solo Display/Headline; sans de Title hacia abajo.
+- Fuentes bundled en `res/font/`; ver `docs/design-system/typography.md`.
+
+### Iconos
+- UI funcional: **Material Symbols Sharp**, peso ligero — ver `docs/design-system/iconography.md`.
+- Color de iconos vía `colorScheme`, no tokens custom.
+
+### Componentes
+- **`androidx.compose.material3.*`** por defecto.
+- Wrapper `MyOwnTrip*` solo con justificación en `docs/design-system/components.md` o ADR.
+- Extensiones: `LocalExtendedColors` (success, warning, info) — `docs/design-system/color.md`.
 
 ## Prohibido
-- `SemanticColors`, `LayoutTokens`, tokens `semantic/color/*` del repo archivo **MyOwnTrip**.
-- Wrappers `MyOwnTrip*` copiados del repo archivo.
+- Tokens por estado: `primary.hover`, `*.pressed`, `text/disabled`, `semantic/color/*`.
+- `SemanticColors`, `LayoutTokens`, wrappers del repo archivo **MyOwnTrip**.
 - Pipeline Pencil, ARC, `components.index.json`, skills `ds-*`.
+- Set propio de iconos de UI (navegación, acciones estándar).
+- Fraunces en labels de botón, campos o chips.
 
-## Extensiones custom permitidas
-- `LocalExtendedColors` (success, warning, info) — ver `docs/design-system/color.md`
-- Focus ring documentado en ADR cuando se implemente
+## Gate `m3Canonical` (bloqueante — antes de cerrar UI)
+
+1. Prohibido tokens de color por estado (`hover`/`pressed`/`focus`/`disabled`).
+2. Estados = state layers en runtime (`onX` @ 8/10/10/16%); disabled 38%/12%; nunca color guardado.
+3. UI solo roles M3 (`colorScheme`); jamás primitivos/tonos ni `AppColors` en pantallas.
+4. `tertiary` (#D9382C, marca) ≠ `error` (#B3261E, alerta).
+5. Errores: icono + texto; nunca solo color.
+6. Fraunces (Display/Headline) + Inter (resto); serif solo arriba.
+
+Gates complementarias: `docs/design-system/governance.md`.
 
 ## Repo archivo
-El DS histórico vive solo en **`../MyOwnTrip`** — consulta manual, no importar contratos al código activo.
+DS histórico en **`../MyOwnTrip`** — consulta manual, no importar contratos.

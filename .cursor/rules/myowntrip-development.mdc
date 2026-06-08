@@ -32,7 +32,7 @@ Antes de implementar una feature, consultar **`docs/product/jtbd-flows.md`** y e
 
 ## Implementación Android
 - **Datos:** Room según `.cursor/skills/myowntrip-context/references/data-model.md`
-- **UI:** Compose + **Material 3 directo** (`MaterialTheme.colorScheme`); ver `.cursor/rules/m3-native-ui.mdc`
+- **UI:** Compose + **Material 3 directo** (`MaterialTheme.colorScheme`, Fraunces/Inter); ver `.cursor/rules/m3-native-ui.mdc` y `docs/design-system/`
 - **UX runtime:** `docs/ux/android-compose-ux.md`
 
 ## Anti-patterns

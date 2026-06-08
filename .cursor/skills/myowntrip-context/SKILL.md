@@ -12,7 +12,7 @@ Lee los archivos de referencia según lo que necesites:
 - `references/product.md` → qué es la app, **North Star (cuaderno del viaje)**, objetivos, decisiones de producto
 - `references/requirements.md` → funcionalidades por prioridad MoSCoW
 - `references/data-model.md` → entidades Room y sus relaciones
-- `references/tech-stack.md` → arquitectura técnica, stack y **pipeline DS** (Pencil → Figma → Notion → Showcase)
+- `references/tech-stack.md` → arquitectura técnica, stack y pipeline DS (MTB → Figma → Compose)
 - **`docs/myowntrip-jtbd-flows.md`** (raíz del repo) → flujos por JTBD, edge cases y criterios de éxito para implementación
 
 Para **persona, dolores, JTBD, hipótesis y métricas de éxito** (resumen sincronizado desde Notion), carga el skill **`myowntrip-ux-notion`**; no hace falta MCP de Notion para el día a día. Las reglas de código alineadas con H2/H5/H7/H8 están en **`.cursor/rules/myowntrip-development.mdc`**.

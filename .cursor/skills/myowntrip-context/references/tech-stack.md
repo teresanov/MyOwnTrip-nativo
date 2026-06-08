@@ -54,14 +54,18 @@ MVVM + Clean Architecture + Repository pattern + **Offline-first**
 
 ## Design System (producto)
 
-| Herramienta | Uso |
-|-------------|-----|
-| **Pencil** | `DS.pen` — iteración de componentes (Pencil-first) |
-| **Figma** | [MyOwnTrip · Design System](https://www.figma.com/design/OKK2uhBaitAlF9KTgdFeFL/MyOwnTrip-%C2%B7-Design-System) — biblioteca publicada |
-| **Notion** | [MyOwnTrip · UI Design](https://www.notion.so/MyOwnTrip-UI-Design-3426a48d93c8801390b8ffa35655b745) — contexto y decisiones |
-| **Showcase** | Matrices doc en Figma + índice `showcaseGroup` en repo |
+M3 canónico con identidad editorial. Ver `docs/design-system/README.md`.
 
-Pipeline: `docs/design-system/governance/design-pipeline.md`
+| Capa | Fuente |
+|------|--------|
+| **MTB** | Seeds `#1F3A5F` · Tonal Spot · ADR 002 |
+| **Figma** | MyOwnTrip · Design System (M3 Native) — kit M3 tematizado |
+| **Compose** | `MaterialTheme.colorScheme` + Fraunces/Inter |
+| **Notion** | [MyOwnTrip · UI Design](https://www.notion.so/MyOwnTrip-UI-Design-3426a48d93c8801390b8ffa35655b745) |
+
+Pipeline: `Material Theme Builder → Figma → Compose` (sin Pencil).
+
+DS histórico archivado: [MyOwnTrip](https://github.com/teresanov/MyOwnTrip).
 
 ## Archivo Figma (proyecto)
 `MyOwnTrip · Project Definition` — 7 slides: Cover, Project Brief, Travel Lifecycle, Requirements, Benchmark, Architecture, Data Model

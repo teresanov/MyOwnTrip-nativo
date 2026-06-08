@@ -38,7 +38,8 @@ app/src/main/java/com/myowntrip/app/
 
 ## Documentación
 - [JTBD flows](docs/product/jtbd-flows.md)
-- [ADR M3](docs/decisions/001-m3-native-ds.md)
+- [Design System](docs/design-system/README.md)
+- [ADR marca editorial](docs/decisions/002-brand-editorial-m3.md)
 - [Colores M3](docs/design-system/color.md)
 - [UX runtime](docs/ux/android-compose-ux.md)
 
