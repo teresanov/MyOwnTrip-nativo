@@ -3,7 +3,7 @@
 App Android offline-first — libreta de viaje digital. Material 3 nativo.
 
 ## Repo archivo DS
-El design system histórico (Pencil, Figma custom, componentes `MyOwnTrip*`) está en el repo hermano **[`../MyOwnTrip`](../MyOwnTrip)**. No usar ese contrato en este proyecto.
+El design system histórico (Pencil, Figma custom, componentes `MyOwnTrip*`) está en **[MyOwnTrip](https://github.com/teresanov/MyOwnTrip)** (archivo). No usar ese contrato en este proyecto.
 
 ## Requisitos
 - Android Studio Ladybug+ / JDK 17
