@@ -5,7 +5,7 @@
       "name": "Button",
       "status": "draft",
       "priority": "P0",
-      "href": "/components/button.html",
+      "href": "components/button.html",
       "summary": "Acciones primarias y secundarias. Material 3 directo en Compose."
     }
   ]

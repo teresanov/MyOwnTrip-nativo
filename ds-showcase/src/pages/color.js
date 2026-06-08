@@ -11,34 +11,51 @@ function swatch(name, hex) {
     </div>`;
 }
 
+function roleGrid(roles) {
+  return `<div class="card-grid">${Object.entries(roles).map(([k, v]) => swatch(k, v)).join("")}</div>`;
+}
+
+function extensionGrid(ext) {
+  return Object.entries(ext)
+    .map(
+      ([name, modes]) => `
+      <div class="card" style="margin-bottom:12px">
+        <h4 style="margin:0 0 8px">${name}</h4>
+        <div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))">
+          ${swatch("light", modes.light)}
+          ${swatch("dark", modes.dark)}
+        </div>
+      </div>`
+    )
+    .join("");
+}
+
 document.getElementById("seeds-section").innerHTML = `
-  <h2>Seeds MTB</h2>
-  <div class="card-grid">
-    ${Object.entries(tokens.seeds).map(([k, v]) => swatch(k, v)).join("")}
-  </div>
-  <h3>Extensiones</h3>
-  <div class="card-grid">
-    ${Object.entries(tokens.extensions).map(([k, v]) => swatch(k, v)).join("")}
-  </div>
+  <h2>Fuente canónica</h2>
+  <p>Roles desde <code>${tokens.source}</code> · colección M3 · modos Light/Dark.</p>
+  <h3>Extensiones (no M3)</h3>
+  ${extensionGrid(tokens.extensions)}
 `;
 
 document.getElementById("roles-section").innerHTML = `
   <h2>Roles Light</h2>
-  <div class="card-grid">
-    ${Object.entries(tokens.light).map(([k, v]) => swatch(k, v)).join("")}
-  </div>
+  ${roleGrid(tokens.light)}
+  <h2 style="margin-top:32px">Roles Dark</h2>
+  ${roleGrid(tokens.dark)}
 `;
+
+const stateRows = Object.entries(tokens.stateLayers)
+  .filter(([k]) => k !== "note")
+  .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`)
+  .join("");
 
 document.getElementById("state-layers-section").innerHTML = `
   <h2>State layers (runtime)</h2>
-  <p>No son tokens de color. Aplicados sobre <code>on*</code> por componentes M3.</p>
+  <p>No son tokens de color. Aplicados sobre <code>on*</code> por componentes M3 en Compose.</p>
   <table>
     <thead><tr><th>Estado</th><th>Opacidad</th></tr></thead>
-    <tbody>
-      ${Object.entries(tokens.stateLayers)
-        .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`)
-        .join("")}
-    </tbody>
+    <tbody>${stateRows}</tbody>
   </table>
-  <p style="margin-top:16px"><strong>Regla:</strong> tertiary (#D9382C) ≠ error (#B3261E).</p>
+  <p class="callout" style="margin-top:16px">${tokens.stateLayers.note}</p>
+  <p><strong>Regla:</strong> <code>tertiary</code> (${tokens.light.tertiary}) ≠ <code>error</code> (${tokens.light.error}).</p>
 `;

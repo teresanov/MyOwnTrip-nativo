@@ -1,10 +1,11 @@
 import componentsManifest from "../data/components.json";
+import { assetUrl } from "./paths.js";
 
 const PAGES = [
-  { id: "overview", href: "/index.html", label: "Overview" },
-  { id: "color", href: "/color.html", label: "Color", group: "foundations" },
-  { id: "typography", href: "/typography.html", label: "Typography", group: "foundations" },
-  { id: "components", href: "/components.html", label: "Components" },
+  { id: "overview", href: "index.html", label: "Overview" },
+  { id: "color", href: "color.html", label: "Color", group: "foundations" },
+  { id: "typography", href: "typography.html", label: "Typography", group: "foundations" },
+  { id: "components", href: "components.html", label: "Components" },
 ];
 
 export function mountNav(currentPageId, { componentId = null } = {}) {
@@ -24,7 +25,7 @@ export function mountNav(currentPageId, { componentId = null } = {}) {
       const active = componentId === c.id;
       const cls = active ? " is-active" : "";
       const current = active ? ' aria-current="page"' : "";
-      return `<li><a href="${c.href}" class="${cls.trim()}"${current}>${c.name}</a></li>`;
+      return `<li><a href="${assetUrl(c.href)}" class="${cls.trim()}"${current}>${c.name}</a></li>`;
     })
     .join("");
 
@@ -32,7 +33,7 @@ export function mountNav(currentPageId, { componentId = null } = {}) {
 
   root.innerHTML = `
     <div class="rail__brand">
-      <a href="/index.html" class="rail__brand-link">
+      <a href="${assetUrl("index.html")}" class="rail__brand-link">
         <span class="rail__brand-title">MyOwnTrip</span>
         <span class="rail__brand-sub">Design System</span>
       </a>
@@ -44,7 +45,7 @@ export function mountNav(currentPageId, { componentId = null } = {}) {
         <ul class="rail__sublist">${foundationsLinks}</ul>
       </li>
       <li class="rail__group">
-        <a href="${components.href}" class="rail__group-link${onComponentsSection ? " is-active" : ""}"${currentPageId === "components" && !componentId ? ' aria-current="page"' : ""}>Components</a>
+        <a href="${assetUrl(components.href)}" class="rail__group-link${onComponentsSection ? " is-active" : ""}"${currentPageId === "components" && !componentId ? ' aria-current="page"' : ""}>Components</a>
         ${onComponentsSection ? `<ul class="rail__sublist">${componentLinks}</ul>` : ""}
       </li>
     </ul>
@@ -59,5 +60,5 @@ function linkItem(page, currentPageId) {
   const active = page.id === currentPageId;
   const cls = active ? " is-active" : "";
   const current = active ? ' aria-current="page"' : "";
-  return `<li><a href="${page.href}" class="${cls.trim()}"${current}>${page.label}</a></li>`;
+  return `<li><a href="${assetUrl(page.href)}" class="${cls.trim()}"${current}>${page.label}</a></li>`;
 }
