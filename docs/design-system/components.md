@@ -26,6 +26,8 @@ Solo si M3 no ofrece el default o variante de producto necesaria **y** queda doc
 
 Base: **Material 3 Design Kit** tematizado con MTB. Publicar component sets y variables; **no** crear documentación en el archivo Figma.
 
+**Subset Figma móvil (MVP+1):** ver [figma-mobile-subset.md](figma-mobile-subset.md) · informe poda [audits/figma-prune-report-2026-06-08.md](audits/figma-prune-report-2026-06-08.md).
+
 Subset MVP (prioridad en librería):
 
 | P0 | Button, TextField, FilterChip |

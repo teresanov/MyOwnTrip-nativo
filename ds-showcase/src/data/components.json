@@ -3,10 +3,50 @@
     {
       "id": "button",
       "name": "Button",
-      "status": "draft",
+      "status": "in-review",
       "priority": "P0",
       "href": "components/button.html",
       "summary": "Acciones primarias y secundarias. Material 3 directo en Compose."
+    },
+    {
+      "id": "text-field",
+      "name": "Text field",
+      "status": "draft",
+      "priority": "P0",
+      "href": "components.html",
+      "summary": "OutlinedTextField en formularios viaje, wallet y gastos."
+    },
+    {
+      "id": "filter-chip",
+      "name": "Filter chip",
+      "status": "draft",
+      "priority": "P0",
+      "href": "components.html",
+      "summary": "Categorías de gasto y filtros rápidos."
+    },
+    {
+      "id": "icon-button",
+      "name": "Icon button",
+      "status": "draft",
+      "priority": "P1",
+      "href": "components.html",
+      "summary": "Acciones compactas en top app bar y formularios."
+    },
+    {
+      "id": "list-item",
+      "name": "List item",
+      "status": "draft",
+      "priority": "P1",
+      "href": "components.html",
+      "summary": "Filas en listas de viajes, wallet y restaurantes."
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "status": "draft",
+      "priority": "P1",
+      "href": "components.html",
+      "summary": "Contenedores de viaje y entradas. Restaurar set en Figma desde backup."
     }
   ]
 }
