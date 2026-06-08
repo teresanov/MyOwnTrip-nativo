@@ -1,4 +1,4 @@
-import{i as d}from"./bootstrap-BPzZgXdE.js";import{t as s}from"./tokens-_xhBrHdI.js";d("color");function o(e,t){return`
+import{i as d}from"./bootstrap-BPzZgXdE.js";import{t as s}from"./tokens-B1GIauG8.js";d("color");function o(e,t){return`
     <div class="swatch">
       <div class="swatch__color" style="background:${t}"></div>
       <div class="swatch__meta"><strong>${e}</strong><br><code>${t}</code></div>
