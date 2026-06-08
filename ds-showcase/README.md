@@ -24,7 +24,7 @@ npm run preview
 
 Salida en `dist/`.
 
-**Producción:** https://teresanov.github.io/MyOwnTrip-nativo/ (despliegue automático en push a `main` vía GitHub Actions).
+**Producción:** https://teresanov.github.io/MyOwnTrip-nativo/ (rama `gh-pages`; despliegue automático en push a `main` vía GitHub Actions).
 
 ## Estructura
 

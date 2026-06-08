@@ -48,7 +48,7 @@ cd ds-showcase && npm install && npm run dev
 | Entorno | URL |
 |---------|-----|
 | Local | `http://localhost:5173` (Vite dev) |
-| Producción | https://teresanov.github.io/MyOwnTrip-nativo/ (GitHub Pages, workflow `deploy-showcase.yml`) |
+| Producción | https://teresanov.github.io/MyOwnTrip-nativo/ (GitHub Pages, rama `gh-pages`, workflow `deploy-showcase.yml`) |
 
 Fichas: `ds-showcase/src/data/components/*.json` · plantilla: `button.json`.
 
