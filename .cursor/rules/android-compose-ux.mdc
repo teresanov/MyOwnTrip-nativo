@@ -1,0 +1,38 @@
+---
+description: "Normativa obligatoria de UX Compose en runtime (motion, escalado, TalkBack, edge-to-edge, gestos, formularios, back). Consultar policy/android-compose-ux.md antes de implementar o revisar UI en app."
+globs:
+  - "app/src/main/**/*.kt"
+  - "app/src/androidTest/**/*.kt"
+alwaysApply: false
+---
+
+# Android Compose UX (runtime)
+
+Antes de **implementar, modificar o revisar** pantallas, navegación animada, formularios, semántica TalkBack o gestos en `app/`, leer y aplicar:
+
+**`docs/design-system/policy/android-compose-ux.md`**
+
+## No sustituye (no duplicar aquí)
+
+| Tema | Fuente |
+|------|--------|
+| Tokens / colores / layout semántico | `tokens-system.mdc`, `ds-governance.md` |
+| Binding DS | `ds-binding-governance.mdc` |
+| Color de iconos | `icon-color-consumption.mdc`, `policy/iconography.md` |
+| Tipografía (fuente, roles) | `policy/typography-guardrails.md` |
+| Touch 48dp / foco visible | `knowledge/wcag-focus-touch-target.entry.json` |
+| `contentDescription` en iconos | `components/MyOwnTripIcon.md` |
+| Composición canónica | `components/composition.mdc` |
+| Offline-first / datos / JTBD | `myowntrip-development.mdc` |
+
+## Gate de salida (resumen)
+
+1. Motion: `LocalReduceMotion` + duraciones M3 (`MOTMotion`); no animar texto suelto.
+2. Escalado: sin alturas fijas en `dp` para texto; roles `MaterialTheme.typography.*`; probar al 200%.
+3. TalkBack: `mergeDescendants`, `stateDescription`, `liveRegion`, decorativos `invisibleToUser()`.
+4. Edge-to-edge: `enableEdgeToEdge()` + `Scaffold` con `paddingValues` propagados.
+5. Swipe/drag: alternativa por tap obligatoria.
+6. Formularios: `MyOwnTripTextField` cuando exista; `ImeAction`; errores inline.
+7. `BackHandler` solo con cambios sin guardar; diálogo descartable.
+
+No cerrar tarea de UI en `app/` sin cumplir la policy completa y sus referencias cruzadas.

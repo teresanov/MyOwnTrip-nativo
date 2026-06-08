@@ -1,0 +1,41 @@
+---
+description: "Guía de desarrollo de MyOwnTrip para features Android: offline-first, JTBD, Room, Material 3 nativo."
+globs:
+  - "app/src/main/**/*.kt"
+  - "app/src/test/**/*.kt"
+  - "app/src/androidTest/**/*.kt"
+  - "docs/**/*.md"
+alwaysApply: false
+---
+
+# MyOwnTrip — Reglas de desarrollo
+
+Antes de implementar una feature, consultar **`docs/product/jtbd-flows.md`** y el skill **`myowntrip-context`**. UX/priorización: **`myowntrip-ux-notion`**.
+
+**Notion:** [North Star](https://www.notion.so/33e6a48d93c881d8b9cce1418607f3d7) · [Wallet](https://www.notion.so/33e6a48d93c881a0b6bde74c7b68a4b0) · [JTBD](https://www.notion.so/7a016ea53800407fba8bfadc6f1197fd)
+
+## Principios (no negociables)
+
+### 1. Offline-first (H2, H8)
+- **Room / local** es la fuente de verdad.
+- Toda operación crítica debe completarse **sin red**.
+
+### 2. Sin pérdida de datos (H8)
+- Persistir en local **antes** de encolar sync futuro.
+
+### 3. Import manual (H7)
+- Usuario **verifica** antes de guardar entradas Wallet.
+- **No** guardar sin confirmación explícita.
+
+### 4. Eficiencia (H5)
+- Gastos: **≤3–4 taps** en el camino principal.
+
+## Implementación Android
+- **Datos:** Room según `.cursor/skills/myowntrip-context/references/data-model.md`
+- **UI:** Compose + **Material 3 directo** (`MaterialTheme.colorScheme`); ver `.cursor/rules/m3-native-ui.mdc`
+- **UX runtime:** `docs/ux/android-compose-ux.md`
+
+## Anti-patterns
+- Portar componentes del repo archivo `MyOwnTrip` (`MyOwnTripButton`, `SemanticColors`, etc.)
+- Guardar Wallet sin pantalla de confirmación
+- Funcionalidad core que exija conexión

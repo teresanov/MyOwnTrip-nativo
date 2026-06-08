@@ -1,0 +1,25 @@
+---
+description: "UI Material 3 nativa: colorScheme, state layers, sin DS custom del repo archivo."
+globs:
+  - "app/src/main/**/*.kt"
+alwaysApply: true
+---
+
+# Material 3 nativo
+
+## Obligatorio
+- Consumir **`MaterialTheme.colorScheme`** y **`MaterialTheme.typography`**.
+- Componentes **`androidx.compose.material3.*`** salvo justificación documentada en ADR.
+- Estados interactivos = **state layers** del framework (hover 8%, pressed/focus 10%, disabled 38%/12%).
+
+## Prohibido
+- `SemanticColors`, `LayoutTokens`, tokens `semantic/color/*` del repo archivo **MyOwnTrip**.
+- Wrappers `MyOwnTrip*` copiados del repo archivo.
+- Pipeline Pencil, ARC, `components.index.json`, skills `ds-*`.
+
+## Extensiones custom permitidas
+- `LocalExtendedColors` (success, warning, info) — ver `docs/design-system/color.md`
+- Focus ring documentado en ADR cuando se implemente
+
+## Repo archivo
+El DS histórico vive solo en **`../MyOwnTrip`** — consulta manual, no importar contratos al código activo.
