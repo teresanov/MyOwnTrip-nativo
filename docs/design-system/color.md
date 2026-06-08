@@ -1,10 +1,10 @@
 # Color — roles M3 (MyOwnTrip Nativo)
 
-Fuente en código: `app/.../ui/theme/Color.kt` → `Theme.kt`.  
+**Fuente canónica:** [`variables.json`](variables.json) (colección M3 · modos Light/Dark).  
+**Código:** `app/.../ui/theme/Color.kt` → `Theme.kt` (importado desde `variables.json`).  
 ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 
-> **Estado:** seeds y overrides definidos. Tabla Light/Dark completa se rellena al importar export MTB (pendiente handoff).  
-> **Figma:** [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168)
+> **Figma:** [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168) — misma colección M3 que `variables.json`.
 
 ## Material Theme Builder
 
@@ -15,16 +15,17 @@ ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 | Modos | Light + Dark |
 | Generate state layers | **NO** |
 
-### Seeds y overrides
+### Roles Light (desde `variables.json` · `Schemes/*`)
 
-| Input MTB | Hex | Notas |
-|-----------|-----|-------|
-| Source color (primary) | `#1F3A5F` | Azul profundo editorial |
-| Secondary | `#3A4A63` | |
-| Tertiary | `#D9382C` | Acento de marca (rojo señal) |
-| Neutral | `#8A8275` | Taupe cálido → superficie papel |
-| Neutral variant | `#847E72` | |
-| Error | `#B3261E` | Rojo profundo; **distinto** de tertiary |
+| Rol | Hex | Notas |
+|-----|-----|-------|
+| `primary` | `#3E5F90` | Azul editorial |
+| `tertiary` | `#825513` | Acento ocre (marca) |
+| `error` | `#904A42` | Alerta; **distinto** de tertiary |
+| `surface` | `#FFF8F2` | Papel cálido |
+| `onSurface` | `#1F1B13` | |
+
+Dark: `tertiary` `#F8BB71`, `surface` `#17130B` — ver `variables.json`.
 
 ### Check de superficie
 
@@ -35,11 +36,13 @@ Si sale frío → subir Neutral a `#8C8472` y regenerar.
 
 Vía `LocalExtendedColors` en `Theme.kt`. No son roles M3.
 
-| Token | Hex | Uso |
-|-------|-----|-----|
-| success | `#2E7D32` | Feedback positivo |
-| warning | `#F9A825` | Avisos |
-| info | `#1565C0` | Información (opcional) |
+| Token | Light | Dark | Uso |
+|-------|-------|------|-----|
+| success | `#0D631B` | `#88D982` | Feedback positivo |
+| warning | `#815611` | `#F6BC70` | Avisos |
+| info | `#405F90` | `#A9C7FF` | Información (opcional) |
+
+Valores de `Extended Colors/*` en `variables.json`. No importar `State Layers/*` a código.
 
 ## Consumo en UI
 
@@ -68,13 +71,6 @@ Aplicados por componentes M3 o `Modifier` compartido en custom.
 | `error` / `onError` | Validación, fallos — **siempre** con icono + texto |
 | `tertiary` | Acento de marca puntual (CTA secundario editorial, énfasis) — no sustituye `error` |
 
-## Tabla de roles (pendiente MTB)
+## Tabla completa
 
-Se completará al recibir export. Placeholder del tema anterior (v0.1.0) — **no usar en UI nueva**:
-
-<details>
-<summary>Tema v0.1.0 (obsoleto)</summary>
-
-Primary `#3D63D1`, secondary `#219A60`, surface Light `#FDFBFF`.
-
-</details>
+49 roles `Schemes/*` por modo en [`variables.json`](variables.json). Regenerar `Color.kt` tras cada export de Figma.

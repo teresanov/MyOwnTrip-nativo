@@ -4,7 +4,7 @@
 
 | Capa | Fuente | Consumo |
 |------|--------|---------|
-| Color roles | MTB → `Color.kt` → `Theme.kt` | `MaterialTheme.colorScheme` |
+| Color roles | `variables.json` → `Color.kt` → `Theme.kt` | `MaterialTheme.colorScheme` |
 | Tipografía | `res/font/` → `Type.kt` | `MaterialTheme.typography` |
 | Librería visual | Figma DS (variables + component sets) | Diseño de pantallas |
 | **Documentación componentes** | **Showcase externo** | Equipo + handoff dev |
@@ -27,7 +27,7 @@ Aplica a **todo** cambio de UI, Figma o tema. Si falla una regla, la tarea no se
 | 1 | **Prohibido** tokens de color por estado (`hover`, `pressed`, `focus`, `disabled` como color guardado) | Figma: sin variables `*/hover`, `*/pressed`, … · Código: sin constantes ni `Color` por estado |
 | 2 | Estados = **state layers en runtime** sobre `on*` (8% hover · 10% focus · 10% pressed · 16% dragged); disabled = opacidad 38%/12%, nunca un color guardado | Componentes M3 o `Modifier` compartido · MTB: Generate state layers = NO |
 | 3 | UI consume **solo roles semánticos M3** (`primary`, `onSurface`, `error`, …); **jamás** primitivos/tonos MTB ni `AppColors` fuera de `Theme.kt` | Pantallas usan `MaterialTheme.colorScheme.*` |
-| 4 | **Tertiary** (`#D9382C`, marca) y **Error** (`#B3261E`, alerta) son distintos — no mezclar usos ni sustituir uno por otro | Validación → `error` · Acento editorial → `tertiary` |
+| 4 | **`tertiary`** (acento marca, ocre en `variables.json`) y **`error`** (alerta) son roles distintos — no mezclar usos | Validación → `error` · Acento editorial → `tertiary` |
 | 5 | Errores: **icono + texto**; nunca solo color | `isError` + `supportingText` con icono, o patrón equivalente |
 | 6 | Tipografía: **Fraunces** (Display/Headline) + **Inter** (Title/Body/Label); serif solo arriba | `Type.kt` + sin Fraunces en botones/campos/chips |
 

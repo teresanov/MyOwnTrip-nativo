@@ -17,14 +17,26 @@ private val LightColorScheme = lightColorScheme(
   onPrimary = AppColors.onPrimaryLight,
   primaryContainer = AppColors.primaryContainerLight,
   onPrimaryContainer = AppColors.onPrimaryContainerLight,
+  primaryFixed = AppColors.primaryFixedLight,
+  primaryFixedDim = AppColors.primaryFixedDimLight,
+  onPrimaryFixed = AppColors.onPrimaryFixedLight,
+  onPrimaryFixedVariant = AppColors.onPrimaryFixedVariantLight,
   secondary = AppColors.secondaryLight,
   onSecondary = AppColors.onSecondaryLight,
   secondaryContainer = AppColors.secondaryContainerLight,
   onSecondaryContainer = AppColors.onSecondaryContainerLight,
+  secondaryFixed = AppColors.secondaryFixedLight,
+  secondaryFixedDim = AppColors.secondaryFixedDimLight,
+  onSecondaryFixed = AppColors.onSecondaryFixedLight,
+  onSecondaryFixedVariant = AppColors.onSecondaryFixedVariantLight,
   tertiary = AppColors.tertiaryLight,
   onTertiary = AppColors.onTertiaryLight,
   tertiaryContainer = AppColors.tertiaryContainerLight,
   onTertiaryContainer = AppColors.onTertiaryContainerLight,
+  tertiaryFixed = AppColors.tertiaryFixedLight,
+  tertiaryFixedDim = AppColors.tertiaryFixedDimLight,
+  onTertiaryFixed = AppColors.onTertiaryFixedLight,
+  onTertiaryFixedVariant = AppColors.onTertiaryFixedVariantLight,
   error = AppColors.errorLight,
   onError = AppColors.onErrorLight,
   errorContainer = AppColors.errorContainerLight,
@@ -37,11 +49,18 @@ private val LightColorScheme = lightColorScheme(
   onSurfaceVariant = AppColors.onSurfaceVariantLight,
   outline = AppColors.outlineLight,
   outlineVariant = AppColors.outlineVariantLight,
+  surfaceTint = AppColors.surfaceTintLight,
+  surfaceBright = AppColors.surfaceBrightLight,
+  surfaceDim = AppColors.surfaceDimLight,
+  surfaceContainer = AppColors.surfaceContainerLight,
   surfaceContainerLow = AppColors.surfaceContainerLowLight,
   surfaceContainerHigh = AppColors.surfaceContainerHighLight,
+  surfaceContainerHighest = AppColors.surfaceContainerHighestLight,
+  surfaceContainerLowest = AppColors.surfaceContainerLowestLight,
   inverseSurface = AppColors.inverseSurfaceLight,
   inverseOnSurface = AppColors.inverseOnSurfaceLight,
   inversePrimary = AppColors.inversePrimaryLight,
+  scrim = AppColors.scrimLight,
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -49,14 +68,26 @@ private val DarkColorScheme = darkColorScheme(
   onPrimary = AppColors.onPrimaryDark,
   primaryContainer = AppColors.primaryContainerDark,
   onPrimaryContainer = AppColors.onPrimaryContainerDark,
+  primaryFixed = AppColors.primaryFixedDark,
+  primaryFixedDim = AppColors.primaryFixedDimDark,
+  onPrimaryFixed = AppColors.onPrimaryFixedDark,
+  onPrimaryFixedVariant = AppColors.onPrimaryFixedVariantDark,
   secondary = AppColors.secondaryDark,
   onSecondary = AppColors.onSecondaryDark,
   secondaryContainer = AppColors.secondaryContainerDark,
   onSecondaryContainer = AppColors.onSecondaryContainerDark,
+  secondaryFixed = AppColors.secondaryFixedDark,
+  secondaryFixedDim = AppColors.secondaryFixedDimDark,
+  onSecondaryFixed = AppColors.onSecondaryFixedDark,
+  onSecondaryFixedVariant = AppColors.onSecondaryFixedVariantDark,
   tertiary = AppColors.tertiaryDark,
   onTertiary = AppColors.onTertiaryDark,
   tertiaryContainer = AppColors.tertiaryContainerDark,
   onTertiaryContainer = AppColors.onTertiaryContainerDark,
+  tertiaryFixed = AppColors.tertiaryFixedDark,
+  tertiaryFixedDim = AppColors.tertiaryFixedDimDark,
+  onTertiaryFixed = AppColors.onTertiaryFixedDark,
+  onTertiaryFixedVariant = AppColors.onTertiaryFixedVariantDark,
   error = AppColors.errorDark,
   onError = AppColors.onErrorDark,
   errorContainer = AppColors.errorContainerDark,
@@ -69,11 +100,18 @@ private val DarkColorScheme = darkColorScheme(
   onSurfaceVariant = AppColors.onSurfaceVariantDark,
   outline = AppColors.outlineDark,
   outlineVariant = AppColors.outlineVariantDark,
+  surfaceTint = AppColors.surfaceTintDark,
+  surfaceBright = AppColors.surfaceBrightDark,
+  surfaceDim = AppColors.surfaceDimDark,
+  surfaceContainer = AppColors.surfaceContainerDark,
   surfaceContainerLow = AppColors.surfaceContainerLowDark,
   surfaceContainerHigh = AppColors.surfaceContainerHighDark,
+  surfaceContainerHighest = AppColors.surfaceContainerHighestDark,
+  surfaceContainerLowest = AppColors.surfaceContainerLowestDark,
   inverseSurface = AppColors.inverseSurfaceDark,
   inverseOnSurface = AppColors.inverseOnSurfaceDark,
   inversePrimary = AppColors.inversePrimaryDark,
+  scrim = AppColors.scrimDark,
 )
 
 data class ExtendedColors(
@@ -84,9 +122,9 @@ data class ExtendedColors(
 
 val LocalExtendedColors = staticCompositionLocalOf {
   ExtendedColors(
-    success = AppColors.success,
-    warning = AppColors.warning,
-    info = AppColors.info,
+    success = AppColors.successLight,
+    warning = AppColors.warningLight,
+    info = AppColors.infoLight,
   )
 }
 
@@ -105,12 +143,22 @@ fun MyOwnTripTheme(
     else -> LightColorScheme
   }
 
+  val extendedColors = if (darkTheme) {
+    ExtendedColors(
+      success = AppColors.successDark,
+      warning = AppColors.warningDark,
+      info = AppColors.infoDark,
+    )
+  } else {
+    ExtendedColors(
+      success = AppColors.successLight,
+      warning = AppColors.warningLight,
+      info = AppColors.infoLight,
+    )
+  }
+
   CompositionLocalProvider(
-    LocalExtendedColors provides ExtendedColors(
-      success = AppColors.success,
-      warning = AppColors.warning,
-      info = AppColors.info,
-    ),
+    LocalExtendedColors provides extendedColors,
   ) {
     MaterialTheme(
       colorScheme = colorScheme,

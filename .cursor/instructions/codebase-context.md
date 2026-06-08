@@ -12,13 +12,14 @@ El design system custom (Pencil, Figma viejo, ARC) está en **`../MyOwnTrip`**. 
 - Supabase preparado en Gradle; sync fuera del MVP
 
 ## Design System
+- **Variables canónicas:** `docs/design-system/variables.json` (colección M3 · Light/Dark)
 - Índice: `docs/design-system/README.md`
 - Figma = librería · Showcase = docs componentes — ADR `003-figma-library-showcase-docs.md`
 - Showcase: `docs/design-system/showcase.md`
 - ADR marca: `docs/decisions/002-brand-editorial-m3.md`
-- Color: `docs/design-system/color.md` (seeds `#1F3A5F`; tabla completa pendiente handoff MTB)
-- Tipografía: `docs/design-system/typography.md`
+- Color: `docs/design-system/color.md` · Kotlin: `ui/theme/Color.kt`
 - Governance / quality gates: `docs/design-system/governance.md`
+- **Auditoría DS:** skill `.cursor/skills/myowntrip-ds-audit/` (M3 nativo; sin Pencil ni semánticos del repo archivo)
 
 ## Documentación producto
 - JTBD: `docs/product/jtbd-flows.md`
