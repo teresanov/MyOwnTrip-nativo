@@ -6,9 +6,13 @@
 |------|--------|---------|
 | Color roles | MTB → `Color.kt` → `Theme.kt` | `MaterialTheme.colorScheme` |
 | Tipografía | `res/font/` → `Type.kt` | `MaterialTheme.typography` |
-| Componentes UI | M3 Compose + Figma M3 Kit | `androidx.compose.material3.*` |
+| Librería visual | Figma DS (variables + component sets) | Diseño de pantallas |
+| **Documentación componentes** | **Showcase externo** | Equipo + handoff dev |
+| Implementación | M3 Compose | `androidx.compose.material3.*` |
 | UX runtime | `docs/ux/android-compose-ux.md` | Pantallas `app/` |
 | Producto | `docs/product/jtbd-flows.md` | Features |
+
+Figma **no** documenta componentes (sin láminas Do/Don't en el archivo DS). ADR [003](../decisions/003-figma-library-showcase-docs.md).
 
 Repo archivado `MyOwnTrip`: consulta histórica, **no** fuente operativa.
 
@@ -47,10 +51,11 @@ Ejecutar **después** de pasar `m3Canonical`.
 | Gate | ID | Criterio | Cuándo |
 |------|-----|----------|--------|
 | Consumo semántico | `semanticTokenOnlyConsumption` | Mismo que `m3Canonical` §3; grep sin `AppColors` en `ui/features/` | Cada PR UI |
-| Cadena Figma | `figmaAliasChainValid` | Variables aliasan a roles M3 del kit; sin tokens por estado | Handoff Figma |
+| Cadena Figma | `figmaAliasChainValid` | Variables aliasan a roles M3; sin tokens por estado; **sin páginas de doc** en Figma | Cambio en librería Figma |
+| Ficha showcase | `showcaseDocComplete` | Componente nuevo/actualizado tiene ficha en showcase (plantilla en `showcase.md`) | Cada componente |
 | Mapeo Compose | `composeMaterial3MappingValid` | `lightColorScheme`/`darkColorScheme` cubren roles usados; custom solo `LocalExtendedColors` | Cambio de tema |
 | Accesibilidad | `a11yCheck` | TalkBack, contraste, touch 48dp, escalado 200%; incluye `m3Canonical` §5 | Cada pantalla |
-| Regresión visual | `visualRegression` | Screenshot Figma vs emulador (subset MVP) | Tras cambio visual mayor |
+| Regresión visual | `visualRegression` | Showcase vs emulador (subset MVP) | Tras cambio visual mayor |
 
 **Orden:** `m3Canonical` → `semanticTokenOnlyConsumption` → resto según alcance.
 

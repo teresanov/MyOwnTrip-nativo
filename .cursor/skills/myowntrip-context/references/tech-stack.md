@@ -59,16 +59,22 @@ M3 canónico con identidad editorial. Ver `docs/design-system/README.md`.
 | Capa | Fuente |
 |------|--------|
 | **MTB** | Seeds `#1F3A5F` · Tonal Spot · ADR 002 |
-| **Figma** | MyOwnTrip · Design System (M3 Native) — kit M3 tematizado |
+| **Figma** | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168) — **solo librería** (sin doc en canvas) |
+| **Showcase** | `ds-showcase/` — web estática (`npm run dev`) |
 | **Compose** | `MaterialTheme.colorScheme` + Fraunces/Inter |
-| **Notion** | [MyOwnTrip · UI Design](https://www.notion.so/MyOwnTrip-UI-Design-3426a48d93c8801390b8ffa35655b745) |
+| **Notion** | [Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) · [Design System](https://www.notion.so/3796a48d93c88168b7dcf9d7e81f9bfa) |
 
-Pipeline: `Material Theme Builder → Figma → Compose` (sin Pencil).
+Pipeline: `MTB → Figma (librería) → Compose` + `Showcase (docs componentes)`.
 
 DS histórico archivado: [MyOwnTrip](https://github.com/teresanov/MyOwnTrip).
 
-## Archivo Figma (proyecto)
-`MyOwnTrip · Project Definition` — 7 slides: Cover, Project Brief, Travel Lifecycle, Requirements, Benchmark, Architecture, Data Model
+## Archivos Figma (proyecto)
+
+| Archivo | Uso |
+|---------|-----|
+| [JTBD Presentation](https://www.figma.com/board/FgYSO9p8dZfKIjcRnJ8nKZ/MyOwnTrip-%C2%B7-JTBD-Presentation?node-id=0-1) | One-pager visual del proyecto (FigJam) |
+| [Project Definition](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=0-1) | 7 slides: Brief, Lifecycle, Requirements, Benchmark, Architecture, Data Model |
+| [08 · JTBD — Flujos](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=89-2) | Diagramas de flujo (mismo archivo) |
 
 ## Contexto UX
 Investigación, pain points, hipótesis y priorización: skill **`myowntrip-ux-notion`** (sincronizado con Notion).

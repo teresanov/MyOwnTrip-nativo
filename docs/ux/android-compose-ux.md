@@ -39,9 +39,9 @@ No hace falta **prototipar ni tokenizar motion en Figma** si el equipo no diseñ
 |-------|-----|
 | **Esta policy + `Motion.kt`** | Fuente canónica para dev e IA (duraciones, tipos de transición, accesibilidad). |
 | **Notion** | Specs de producto/pantalla: qué se anima, por qué, tipo M3 (fade, slide…), ritmo (Short / Medium / Long). |
-| **Showcase Compose** (`ui/showcase/`, `@Preview`) | Demostración viva cuando exista un patrón animado que el equipo deba ver y copiar. |
+| **Showcase externo** | Documentación de componentes + demos interactivas — ver `docs/design-system/showcase.md`. |
 
-Figma sigue siendo la librería de **componentes y tokens visuales** (color, tipo, layout); motion en runtime vive en Android + documentación humana anterior.
+Figma = **librería** (variables + component sets); **no** documentación en canvas. Motion en runtime: Android + esta policy.
 
 ---
 

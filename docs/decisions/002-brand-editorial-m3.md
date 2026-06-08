@@ -39,7 +39,7 @@ ADR 001 fijó M3 estructural; este ADR fija identidad de marca y reglas de consu
 ### Componentes
 - MVP: M3 puro (`androidx.compose.material3.*`).
 - Wrapper `MyOwnTrip*` solo con justificación en ADR o `docs/design-system/components.md`.
-- Figma: clon del Material 3 Design Kit tematizado con MTB.
+- Figma: clon del Material 3 Design Kit tematizado con MTB (**solo librería** — doc en showcase, ADR 003).
 
 ### Gate `m3Canonical` (bloqueante)
 1. Prohibido tokens de color por estado (`hover`/`pressed`/`focus`/`disabled`).
@@ -53,6 +53,7 @@ Detalle y gates complementarias: `docs/design-system/governance.md`.
 Focus ring: capa separada (futuro ADR).
 
 ## Consecuencias
+- Figma: [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168)
 - `Color.kt` / `Type.kt` se actualizan al recibir export MTB + fuentes.
 - `docs/design-system/color.md` documenta seeds hasta tener tabla completa Light/Dark.
 - Quality gates en `docs/design-system/governance.md`.

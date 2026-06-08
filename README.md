@@ -37,8 +37,11 @@ app/src/main/java/com/myowntrip/app/
 ```
 
 ## Documentación
+- [Notion — Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) · [Notion — Design System](https://www.notion.so/3796a48d93c88168b7dcf9d7e81f9bfa)
+- [DS Showcase](https://teresanov.github.io/MyOwnTrip-nativo/) · [código](ds-showcase/)
+- [One-pager JTBD (FigJam)](https://www.figma.com/board/FgYSO9p8dZfKIjcRnJ8nKZ/MyOwnTrip-%C2%B7-JTBD-Presentation?node-id=0-1) · [Figma Proyecto](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=0-1) · [Figma DS](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168) (solo librería)
 - [JTBD flows](docs/product/jtbd-flows.md)
-- [Design System](docs/design-system/README.md)
+- [Design System (repo)](docs/design-system/README.md)
 - [ADR marca editorial](docs/decisions/002-brand-editorial-m3.md)
 - [Colores M3](docs/design-system/color.md)
 - [UX runtime](docs/ux/android-compose-ux.md)

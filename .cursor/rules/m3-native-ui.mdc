@@ -34,7 +34,9 @@ Viajero urbano organizado · estética editorial (Monocle/Wallpaper) · papel c�
 
 ### Componentes
 - **`androidx.compose.material3.*`** por defecto.
-- Wrapper `MyOwnTrip*` solo con justificación en `docs/design-system/components.md` o ADR.
+- Wrapper `MyOwnTrip*` solo con justificación en showcase o ADR — ver `docs/design-system/showcase.md`.
+- **Figma:** librería visual únicamente; **prohibido** documentar componentes en Figma (láminas, Do/Don't).
+- **Showcase externo:** única fuente de fichas de componente.
 - Extensiones: `LocalExtendedColors` (success, warning, info) — `docs/design-system/color.md`.
 
 ## Prohibido

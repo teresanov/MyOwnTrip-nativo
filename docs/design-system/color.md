@@ -3,7 +3,8 @@
 Fuente en código: `app/.../ui/theme/Color.kt` → `Theme.kt`.  
 ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 
-> **Estado:** seeds y overrides definidos. Tabla Light/Dark completa se rellena al importar export MTB (pendiente handoff).
+> **Estado:** seeds y overrides definidos. Tabla Light/Dark completa se rellena al importar export MTB (pendiente handoff).  
+> **Figma:** [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168)
 
 ## Material Theme Builder
 

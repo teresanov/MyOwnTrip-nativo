@@ -13,6 +13,8 @@ El design system custom (Pencil, Figma viejo, ARC) está en **`../MyOwnTrip`**. 
 
 ## Design System
 - Índice: `docs/design-system/README.md`
+- Figma = librería · Showcase = docs componentes — ADR `003-figma-library-showcase-docs.md`
+- Showcase: `docs/design-system/showcase.md`
 - ADR marca: `docs/decisions/002-brand-editorial-m3.md`
 - Color: `docs/design-system/color.md` (seeds `#1F3A5F`; tabla completa pendiente handoff MTB)
 - Tipografía: `docs/design-system/typography.md`
@@ -21,6 +23,7 @@ El design system custom (Pencil, Figma viejo, ARC) está en **`../MyOwnTrip`**. 
 ## Documentación producto
 - JTBD: `docs/product/jtbd-flows.md`
 - UX runtime: `docs/ux/android-compose-ux.md`
+- Notion: [Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) · [Design System](https://www.notion.so/3796a48d93c88168b7dcf9d7e81f9bfa)
 - Skills: `.cursor/skills/myowntrip-context/`, `myowntrip-ux-notion/`
 
 ## Reglas

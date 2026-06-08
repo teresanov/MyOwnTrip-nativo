@@ -5,11 +5,13 @@ description: Resúmenes de investigación UX de MyOwnTrip desde Notion — perso
 
 # MyOwnTrip — UX Research (resumen desde Notion)
 
-**Fuente en Notion:** [MyOwnTrip · UX Research](https://www.notion.so/33d6a48d93c881b7be98c0bc33bbdcf1). Copia resumida para el agente; **si hay discrepancia, manda Notion**.
+**Hub Notion producto:** [MyOwnTrip · Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) · **Research:** [MyOwnTrip · UX Research](https://www.notion.so/33d6a48d93c881b7be98c0bc33bbdcf1). Copia resumida para el agente; **si hay discrepancia, manda Notion**.
 
 **Sincronización skill:** abril 2026 (pain points, hipótesis, entrevistas sintéticas v2, priorización MVP).
 
 **North Star (cuaderno del viaje / Moleskine):** [North Star — El cuaderno del viaje](https://www.notion.so/33e6a48d93c881d8b9cce1418607f3d7).
+
+**Benchmark competitivo:** [Benchmark competitivo (sp)](https://www.notion.so/3796a48d93c8816fb31ec55f4cf4b23e) · slide en [Figma Project Definition](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=0-1).
 
 **Página Notion MoSCoW + MVP 1.0:** [MVP 1.0 — Features (MoSCoW)](https://www.notion.so/33e6a48d93c8813ea599f53ce21ff2b0) (hija de [MyOwnTrip · UX Research](https://www.notion.so/33d6a48d93c881b7be98c0bc33bbdcf1)).
 

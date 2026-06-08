@@ -8,7 +8,7 @@ Empezar **M3 puro**: `androidx.compose.material3.*` con el tema MTB.
 
 ## Cuándo crear `MyOwnTrip*`
 
-Solo si M3 no ofrece el default o variante de producto necesaria **y** queda documentado aquí o en un ADR.
+Solo si M3 no ofrece el default o variante de producto necesaria **y** queda documentado en el **showcase** (o ADR).
 
 | Criterio | Ejemplo válido | Ejemplo inválido |
 |----------|----------------|------------------|
@@ -22,15 +22,19 @@ Solo si M3 no ofrece el default o variante de producto necesaria **y** queda doc
 - Exponer parámetros alineados a M3 (`Modifier`, `enabled`, `colors` del tema).
 - **No** reintroducir ejes del DS archivado (`MyOwnTripButtonVariant`, semánticos propios).
 
-## Figma
+## Figma (solo librería)
 
-Base: clon del **Material 3 Design Kit** tematizado con MTB (state layers del kit, no fills por token de estado).
+Base: **Material 3 Design Kit** tematizado con MTB. Publicar component sets y variables; **no** crear documentación en el archivo Figma.
 
-Subset MVP (prioridad):
+Subset MVP (prioridad en librería):
 
 | P0 | Button, TextField, FilterChip |
 | P1 | IconButton, ListItem, Card |
 | P2 | Resto según pantalla |
+
+## Showcase (documentación)
+
+Toda ficha de componente vive en el **showcase externo** — ver [showcase.md](showcase.md). Incluye variantes, estados, a11y y ejemplos Compose.
 
 ## Portar del repo archivo
 

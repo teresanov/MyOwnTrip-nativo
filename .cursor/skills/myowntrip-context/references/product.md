@@ -27,6 +27,8 @@ La **magia** del producto no es el algoritmo ni la lista infinita de features: e
 - Uso personal real
 - Proyecto de portfolio UX/producto
 
+**One-pager visual:** [MyOwnTrip · JTBD Presentation](https://www.figma.com/board/FgYSO9p8dZfKIjcRnJ8nKZ/MyOwnTrip-%C2%B7-JTBD-Presentation?node-id=0-1) (FigJam).
+
 ## Usuario objetivo
 Viajero independiente que planifica con criterio propio. Perfiles y pain points detallados (entrevistas sintéticas, reviews, hipótesis): skill **`myowntrip-ux-notion`**.
 
@@ -46,6 +48,9 @@ Combinación nativa Android: wallet con PDFs + itinerario con drag-and-drop + di
 **Depriorizado para MVP (Could Have):** estados de restaurante (H3 — no emerge como prioridad en entrevistas sintéticas). **v1.1:** sugerencias con IA solo con datos frescos y mecanismo de corrección (H6).
 
 ## Benchmark — competidores analizados
+
+**Notion:** [Benchmark competitivo (sp)](https://www.notion.so/3796a48d93c8816fb31ec55f4cf4b23e) · **Figma:** [Project Definition](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=0-1) (slide Benchmark).
+
 | App | Fortaleza principal | Lección para MyOwnTrip |
 |-----|---------------------|-------------------------|
 | Wanderlog | Muy completa | Offline/valor en free; IA con datos viejos frustra |

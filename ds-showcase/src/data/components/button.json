@@ -1,0 +1,33 @@
+{
+  "id": "button",
+  "name": "Button",
+  "status": "draft",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168",
+  "purpose": "Ejecutar acciones: confirmar, guardar, continuar. En MyOwnTrip: crear viaje, guardar gasto, confirmar entrada Wallet (H7).",
+  "variants": [
+    { "id": "filled", "label": "Filled", "usage": "Acción principal de la pantalla (una por vista)." },
+    { "id": "tonal", "label": "Tonal", "usage": "Acción secundaria con énfasis moderado (`secondaryContainer`)." },
+    { "id": "outlined", "label": "Outlined", "usage": "Acciones alternativas o cancelar." },
+    { "id": "text", "label": "Text", "usage": "Acciones terciarias, bajo peso visual." }
+  ],
+  "tokens": ["primary", "onPrimary", "secondaryContainer", "onSecondaryContainer", "outline"],
+  "dos": [
+    "Un solo botón Filled como CTA principal por pantalla.",
+    "Etiquetas con verbos en Inter (`labelLarge`).",
+    "Estados interactivos vía state layers M3 (no colores custom por estado)."
+  ],
+  "donts": [
+    "No usar `tertiary` para acciones destructivas — usar `error` + confirmación.",
+    "No crear tokens `button/hover` o similares.",
+    "No Fraunces en el label del botón."
+  ],
+  "a11y": [
+    "Touch target mínimo 48dp.",
+    "Foco visible: anillo 2dp separado del contenido.",
+    "Estado disabled: opacidad 38% / 12%, no color distinto."
+  ],
+  "compose": "Button(\n    onClick = { onSave() },\n    modifier = Modifier.fillMaxWidth(),\n) {\n    Text(\"Guardar\")\n}",
+  "changelog": [
+    { "date": "2026-06-08", "note": "Ficha inicial en showcase estático. Compose: M3 directo." }
+  ]
+}
