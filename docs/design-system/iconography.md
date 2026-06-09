@@ -8,7 +8,7 @@ ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 |-----------|-------|
 | Set | **Material Symbols** (nativo M3) |
 | Estilo | **Sharp** |
-| Peso | Ligero (Light / 200 cuando Compose lo exponga) |
+| Peso | **300** en Figma (Sharp); Compose: ligero (200) hasta exponer peso en runtime |
 | Color | Roles `colorScheme` (`onSurface`, `primary`, `onSurfaceVariant`, …) |
 
 - Usar `Icons` / `Icon` de Material 3 o vector drawable del set oficial.
@@ -32,4 +32,4 @@ Los iconos propios no sustituyen acciones estándar (cerrar, atrás, más, edita
 
 ## Figma
 
-Kit M3 Design Kit tematizado; instancias Sharp del material symbols. Sin biblioteca paralela de UI icons.
+Kit M3 Design Kit tematizado; catálogo **Material Symbols Sharp (w300)** en la sección Icons del DS. Sin biblioteca paralela de UI icons.

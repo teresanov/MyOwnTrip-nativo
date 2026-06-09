@@ -101,6 +101,6 @@
 
 ## Referencias
 
-- Allowlist: [`figma-mobile-subset.md`](../figma-mobile-subset.md)
+- Allowlist: [`figma-prune-inventory.md`](../figma-prune-inventory.md)
 - Inventario pre: [`figma-inventory-2026-06-08.md`](figma-inventory-2026-06-08.md)
 - Scripts: [`.cursor/skills/myowntrip-ds-audit/scripts/`](../../../.cursor/skills/myowntrip-ds-audit/scripts/)

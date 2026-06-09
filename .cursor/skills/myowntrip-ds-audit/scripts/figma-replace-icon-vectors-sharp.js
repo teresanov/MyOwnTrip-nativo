@@ -1,5 +1,5 @@
 /**
- * Sustituye la geometría kit (VECTOR "icon") por SVG Material Symbols Sharp w200
+ * Sustituye la geometría kit (VECTOR "icon") por SVG Material Symbols Sharp w300
  * **dentro del mismo COMPONENT main** — preserva instancias.
  *
  * Ejecutar vía Desktop Bridge en archivo principal solamente.

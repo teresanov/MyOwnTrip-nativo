@@ -109,7 +109,7 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 5. [ ] **XLarge** a mano, de abajo arriba en la sección (no mover sets con script)
 6. [ ] Comprobar **Go to main component** → siempre archivo de trabajo, nunca CS
 7. [ ] Publicar librería del archivo de trabajo
-8. [ ] Actualizar inventario en `figma-mobile-subset.md` si cambia el acuerdo
+8. [ ] Actualizar [`figma-prune-inventory.md`](figma-prune-inventory.md) si cambia el acuerdo
 
 ---
 
@@ -143,6 +143,6 @@ Usar la librería podada para explorar:
 
 ## Referencias
 
-- Subset técnico: [`figma-mobile-subset.md`](figma-mobile-subset.md)
+- **Fuente de verdad:** [`figma-prune-inventory.md`](figma-prune-inventory.md)
 - Marca: [`002-brand-editorial-m3.md`](../decisions/002-brand-editorial-m3.md)
 - Gates: [`governance.md`](governance.md) · `m3Canonical`

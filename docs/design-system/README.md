@@ -20,6 +20,8 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | [components.md](components.md) | M3 puro vs wrappers `MyOwnTrip*` |
 | [showcase.md](showcase.md) | Documentación de componentes (showcase externo) |
 | [governance.md](governance.md) | Gate `m3Canonical` + quality gates, source of truth |
+| [breakpoints.md](breakpoints.md) | Window size classes, foldables Samsung, frames Figma, iOS futuro |
+| [figma-prune-inventory.md](figma-prune-inventory.md) | KEEP/CUT librería Figma (móvil + foldable, sin tablet) |
 | [../decisions/003-figma-library-showcase-docs.md](../decisions/003-figma-library-showcase-docs.md) | Figma = librería; showcase = docs |
 | [../decisions/001-m3-native-ds.md](../decisions/001-m3-native-ds.md) | ADR estructura M3 |
 | [../decisions/002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md) | ADR marca editorial |
