@@ -49,7 +49,8 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | Chips `Style=Elevated` (en sets KEEP) | **CUT** — Outlined |
 | List/Menu `Density -2/-4` | **CUT** |
 | `Theme`/`Type=Vibrant`, `Type=Wave`, morphing Expressive | **CUT** |
-| 3D Avatars, Shape Set decorativo (cookie/heart/…) | **CUT** |
+| Shape Set decorativo (cookie/heart/arch…) — **no** la escala `.Shape` en `Styles` | **CUT** |
+| Avatars 3D / genéricos extra | **CUT** — conservar **Generic avatar** básico (Avatar/Monogram) |
 | Roles/variables de color | **NUNCA podar** |
 
 ---
@@ -98,8 +99,8 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | Search full-screen / docked layout | Búsqueda expandida |
 | Side sheet + BB | Panel lateral |
 | Navigation drawer (patrón M3 actual) | Sin cambio de arquitectura nav |
-| Carousel (Hero, Multi-browse) | Galería de sitios |
-| Toolbars Expressive | Toolbar flotante + FAB |
+| Carousel móvil (Hero, Multi-browse, Multi-aspect) | Galería / explorar ciudad — **no** el set tablet |
+| Toolbars Standard horizontal (Floating/Docked) | Toolbar contextual + FAB — **CUT** XR, Vibrant, Vertical |
 | Rich tooltip | Sobre Plain |
 | Time pickers (Dial, Keyboard…) | Recordatorios / hora vuelo |
 
@@ -109,11 +110,11 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 |-----------------|
 | Getting started, Table of contents, `---` |
 | **Examples** (`-Web`, window classes **tablet**; opcional: grid Compact + 1–2 refs foldable interior en `Reference`) |
-| **Shape** — Shape Set expresivo (conservar escala de tokens en `Styles`) |
+| **Shape** (página) — Shape Set expresivo 35 var. (cookie/arch/…) · **KEEP** escala en `Styles` → `.Shape` |
 | Doc/demo suelta en Utilities (no teclados) |
-| **Avatars** (genéricos del kit) |
+| **Avatars** — solo 3D u otros genéricos extra · **KEEP** `Generic avatar` (básico, adaptable a marca) |
 | **Tooltips** |
-| Carousel `Context=Tablet`, Toolbars XR/Vibrant/Vertical |
+| Carousel `Context=Tablet` · `Carousel - Full screen` · Toolbars XR/Vibrant/Vertical |
 | Split button, Connected/Standard button group |
 | List dialog (no scrollable) si existe Scrollable |
 | Time pickers desktop (Docked, Horizontal dial) |
@@ -129,20 +130,31 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 - **CUT:** Keyboard **Floating** (4) — patrón multitarea tipo tablet, fuera de scope.
 
 ### Avatars · `55595:3788`
-- **CUT:** página entera (3D + Generic)
+- **KEEP:** `Generic avatar` (`50731:13725`) — Avatar · Monogram · Check; base para diseñadores (adaptable a marca MyOwnTrip)
+- **CUT:** 3D u otros sets si reaparecen del CS
 
 ### Icons · `55594:2483`
 - **KEEP:** librería Sharp w300 (~140)
 - **ACCIÓN:** dedup manual de nombres duplicados (cosmético)
 
 ### Examples · `55594:2480`
-- **CUT:** `-Web` (7) · Messaging, Reviews · `Examples/Layout grid` M3 (`56384:120`, 11 variantes tablet/desktop) — **reemplazado** por `Layout grid · mobile` (`60953:132824`, 6 variantes + landscape smoke; doc sección `55343:13515`)
-- **KEEP:** `Layout grid · mobile` — 360×800 base · 360×880 Flip stress · 344×880 min width · 412×915 grande · 673×841 Medium LATER · 800×360 landscape smoke; guía `60954:132843`
+- **CUT:** `-Web` (7, eliminados 2026-06-09) · `Examples/Layout grid` M3 (`56384:120`, 11 variantes tablet/desktop) — **reemplazado** por `Layout grid · mobile` (`60955:133047`, 6 variantes; sección `55343:13515`)
+- **KEEP:** `Example layout` (`56554:638`) — 7 pantallas × 3 filas Compact: **Phone base** 360×800 · **Z Fold plegado** 344×880 · **landscape smoke** 800×360 (reflow horizontal, sin recorte a media pantalla); instancias del kit M3
+- **KEEP:** `Layout grid · mobile` — 360×800 · 360×880 · 344×880 · 412×915 · 800×360 smoke · 673×841 LATER; guía `60954:132843`
+- **REVIEW:** Messaging, Reviews — mantener en Examples hasta decisión producto; no son target JTBD MVP
 - **Reference:** Flex Window `60955:132903` (260×272 cover Flip) — **CUT MVP**
 - **OPCIONAL:** fold landscape 840×673 en página `Reference` (frame suelto, no component set)
 
-### Shape · `58548:7093`
-- **CUT:** Shape Set expresivo (35). Radios funcionales viven en `Styles`/tokens.
+### Shape · `58548:7093` vs `Styles` · `.Shape` · `55343:12390`
+
+**No confundir** (ver [M3 corner radius scale](https://m3.material.io/styles/shape/corner-radius-scale)):
+
+| Qué | Dónde | Acción |
+|-----|-------|--------|
+| **Escala de radios** (None → Full, tokens Shape 1–9) | Página **Styles** → set `.Shape` | **KEEP** — es lo que enlazan componentes M3; MyOwnTrip editorial ≈ **Small 8dp** en botones/cards (ADR 002) |
+| **Shape library** decorativa (Circle, Arch, Fan, cookie…) | Página **Shape** → `Shape Set` (35) | **CUT** — “momentos de delight” visuales; no sustituye la escala; texto denso → evitar |
+
+- **CUT:** página **Shape** entera (solo el set demostrativo). **No** borrar `.Shape` en Styles.
 
 ### App bars · `55141:14169`
 - **KEEP:** Top App bar (12 variantes útiles)
@@ -158,7 +170,17 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 - **KEEP:** Stacked + Horizontal, Outlined + Elevated, Media & text
 - **CUT:** Filled
 
-### Carousel · `55141:14172` — **LATER** móvil · **CUT** Tablet
+### Carousel · `55141:14172`
+
+**Sí usamos carrusel** — en MVP ya hay carruseles en **Cards/Lists/Examples** (p. ej. Home Section 1–2). El set de página es para **layouts de carrusel** completos.
+
+| Set / variante | Acción |
+|----------------|--------|
+| `Carousel` · `Context=Mobile` (Hero, Multi-browse, Uncontained, Center-aligned hero, Multi-aspect ratio) | **LATER** v1.1 — galería, explorar ciudad |
+| `Carousel` · `Context=Tablet` (todas) | **CUT** |
+| `Carousel - Full screen` | **CUT** — patrón inmersivo desktop/tablet |
+
+MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya pantalla JTBD (Gallery, home editorial).
 
 ### Checkboxes · `55141:14173` — **KEEP**
 
@@ -206,7 +228,17 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 
 ### Text fields · `55141:14259` — **KEEP** Outlined · **CUT** Filled
 
-### Toolbars · `58295:22726` — **LATER** · **CUT** XR, Vibrant, Vertical
+### Toolbars · `58295:22726`
+
+| Variante (`Toolbar` set `58467:8206`) | Acción |
+|---------------------------------------|--------|
+| Floating/Docked · **Horizontal** · **Standard** | **LATER** v1.1 |
+| **Vibrant** (Standard + BB) | **CUT** — Expressive, fuera marca editorial |
+| **Vertical** (Floating) | **CUT** — patrón tablet |
+| **XR/*** (si reaparece) | **CUT** — manual bloque A |
+| BB Vibrant / Vertical | **CUT** con sus Toolbars |
+
+Mantener página recortada; no borrar página entera si quedan Standard horizontal.
 
 ### Tooltips · `55141:14261` — **CUT**
 
@@ -224,7 +256,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 4. Text fields — Filled (~60)
 5. Chips — Elevated + sets LATER si se difieren
 6. Examples web + window classes grandes
-7. 3D Avatars · Shape Set · Tooltips
+7. Shape Set (página) · Carousel tablet/full-screen · Tooltips
 
 ### Ritual
 

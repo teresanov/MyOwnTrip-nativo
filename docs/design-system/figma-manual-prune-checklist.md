@@ -89,8 +89,12 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 
 ## 5. Podar sin miedo (ruido del kit)
 
-- [ ] Getting started, Table of contents, Examples, Shape, Utilities, `---`
-- [ ] Carousel, Toolbars, Tooltips, Avatars (genéricos del kit)
+- [ ] Getting started, Table of contents, `---` (Examples **pausado** — no podar página)
+- [ ] **Shape** (página Shape Set decorativo) — **KEEP** `.Shape` en Styles
+- [ ] **Carousel** — CUT tablet + full-screen; **KEEP** variantes Mobile en librería (LATER) o página recortada
+- [ ] **Toolbars** — CUT XR, Vibrant, Vertical; KEEP Standard horizontal (LATER)
+- [ ] Tooltips
+- [ ] Avatars 3D/extra — **KEEP** `Generic avatar` básico
 - [ ] **XR/***, Navigation rail*, Bottom app bar
 - [ ] Split button (caso muy nicho)
 - [ ] List dialog (no scrollable) si tenéis Scrollable list dialog

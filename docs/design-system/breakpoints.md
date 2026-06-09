@@ -89,22 +89,7 @@ Samsung recomienda considerar “large screen layout” desde **600dp** de ancho
 
 ### Guía diseñador (Figma · Examples)
 
-Copia de la nota en la sección `Layout grid · mobile` (`60954:132843`):
-
-**COMPACT · &lt; 600dp**
-
-- **Dispositivos:** teléfonos (vertical) · Z Flip abierto · Z Fold plegado
-- **Diseña para:** 1 columna, contenido scrollable, barras ancladas con insets
-- **Ojo:** ancho mínimo 360dp (algunos plegados ~344) · Flip muy alto (22:9)
-
-**MEDIUM · 600–839dp** `[LATER]`
-
-- **Dispositivos:** Z Fold abierto · tablet pequeña
-- **Diseña para:** opción de 2 paneles (lista–detalle). Fuera del MVP móvil
-
-**POSTURA (fold/tabletop)** `[LATER · no es breakpoint]`
-
-- Se gestiona en código con `WindowManager` (`FoldingFeature`), no con tamaño de ventana
+Nota en sección `Layout grid · mobile` · node `60954:132843` — misma tabla que §5.
 
 ### Tier B — v1.1+ (cuando una pantalla lo pida)
 
@@ -129,7 +114,9 @@ Copia de la nota en la sección `Layout grid · mobile` (`60954:132843`):
 
 ## 5. Frames Figma (librería y pantallas)
 
-**Component set publicado:** `Layout grid · mobile` · node `60955:132947` en página Examples — sustituye `Examples/Layout grid` (M3 completo, eliminado 2026-06-09).
+**Component set publicado:** `Layout grid · mobile` · node `60955:133047` en página Examples (sección `55343:13515`: guía `60954:132843` + contenedor de 6 frames) — sustituye `Examples/Layout grid` (M3 completo, eliminado 2026-06-09).
+
+**Example layouts** · sección `56554:638` — 7 pantallas demo en **3 filas** Compact: Phone base 360×800 · Z Fold plegado 344×880 · **landscape smoke 800×360** (status + app bar + cuerpo horizontal en columnas; sin Navigation Rail ni Device frame en Examples — ver `Utilities`/`Reference` si hace falta mock de dispositivo). Sin fila `-Web`.
 
 ### Tabla canónica (diseño)
 
