@@ -45,7 +45,19 @@ async function findOrCreateParent(page, item) {
   return section || page;
 }
 
+const MAIN_FILE_KEY = "zrGAL4v6MEMc9hzZemU432";
+const CS_FILE_KEY = "uWmxOSQfjOxlEJ8k1yzOSX";
+
+function assertMainFile() {
+  if (figma.fileKey !== MAIN_FILE_KEY) {
+    throw new Error(
+      `ABORT: archivo activo ${figma.fileKey} — operaciones destructivas solo en principal (${MAIN_FILE_KEY}). CS=${CS_FILE_KEY}`,
+    );
+  }
+}
+
 async function restoreCatalogBatch(catalog, dryRun = false) {
+  assertMainFile();
   await figma.loadAllPagesAsync();
   const restored = [];
   const skipped = [];
@@ -107,6 +119,7 @@ async function ensureSlidersPage() {
 }
 
 async function pruneButtonXLarge() {
+  assertMainFile();
   const patterns = [/Size=XLarge/];
   const removed = [];
   await figma.loadAllPagesAsync();
@@ -129,6 +142,7 @@ async function pruneButtonXLarge() {
 }
 
 async function removeV11Sets() {
+  assertMainFile();
   const removed = [];
   await figma.loadAllPagesAsync();
   for (const page of figma.root.children) {
