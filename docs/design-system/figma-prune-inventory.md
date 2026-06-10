@@ -68,7 +68,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | **Cards** | Stacked, Horizontal + BB states — **Outlined + Elevated**; layout **Media & text** |
 | **Checkboxes** | Completos |
 | **Chips** | Filter, Assist, Suggestion, Input — **Outlined** |
-| **Date pickers** | Input + Modal + BB calendario (sin time pickers) |
+| **Date & time pickers** | Fecha B+ + hora móvil (Keyboard, Dial vertical) — reserva manual |
 | **Dialogs** | Basic dialog |
 | **Lists** | List item `Density 0` + BB |
 | **Loading** | Linear/Circular `Type=Flat` + Loading indicator BB (sin morphing Steps) |
@@ -102,7 +102,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | Carousel móvil (Hero, Multi-browse, Multi-aspect) | Galería / explorar ciudad — **no** el set tablet |
 | Toolbars Standard horizontal (Floating/Docked) | Toolbar contextual + FAB — **CUT** XR, Vibrant, Vertical |
 | Rich tooltip | Sobre Plain |
-| Time pickers (Dial, Keyboard…) | Recordatorios / hora vuelo |
+| Recordatorios push / alertas hora | Fuera de picker UI |
 
 ### CUT — páginas y sets enteros
 
@@ -189,19 +189,24 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 - **CUT:** Elevated
 
 ### Date & time pickers · `55141:14175`
-- **KEEP (MVP):** Input + Modal + BB calendario
-- **CUT:** Docked desktop, Horizontal dial
-- **LATER:** time pickers
+- **Sección `MVP · Date pickers`:** Input Range + Single · Modal (Day, Full-screen range, Year) + BB calendario
+- **UX fecha (B+ híbrido):** ida–regreso · preformato manual · calendario auto-regreso
+- **Sección `LATER · Time pickers`:** **no podar** — etiquetar solo. Keyboard · Dial vertical · BB Hour, Period Selector, Input, Direct Input, Clock faces (reserva manual)
+- **CUT aplicado (time desktop):** Dial horizontal (2) · Period Selector Horizontal · hour-line (24)
+- **CUT fecha desktop:** Docked input date [desktop] — **hecho**
+- **Política LATER:** etiqueta de sección visible · **nunca borrar** del archivo · CUT solo variantes desktop explícitas
 
-### Dialogs · `55141:14176`
-- **KEEP:** Basic · Scrollable list dialog
-- **CUT:** XR (4) · list dialog no scrollable
+### Dialogs · `55141:14176` — **hecho**
+- **MVP:** Basic dialog (2) · Scrollable list dialog (2)
+- **LATER:** List dialog (2) — listas cortas fijas · sección etiquetada, no borrar
+- **CUT:** XR/XR Dialog (4) — fuera scope móvil
 
-### Dividers · `55141:14177` — **KEEP** (7)
+### Dividers · `55141:14177` — **hecho**
+- **MVP:** 7 componentes (horizontal + vertical · full-width, inset, middle-inset, subhead)
 
-### Lists · `55141:14249` — 🚨 peso
-- **KEEP:** Density 0 · Accordion · Swipe + BB
-- **CUT:** Density -2/-4
+### Lists · `55141:14249` — **hecho**
+- **MVP:** List item density **0** (238) · List (baseline) · List/Accordion/Swipe sets + BB (sección patterns)
+- **CUT:** List item density **-2** (217) · **-4** (197) · List -2/-4 baseline — **hecho**
 
 ### Loading & progress · `55141:14252`
 - **KEEP:** Linear/Circular Flat · Loading indicator BB

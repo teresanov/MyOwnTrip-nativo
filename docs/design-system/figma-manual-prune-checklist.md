@@ -43,13 +43,14 @@ Conservar sets que dan **jerarquía, ritmo y personalidad** sin salir de M3.
 | **Icon button** | 4 estilos | Barras, formularios, acciones compactas |
 | **FAB** | FAB + Extended FAB | Acción primaria flotante (añadir gasto, nota, lugar) |
 | **Chips** | Filter, Assist, Suggestion, Input + **Chip groups** | Filtros de viaje/gasto; grupos para barras de filtro densas |
-| **Lists** | List, List item, densidades + **Accordion**, **Swipe**, BB | Itinerario, wallet, restaurantes; swipe para acciones rápidas |
+| **Lists** | Density 0 + Accordion + Swipe + BB | **hecho** — CUT -2/-4 |
 | **Tabs** | Tabs + BB primary/secondary | Cambio de vista (día / mapa / lista) |
 | **Sheets** | Bottom sheet + BB | Flujos contextuales sin romper el hilo |
 | **Search** | Search bar (mínimo) | Entrada universal; layouts full-screen → ver §4 |
 | **Sliders** | Standard, Centered, Range | Presupuesto, distancia, preferencias — gesto M3 muy expresivo |
-| **Date pickers** | Input + Modal + BB calendario | Planificación de viaje |
-| **Dialogs** | Basic + **Scrollable list dialog** | Confirmaciones y listas largas |
+| **Date pickers** | Input + Modal + BB calendario · B+ híbrido | Planificación viaje · **hecho** |
+| **Time pickers** | Sección `LATER · Time pickers` (móvil) | Reserva manual · **etiquetado, no borrar** |
+| **Dialogs** | Basic + Scrollable (MVP) · List dialog (LATER) | **hecho** — XR CUT |
 | **Snackbar** | Snackbar + BB | Feedback ligero post-acción |
 | **Loading** | Linear/Circular + Loading indicator + BB | Estados de carga con pulido |
 | **Text fields** | Text field | Formularios viaje / wallet |
@@ -83,7 +84,7 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 | Search full-screen / docked | Búsqueda inmersiva tipo “explorar ciudad” | [ ] KEEP en librería · [ ] Podar |
 | Side sheet | Panel de detalle lateral (lugar, gasto) | [ ] KEEP · [ ] Podar |
 | Navigation drawer | Solo si cambiáis arquitectura nav | [ ] Podar por ahora |
-| Time pickers (Dial, etc.) | Recordatorios, hora de vuelo | [ ] Podar (móvil usa modal/input) |
+| Time pickers móvil | Reserva manual (hora vuelo/hotel) | [x] Sección **LATER** — no borrar |
 
 ---
 
@@ -98,7 +99,9 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 - [ ] **XR/***, Navigation rail*, Bottom app bar
 - [ ] Split button (caso muy nicho)
 - [ ] List dialog (no scrollable) si tenéis Scrollable list dialog
-- [ ] Time pickers desktop (Dial, Keyboard, Hour, Period…)
+- [x] Time pickers **desktop** (Dial horizontal, hour-line, Period Horizontal) — **hecho** en `55141:14175`
+- [x] Docked input date **[desktop]** — **hecho**
+- [ ] **Política LATER:** renombrar sección + label visible; **nunca** borrar sets LATER
 - [ ] Demos sueltas / instancias rotas tras mover sets
 - [ ] Duplicados huérfanos tras restaurar desde CS
 

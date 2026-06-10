@@ -213,6 +213,7 @@ M3 / state-layers / light / {role} / opacity-0.XX  →  (idem)
 - [ ] Dark mode: cambio en `Schemes/Primary` propaga a Button + Text field sin Swap manual
 - [ ] Informe de drift re-ejecutado: 0 bloqueantes
 - [x] **FASE T1 tipografía 2026-06-09** — `Static/Font/Brand` → Fraunces · `Static/Font/Plain` → Inter · `Static/Title Large/Font` re-alias a Plain. Post-check: **0** styles con font variable → Roboto; `variables.json` alineado.
+- [x] **Text styles variable bind 2026-06-09** — **47/47** styles con `fontFamily` · `fontSize` · `lineHeight` · `letterSpacing` enlazados a Typescale. `fontWeight`: variable STRING → `fontName.style` (API no admite bind); Display/Headline emphasized → Fraunces **SemiBold** (Medium no instalada en Figma).
 - [x] **Button label typography 2026-06-09** — variables `Static/Button Label Medium|Large/*` (Inter/Plain); text styles `M3 / label / button-medium` (16) · `M3 / label / button-large` (32/40, alineado M3 default). Mapeo por `Size=` en Buttons.
 - [ ] **FASE T2** — consolidar duplicados text style (`M3 / label / large` vs `M3/label/large`)
 - [ ] **FASE T3** — enlazar `fontWeight` en text styles; desenganchar `textStyleId` en nodos (opcional)
