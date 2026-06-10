@@ -64,7 +64,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | **Foundations** | Variables `M3`, `.Tonal palettes`, `Styles` (`.Shape`), `Icons` (Sharp) |
 | **App bars** | Top app bar + BB (sin Bottom app bar, sin XR) |
 | **Badges** | Badge Large + Small |
-| **Buttons** | filled, tonal, outline, text, **elevated**; Icon button (4); FAB, Extended FAB; **Toggle** (4) — solo `Type=Square` |
+| **Buttons** | filled, tonal, outline, text, **elevated** — **Square** only; Icon button (4) Round+Square; FAB; **Toggle** (4) Round+Square; Segmented Round+Square |
 | **Cards** | Stacked, Horizontal + BB states — **Outlined + Elevated**; layout **Media & text** |
 | **Checkboxes** | Completos |
 | **Chips** | Filter, Assist, Suggestion, Input — **Outlined** |
@@ -100,7 +100,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | Search full-screen / docked layout | Búsqueda expandida |
 | Side sheet + BB | Panel lateral |
 | Navigation drawer (patrón M3 actual) | Sin cambio de arquitectura nav |
-| Carousel móvil (Hero, Multi-browse, Multi-aspect) | Galería / explorar ciudad — **no** el set tablet |
+| Carousel móvil (Hero, Multi-aspect…) | Solo JTBD **galería de fotos** — no viajes/POIs/explorar |
 | Rich tooltip | Sobre Plain |
 | Recordatorios push / alertas hora | Fuera de picker UI |
 
@@ -142,8 +142,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 - **KEEP:** `Example layout` (`56554:638`) — 7 pantallas × 3 filas Compact: **Phone base** 360×800 · **Z Fold plegado** 344×880 · **landscape smoke** 800×360 (reflow horizontal, sin recorte a media pantalla); instancias del kit M3
 - **KEEP:** `Layout grid · mobile` — 360×800 · 360×880 · 344×880 · 412×915 · 800×360 smoke · 673×841 LATER; guía `60954:132843`
 - **REVIEW:** Messaging, Reviews — mantener en Examples hasta decisión producto; no son target JTBD MVP
-- **Reference:** Flex Window `60955:132903` (260×272 cover Flip) — **CUT MVP**
-- **OPCIONAL:** fold landscape 840×673 en página `Reference` (frame suelto, no component set)
+- **Reference** (página consulta, no MVP): guía `61053:230239` · Flex Window `60955:132903` · Fold landscape A `61053:230253` (2 cols) · Fold landscape B `61053:230281` (mapa + nav/toolbar adaptativos)
 
 ### Shape · `58548:7093` vs `Styles` · `.Shape` · `55343:12390`
 
@@ -162,25 +161,29 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 
 ### Badges · `55141:14167` — **KEEP** (2)
 
-### Buttons · `55141:14168` — 🚨 mayor peso
-- **KEEP (MVP+Should):** Button, Icon button, FAB, Toggle, Segmented, FAB menu, Icon togglable — `Type=Square`, sin XLarge
-- **CUT:** `Type=Round` (~1.260) · XLarge · Split · button groups
+### Buttons · `55141:14168` — **hecho** (2026-06-10)
+- **Button** (5 estilos): **Square** only · XSmall–Large · State completo (−100 Round)
+- **Icon button** (4) + **Icon togglable** (4): Round **+** Square · sin XLarge
+- **Toggle** (4): Round **+** Square · sin XLarge
+- **Segmented** + BB + **FAB menu** + FAB/Extended: KEEP · mezcla Round/Square en segmented
+- **XLarge:** eliminado en todos los sets (−410)
+- **CUT:** Split button (144) · Connected + Standard button groups + BB Connected (86) — **hecho**
 
 ### Cards · `55141:14171`
-- **KEEP:** Stacked + Horizontal, Outlined + Elevated, Media & text
-- **CUT:** Filled
+- **KEEP:** Stacked + Horizontal, Outlined + Elevated, Media & text + Slot
+- **CUT:** Filled — **hecho** (−9: 4 variantes Stacked/Horizontal + BB states Filled)
 
 ### Carousel · `55141:14172`
 
-**Sí usamos carrusel** — en MVP ya hay carruseles en **Cards/Lists/Examples** (p. ej. Home Section 1–2). El set de página es para **layouts de carrusel** completos.
+**Regla producto (2026-06):** carrusel **solo para imágenes** — p. ej. galería «mis fotos guardadas» cuando exista esa pantalla. **No** para viajes, POIs, explorar ciudad ni home editorial; ahí lista vertical + card (outlined/elevated). Filas horizontales de cards en Examples ≠ set «Carousel» de Figma.
 
 | Set / variante | Acción |
 |----------------|--------|
-| `Carousel` · `Context=Mobile` (Hero, Multi-browse, Uncontained, Center-aligned hero, Multi-aspect ratio) | **LATER** v1.1 — galería, explorar ciudad |
+| `Carousel` · `Context=Mobile` (Hero, Multi-browse, Uncontained, Center-aligned hero, Multi-aspect ratio) | **LATER** — solo si hay JTBD galería de fotos; plantillas M3 en librería, no roadmap de patrones |
 | `Carousel` · `Context=Tablet` (todas) | **CUT** |
 | `Carousel - Full screen` | **CUT** — patrón inmersivo desktop/tablet |
 
-MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya pantalla JTBD (Gallery, home editorial).
+MVP: sin pantalla galería cerrada → **no diseñar con estos sets**; backup CS + preview [`previews/carousel-mobile-comparison.html`](previews/carousel-mobile-comparison.html).
 
 ### Checkboxes · `55141:14173` — **KEEP**
 
@@ -250,7 +253,7 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 - **CUT:** Vibrant (2 variantes Toolbar + 3 BB) · Vertical (2 variantes) — **hecho** (−4 variantes, −3 BB sets)
 - **XR:** no presente
 
-### Tooltips · `55141:14261` — **CUT**
+### Tooltips · `55141:14261` — **hecho** (página ya eliminada; 0 sets en archivo)
 
 ### Sheets · `55141:14170` — **hecho**
 - **MVP:** sección `MVP · Bottom sheet` — Bottom sheet (2) + BB Content (2)
@@ -260,13 +263,13 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 
 ## Focos de peso (orden de ejecución)
 
-1. Buttons — Round + XLarge (~1.300 variantes)
+1. ~~Buttons~~ **hecho** — Square en Button; XLarge; CUT Split + groups
 2. Lists — densidades -2/-4
 3. Navigation — Rail + Expanded + XR + Deprecated
 4. ~~Text fields — Filled (~60)~~ **hecho**
 5. Chips — Elevated + sets LATER si se difieren
 6. Examples web + window classes grandes
-7. Shape Set (página) · Carousel tablet/full-screen · Tooltips
+7. Shape Set (página) · Carousel tablet/full-screen · ~~Tooltips~~ **hecho**
 
 ### Ritual
 

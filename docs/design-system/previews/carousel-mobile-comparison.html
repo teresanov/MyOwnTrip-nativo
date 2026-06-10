@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyOwnTrip — Carousel móvil: qué es, qué cortamos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface: #FFF8F2;
+      --on-surface: #1F1B13;
+      --on-surface-variant: #4C4639;
+      --outline-variant: #CEC6B4;
+      --outline: #7D7667;
+      --surface-container: #F6EDDF;
+      --surface-container-low: #FCF2E5;
+      --primary: #3E5F90;
+      --tertiary: #825513;
+      --error-cut: #B3261E;
+      --success-keep: #0D631B;
+      --later: #815611;
+      --radius: 12px;
+      --font-serif: "Fraunces", Georgia, serif;
+      --font-sans: "Inter", system-ui, sans-serif;
+      --phone-w: 280px;
+      --phone-h: 520px;
+    }
+
+    [data-theme="dark"] {
+      --surface: #17130B;
+      --on-surface: #F9EFE2;
+      --on-surface-variant: #CEC6B4;
+      --outline-variant: #4C4639;
+      --outline: #978F80;
+      --surface-container: #211B12;
+      --surface-container-low: #1C1810;
+      --primary: #A7C8FF;
+      --tertiary: #F8BB71;
+      --error-cut: #F2B8B5;
+      --success-keep: #88D982;
+      --later: #F6BC70;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--surface);
+      color: var(--on-surface);
+      line-height: 1.5;
+    }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+    header {
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    header p, .lead {
+      color: var(--on-surface-variant);
+      font-size: 0.9rem;
+      max-width: 68ch;
+    }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+    .chip {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-low);
+      cursor: pointer;
+    }
+
+  .chip--cut { border-color: var(--error-cut); color: var(--error-cut); }
+  .chip--keep { border-color: var(--success-keep); color: var(--success-keep); }
+  .chip--later { border-color: var(--later); color: var(--later); }
+
+    section { margin-bottom: 44px; }
+
+    section > h2 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    section > .lead { margin-bottom: 18px; }
+
+    /* ——— Alert box ——— */
+    .alert {
+      background: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 28px;
+      font-size: 0.875rem;
+    }
+
+    .alert strong { display: block; margin-bottom: 6px; font-size: 0.95rem; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ——— Phone frame ——— */
+    .phone-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phone-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      max-width: var(--phone-w);
+    }
+
+    .phone-label .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge--cut { background: #FFEBEE; color: #B3261E; }
+    .badge--keep { background: #E8F5E9; color: #0D631B; }
+    .badge--later { background: #FFF8E1; color: #815611; }
+    .badge--mvp { background: #E3F2FD; color: #1565C0; }
+
+    [data-theme="dark"] .badge--cut { background: #3E2723; color: #FFCDD2; }
+    [data-theme="dark"] .badge--keep { background: #1B3D1F; color: #A5D6A7; }
+    [data-theme="dark"] .badge--later { background: #3E2723; color: #FFE082; }
+    [data-theme="dark"] .badge--mvp { background: #0D2137; color: #90CAF9; }
+
+    .phone {
+      width: var(--phone-w);
+      height: var(--phone-h);
+      border: 2px solid var(--outline);
+      border-radius: 28px;
+      background: var(--surface);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .phone--tablet {
+      width: 420px;
+      height: 300px;
+      border-radius: 16px;
+    }
+
+    .phone--cut {
+      opacity: 0.55;
+      position: relative;
+    }
+
+    .phone--cut::after {
+      content: "CUT";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(179, 38, 30, 0.12);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--error-cut);
+      letter-spacing: 0.1em;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .status-bar {
+      height: 28px;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: var(--on-surface-variant);
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    .screen {
+      height: calc(100% - 28px - 52px);
+      overflow: hidden;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .screen--no-nav { height: calc(100% - 28px); }
+
+    .nav-bar {
+      height: 52px;
+      border-top: 1px solid var(--outline-variant);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 0.55rem;
+      color: var(--on-surface-variant);
+      background: var(--surface);
+    }
+
+    .nav-bar span.active { color: var(--primary); font-weight: 600; }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+  .section-sub { font-size: 0.6rem; color: var(--on-surface-variant); }
+
+    /* ——— Carousel track ——— */
+    .track {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      margin: 0 -12px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .track::-webkit-scrollbar { height: 3px; }
+    .track::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 2px; }
+
+    .slide { flex: 0 0 auto; scroll-snap-align: start; }
+
+    /* Layout: Hero */
+    .slide--hero { width: 88%; }
+    .slide--hero .img {
+      height: 100px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #D5E3FF, #FFDDB8);
+    }
+
+    /* Layout: Center-aligned hero */
+    .track--center { justify-content: flex-start; padding-left: 24%; }
+    .slide--center { width: 52%; }
+    .slide--center .img { height: 90px; border-radius: var(--radius); background: linear-gradient(135deg, #A7C8FF, #EBE1CF); }
+
+    /* Layout: Multi-browse */
+    .slide--browse { width: 42%; }
+    .slide--browse .img { height: 56px; border-radius: 8px; background: var(--surface-container); border: 1px solid var(--outline-variant); }
+    .slide--browse .txt { font-size: 0.55rem; margin-top: 4px; font-weight: 500; }
+
+    /* Layout: Uncontained */
+    .track--edge { margin: 0 -12px; padding-left: 0; }
+    .slide--edge { width: 70%; }
+    .slide--edge .img { height: 80px; border-radius: 0; background: linear-gradient(90deg, #3E5F90, #825513); }
+
+    /* Layout: Multi-aspect */
+    .slide--tall { width: 38%; }
+    .slide--tall .img { height: 110px; border-radius: var(--radius); background: #EBE1CF; }
+    .slide--wide { width: 55%; }
+    .slide--wide .img { height: 70px; border-radius: var(--radius); background: #D5E3FF; }
+
+    /* Trip card mini (MVP real) */
+    .trip-card {
+      width: 75%;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius);
+      padding: 10px;
+      background: var(--surface);
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    .trip-card h4 { font-size: 0.7rem; font-weight: 600; }
+    .trip-card p { font-size: 0.55rem; color: var(--on-surface-variant); }
+
+    /* Tablet multi-column */
+    .tablet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      flex: 1;
+    }
+
+    .tablet-tile {
+      border: 1px solid var(--outline-variant);
+      border-radius: 8px;
+      background: var(--surface-container-low);
+      min-height: 60px;
+      font-size: 0.5rem;
+      padding: 6px;
+      color: var(--on-surface-variant);
+    }
+
+    /* Full screen */
+    .fullscreen {
+      position: absolute;
+      inset: 28px 0 0 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.7rem;
+    }
+
+    .fullscreen .img-full {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #1a1a1a, #3E5F90);
+      opacity: 0.9;
+    }
+
+    .fullscreen .caption {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* Grid of phones */
+    .phone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px 16px;
+    }
+
+    /* Summary table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      margin-top: 12px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--outline-variant);
+      vertical-align: top;
+    }
+
+    th { font-weight: 600; background: var(--surface-container-low); }
+
+    .status { font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    .status--cut { color: var(--error-cut); }
+    .status--later { color: var(--later); }
+    .status--mvp { color: var(--primary); }
+
+    .diagram {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: stretch;
+      margin: 16px 0;
+    }
+
+    .diagram-box {
+      flex: 1;
+      min-width: 200px;
+      border: 2px solid var(--outline-variant);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.8rem;
+    }
+
+    .diagram-box h3 {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .diagram-box ul {
+      padding-left: 16px;
+      color: var(--on-surface-variant);
+      font-size: 0.78rem;
+    }
+
+    .diagram-box li { margin-bottom: 4px; }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      color: var(--outline);
+      padding: 0 4px;
+    }
+
+    @media (max-width: 700px) { .arrow { display: none; } }
+
+  </style>
+</head>
+<body data-theme="light">
+  <div class="page">
+    <header>
+      <h1>Carousel — qué cortamos y qué queda en móvil</h1>
+      <p>
+        La confusión habitual: en Figma hay una <strong>página «Carousel»</strong> con plantillas M3,
+        pero en MVP ya usáis <strong>filas horizontales</strong> montadas con Cards en Examples.
+        Son cosas distintas.
+      </p>
+      <div class="toolbar">
+        <button class="chip" id="theme-toggle" type="button">Modo oscuro</button>
+        <span class="chip chip--cut">CUT = fuera de scope (tablet / fullscreen)</span>
+        <span class="chip chip--later">LATER = en Figma, sin pantalla JTBD aún</span>
+        <span class="chip chip--keep">MVP hoy = LazyRow + Cards</span>
+      </div>
+    </header>
+
+    <div class="alert">
+      <strong>Dos niveles — no mezclar</strong>
+      <strong>① Set «Carousel» (página Figma):</strong> layouts completos con nombre M3 (Hero, Multi-browse…).
+      <strong>② Carrusel real en producto:</strong> sección «Próximos viajes» = <code>LazyRow</code> de <code>OutlinedCard</code> — ya en Cards/Lists/Examples, no necesita el set de la página Carousel para existir.
+    </div>
+
+    <!-- CUT explanation -->
+    <section>
+      <h2>1 · Lo que se cortó (y por qué)</h2>
+      <p class="lead">
+        Política MyOwnTrip: móvil + foldable sí; tablet 10″ / web / inmersivo fullscreen no.
+        Se eliminaron variantes que solo tienen sentido en anchos ≥600dp o experiencias desktop.
+      </p>
+      <div class="two-col">
+        <div class="phone-wrap">
+          <div class="phone-label">
+            <span class="badge badge--cut">CUT · Context=Tablet</span><br>
+            Multi-browse en 3 columnas — iPad / Tab S
+          </div>
+          <div class="phone phone--tablet phone--cut">
+            <div class="status-bar">840dp+ · Expanded</div>
+            <div class="screen" style="padding:16px">
+              <div class="section-title">Explorar Lisboa</div>
+              <div class="tablet-grid">
+                <div class="tablet-tile">Alfama</div>
+                <div class="tablet-tile">Belém</div>
+                <div class="tablet-tile">Sintra</div>
+                <div class="tablet-tile">Bairro</div>
+                <div class="tablet-tile">LX Factory</div>
+                <div class="tablet-tile">Cascais</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone-label">
+            <span class="badge badge--cut">CUT · Carousel Full screen</span><br>
+            Galería inmersiva pantalla completa — desktop / tablet
+          </div>
+          <div class="phone phone--cut">
+            <div class="status-bar">Fullscreen</div>
+            <div class="fullscreen">
+              <div class="img-full"></div>
+              <div class="caption">Foto viaje · swipe · sin chrome<br><small>No es JTBD bolsillo MVP</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="lead" style="margin-top:16px">
+        <strong>No se cortó el concepto de carrusel.</strong> Solo plantillas que asumen tablet o UI inmersiva.
+        El backup CS las conserva por si algún día ampliáis scope.
+      </p>
+    </section>
+
+    <!-- MVP today -->
+    <section>
+      <h2>2 · Lo que ya usáis en MVP (sin el set Carousel)</h2>
+      <p class="lead">Home / lista: fila horizontal de cards de viaje. En Compose: <code>LazyRow</code> + cards — no el component set «Carousel» de Figma.</p>
+      <div class="phone-wrap" style="margin:0 auto">
+        <div class="phone-label">
+          <span class="badge badge--mvp">MVP hoy · Examples / Home</span><br>
+          Sección con scroll horizontal
+        </div>
+        <div class="phone">
+          <div class="status-bar">390×844 · Compact</div>
+          <div class="screen">
+            <div class="section-title">Mis viajes</div>
+            <div class="section-sub">Fraunces + papel surface</div>
+            <div class="section-title" style="margin-top:8px;font-size:0.75rem">Próximos</div>
+            <div class="track">
+              <div class="trip-card slide">
+                <h4>Lisboa abril</h4>
+                <p>12–18 abr · 6 días</p>
+              </div>
+              <div class="trip-card slide">
+                <h4>Tokio otoño</h4>
+                <p>1–10 nov</p>
+              </div>
+              <div class="trip-card slide" style="opacity:0.5">
+                <h4>Oporto</h4>
+                <p>jun</p>
+              </div>
+            </div>
+            <div class="section-title" style="font-size:0.75rem;margin-top:4px">Restaurantes guardados</div>
+            <div class="track">
+              <div class="slide slide--browse">
+                <div class="img"></div>
+                <div class="txt">Time Out</div>
+              </div>
+              <div class="slide slide--browse">
+                <div class="img"></div>
+                <div class="txt">Cervejaria</div>
+              </div>
+              <div class="slide slide--browse" style="opacity:0.5">
+                <div class="img"></div>
+                <div class="txt">…</div>
+              </div>
+            </div>
+          </div>
+          <div class="nav-bar">
+            <span class="active">Viajes</span>
+            <span>Mapa</span>
+            <span>Diario</span>
+            <span>Más</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 mobile layouts in Figma -->
+    <section>
+      <h2>3 · Las 5 plantillas móvil que quedan en Figma (LATER)</h2>
+      <p class="lead">
+        Set <code>Carousel</code> · <code>Context=Mobile</code> — conservadas en librería pero <strong>sin pantalla JTBD cerrada</strong> en MVP.
+        Sirven cuando diseñéis galería o explorar ciudad (v1.1).
+      </p>
+      <div class="phone-grid">
+        <!-- Hero -->
+        <div class="phone-wrap">
+          <div class="phone-label">
+            <span class="badge badge--later">LATER · Hero</span><br>
+            Imagen grande + peek siguiente
+          </div>
+          <div class="phone">
+            <div class="status-bar">Mobile</div>
+            <div class="screen screen--no-nav">
+              <div class="section-title">Galería viaje</div>
+              <div class="track">
+                <div class="slide slide--hero"><div class="img"></div><p style="font-size:0.55rem;margin-top:4px">Torre de Belém</p></div>
+                <div class="slide slide--hero" style="opacity:0.4"><div class="img"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Center-aligned -->
+        <div class="phone-wrap">
+          <div class="phone-label">
+            <span class="badge badge--later">LATER · Center-aligned hero</span><br>
+            Card centrada, laterales asoman
+          </div>
+          <div class="phone">
+            <div class="status-bar">Mobile</div>
+            <div class="screen screen--no-nav">
+              <div class="section-title">Destacado editorial</div>
+              <div class="track track--center">
+                <div class="slide slide--center" style="opacity:0.35"><div class="img"></div></div>
+                <div class="slide slide--center"><div class="img"></div></div>
+                <div class="slide slide--center" style="opacity:0.35"><div class="img"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Multi-browse -->
+        <div class="phone-wrap">
+          <div class="phone-label">
+            <span class="badge badge--later">LATER · Multi-browse</span><br>
+            Varios ítems visibles — explorar barrios
+          </div>
+          <div class="phone">
+            <div class="status-bar">Mobile</div>
+            <div class="screen screen--no-nav">
+              <div class="section-title">Explorar</div>
+              <div class="track">
+                <div class="slide slide--browse"><div class="img"></div><div class="txt">Alfama</div></div>
+                <div class="slide slide--browse"><div class="img"></div><div class="txt">Belém</div></div>
+                <div class="slide slide--browse" style="opacity:0.5"><div class="img"></div><div class="txt">…</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Uncontained -->
+        <div class="phone-wrap">
+          <div class="phone-label">
+            <span class="badge badge--later">LATER · Uncontained</span><br>
+            Edge-to-edge, sin padding lateral
+          </div>
+          <div class="phone">
+            <div class="status-bar">Mobile</div>
+            <div class="screen screen--no-nav" style="padding:12px 0">
+              <div class="section-title" style="padding:0 12px">Mapa / story</div>
+              <div class="track track--edge">
+                <div class="slide slide--edge"><div class="img"></div></div>
+                <div class="slide slide--edge" style="opacity:0.4"><div class="img"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Multi-aspect -->
+        <div class="phone-wrap">
+          <div class="phone-label">
+            <span class="badge badge--later">LATER · Multi-aspect ratio</span><br>
+            Mezcla altos y anchos — moodboard
+          </div>
+          <div class="phone">
+            <div class="status-bar">Mobile</div>
+            <div class="screen screen--no-nav">
+              <div class="section-title">Inspiración</div>
+              <div class="track">
+                <div class="slide slide--tall"><div class="img"></div></div>
+                <div class="slide slide--wide"><div class="img"></div></div>
+                <div class="slide slide--tall" style="opacity:0.5"><div class="img"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mapping table -->
+    <section>
+      <h2>4 · Mapa rápido: patrón → uso MyOwnTrip</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Patrón</th>
+            <th>Estado Figma</th>
+            <th>Uso producto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LazyRow + Cards</strong> (Examples)</td>
+            <td><span class="status status--mvp">MVP hoy</span></td>
+            <td>Próximos viajes, POIs guardados, chips de día</td>
+          </tr>
+          <tr>
+            <td>Multi-browse · Mobile</td>
+            <td><span class="status status--later">LATER</span></td>
+            <td>Explorar ciudad, categorías en home editorial</td>
+          </tr>
+          <tr>
+            <td>Hero / Center-aligned</td>
+            <td><span class="status status--later">LATER</span></td>
+            <td>Galería fotos del viaje, hero de destino</td>
+          </tr>
+          <tr>
+            <td>Uncontained / Multi-aspect</td>
+            <td><span class="status status--later">LATER</span></td>
+            <td>Stories, moodboard, carrusel mapa</td>
+          </tr>
+          <tr>
+            <td>Context=Tablet (todas)</td>
+            <td><span class="status status--cut">CUT</span></td>
+            <td>Fuera scope — viajero urbano, no iPad</td>
+          </tr>
+          <tr>
+            <td>Carousel Full screen</td>
+            <td><span class="status status--cut">CUT</span></td>
+            <td>Viewer inmersivo desktop — no MVP móvil</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Diagram -->
+    <section>
+      <h2>5 · Resumen en una línea</h2>
+      <div class="diagram">
+        <div class="diagram-box" style="border-color:var(--error-cut)">
+          <h3>Se borró</h3>
+          <ul>
+            <li>Carousel <code>Context=Tablet</code> (todas las layouts)</li>
+            <li><code>Carousel - Full screen</code></li>
+            <li>Motivo: no tablet / no inmersivo fullscreen en MVP</li>
+          </ul>
+        </div>
+        <div class="arrow">→</div>
+        <div class="diagram-box" style="border-color:var(--later)">
+          <h3>Se quedó (5 variantes)</h3>
+          <ul>
+            <li>Mobile: Hero, Center-aligned, Multi-browse, Uncontained, Multi-aspect</li>
+            <li>Etiqueta LATER hasta pantalla JTBD</li>
+          </ul>
+        </div>
+        <div class="arrow">≠</div>
+        <div class="diagram-box" style="border-color:var(--primary)">
+          <h3>Lo que ya diseñáis</h3>
+          <ul>
+            <li>Filas horizontales en Examples con Cards</li>
+            <li>No depende del set «Carousel» de Figma</li>
+            <li>Compose: <code>LazyRow</code> + cards outlined</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      const b = document.body;
+      const dark = b.dataset.theme === 'dark';
+      b.dataset.theme = dark ? 'light' : 'dark';
+      this.textContent = dark ? 'Modo oscuro' : 'Modo claro';
+    });
+  </script>
+</body>
+</html>

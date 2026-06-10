@@ -155,14 +155,17 @@ Google / Samsung recomiendan acercar la navegación al pulgar y, en pantalla anc
 
 - El Fold **cerrado** real ronda **~378dp** de ancho; el frame **344×880** es piso de stress (peor caso Compact), no el tamaño literal del cover del Fold 6.
 - El Flip **abierto** ronda **~406dp** de ancho; **360×880** estresa alto en ancho mínimo; **412×915** cubre el techo de Compact.
-- **Flex Window:** MyOwnTrip **no** diseña app completa en cover (260×272). **CUT MVP** — frame en página `Reference` por si producto pide widgets/glance más adelante.
+- **Flex Window:** cover Z Flip plegado (260×272). **CUT MVP** — demasiado pequeño para JTBD viaje; Flip **abierto** = Compact (Examples 360×880). Ver guía en página `Reference`.
 
 ### Referencia adicional (no en component set)
 
+Página **`Reference`** · guía diseñador `61053:230239` (sección `61053:230238`) — texto explicativo en Figma; no publicar en subset MVP.
+
 | Frame | Tamaño | Uso |
 |-------|--------|-----|
-| Fold landscape | **840 × 673** | Comprobar que no se rompe; sin diseñar rail |
-| Flex Window | **260 × 272** | Cover Flip — `Reference`, no MVP |
+| **Flex Window** `60955:132903` | **260 × 272** | Cover **Z Flip plegado** — **CUT MVP** (no app completa; post-MVP solo widget/glance si producto lo pide) |
+| **Frame A** `61053:230253` | **840 × 673** | **Viajes / list-detail** — 2 cols (v1.1); MVP puede ser 1 columna |
+| **Frame B** `61053:230281` | **840 × 673** | **Mapa** — 1 col + nav rail adaptativa + acciones en borde (exploratorio v1.1+) |
 
 **CUT en Figma:** frames tablet 10"+, `-Web`, Navigation rail, Examples Medium/Expanded/Large/XL orientados a tablet.
 

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyOwnTrip — Cards: Outlined · Elevated · Filled</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface: #FFF8F2;
+      --on-surface: #1F1B13;
+      --on-surface-variant: #4C4639;
+      --outline-variant: #CEC6B4;
+      --outline: #7D7667;
+      --surface-container: #F6EDDF;
+      --surface-container-high: #F1E7D9;
+      --surface-container-low: #FCF2E5;
+      --primary: #3E5F90;
+      --tertiary: #825513;
+      --tertiary-container: #FFDDB8;
+      --shadow: rgba(31, 27, 19, 0.12);
+      --shadow-elevated: rgba(31, 27, 19, 0.16);
+      --radius: 12px;
+      --font-serif: "Fraunces", Georgia, serif;
+      --font-sans: "Inter", system-ui, sans-serif;
+      --page-pad: 24px;
+      --card-pad: 16px;
+    }
+
+    [data-theme="dark"] {
+      --surface: #17130B;
+      --on-surface: #F9EFE2;
+      --on-surface-variant: #CEC6B4;
+      --outline-variant: #4C4639;
+      --outline: #978F80;
+      --surface-container: #211B12;
+      --surface-container-high: #2B2419;
+      --surface-container-low: #1C1810;
+      --primary: #A7C8FF;
+      --tertiary: #F8BB71;
+      --tertiary-container: #663E00;
+      --shadow: rgba(0, 0, 0, 0.35);
+      --shadow-elevated: rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--surface);
+      color: var(--on-surface);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--page-pad);
+    }
+
+    header {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--on-surface-variant);
+      font-size: 0.9375rem;
+      max-width: 62ch;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-low);
+      cursor: pointer;
+      color: var(--on-surface);
+    }
+
+    .chip[aria-pressed="true"] {
+      background: var(--primary);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    [data-theme="dark"] .chip[aria-pressed="true"] {
+      color: #001C3B;
+    }
+
+    section {
+      margin-bottom: 48px;
+    }
+
+    section > h2 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    section > .lead {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+      margin-bottom: 20px;
+      max-width: 70ch;
+    }
+
+    /* ——— Card primitives ——— */
+    .card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .card--outlined {
+      background: var(--surface);
+      border: 1px solid var(--outline-variant);
+      box-shadow: none;
+    }
+
+    .card--elevated {
+      background: var(--surface-container-low);
+      border: none;
+      box-shadow:
+        0 1px 2px var(--shadow),
+        0 2px 6px var(--shadow-elevated);
+    }
+
+    .card--filled {
+      background: var(--surface-container-high);
+      border: none;
+      box-shadow: none;
+    }
+
+    .card__media {
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #D5E3FF 0%, #EBE1CF 55%, #FFDDB8 100%);
+      position: relative;
+    }
+
+    .card__media--horizontal {
+      width: 120px;
+      min-width: 120px;
+      aspect-ratio: 1;
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+
+    .card__body {
+      padding: var(--card-pad);
+    }
+
+    .card__eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tertiary);
+      margin-bottom: 4px;
+    }
+
+    .card__title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card__subtitle {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+    }
+
+    .card__meta {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      margin-top: 8px;
+    }
+
+    .card--horizontal {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .card--horizontal .card__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* ——— Comparison grid ——— */
+    .compare-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .compare-row { grid-template-columns: 1fr; }
+    }
+
+    .compare-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .style-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    .style-label .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot--outlined { background: var(--outline-variant); border: 1px solid var(--outline); }
+    .dot--elevated { background: var(--surface-container-low); box-shadow: 0 1px 3px var(--shadow); }
+    .dot--filled { background: var(--surface-container-high); }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-left: auto;
+    }
+
+    .tag--rec { background: #E8F5E9; color: #1B5E20; }
+    .tag--code { background: #E3F2FD; color: #0D47A1; }
+    .tag--cut { background: #FFF3E0; color: #E65100; }
+
+    [data-theme="dark"] .tag--rec { background: #1B3D1F; color: #A5D6A7; }
+    [data-theme="dark"] .tag--code { background: #0D2137; color: #90CAF9; }
+    [data-theme="dark"] .tag--cut { background: #3E2723; color: #FFCC80; }
+
+    /* ——— Feed simulation ——— */
+    .feed {
+      background: var(--surface);
+      border: 1px dashed var(--outline-variant);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 400px;
+    }
+
+    .feed h3 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      padding: 0 4px 8px;
+    }
+
+    /* ——— Context panels ——— */
+    .context-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .context-grid { grid-template-columns: 1fr; }
+    }
+
+    .context-panel {
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .context-panel--paper {
+      background: var(--surface);
+      border: 1px solid var(--outline-variant);
+    }
+
+    .context-panel--image {
+      background:
+        linear-gradient(to bottom, rgba(23, 19, 11, 0.15), rgba(23, 19, 11, 0.55)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23A7C8FF'/%3E%3Cstop offset='50%25' stop-color='%23EBE1CF'/%3E%3Cstop offset='100%25' stop-color='%23825513'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='300'/%3E%3C/svg%3E") center/cover;
+      color: #fff;
+    }
+
+    .context-panel--image .card__title,
+    .context-panel--image .card__subtitle,
+    .context-panel--image .card__meta { color: inherit; }
+    .context-panel--image .card__subtitle,
+    .context-panel--image .card__meta { opacity: 0.85; }
+
+    .context-panel h3 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+      opacity: 0.8;
+    }
+
+    /* ——— Decision table ——— */
+    .decision {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .decision { grid-template-columns: 1fr; }
+    }
+
+    .decision-card {
+      border: 2px solid var(--outline-variant);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .decision-card:hover { border-color: var(--outline); }
+    .decision-card.selected {
+      border-color: var(--primary);
+      background: var(--surface-container-low);
+    }
+
+    .decision-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      margin-bottom: 8px;
+    }
+
+    .decision-card p {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+    }
+
+    .decision-card ul {
+      margin-top: 12px;
+      padding-left: 18px;
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+    }
+
+    .decision-card li { margin-bottom: 4px; }
+
+    .note {
+      margin-top: 24px;
+      padding: 16px;
+      background: var(--surface-container-low);
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      border-left: 3px solid var(--primary);
+    }
+
+  </style>
+</head>
+<body data-theme="light">
+  <div class="page">
+    <header>
+      <h1>Cards — comparativa visual</h1>
+      <p>
+        Componente compuesto más importante del DS. Tres superficies M3 sobre tokens MyOwnTrip
+        (<code>surface</code> papel · <code>outline-variant</code> · <code>surface-container-*</code>).
+        Abre este archivo en el navegador y alterna claro/oscuro.
+      </p>
+      <div class="toolbar">
+        <button class="chip" id="theme-toggle" aria-pressed="false" type="button">Modo oscuro</button>
+        <span class="chip" style="cursor:default; opacity:0.9">Figma: Stacked + Horizontal · Media &amp; text</span>
+      </div>
+    </header>
+
+    <!-- 1. Side by side stacked -->
+    <section>
+      <h2>1 · Stacked — mismo contenido, tres superficies</h2>
+      <p class="lead">Card de viaje con imagen. ¿Cuál se siente más «revista de viajes» y cuál más «app genérica»?</p>
+      <div class="compare-row">
+        <div class="compare-col">
+          <div class="style-label">
+            <span class="dot dot--outlined"></span> Outlined
+            <span class="tag tag--rec">Recomendado lista</span>
+          </div>
+          <article class="card card--outlined">
+            <div class="card__media"></div>
+            <div class="card__body">
+              <div class="card__eyebrow">Próximo viaje</div>
+              <div class="card__title">Lisboa en abril</div>
+              <div class="card__subtitle">Alfama · Belém · Sintra</div>
+              <div class="card__meta">12 – 18 abr 2026 · 6 días</div>
+            </div>
+          </article>
+        </div>
+        <div class="compare-col">
+          <div class="style-label">
+            <span class="dot dot--elevated"></span> Elevated
+            <span class="tag tag--rec">Recomendado destacado</span>
+          </div>
+          <article class="card card--elevated">
+            <div class="card__media"></div>
+            <div class="card__body">
+              <div class="card__eyebrow">Próximo viaje</div>
+              <div class="card__title">Lisboa en abril</div>
+              <div class="card__subtitle">Alfama · Belém · Sintra</div>
+              <div class="card__meta">12 – 18 abr 2026 · 6 días</div>
+            </div>
+          </article>
+        </div>
+        <div class="compare-col">
+          <div class="style-label">
+            <span class="dot dot--filled"></span> Filled
+            <span class="tag tag--code">≈ Card() hoy</span>
+          </div>
+          <article class="card card--filled">
+            <div class="card__media"></div>
+            <div class="card__body">
+              <div class="card__eyebrow">Próximo viaje</div>
+              <div class="card__title">Lisboa en abril</div>
+              <div class="card__subtitle">Alfama · Belém · Sintra</div>
+              <div class="card__meta">12 – 18 abr 2026 · 6 días</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Horizontal -->
+    <section>
+      <h2>2 · Horizontal — restaurante / POI</h2>
+      <p class="lead">Layout típico en listas y carruseles. El borde outlined separa sin añadir «caja gris».</p>
+      <div class="compare-row">
+        <div class="compare-col">
+          <div class="style-label"><span class="dot dot--outlined"></span> Outlined</div>
+          <article class="card card--outlined card--horizontal">
+            <div class="card__media card__media--horizontal"></div>
+            <div class="card__body">
+              <div class="card__title">Time Out Market</div>
+              <div class="card__subtitle">Mercado · €€ · 4,6 ★</div>
+              <div class="card__meta">Añadido al día 3 · Almuerzo</div>
+            </div>
+          </article>
+        </div>
+        <div class="compare-col">
+          <div class="style-label"><span class="dot dot--elevated"></span> Elevated</div>
+          <article class="card card--elevated card--horizontal">
+            <div class="card__media card__media--horizontal"></div>
+            <div class="card__body">
+              <div class="card__title">Time Out Market</div>
+              <div class="card__subtitle">Mercado · €€ · 4,6 ★</div>
+              <div class="card__meta">Añadido al día 3 · Almuerzo</div>
+            </div>
+          </article>
+        </div>
+        <div class="compare-col">
+          <div class="style-label"><span class="dot dot--filled"></span> Filled</div>
+          <article class="card card--filled card--horizontal">
+            <div class="card__media card__media--horizontal"></div>
+            <div class="card__body">
+              <div class="card__title">Time Out Market</div>
+              <div class="card__subtitle">Mercado · €€ · 4,6 ★</div>
+              <div class="card__meta">Añadido al día 3 · Almuerzo</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Feed density -->
+    <section>
+      <h2>3 · Densidad en feed (solo outlined vs filled)</h2>
+      <p class="lead">Tres cards seguidas en lista de viajes. Filled tiende a «apilar bloques»; outlined mantiene el papel visible.</p>
+      <div class="context-grid">
+        <div class="feed">
+          <h3>Outlined × 3</h3>
+          <article class="card card--outlined">
+            <div class="card__body">
+              <div class="card__title">Tokio otoño</div>
+              <div class="card__subtitle">Shibuya · Asakusa</div>
+              <div class="card__meta">1 – 10 nov 2025</div>
+            </div>
+          </article>
+          <article class="card card--outlined">
+            <div class="card__body">
+              <div class="card__title">Lisboa en abril</div>
+              <div class="card__subtitle">Alfama · Belém</div>
+              <div class="card__meta">12 – 18 abr 2026</div>
+            </div>
+          </article>
+          <article class="card card--outlined">
+            <div class="card__body">
+              <div class="card__title">Weekend Oporto</div>
+              <div class="card__subtitle">Ribeira · Vila Nova</div>
+              <div class="card__meta">6 – 8 jun 2026</div>
+            </div>
+          </article>
+        </div>
+        <div class="feed">
+          <h3>Filled × 3</h3>
+          <article class="card card--filled">
+            <div class="card__body">
+              <div class="card__title">Tokio otoño</div>
+              <div class="card__subtitle">Shibuya · Asakusa</div>
+              <div class="card__meta">1 – 10 nov 2025</div>
+            </div>
+          </article>
+          <article class="card card--filled">
+            <div class="card__body">
+              <div class="card__title">Lisboa en abril</div>
+              <div class="card__subtitle">Alfama · Belém</div>
+              <div class="card__meta">12 – 18 abr 2026</div>
+            </div>
+          </article>
+          <article class="card card--filled">
+            <div class="card__body">
+              <div class="card__title">Weekend Oporto</div>
+              <div class="card__subtitle">Ribeira · Vila Nova</div>
+              <div class="card__meta">6 – 8 jun 2026</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Context -->
+    <section>
+      <h2>4 · Contexto de fondo</h2>
+      <p class="lead">Sobre papel, outlined gana aire. Sobre imagen, filled/elevated pueden leerse mejor — caso raro en MVP.</p>
+      <div class="context-grid">
+        <div class="context-panel context-panel--paper">
+          <h3>Fondo papel (surface) — 90% de pantallas MVP</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <article class="card card--outlined card--horizontal">
+              <div class="card__media card__media--horizontal" style="width:80px;min-width:80px;"></div>
+              <div class="card__body">
+                <div class="card__title">Mirador da Graça</div>
+                <div class="card__subtitle">Atardecer · Día 2</div>
+              </div>
+            </article>
+            <article class="card card--filled card--horizontal">
+              <div class="card__media card__media--horizontal" style="width:80px;min-width:80px;"></div>
+              <div class="card__body">
+                <div class="card__title">Mirador da Graça</div>
+                <div class="card__subtitle">Atardecer · Día 2</div>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="context-panel context-panel--image">
+          <h3>Fondo foto / mapa (exploratorio)</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <article class="card card--outlined card--horizontal" style="background:rgba(255,248,242,0.95);">
+              <div class="card__media card__media--horizontal" style="width:80px;min-width:80px;"></div>
+              <div class="card__body">
+                <div class="card__title" style="color:#1F1B13">Mirador da Graça</div>
+                <div class="card__subtitle" style="color:#4C4639">Atardecer · Día 2</div>
+              </div>
+            </article>
+            <article class="card card--filled card--horizontal">
+              <div class="card__media card__media--horizontal" style="width:80px;min-width:80px;"></div>
+              <div class="card__body">
+                <div class="card__title">Mirador da Graça</div>
+                <div class="card__subtitle">Atardecer · Día 2</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Decision -->
+    <section>
+      <h2>5 · Opciones de poda Figma</h2>
+      <p class="lead">Haz clic para marcar tu preferencia (solo local, no guarda nada).</p>
+      <div class="decision" id="decision">
+        <div class="decision-card" data-option="A" tabindex="0" role="button">
+          <h3>A · CUT Filled</h3>
+          <p>Solo Outlined + Elevated en librería.</p>
+          <ul>
+            <li>Coherente con chips y text fields Outlined</li>
+            <li>Marca editorial: marco o relieve, no caja gris</li>
+            <li>−9 variantes en Figma</li>
+            <li>Código puede migrar a <code>OutlinedCard</code> / <code>ElevatedCard</code></li>
+          </ul>
+        </div>
+        <div class="decision-card" data-option="B" tabindex="0" role="button">
+          <h3>B · KEEP Filled</h3>
+          <p>Las tres superficies en Figma.</p>
+          <ul>
+            <li>Paridad con <code>Card()</code> actual en Kotlin</li>
+            <li>Útil sobre fondos cargados</li>
+            <li>Más opciones para diseñadores sin regla clara</li>
+          </ul>
+        </div>
+        <div class="decision-card" data-option="C" tabindex="0" role="button">
+          <h3>C · LATER</h3>
+          <p>No podar; etiquetar en Figma hasta cerrar home.</p>
+          <ul>
+            <li>Validar con mockups de carrusel y list-detail</li>
+            <li>Sin compromiso de poda aún</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note" id="selection-note">
+        <strong>Sin selección.</strong> Revisa las secciones 1–4 y elige A, B o C cuando tengas criterio visual.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const body = document.body;
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      const dark = body.dataset.theme === 'dark';
+      body.dataset.theme = dark ? 'light' : 'dark';
+      themeBtn.textContent = dark ? 'Modo oscuro' : 'Modo claro';
+      themeBtn.setAttribute('aria-pressed', String(!dark));
+    });
+
+    const cards = document.querySelectorAll('.decision-card');
+    const note = document.getElementById('selection-note');
+    const labels = {
+      A: 'CUT Filled — Outlined para listas/feeds, Elevated para destacados. Alineado con ADR 002 y poda chips/campos.',
+      B: 'KEEP Filled — Mantener las 3 superficies; priorizar paridad diseño ↔ Card() actual.',
+      C: 'LATER — Etiquetar en Figma; decidir tras mockups de home y carrusel.'
+    };
+    function select(el) {
+      cards.forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      const opt = el.dataset.option;
+      note.innerHTML = '<strong>Opción ' + opt + '.</strong> ' + labels[opt];
+    }
+    cards.forEach(c => {
+      c.addEventListener('click', () => select(c));
+      c.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(c); }
+      });
+    });
+  </script>
+</body>
+</html>

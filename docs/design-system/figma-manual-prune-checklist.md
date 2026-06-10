@@ -37,7 +37,7 @@ Conservar sets que dan **jerarquía, ritmo y personalidad** sin salir de M3.
 
 | Área | KEEP | Por qué (producto / creatividad) |
 |------|------|----------------------------------|
-| **Cards** | Stacked, Horizontal + BB states (Outlined/Elevated/Filled) | Piezas editoriales: viaje, restaurante, entrada wallet |
+| **Cards** | Stacked, Horizontal + BB states (Outlined/Elevated) | **hecho** — CUT Filled; piezas editoriales: viaje, restaurante, entrada wallet |
 | **App bars** | App bar + BB (flat, on-scroll, contenidos) | Cabeceras con carácter; búsqueda integrada |
 | **Buttons** | filled, tonal, outline, text, **elevated** | Jerarquía de acciones; elevated para CTAs con relieve suave |
 | **Icon button** | 4 estilos | Barras, formularios, acciones compactas |
@@ -67,12 +67,14 @@ Sets que **no son P0 en código** pero enriquecen exploración en Figma. Mantene
 - [ ] **FAB menu** + BB — menú de acciones rápidas
 - [ ] **Toggle button** (4 estilos) — filtros multi-selección visuales
 - [ ] **Icon button togglable** (4) — favoritos, vistas, pins
-- [ ] **Button groups** (Connected / Standard) — solo si diseñas barras de acción compuestas; si no, podar la sección entera
+- [x] **Split button** + **Button groups** — **hecho** CUT
 - [ ] **Badges**, **Checkbox**, **Radio**, **Switch**, **Menu** + BB
 
 **Variantes en Figma (no recortar Type/State):** conservar ejes completos para diseño; en Compose los estados interactivos van por state layers (`m3Canonical`).
 
-**Tamaños:** podar **XLarge** a mano cuando moleste; conservar XSmall → Large.
+**Forma:** **Square** solo en Button (filled/tonal/outline/text/elevated). Icon button, segmented, toggle: Round + Square libre.
+
+**Tamaños:** **XLarge** podado 2026-06-10; conservar XSmall → Large.
 
 ---
 
@@ -95,7 +97,7 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 - [ ] **Shape** (página Shape Set decorativo) — **KEEP** `.Shape` en Styles
 - [ ] **Carousel** — CUT tablet + full-screen; **KEEP** variantes Mobile en librería (LATER) o página recortada
 - [x] **Toolbars** — **hecho** — MVP horizontal Standard; CUT Vibrant + Vertical
-- [ ] Tooltips
+- [x] **Tooltips** — **hecho** (página ya no existe)
 - [ ] Avatars 3D/extra — **KEEP** `Generic avatar` básico
 - [x] **XR/***, Navigation rail* — Navigation **hecho**
 - [ ] Bottom app bar
