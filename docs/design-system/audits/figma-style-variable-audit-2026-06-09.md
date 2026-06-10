@@ -212,7 +212,11 @@ M3 / state-layers / light / {role} / opacity-0.XX  →  (idem)
 - [ ] FASE B (formal): `nodesWithStyleStroke` → 0 en component sets MVP Must — **cumplido**
 - [ ] Dark mode: cambio en `Schemes/Primary` propaga a Button + Text field sin Swap manual
 - [ ] Informe de drift re-ejecutado: 0 bloqueantes
-- [ ] **Estilos compuestos (tipografía, efectos)** — revisar si nodos de texto siguen con `textStyleId` / estilos de texto del kit M3 en lugar de variables de tipografía; fuera del alcance FASE A–B (solo paint). Pendiente auditoría dedicada.
+- [x] **FASE T1 tipografía 2026-06-09** — `Static/Font/Brand` → Fraunces · `Static/Font/Plain` → Inter · `Static/Title Large/Font` re-alias a Plain. Post-check: **0** styles con font variable → Roboto; `variables.json` alineado.
+- [x] **Button label typography 2026-06-09** — variables `Static/Button Label Medium|Large/*` (Inter/Plain); text styles `M3 / label / button-medium` (16) · `M3 / label / button-large` (32/40, alineado M3 default). Mapeo por `Size=` en Buttons.
+- [ ] **FASE T2** — consolidar duplicados text style (`M3 / label / large` vs `M3/label/large`)
+- [ ] **FASE T3** — enlazar `fontWeight` en text styles; desenganchar `textStyleId` en nodos (opcional)
+- [ ] **Estilos compuestos (efectos)** — fuera del alcance paint/T1
 
 ---
 

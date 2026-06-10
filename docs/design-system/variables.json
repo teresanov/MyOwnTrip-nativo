@@ -63537,7 +63537,7 @@
               "name": "Static/Font/Brand",
               "type": "string",
               "isAlias": false,
-              "value": "Roboto"
+              "value": "Fraunces"
             },
             {
               "name": "Static/Weight/Regular",
@@ -63561,7 +63561,7 @@
               "name": "Static/Font/Plain",
               "type": "string",
               "isAlias": false,
-              "value": "Roboto"
+              "value": "Inter"
             },
             {
               "name": "Tracking/None",
@@ -63800,7 +63800,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Font theme",
-                "name": "Static/Font/Brand"
+                "name": "Static/Font/Plain"
               }
             },
             {
@@ -64270,6 +64270,78 @@
               "type": "number",
               "isAlias": false,
               "value": 0.4000000059604645
+            },
+            {
+              "name": "Static/Button Label Medium/Font",
+              "type": "string",
+              "isAlias": true,
+              "value": {
+                "collection": "Font theme",
+                "name": "Static/Font/Plain"
+              }
+            },
+            {
+              "name": "Static/Button Label Medium/Weight",
+              "type": "string",
+              "isAlias": true,
+              "value": {
+                "collection": "Font theme",
+                "name": "Static/Weight/Medium"
+              }
+            },
+            {
+              "name": "Static/Button Label Medium/Size",
+              "type": "number",
+              "isAlias": false,
+              "value": 16
+            },
+            {
+              "name": "Static/Button Label Medium/Line Height",
+              "type": "number",
+              "isAlias": false,
+              "value": 24
+            },
+            {
+              "name": "Static/Button Label Medium/Tracking",
+              "type": "number",
+              "isAlias": false,
+              "value": 0.15000000596046448
+            },
+            {
+              "name": "Static/Button Label Large/Font",
+              "type": "string",
+              "isAlias": true,
+              "value": {
+                "collection": "Font theme",
+                "name": "Static/Font/Plain"
+              }
+            },
+            {
+              "name": "Static/Button Label Large/Weight",
+              "type": "string",
+              "isAlias": true,
+              "value": {
+                "collection": "Font theme",
+                "name": "Static/Weight/Medium"
+              }
+            },
+            {
+              "name": "Static/Button Label Large/Size",
+              "type": "number",
+              "isAlias": false,
+              "value": 32
+            },
+            {
+              "name": "Static/Button Label Large/Line Height",
+              "type": "number",
+              "isAlias": false,
+              "value": 40
+            },
+            {
+              "name": "Static/Button Label Large/Tracking",
+              "type": "number",
+              "isAlias": false,
+              "value": 0
             },
             {
               "name": "Static/Display Large/Weight",

@@ -17,6 +17,16 @@ Código: `app/.../ui/theme/Type.kt` → `Theme.kt`.
 - **Title, Body, Label** → Inter.
 - Prohibido Fraunces en labels de botón, campos, chips o navegación.
 
+### Labels de botón (Figma · variables `Static/Button Label */*`)
+
+| Tamaño componente | Text style | Size | Fuente |
+|-------------------|------------|-----:|--------|
+| XSmall, Small | `M3 / label / large` | 14 | Inter (Plain) |
+| Medium | `M3 / label / button-medium` | 16 | Inter (Plain) |
+| Large, XLarge | `M3 / label / button-large` | 32 / 40 lh | Inter (Plain) |
+
+Métricas Large = escala M3 por defecto en botones XL/L (32/40), pero rol **Label** y primitivo **Plain** — nunca Headline/Brand.
+
 ## Entrega
 
 - Fuentes **bundled** en `app/src/main/res/font/`.
