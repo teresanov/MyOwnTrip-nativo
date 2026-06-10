@@ -44,7 +44,7 @@ Conservar sets que dan **jerarquía, ritmo y personalidad** sin salir de M3.
 | **FAB** | FAB + Extended FAB | Acción primaria flotante (añadir gasto, nota, lugar) |
 | **Chips** | Filter, Assist, Suggestion, Input + **Chip groups** | Filtros de viaje/gasto; grupos para barras de filtro densas |
 | **Lists** | Density 0 + Accordion + Swipe + BB | **hecho** — CUT -2/-4 |
-| **Tabs** | Tabs + BB primary/secondary | Cambio de vista (día / mapa / lista) |
+| **Tabs** | Tabs + BB primary/secondary | **hecho** — revisado, sin poda |
 | **Sheets** | Bottom sheet MVP · Side sheet LATER | **hecho** — secciones etiquetadas |
 | **Search** | Search bar MVP · full-screen LATER | **hecho** — CUT docked |
 | **Sliders** | Standard, Centered, Range (horizontal) | **hecho** — CUT Vertical + XLarge |

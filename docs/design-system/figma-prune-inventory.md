@@ -220,6 +220,7 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 ### Navigation · `55141:14251` — **hecho**
 - **MVP:** Navigation Bar H/V (3–6 items) + BB Vertical/Horizontal nav items
 - **CUT:** secciones Deprecated (drawer + Nav item legacy) · Navigation Rail · Expanded · XR Rail/Bar — **hecho**
+- **LATER (v1.1+):** restaurar rail desde CS si nav adaptativa (`NavigationSuiteScaffold`) — ver [`breakpoints.md`](breakpoints.md) §4.4
 
 ### Radio · `55141:14253` · Switch · `55141:14257` — **KEEP** (sin cambios)
 
@@ -236,7 +237,9 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 - **Snackbar** (10): Configuration Text only / Text & action / Text & longer action · 1–2 líneas · close affordance
 - **BB:** Snackbar-action + close-affordance (4 estados c/u)
 
-### Tabs · `55141:14258` — **KEEP** Primary + Secondary
+### Tabs · `55141:14258` — **hecho** (KEEP, sin poda)
+- **Tabs** (10): Primary + Secondary · Fixed + Scrollable · Label only / Icon only / Label & icon
+- **BB:** Primary tabs (3) + Secondary tabs (2) — 8 estados c/u
 
 ### Text fields · `55141:14259` — **hecho**
 - **KEEP:** Outlined — State (5) + Text configurations (3) + Leading/Trailing icon — **60 variantes**

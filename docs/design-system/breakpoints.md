@@ -5,7 +5,7 @@ Define **qué anchos de pantalla** diseñamos e implementamos, con referencia Sa
 | | |
 |---|---|
 | **Estado** | Activo — norte para Figma, Compose y poda DS |
-| **Última revisión** | 2026-06-09 |
+| **Última revisión** | 2026-06-10 |
 | **Relacionado** | [`figma-prune-inventory.md`](figma-prune-inventory.md) · [`android-compose-ux.md`](../ux/android-compose-ux.md) |
 
 ---
@@ -21,7 +21,7 @@ Define **qué anchos de pantalla** diseñamos e implementamos, con referencia Sa
 
 **Regla práctica:** si el usuario lo lleva **plegado en el bolsillo**, entra. Si lo lleva en una funda o mochila como tablet, no.
 
-**Foldable ≠ tablet:** la pantalla interior de un Fold puede superar 600dp o incluso 840dp de ancho, pero la UI sigue siendo **móvil-first** (bottom bar, una columna por defecto, sin navigation rail permanente como patrón principal).
+**Foldable ≠ tablet:** la pantalla interior de un Fold puede superar 600dp o incluso 840dp de ancho, pero la UI sigue siendo **móvil-first** (nav inferior en Compact; en anchos mayores, **nav adaptativa** v1.1+ — ver §4.4).
 
 ---
 
@@ -91,24 +91,45 @@ Samsung recomienda considerar “large screen layout” desde **600dp** de ancho
 
 Nota en sección `Layout grid · mobile` · node `60954:132843` — misma tabla que §5.
 
-### Tier B — v1.1+ (cuando una pantalla lo pida)
+### Tier B — v1.1+ (acordado; priorizar según uso real)
 
-| Mejora | Clase | Ejemplo JTBD |
-|--------|-------|----------------|
-| List-detail en una sola superficie | Medium | Viaje → día sin back stack extra |
-| Teclado landscape en mockups | Compact alto / landscape | Formularios wallet en Fold horizontal |
-| Grids 2 columnas en home | Medium | Más viajes visibles al desplegar |
+| Mejora | Clase | Ejemplo JTBD | Estado |
+|--------|-------|----------------|--------|
+| **Grids 2 columnas** en home (y pantallas densas) | Medium | Más viajes visibles al desplegar Fold | **Sí** — mantener en diseño |
+| List-detail en una sola superficie | Medium | Viaje → día sin back stack extra | Cuando una pantalla lo pida |
+| Teclado landscape en mockups | Compact alto / landscape | Formularios wallet en Fold horizontal | Mockups / QA |
+| **Nav adaptativa** (`NavigationSuiteScaffold`: barra inferior → rail lateral) | Medium / Expanded | Ergonomía Fold abierto a dos manos ([M3 large screen](https://m3.material.io/foundations/layout/applying-layout), [Samsung foldable](https://developer.samsung.com/one-ui/largescreen-and-foldable/large_screen_layout.html)) | **Puerta abierta v1.1+** — ver §4.4 |
 
 ### Tier C — Fuera de scope (no diseñar ni podar “para tablet”)
 
 | Patrón | Por qué |
 |--------|---------|
-| Navigation **rail** como nav principal | Tablet / desktop |
+| Navigation **rail fijo** como único chrome en todas las pantallas | Tablet 10"+ / desktop |
+| **Drawer** permanente + arquitectura tablet | Fuera de JTBD MVP |
 | **Side sheet** persistente + 3 paneles | Tablet |
 | Layouts **Expanded / Large / XL** como target principal | iPad, Tab S, ChromeOS ventana grande |
 | Examples `-Web`, window class tablet en Figma | Ver [`figma-prune-inventory.md`](figma-prune-inventory.md) |
 
-**Nota:** Fold interior en **landscape** puede caer en Expanded por dp, pero MyOwnTrip **no** adopta el kit de tablet M3; como máximo reflow de contenido (más columnas), sin rail fijo.
+**Nota:** Fold interior en **landscape** puede caer en Expanded por dp. MVP: **no romper** + reflow (2 columnas); **no** rediseñar todo el shell con rail hasta datos de uso (§4.4).
+
+### 4.4 Reconciliación M3 large screen (acordado 2026-06-10)
+
+Google / Samsung recomiendan acercar la navegación al pulgar y, en pantalla ancha tipo “libro”, pasar de barra inferior a **riel lateral**. Eso es correcto en ergonomía; MyOwnTrip **no lo ignora** — lo **secuencia**.
+
+| Postura / ancho | M3 / Samsung (resumen) | MyOwnTrip **ahora** (MVP) | MyOwnTrip **v1.1+** (si el uso lo confirma) |
+|-----------------|------------------------|---------------------------|---------------------------------------------|
+| Cerrado, una mano (&lt;600dp) | Bottom bar | `NavigationBar` abajo | Igual |
+| Abierto portrait (600–840dp) | Más columnas; a veces rail | Mismo nav abajo + **2 columnas** en contenido | Nav adaptativa opcional |
+| Abierto **apaisado** (≥840dp) | Rail lateral; evitar hinge | **Smoke** 840×673 — no romper; nav abajo; 2 columnas | Nav adaptativa; restaurar sets **rail** desde CS si hace falta en Figma |
+| Flex / tabletop | Controles en mitad inferior | No MVP (`FoldingFeature`, no solo ancho) | Post-MVP si hay JTBD |
+
+**Disparador para activar nav adaptativa + breakpoint de apaisado dedicado:**
+
+1. Métricas o pruebas en Fold (p. ej. % sesiones interior abierto + apaisado).
+2. Si el uso es marginal → mantener bottom bar + 2 columnas.
+3. Si es alto → implementar `NavigationSuiteScaffold` (o equivalente) y, en Figma, sección **LATER · Fold expanded** con rail restaurado desde backup CS (`uWmxOSQfjOxlEJ8k1yzOSX`) — sin reimportar kit tablet completo.
+
+**Reglas que no cambian:** nada interactivo sobre el pliegue; acciones contextuales en **app bar** (derecha) o toolbar horizontal — no toolbar vertical de tablet; Flex Window fuera de MVP.
 
 ---
 
@@ -161,10 +182,9 @@ val widthClass = adaptiveInfo.windowSizeClass.windowWidthSizeClass
 | Fase | Estrategia |
 |------|------------|
 | **MVP** | `Scaffold` + `NavigationBar`; contenido `Compact`; `paddingValues` edge-to-edge |
-| **Fold Medium** | Mismos componentes; opcional `LazyVerticalGrid` con `minSize` mayor o `ListDetailPaneScaffold` en 1–2 flujos |
-| **Tests** | Previews 360×800, 344×880, 360×880; emulador Fold 6 / Flip 6 API 34+ |
-
-No usar `NavigationSuiteScaffold` con drawer por defecto en Expanded hasta que haya requisito de producto explícito.
+| **Fold Medium** | Mismos componentes; `LazyVerticalGrid` / **2 columnas** donde aplique; opcional `ListDetailPaneScaffold` en 1–2 flujos |
+| **v1.1+ (si uso apaisado lo justifica)** | `NavigationSuiteScaffold` — barra inferior en Compact → rail en Medium/Expanded; sin drawer por defecto |
+| **Tests** | Previews 360×800, 344×880, 360×880, smoke 840×673; emulador Fold 6 / Flip 6 API 34+ |
 
 ---
 
@@ -190,8 +210,8 @@ SwiftUI / Compose Multiplatform (si algún día): compartir breakpoints lógicos
 |----------|-------|
 | Device frame móvil + fold | Device frame tablet |
 | Keyboard Portrait + Landscape | Keyboard Floating |
-| Componentes M3 Compact | Navigation rail, bottom app bar, XR |
-| 1–2 refs fold interior en `Reference` | Examples web, grids tablet XL |
+| Componentes M3 Compact | bottom app bar, XR |
+| 1–2 refs fold interior en `Reference`; rail en **LATER** si nav adaptativa | Examples web, grids tablet XL; rail publicado en MVP |
 | Variantes que existen en teléfono | `Context=Tablet`, densidades solo tablet |
 
 ---
