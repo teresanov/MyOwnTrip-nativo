@@ -80,6 +80,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | **Snackbar** | Snackbar + BB |
 | **Tabs** | Primary + **Secondary** + BB |
 | **Text fields** | Outlined, todos los estados |
+| **Toolbars** | Horizontal **Standard** (Floating/Docked) + BB Standard — acciones contextuales MVP |
 | **Utilities** | Scrim, Focus indicator, status-bar, navigation gestures, Device frame, **Keyboard Portrait + Landscape** |
 
 ### Should — KEEP (diseño rico, no bloqueante en código)
@@ -100,7 +101,6 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | Side sheet + BB | Panel lateral |
 | Navigation drawer (patrón M3 actual) | Sin cambio de arquitectura nav |
 | Carousel móvil (Hero, Multi-browse, Multi-aspect) | Galería / explorar ciudad — **no** el set tablet |
-| Toolbars Standard horizontal (Floating/Docked) | Toolbar contextual + FAB — **CUT** XR, Vibrant, Vertical |
 | Rich tooltip | Sobre Plain |
 | Recordatorios push / alertas hora | Fuera de picker UI |
 
@@ -245,17 +245,10 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 - **KEEP:** Outlined — State (5) + Text configurations (3) + Leading/Trailing icon — **60 variantes**
 - **CUT:** Filled — **hecho** (−60)
 
-### Toolbars · `58295:22726`
-
-| Variante (`Toolbar` set `58467:8206`) | Acción |
-|---------------------------------------|--------|
-| Floating/Docked · **Horizontal** · **Standard** | **LATER** v1.1 |
-| **Vibrant** (Standard + BB) | **CUT** — Expressive, fuera marca editorial |
-| **Vertical** (Floating) | **CUT** — patrón tablet |
-| **XR/*** (si reaparece) | **CUT** — manual bloque A |
-| BB Vibrant / Vertical | **CUT** con sus Toolbars |
-
-Mantener página recortada; no borrar página entera si quedan Standard horizontal.
+### Toolbars · `58295:22726` — **hecho**
+- **MVP:** sección `MVP · Toolbar horizontal (Standard)` — Toolbar (2): Floating/Docked · Horizontal · Standard + BB Standard (3 sets) — **acordado 2026-06-10** (uso probable en MVP)
+- **CUT:** Vibrant (2 variantes Toolbar + 3 BB) · Vertical (2 variantes) — **hecho** (−4 variantes, −3 BB sets)
+- **XR:** no presente
 
 ### Tooltips · `55141:14261` — **CUT**
 

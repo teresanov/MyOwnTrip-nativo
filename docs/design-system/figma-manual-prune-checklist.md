@@ -52,6 +52,7 @@ Conservar sets que dan **jerarquía, ritmo y personalidad** sin salir de M3.
 | **Time pickers** | Sección `LATER · Time pickers` (móvil) | Reserva manual · **etiquetado, no borrar** |
 | **Dialogs** | Basic + Scrollable (MVP) · List dialog (LATER) | **hecho** — XR CUT |
 | **Snackbar** | Snackbar + BB | **hecho** — revisado, sin poda |
+| **Toolbars** | Horizontal Standard (Floating/Docked) + BB | **hecho** — MVP; CUT Vibrant/Vertical |
 | **Loading** | Flat MVP · Loading indicator morphing (LATER) | **hecho** — CUT Wave |
 | **Text fields** | Text field (Outlined) | **hecho** — CUT Filled |
 | **Navigation** | Bar H/V + BB | **hecho** — CUT Rail/XR/Deprecated |
@@ -93,7 +94,7 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 - [ ] Getting started, Table of contents, `---` (Examples **pausado** — no podar página)
 - [ ] **Shape** (página Shape Set decorativo) — **KEEP** `.Shape` en Styles
 - [ ] **Carousel** — CUT tablet + full-screen; **KEEP** variantes Mobile en librería (LATER) o página recortada
-- [ ] **Toolbars** — CUT XR, Vibrant, Vertical; KEEP Standard horizontal (LATER)
+- [x] **Toolbars** — **hecho** — MVP horizontal Standard; CUT Vibrant + Vertical
 - [ ] Tooltips
 - [ ] Avatars 3D/extra — **KEEP** `Generic avatar` básico
 - [x] **XR/***, Navigation rail* — Navigation **hecho**
