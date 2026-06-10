@@ -46,15 +46,15 @@ Conservar sets que dan **jerarquía, ritmo y personalidad** sin salir de M3.
 | **Lists** | Density 0 + Accordion + Swipe + BB | **hecho** — CUT -2/-4 |
 | **Tabs** | Tabs + BB primary/secondary | Cambio de vista (día / mapa / lista) |
 | **Sheets** | Bottom sheet + BB | Flujos contextuales sin romper el hilo |
-| **Search** | Search bar (mínimo) | Entrada universal; layouts full-screen → ver §4 |
+| **Search** | Search bar MVP · full-screen LATER | **hecho** — CUT docked |
 | **Sliders** | Standard, Centered, Range | Presupuesto, distancia, preferencias — gesto M3 muy expresivo |
 | **Date pickers** | Input + Modal + BB calendario · B+ híbrido | Planificación viaje · **hecho** |
 | **Time pickers** | Sección `LATER · Time pickers` (móvil) | Reserva manual · **etiquetado, no borrar** |
 | **Dialogs** | Basic + Scrollable (MVP) · List dialog (LATER) | **hecho** — XR CUT |
 | **Snackbar** | Snackbar + BB | Feedback ligero post-acción |
-| **Loading** | Linear/Circular + Loading indicator + BB | Estados de carga con pulido |
+| **Loading** | Flat MVP · Loading indicator morphing (LATER) | **hecho** — CUT Wave |
 | **Text fields** | Text field | Formularios viaje / wallet |
-| **Navigation** | Bar H/V + BB | Nav inferior; sin rail salvo cambio de arquitectura |
+| **Navigation** | Bar H/V + BB | **hecho** — CUT Rail/XR/Deprecated |
 
 ---
 
@@ -81,9 +81,9 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 
 | Set | Idea de uso creativo | Decisión |
 |-----|----------------------|----------|
-| Search full-screen / docked | Búsqueda inmersiva tipo “explorar ciudad” | [ ] KEEP en librería · [ ] Podar |
+| Search full-screen | Búsqueda inmersiva “explorar ciudad” | [x] LATER · docked CUT |
 | Side sheet | Panel de detalle lateral (lugar, gasto) | [ ] KEEP · [ ] Podar |
-| Navigation drawer | Solo si cambiáis arquitectura nav | [ ] Podar por ahora |
+| Navigation drawer | Solo si cambiáis arquitectura nav | [x] CUT (Deprecated) |
 | Time pickers móvil | Reserva manual (hora vuelo/hotel) | [x] Sección **LATER** — no borrar |
 
 ---
@@ -96,7 +96,8 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 - [ ] **Toolbars** — CUT XR, Vibrant, Vertical; KEEP Standard horizontal (LATER)
 - [ ] Tooltips
 - [ ] Avatars 3D/extra — **KEEP** `Generic avatar` básico
-- [ ] **XR/***, Navigation rail*, Bottom app bar
+- [x] **XR/***, Navigation rail* — Navigation **hecho**
+- [ ] Bottom app bar
 - [ ] Split button (caso muy nicho)
 - [ ] List dialog (no scrollable) si tenéis Scrollable list dialog
 - [x] Time pickers **desktop** (Dial horizontal, hour-line, Period Horizontal) — **hecho** en `55141:14175`

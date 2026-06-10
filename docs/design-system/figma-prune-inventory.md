@@ -208,21 +208,25 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 - **MVP:** List item density **0** (238) · List (baseline) · List/Accordion/Swipe sets + BB (sección patterns)
 - **CUT:** List item density **-2** (217) · **-4** (197) · List -2/-4 baseline — **hecho**
 
-### Loading & progress · `55141:14252`
-- **KEEP:** Linear/Circular Flat · Loading indicator BB
-- **CUT:** Wave · Steps morphing 1–7
+### Loading & progress · `55141:14252` — **hecho**
+- **MVP:** Linear/Circular determinate + indeterminate · **Type=Flat** (4dp/8dp) · BB flat/track/stop
+- **LATER:** Loading indicator Steps 1–7 (morphing) — etiquetado, no borrar
+- **CUT:** Type=Wave en los 4 progress sets (34 var.) · BB Segment wave (4 var.) — **hecho**
 
-### Menu · `55141:14250` — **KEEP** Standard d0 · **CUT** -2/-4, Vibrant
+### Menu · `55141:14250` — **hecho**
+- **MVP:** Menu density **0** · Theme **Standard** · Menu item/Standard + BB
+- **CUT:** density -2/-4 (BB + baseline variants) · Theme **Vibrant** + Menu item/Vibrant — **hecho**
 
-### Navigation · `55141:14251`
-- **KEEP:** Navigation Bar
-- **CUT:** Rail, Expanded, XR, Deprecated drawer
+### Navigation · `55141:14251` — **hecho**
+- **MVP:** Navigation Bar H/V (3–6 items) + BB Vertical/Horizontal nav items
+- **CUT:** secciones Deprecated (drawer + Nav item legacy) · Navigation Rail · Expanded · XR Rail/Bar — **hecho**
 
-### Radio · `55141:14253` · Switch · `55141:14257` — **KEEP**
+### Radio · `55141:14253` · Switch · `55141:14257` — **KEEP** (sin cambios)
 
-### Search · `55141:14254`
-- **KEEP:** Search bar
-- **LATER:** full-screen · **CUT:** docked desktop
+### Search · `55141:14254` — **hecho**
+- **MVP:** Search bar (6)
+- **LATER:** Search full-screen layout (baseline + set) — etiquetado, no borrar
+- **CUT:** Search docked layout (desktop) — **hecho**
 
 ### Sliders · `55141:14255` — **KEEP (Should):** Standard, Centered, Range
 - **CUT:** Vertical, XLarge
