@@ -90,7 +90,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | **Chips** | Chip groups |
 | **Dialogs** | Scrollable list dialog |
 | **Lists** | Accordion, List item Swipe + BB |
-| **Sliders** | Standard, Centered, Range — Horizontal, Small/Medium |
+| **Sliders** | Standard, Centered, Range — Horizontal, XSmall–Large — **hecho** (CUT Vertical/XLarge) |
 
 ### v1.1 — LATER (no podar del CS hasta que haga falta; no publicar aún)
 
@@ -228,14 +228,19 @@ MVP: diseñar con instancias embebidas; publicar sets móviles cuando haya panta
 - **LATER:** Search full-screen layout (baseline + set) — etiquetado, no borrar
 - **CUT:** Search docked layout (desktop) — **hecho**
 
-### Sliders · `55141:14255` — **KEEP (Should):** Standard, Centered, Range
-- **CUT:** Vertical, XLarge
+### Sliders · `55141:14255` — **hecho**
+- **KEEP:** Standard, Centered, Range — Horizontal; sizes XSmall–Large; State + Value completos (diseño)
+- **CUT:** Vertical, XLarge — **hecho** (−156 variantes: Standard −72, Centered −72, Range −12)
 
-### Snackbar · `55141:14256` — **KEEP**
+### Snackbar · `55141:14256` — **hecho** (KEEP, sin poda)
+- **Snackbar** (10): Configuration Text only / Text & action / Text & longer action · 1–2 líneas · close affordance
+- **BB:** Snackbar-action + close-affordance (4 estados c/u)
 
 ### Tabs · `55141:14258` — **KEEP** Primary + Secondary
 
-### Text fields · `55141:14259` — **KEEP** Outlined · **CUT** Filled
+### Text fields · `55141:14259` — **hecho**
+- **KEEP:** Outlined — State (5) + Text configurations (3) + Leading/Trailing icon — **60 variantes**
+- **CUT:** Filled — **hecho** (−60)
 
 ### Toolbars · `58295:22726`
 
@@ -251,9 +256,9 @@ Mantener página recortada; no borrar página entera si quedan Standard horizont
 
 ### Tooltips · `55141:14261` — **CUT**
 
-### Sheets · `55141:14170`
-- **KEEP:** Bottom sheet + BB
-- **CUT:** Side sheet · **LATER** v1.1
+### Sheets · `55141:14170` — **hecho**
+- **MVP:** sección `MVP · Bottom sheet` — Bottom sheet (2) + BB Content (2)
+- **LATER:** sección `LATER · Side sheet` — Side Sheet (4) + BB Content (2) · nota visible · **no borrar**
 
 ---
 
@@ -262,7 +267,7 @@ Mantener página recortada; no borrar página entera si quedan Standard horizont
 1. Buttons — Round + XLarge (~1.300 variantes)
 2. Lists — densidades -2/-4
 3. Navigation — Rail + Expanded + XR + Deprecated
-4. Text fields — Filled (~60)
+4. ~~Text fields — Filled (~60)~~ **hecho**
 5. Chips — Elevated + sets LATER si se difieren
 6. Examples web + window classes grandes
 7. Shape Set (página) · Carousel tablet/full-screen · Tooltips

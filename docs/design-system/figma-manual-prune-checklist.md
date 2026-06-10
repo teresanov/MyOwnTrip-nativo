@@ -45,15 +45,15 @@ Conservar sets que dan **jerarquía, ritmo y personalidad** sin salir de M3.
 | **Chips** | Filter, Assist, Suggestion, Input + **Chip groups** | Filtros de viaje/gasto; grupos para barras de filtro densas |
 | **Lists** | Density 0 + Accordion + Swipe + BB | **hecho** — CUT -2/-4 |
 | **Tabs** | Tabs + BB primary/secondary | Cambio de vista (día / mapa / lista) |
-| **Sheets** | Bottom sheet + BB | Flujos contextuales sin romper el hilo |
+| **Sheets** | Bottom sheet MVP · Side sheet LATER | **hecho** — secciones etiquetadas |
 | **Search** | Search bar MVP · full-screen LATER | **hecho** — CUT docked |
-| **Sliders** | Standard, Centered, Range | Presupuesto, distancia, preferencias — gesto M3 muy expresivo |
+| **Sliders** | Standard, Centered, Range (horizontal) | **hecho** — CUT Vertical + XLarge |
 | **Date pickers** | Input + Modal + BB calendario · B+ híbrido | Planificación viaje · **hecho** |
 | **Time pickers** | Sección `LATER · Time pickers` (móvil) | Reserva manual · **etiquetado, no borrar** |
 | **Dialogs** | Basic + Scrollable (MVP) · List dialog (LATER) | **hecho** — XR CUT |
-| **Snackbar** | Snackbar + BB | Feedback ligero post-acción |
+| **Snackbar** | Snackbar + BB | **hecho** — revisado, sin poda |
 | **Loading** | Flat MVP · Loading indicator morphing (LATER) | **hecho** — CUT Wave |
-| **Text fields** | Text field | Formularios viaje / wallet |
+| **Text fields** | Text field (Outlined) | **hecho** — CUT Filled |
 | **Navigation** | Bar H/V + BB | **hecho** — CUT Rail/XR/Deprecated |
 
 ---
@@ -82,7 +82,7 @@ No son MVP, pero pueden hacer la app **más atractiva** en v1.1. Opciones:
 | Set | Idea de uso creativo | Decisión |
 |-----|----------------------|----------|
 | Search full-screen | Búsqueda inmersiva “explorar ciudad” | [x] LATER · docked CUT |
-| Side sheet | Panel de detalle lateral (lugar, gasto) | [ ] KEEP · [ ] Podar |
+| Side sheet | Panel de detalle lateral (lugar, gasto) | [x] **LATER** v1.1 — no borrar |
 | Navigation drawer | Solo si cambiáis arquitectura nav | [x] CUT (Deprecated) |
 | Time pickers móvil | Reserva manual (hora vuelo/hotel) | [x] Sección **LATER** — no borrar |
 
