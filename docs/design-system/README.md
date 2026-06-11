@@ -8,7 +8,7 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 |-----------|----------|
 | Persona | Viajero urbano organizado (ciudad, transporte, hoteles de diseño) |
 | Estética | Editorial (Monocle / Wallpaper): sobriedad, tipografía protagonista, color con cuentagotas, neutros papel cálido |
-| Acento | Rojo señal (`tertiary`) con moderación; error visualmente distinto |
+| Acento | Ocre editorial (`tertiary`) con moderación; error visualmente distinto |
 
 ## Documentación
 

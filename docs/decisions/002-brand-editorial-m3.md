@@ -14,13 +14,13 @@ ADR 001 fijó M3 estructural; este ADR fija identidad de marca y reglas de consu
 
 ### Marca
 - Persona: viajero urbano organizado.
-- Estética: editorial, papel cálido, acento rojo señal con moderación.
-- Tertiary (`#D9382C`) = acento de marca; **error** (`#B3261E`) = rojo profundo distinto a propósito.
+- Estética: editorial, papel cálido, acento ocre con moderación.
+- Tertiary (`#825513`) = acento de marca; **error** (`#B3261E`) = rojo profundo distinto a propósito.
 
 ### Color (MTB)
 - Scheme: **Tonal Spot** · Contrast: Default (+ Medium/High cuando aplique).
 - Source color (primary): `#1F3A5F`.
-- Core overrides: secondary `#3A4A63`, tertiary `#D9382C`, neutral `#8A8275`, neutral variant `#847E72`, error `#B3261E`.
+- Core overrides: secondary `#3A4A63`, tertiary `#825513`, neutral `#8A8275`, neutral variant `#847E72`, error `#B3261E`.
 - Custom: success `#2E7D32`, warning `#F9A825`, info `#1565C0` (info opcional).
 - **Generate state layers = NO** en MTB (runtime only).
 - Check: `surface` Light ≈ `#F4F0E8` (papel cálido). Si sale frío → neutral `#8C8472` y regenerar.
@@ -45,7 +45,7 @@ ADR 001 fijó M3 estructural; este ADR fija identidad de marca y reglas de consu
 1. Prohibido tokens de color por estado (`hover`/`pressed`/`focus`/`disabled`).
 2. Estados = state layers en runtime (`onX` @ 8/10/10/16%); disabled 38%/12%; nunca color guardado.
 3. UI solo roles semánticos M3; jamás primitivos/tonos.
-4. Tertiary (`#D9382C`, marca) y Error (`#B3261E`, alerta) — no mezclar.
+4. Tertiary (`#825513`, marca) y Error (`#B3261E`, alerta) — no mezclar.
 5. Errores: icono + texto; nunca solo color.
 6. Fraunces (Display/Headline) + Inter (resto); serif solo arriba.
 

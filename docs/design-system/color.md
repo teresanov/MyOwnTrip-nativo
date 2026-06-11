@@ -20,7 +20,7 @@ ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 | Rol | Hex | Notas |
 |-----|-----|-------|
 | `primary` | `#3E5F90` | Azul editorial |
-| `tertiary` | `#825513` | Acento ocre (marca) |
+| `tertiary` | `#825513` | Acento ocre editorial (marca) |
 | `error` | `#904A42` | Alerta; **distinto** de tertiary |
 | `surface` | `#FFF8F2` | Papel cálido |
 | `onSurface` | `#1F1B13` | |

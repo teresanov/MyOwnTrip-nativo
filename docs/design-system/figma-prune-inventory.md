@@ -21,7 +21,7 @@
 
 - **Móvil + plegable (foldable)** en el bolsillo — sí en producto y en Figma. **Sin tablet, web ni XR.**  
   Breakpoints y frames de referencia → **[`breakpoints.md`](breakpoints.md)** (M3: Compact &lt;600dp, Medium 600–840dp; Fold interior ≈673–794dp; **no** patrones tablet aunque el Fold en landscape toque Expanded por dp).
-- **Marca editorial** (ADR 002): Square / radio ~8dp · Material Symbols **Sharp** · Fraunces + Inter · ink + papel + ocre (`tertiary`, con moderación).
+- **Marca editorial** (ADR 002): Square / radio ~8dp · Material Symbols **Sharp** · Fraunces + Inter · ink + papel + ocre editorial (`tertiary` `#825513`, con moderación).
 - **Poda por componentes/variantes**, nunca por roles de color (variables `M3` interdependientes).
 - **Dos motivos de poda distintos:** (1) **marca/estilo** — ej. botones `Round`, chips `Elevated`; (2) **capacidad de diseño** — no quitar utilidades que un diseñador necesitaría recrear a mano (teclados, device frames). El CS backup no sustituye la librería publicada.
 - **Compose:** estados interactivos vía state layers (`m3Canonical`); en Figma conservar ejes Type/State donde el diseño lo necesite, salvo excepciones de marca abajo.
