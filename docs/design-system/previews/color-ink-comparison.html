@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyOwnTrip — Celeste · gris · tinta negra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-serif: "Fraunces", Georgia, serif;
+      --font-sans: "Inter", system-ui, sans-serif;
+      --card-radius: 12px;
+      --btn-radius: 0;
+      --btn-radius-hover: 20px;
+      --morph-duration: 0.52s;
+      --morph-ease: cubic-bezier(0.05, 0.7, 0.1, 1);
+    }
+
+    [data-palette="current"] {
+      --surface: #FFF8F2; --on-surface: #1F1B13; --on-surface-variant: #4C4639;
+      --outline: #7D7667; --outline-variant: #CEC6B4;
+      --primary: #3E5F90; --on-primary: #FFFFFF;
+      --primary-container: #D5E3FF; --on-primary-container: #244777;
+      --tertiary: #825513; --tag: "Hoy · celeste";
+    }
+
+    [data-palette="gray"] {
+      --surface: #FFF8F2; --on-surface: #1F1B13; --on-surface-variant: #4C4639;
+      --outline: #7D7667; --outline-variant: #CEC6B4;
+      --primary: #4A5864; --on-primary: #FFFFFF;
+      --primary-container: #E4E1DC; --on-primary-container: #2E363D;
+      --tertiary: #825513; --tag: "Aceptada · gris-azul";
+    }
+
+    [data-palette="ink"] {
+      --surface: #FFF8F2; --on-surface: #1F1B13; --on-surface-variant: #4C4639;
+      --outline: #7D7667; --outline-variant: #CEC6B4;
+      --primary: #1F1B13; --on-primary: #FFF8F2;
+      --primary-container: #EBE1D4; --on-primary-container: #1F1B13;
+      --tertiary: #825513; --tag: "Alternativa · tinta negra";
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-sans); background: #EDE8E0; color: #1F1B13; line-height: 1.5; }
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #CEC6B4; }
+    header h1 { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 600; margin-bottom: 8px; }
+    header p { font-size: 0.875rem; color: #4C4639; max-width: 68ch; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+
+    .panel {
+      border: 1px solid #CEC6B4; border-radius: var(--card-radius);
+      overflow: hidden; background: #FCF9F4;
+    }
+    .panel--pick { border-color: #825513; box-shadow: 0 0 0 1px #825513; }
+
+    .panel__head { padding: 12px 14px; border-bottom: 1px solid var(--outline-variant); background: var(--surface); }
+    .panel__tag {
+      font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--primary); margin-bottom: 3px;
+    }
+    .panel--pick .panel__tag { color: var(--tertiary); }
+    .panel__tag::after { content: var(--tag); }
+    .panel__head h2 { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 600; }
+
+    .panel__body { padding: 14px; background: var(--surface); }
+
+    .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+    .swatch { border-radius: 6px; overflow: hidden; border: 1px solid var(--outline-variant); font-size: 0.55rem; }
+    .swatch__color { height: 28px; }
+    .swatch__label { padding: 4px; background: #F1E7D9; font-family: ui-monospace, monospace; }
+
+    .label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--on-surface-variant); margin-bottom: 6px; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .btn {
+      font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500;
+      height: 36px; padding: 0 14px; border-radius: var(--btn-radius);
+      transition: border-radius var(--morph-duration) var(--morph-ease);
+    }
+    .btn:hover { border-radius: var(--btn-radius-hover); }
+    .btn--filled { background: var(--primary); color: var(--on-primary); border: 1px solid transparent; }
+    .btn--tonal { background: var(--primary-container); color: var(--on-primary-container); border: 1px solid transparent; }
+    .btn--outlined { background: transparent; color: var(--primary); border: 1px solid var(--outline); }
+
+    .accent { font-size: 0.7rem; color: var(--tertiary); font-weight: 600; margin-bottom: 8px; }
+
+    .card {
+      border: 1px solid var(--outline-variant); border-radius: var(--card-radius);
+      padding: 12px; background: var(--surface);
+    }
+    .card__eyebrow { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--tertiary); margin-bottom: 4px; }
+    .card__title { font-weight: 600; font-size: 0.875rem; margin-bottom: 8px; }
+
+    table {
+      width: 100%; margin-top: 24px; border-collapse: collapse; font-size: 0.7rem;
+      background: #FCF9F4; border: 1px solid #CEC6B4; border-radius: var(--card-radius); overflow: hidden;
+    }
+    th, td { padding: 7px 9px; text-align: left; border-bottom: 1px solid #E8E2D8; }
+    th { background: #F6EDDF; }
+    code { font-family: ui-monospace, monospace; font-size: 0.65rem; }
+    footer { margin-top: 20px; font-size: 0.7rem; color: #7D7667; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Color · decisión gris-azul</h1>
+      <p>
+        <strong>Decisión cerrada (jun 2026):</strong> columna central — gris-azul anti-pastel.
+        <code>tertiary</code> ocre sin cambio. Tinta negra queda como alternativa documentada.
+      </p>
+    </header>
+
+    <div class="grid">
+      <article class="panel" data-palette="current">
+        <div class="panel__head"><div class="panel__tag"></div><h2>Celeste (hoy)</h2></div>
+        <div class="panel__body">
+          <div class="swatches">
+            <div class="swatch"><div class="swatch__color" style="background:#3E5F90"></div><div class="swatch__label">primary</div></div>
+            <div class="swatch"><div class="swatch__color" style="background:#D5E3FF"></div><div class="swatch__label">container</div></div>
+            <div class="swatch"><div class="swatch__color" style="background:#825513"></div><div class="swatch__label">tertiary</div></div>
+          </div>
+          <div class="label">Botones</div>
+          <div class="btn-row">
+            <button type="button" class="btn btn--filled">Guardar</button>
+            <button type="button" class="btn btn--tonal">Tonal</button>
+            <button type="button" class="btn btn--outlined">Outline</button>
+          </div>
+          <div class="accent">Acento ocre · etiqueta</div>
+          <div class="card"><div class="card__eyebrow">Lisboa</div><div class="card__title">LX Factory</div></div>
+        </div>
+      </article>
+
+      <article class="panel panel--pick" data-palette="gray">
+        <div class="panel__head"><div class="panel__tag"></div><h2>Gris-azul</h2></div>
+        <div class="panel__body">
+          <div class="swatches">
+            <div class="swatch"><div class="swatch__color" style="background:#4A5864"></div><div class="swatch__label">primary</div></div>
+            <div class="swatch"><div class="swatch__color" style="background:#E4E1DC"></div><div class="swatch__label">container</div></div>
+            <div class="swatch"><div class="swatch__color" style="background:#825513"></div><div class="swatch__label">tertiary</div></div>
+          </div>
+          <div class="label">Botones</div>
+          <div class="btn-row">
+            <button type="button" class="btn btn--filled">Guardar</button>
+            <button type="button" class="btn btn--tonal">Tonal</button>
+            <button type="button" class="btn btn--outlined">Outline</button>
+          </div>
+          <div class="accent">Acento ocre · etiqueta</div>
+          <div class="card"><div class="card__eyebrow">Lisboa</div><div class="card__title">LX Factory</div></div>
+        </div>
+      </article>
+
+      <article class="panel" data-palette="ink">
+        <div class="panel__head"><div class="panel__tag"></div><h2>Tinta negra</h2></div>
+        <div class="panel__body">
+          <div class="swatches">
+            <div class="swatch"><div class="swatch__color" style="background:#1F1B13"></div><div class="swatch__label">primary</div></div>
+            <div class="swatch"><div class="swatch__color" style="background:#EBE1D4"></div><div class="swatch__label">container</div></div>
+            <div class="swatch"><div class="swatch__color" style="background:#825513"></div><div class="swatch__label">tertiary</div></div>
+          </div>
+          <div class="label">Botones</div>
+          <div class="btn-row">
+            <button type="button" class="btn btn--filled">Guardar</button>
+            <button type="button" class="btn btn--tonal">Tonal</button>
+            <button type="button" class="btn btn--outlined">Outline</button>
+          </div>
+          <div class="accent">Acento ocre · etiqueta</div>
+          <div class="card"><div class="card__eyebrow">Lisboa</div><div class="card__title">LX Factory</div></div>
+        </div>
+      </article>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Variable Figma · Light</th><th>Gris-azul ✓</th><th>Notas</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Schemes/Primary</code></td><td><code>#4A5864</code></td><td>Filled / outline</td></tr>
+        <tr><td><code>Schemes/Primary Container</code></td><td><code>#E4E1DC</code></td><td>Tonal — sin celeste</td></tr>
+        <tr><td><code>Schemes/On Primary Container</code></td><td><code>#2E363D</code></td><td>Carbón</td></tr>
+        <tr><td><code>Schemes/Inverse Primary</code></td><td><code>#B4BAC0</code></td><td>Snackbar</td></tr>
+        <tr><td><code>Schemes/Primary Fixed</code></td><td><code>#E4E1DC</code></td><td>Tabs/chips</td></tr>
+        <tr><td><code>Schemes/Primary Fixed Dim</code></td><td><code>#98A1AA</code></td><td>Estado apagado</td></tr>
+        <tr><td><code>Schemes/Tertiary*</code></td><td><strong>Sin cambio</strong></td><td>Ocre <code>#825513</code></td></tr>
+        <tr><td><code>Schemes/Background</code></td><td><code>#F7F4EF</code></td><td>Sin velo azul</td></tr>
+        <tr><td colspan="3" style="background:#F6EDDF;font-weight:600">Dark</td></tr>
+        <tr><td><code>Primary</code></td><td><code>#B4BAC2</code></td><td></td></tr>
+        <tr><td><code>Primary Container</code></td><td><code>#3A444C</code></td><td></td></tr>
+        <tr><td><code>On Primary Container</code></td><td><code>#E4E1DC</code></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <footer>
+      Decisión gris-azul · repo alineado jun 2026 · Importar <code>M3_MOTrip.json</code> o variables Figma
+    </footer>
+  </div>
+</body>
+</html>

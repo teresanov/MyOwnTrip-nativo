@@ -9,12 +9,14 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | Persona | Viajero urbano organizado (ciudad, transporte, hoteles de diseño) |
 | Estética | Editorial (Monocle / Wallpaper): sobriedad, tipografía protagonista, color con cuentagotas, neutros papel cálido |
 | Acento | Ocre editorial (`tertiary`) con moderación; error visualmente distinto |
+| Logo | Sistema W4 · MOT · C1 — ver [`brand.md`](brand.md) y Notion Brand |
 
 ## Documentación
 
 | Doc | Contenido |
 |-----|-----------|
 | [color.md](color.md) | MTB, roles M3, extensiones, state layers |
+| [shape.md](shape.md) | Corner tokens, botones 0→20 morph, binding Figma |
 | [typography.md](typography.md) | Fraunces + Inter, mapeo a roles M3 |
 | [iconography.md](iconography.md) | Material Symbols Sharp + iconos propios |
 | [components.md](components.md) | M3 puro vs wrappers `MyOwnTrip*` |
@@ -25,6 +27,7 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | [../decisions/003-figma-library-showcase-docs.md](../decisions/003-figma-library-showcase-docs.md) | Figma = librería; showcase = docs |
 | [../decisions/001-m3-native-ds.md](../decisions/001-m3-native-ds.md) | ADR estructura M3 |
 | [../decisions/002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md) | ADR marca editorial |
+| [../decisions/004-button-shape-morph.md](../decisions/004-button-shape-morph.md) | ADR shape botones 0→20 |
 
 ## Pipeline activo
 

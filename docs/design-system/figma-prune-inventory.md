@@ -7,7 +7,7 @@
 | **Archivo** | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432) · `zrGAL4v6MEMc9hzZemU432` |
 | **Backup (CS, no tocar)** | `uWmxOSQfjOxlEJ8k1yzOSX` |
 | **Política** | Figma = librería visual · docs = showcase — [ADR 003](../decisions/003-figma-library-showcase-docs.md) |
-| **Última revisión** | 2026-06-09 |
+| **Última revisión** | 2026-06-11 |
 
 **Leyenda:** **KEEP** · **CUT** · **LATER** (v1.1 o cuando una pantalla lo pida)
 
@@ -21,7 +21,9 @@
 
 - **Móvil + plegable (foldable)** en el bolsillo — sí en producto y en Figma. **Sin tablet, web ni XR.**  
   Breakpoints y frames de referencia → **[`breakpoints.md`](breakpoints.md)** (M3: Compact &lt;600dp, Medium 600–840dp; Fold interior ≈673–794dp; **no** patrones tablet aunque el Fold en landscape toque Expanded por dp).
-- **Marca editorial** (ADR 002): Square / radio ~8dp · Material Symbols **Sharp** · Fraunces + Inter · ink + papel + ocre editorial (`tertiary` `#825513`, con moderación).
+- **Marca editorial** (ADR 002): Material Symbols **Sharp** · Fraunces + Inter · ink + papel · acento rojo señal (`tertiary` `#D9382C`, con moderación).
+- **Shape botones** (ADR 004): reposo **0dp** (`Corner/None`) · morph a **20dp** (`Corner/Large-increased`) en hover / focus / pressed / selected · ver [shape.md](shape.md).
+- **Shape morph** (subset Expressive): siempre **None → Large-increased**; **nunca** Round/20dp por defecto en reposo.
 - **Poda por componentes/variantes**, nunca por roles de color (variables `M3` interdependientes).
 - **Dos motivos de poda distintos:** (1) **marca/estilo** — ej. botones `Round`, chips `Elevated`; (2) **capacidad de diseño** — no quitar utilidades que un diseñador necesitaría recrear a mano (teclados, device frames). El CS backup no sustituye la librería publicada.
 - **Compose:** estados interactivos vía state layers (`m3Canonical`); en Figma conservar ejes Type/State donde el diseño lo necesite, salvo excepciones de marca abajo.
@@ -43,7 +45,8 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | `Context=Tablet`, layouts **tablet** (10"+), `-Web` | **CUT** |
 | Window **Expanded** solo si es patrón tablet/desktop | **CUT** — foldable interior ≠ tablet |
 | `XR/*`, sección Deprecated, Bottom app bar, Navigation rail* | **CUT** |
-| Botones `Type=Round` (pill) | **CUT** — editorial = Square ~8dp |
+| Button `Type=Round` (pill, reposo) | **CUT** — reposo = Square 0dp (ADR 004) |
+| Toggle / Icon togglable / Segmented `Round` | **KEEP** — geometría **destino** del morph 0→20dp (`Corner/Large-increased`) |
 | Botones `Size=XLarge` | **CUT** |
 | Text field `Style=Filled` | **CUT** — Outlined |
 | Chips `Style=Elevated` (en sets KEEP) | **CUT** — Outlined |
@@ -150,7 +153,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 
 | Qué | Dónde | Acción |
 |-----|-------|--------|
-| **Escala de radios** (None → Full, tokens Shape 1–9) | Página **Styles** → set `.Shape` | **KEEP** — es lo que enlazan componentes M3; MyOwnTrip editorial ≈ **Small 8dp** en botones/cards (ADR 002) |
+| **Escala de radios** (None → Full, tokens Shape 1–9) | Página **Styles** → set `.Shape` | **KEEP** — enlazan componentes M3; botones **None 0dp** + morph **20dp**; cards **Medium 12dp**; chips **Small 8dp** (ADR 004) |
 | **Shape library** decorativa (Circle, Arch, Fan, cookie…) | Página **Shape** → `Shape Set` (35) | **CUT** — “momentos de delight” visuales; no sustituye la escala; texto denso → evitar |
 
 - **CUT:** página **Shape** entera (solo el set demostrativo). **No** borrar `.Shape` en Styles.
@@ -161,13 +164,15 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 
 ### Badges · `55141:14167` — **KEEP** (2)
 
-### Buttons · `55141:14168` — **hecho** (2026-06-10)
-- **Button** (5 estilos): **Square** only · XSmall–Large · State completo (−100 Round)
-- **Icon button** (4) + **Icon togglable** (4): Round **+** Square · sin XLarge
-- **Toggle** (4): Round **+** Square · sin XLarge
-- **Segmented** + BB + **FAB menu** + FAB/Extended: KEEP · mezcla Round/Square en segmented
+### Buttons · `55141:14168` — **hecho** (2026-06-10) · binding shape **hecho Figma** (2026-06-12, Bridge)
+- **Button** (5 estilos): **Square** only en reposo · XSmall–Large · State completo (−100 Round estático)
+- **ADR 004:** corner Square → `Corner/None` (0) · Round destino → `Corner/Large-increased` (20) — binding aplicado en librería (auditoría 2026-06-12)
+- **Icon button** (4) + **Icon togglable** (4): Square **+** Round (morph destino 20dp) · sin XLarge
+- **Toggle** (4): Square **+** Round (morph) · sin XLarge
+- **Segmented** + BB + **FAB menu** + FAB/Extended: KEEP · FAB = circular (excepción); segmented Square+Round
 - **XLarge:** eliminado en todos los sets (−410)
 - **CUT:** Split button (144) · Connected + Standard button groups + BB Connected (86) — **hecho**
+- **Checklist binding:** [shape.md](shape.md) § Binding Figma
 
 ### Cards · `55141:14171`
 - **KEEP:** Stacked + Horizontal, Outlined + Elevated, Media & text + Slot

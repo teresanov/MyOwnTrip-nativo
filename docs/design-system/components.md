@@ -1,10 +1,21 @@
 # Componentes — MyOwnTrip Nativo
 
-ADR: [001-m3-native-ds.md](../decisions/001-m3-native-ds.md), [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
+ADR: [001-m3-native-ds.md](../decisions/001-m3-native-ds.md), [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md), [004-button-shape-morph.md](../decisions/004-button-shape-morph.md).
 
 ## Principio
 
 Empezar **M3 puro**: `androidx.compose.material3.*` con el tema MTB.
+
+## Shape en botones (ADR 004)
+
+| | |
+|---|---|
+| Reposo | `Corner/None` → **0dp** |
+| Hover / focus / pressed / selected | `Corner/Large-increased` → **20dp** (morph ~520ms) |
+| API | `rememberMOTButtonShape()` — ver [shape.md](shape.md) |
+| Figma | Button Square: bindear reposo a `Corner/None`; KEEP Round en toggle/segmented como destino morph |
+
+Cards **12dp** y chips **8dp** fijos; FAB circular (excepción).
 
 ## Cuándo crear `MyOwnTrip*`
 

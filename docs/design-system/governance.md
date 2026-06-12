@@ -5,6 +5,7 @@
 | Capa | Fuente | Consumo |
 |------|--------|---------|
 | Color roles | `variables.json` → `Color.kt` → `Theme.kt` | `MaterialTheme.colorScheme` |
+| Shape / corner | `variables.json` → `Shapes.kt` → `Theme.kt` | `MaterialTheme.shapes` + `rememberMOTButtonShape()` |
 | Tipografía | `res/font/` → `Type.kt` | `MaterialTheme.typography` |
 | Librería visual | Figma DS (variables + component sets) | Diseño de pantallas |
 | **Documentación componentes** | **Showcase externo** | Equipo + handoff dev |

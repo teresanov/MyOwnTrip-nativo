@@ -2,7 +2,7 @@
 title: Android Compose UX (runtime)
 description: Normativa de motion, escalado de texto, semántica TalkBack, edge-to-edge, gestos, formularios y back en pantallas de la app
 status: active
-lastUpdated: 2026-05-26
+lastUpdated: 2026-06-11
 ---
 
 # MyOwnTrip — Android Compose UX (runtime)
@@ -75,12 +75,29 @@ object MOTMotion {
 - **No animar texto directamente** — animar siempre el contenedor.
 - **No animar elementos fuera del viewport**.
 
-```kotlin
-import com.example.myowntrip.ui.theme.MOTMotion
-import com.example.myowntrip.ui.theme.motionDurationMillis
+### Shape morph (M3 Expressive · marca · ADR 004)
 
-val duration = motionDurationMillis(MOTMotion.Medium2)
+- **Reposo = 0dp** (`Corner/None`) — rectángulo editorial.
+- **Morph a 20dp** (`Corner/Large-increased`) en `hover` (si aplica), `focus`, `pressed` y `selected`.
+- **Móvil:** sin hover → morph en pressed, focus y selected (tabs, toggles, segmented).
+- **Duración:** `AppMotion.DurationShapeMorph` (**520ms**); curva **emphasized decelerate**; `LocalReduceMotion` → 0ms.
+- **Prohibido** radio redondeado en reposo que vuelva a 0 al deseleccionar (dirección siempre None → 20).
+- **FAB:** circular — excepción; cards 12dp y chips 8dp fijos (sin morph de botón).
+
+Detalle tokens y Figma: `docs/design-system/shape.md`.
+
+```kotlin
+import com.myowntrip.app.ui.theme.AppMotion
+import com.myowntrip.app.ui.theme.rememberMOTButtonShape
+
+Button(
+  onClick = { },
+  shape = rememberMOTButtonShape(),
+  // colors = ButtonDefaults… — state layers M3 en runtime
+)
 ```
+
+Toggle / `FilterChip` selected: mismo par 0→20 vía `InteractionSource` o `selected = true` según componente.
 
 ---
 

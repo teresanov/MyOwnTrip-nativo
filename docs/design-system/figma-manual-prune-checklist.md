@@ -27,6 +27,7 @@ Pregunta para cada set: *¿ayuda a diseñar pantallas que se sientan MyOwnTrip (
 - [ ] Colección variables **M3** (Light/Dark) enlazada a `Palettes/*`
 - [ ] Página **Icons** (Material Symbols Sharp)
 - [ ] **Styles** mínimo (`.Shape`, swatches útiles)
+- [ ] **Shape botones (ADR 004):** Button Square → `Corner/None` (0); Toggle/Segmented Round destino → `Corner/Large-increased` (20) — ver [shape.md](shape.md)
 - [ ] Sin páginas de doc de componentes en canvas (eso va al showcase)
 
 ---
@@ -72,7 +73,7 @@ Sets que **no son P0 en código** pero enriquecen exploración en Figma. Mantene
 
 **Variantes en Figma (no recortar Type/State):** conservar ejes completos para diseño; en Compose los estados interactivos van por state layers (`m3Canonical`).
 
-**Forma:** **Square** solo en Button (filled/tonal/outline/text/elevated). Icon button, segmented, toggle: Round + Square libre.
+**Forma:** **Square** en reposo (marca). Button filled/tonal/outline/text/elevated: solo Square estático. Toggle, segmented, icon togglable: conservar **Square + Round** — morph siempre **Square → Round** (selected/pressed), nunca al revés.
 
 **Tamaños:** **XLarge** podado 2026-06-10; conservar XSmall → Large.
 

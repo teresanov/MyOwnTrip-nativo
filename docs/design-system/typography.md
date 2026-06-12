@@ -52,7 +52,8 @@ MaterialTheme.typography.bodyLarge       // Inter
 
 - Escalado del sistema: respetar `fontScale`; sin alturas fijas en `dp` para texto (ver `docs/ux/android-compose-ux.md`).
 
-## Pendiente
+## Entrega en repo
 
-- [ ] Añadir archivos `.ttf` / variable fonts a `res/font/`
-- [ ] Mapeo completo Display/Headline/Title/Body/Label en `Type.kt` al recibir handoff
+- Variable fonts en `app/src/main/res/font/` (`fraunces.ttf`, `fraunces_italic.ttf`, `inter.ttf`).
+- Mapeo M3 en `Type.kt` (`FrauncesFamily` + `InterFamily` → `AppTypography`).
+- Logo / wordmark: ver [`brand.md`](brand.md) — Fraunces bundled también para W4 y MOT.

@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- C1: M SemiBold + marco-cuaderno (keyline) + cinta ocre. Safe zone 66dp centrada. -->
+<!-- Themed icon Android 13+: marco + M (sin ocre). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Marco cuaderno (keyline tinta) -->
     <path
-        android:fillColor="#00000000"
+        android:fillColor="#FF000000"
         android:pathData="M33,30h42a4,4 0,0 1,4 4v40a4,4 0,0 1,-4 4h-42a4,4 0,0 1,-4 -4v-40a4,4 0,0 1,4 -4z"
         android:strokeWidth="1.4"
-        android:strokeColor="#1F3A5F" />
-    <!-- M editorial (Fraunces-inspired) -->
+        android:strokeColor="#FF000000" />
     <path
-        android:fillColor="#1F3A5F"
+        android:fillColor="#FF000000"
         android:pathData="M39,68 L39,46 L44.5,46 L50,56.5 L55.5,46 L61,46 L61,68 L56.5,68 L56.5,53 L50,62.5 L43.5,53 L43.5,68 Z" />
-    <!-- Cinta marcapáginas ocre -->
     <path
-        android:fillColor="#C8862B"
+        android:fillColor="#FF000000"
         android:pathData="M71,34 L77,34 L77,54 L74,58 L71,54 Z" />
 </vector>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyOwnTrip — Button corner radius · Morph 0 → 20</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface: #FFF8F2;
+      --on-surface: #1F1B13;
+      --on-surface-variant: #4C4639;
+      --outline-variant: #CEC6B4;
+      --outline: #7D7667;
+      --surface-container-low: #FCF2E5;
+      --primary: #3E5F90;
+      --on-primary: #FFFFFF;
+      --primary-container: #D5E3FF;
+      --on-primary-container: #244777;
+      --tertiary: #D9382C;
+      --font-serif: "Fraunces", Georgia, serif;
+      --font-sans: "Inter", system-ui, sans-serif;
+      --card-radius: 12px;
+      /* Morph E — glide suave, sin rebote (aprox. M3 emphasized decelerate) */
+      --morph-radius-duration: 0.52s;
+      --morph-radius-ease: cubic-bezier(0.05, 0.7, 0.1, 1);
+      --morph-surface-duration: 0.24s;
+      --morph-surface-ease: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    [data-theme="dark"] {
+      --surface: #17130B;
+      --on-surface: #F9EFE2;
+      --on-surface-variant: #CEC6B4;
+      --outline-variant: #4C4639;
+      --outline: #978F80;
+      --surface-container-low: #1C1810;
+      --primary: #A7C8FF;
+      --on-primary: #03305F;
+      --primary-container: #244777;
+      --on-primary-container: #D5E3FF;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--surface);
+      color: var(--on-surface);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .page { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+    header {
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.375rem, 3vw, 1.875rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--on-surface-variant);
+      font-size: 0.9375rem;
+      max-width: 68ch;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-low);
+      cursor: pointer;
+      color: var(--on-surface);
+    }
+
+    .chip[aria-pressed="true"] {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: transparent;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 1100px) {
+      .compare-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+
+    .option {
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      background: var(--surface-container-low);
+    }
+
+    .option--pick {
+      border-color: var(--tertiary);
+      box-shadow: 0 0 0 1px var(--tertiary);
+    }
+
+    .option__head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--outline-variant);
+      background: var(--surface);
+    }
+
+    .option__tag {
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .option--pick .option__tag { color: var(--tertiary); }
+
+    .option__head h2 {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .option__head p {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+      line-height: 1.45;
+    }
+
+    .option__body { padding: 16px 14px 18px; }
+
+    .size-block { margin-bottom: 18px; }
+    .size-block:last-child { margin-bottom: 0; }
+
+    .size-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--on-surface-variant);
+      margin-bottom: 8px;
+    }
+
+    .size-label span:last-child {
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      font-family: ui-monospace, monospace;
+      font-size: 0.6rem;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      border: 1px solid var(--outline);
+      cursor: default;
+      white-space: nowrap;
+      background: transparent;
+      color: var(--primary);
+    }
+
+    .btn--filled {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: transparent;
+    }
+
+    .btn--xs { height: 32px; padding: 0 16px; font-size: 0.75rem; }
+    .btn--sm { height: 40px; padding: 0 20px; font-size: 0.8125rem; }
+    .btn--md { height: 48px; padding: 0 24px; font-size: 0.875rem; }
+    .btn--lg { height: 56px; padding: 0 28px; font-size: 0.9375rem; }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --morph-radius-duration: 0.01ms;
+        --morph-surface-duration: 0.01ms;
+      }
+    }
+
+    /* E · Morph 0 (reposo) → 20 (hover / focus / pressed / selected) */
+    .btn--morph {
+      border-radius: 0;
+      cursor: pointer;
+      transition:
+        border-radius var(--morph-radius-duration) var(--morph-radius-ease),
+        background-color var(--morph-surface-duration) var(--morph-surface-ease),
+        color var(--morph-surface-duration) var(--morph-surface-ease),
+        border-color var(--morph-surface-duration) var(--morph-surface-ease),
+        box-shadow var(--morph-surface-duration) var(--morph-surface-ease),
+        filter var(--morph-surface-duration) var(--morph-surface-ease);
+    }
+
+    .btn--morph:hover,
+    .btn--morph:focus-visible,
+    .btn--morph:active,
+    .btn--morph[aria-pressed="true"],
+    .btn--morph.is-state-hover,
+    .btn--morph.is-state-focus,
+    .btn--morph.is-state-pressed,
+    .btn--morph.is-state-selected {
+      border-radius: 20px;
+    }
+
+    .btn--morph:hover:not(.btn--filled),
+    .btn--morph.is-state-hover:not(.btn--filled) {
+      background: color-mix(in srgb, var(--primary) 8%, transparent);
+    }
+
+    .btn--morph:focus-visible,
+    .btn--morph.is-state-focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .btn--morph:active:not(.btn--filled),
+    .btn--morph.is-state-pressed:not(.btn--filled) {
+      background: color-mix(in srgb, var(--primary) 10%, transparent);
+    }
+
+    .btn--morph[aria-pressed="true"],
+    .btn--morph.is-state-selected {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      border-color: transparent;
+    }
+
+    .btn--morph.btn--filled:active,
+    .btn--morph.btn--filled.is-state-pressed {
+      filter: brightness(0.92);
+    }
+
+    .lab-e {
+      margin-bottom: 40px;
+      border: 2px solid var(--tertiary);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      background: var(--surface-container-low);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--tertiary) 35%, transparent);
+    }
+
+    .lab-e__head {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--outline-variant);
+      background: var(--surface);
+    }
+
+    .lab-e__tag {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tertiary);
+      margin-bottom: 6px;
+    }
+
+    .lab-e__head h2 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .lab-e__head p {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+      max-width: 62ch;
+    }
+
+    .lab-e__body { padding: 22px; }
+
+    .state-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .state-toolbar__label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--on-surface-variant);
+      margin-right: 4px;
+    }
+
+    .state-chip {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface);
+      cursor: pointer;
+      color: var(--on-surface);
+    }
+
+    .state-chip[aria-pressed="true"] {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: transparent;
+    }
+
+    .state-hint {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+      margin-bottom: 18px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px dashed var(--outline-variant);
+    }
+
+    .state-hint strong { color: var(--on-surface); font-weight: 600; }
+
+    .lab-e__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 700px) {
+      .lab-e__grid { grid-template-columns: 1fr; }
+    }
+
+  /* Morph segmented (tabs) */
+    .segmented {
+      display: inline-flex;
+      gap: 8px;
+      padding: 4px;
+      border-radius: 12px;
+      background: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+    }
+
+    .morph-btn {
+      cursor: pointer;
+      border: 1px solid var(--outline);
+      background: transparent;
+      color: var(--primary);
+      min-width: 108px;
+      height: 40px;
+      padding: 0 18px;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      border-radius: 0;
+      transition:
+        border-radius var(--morph-radius-duration) var(--morph-radius-ease),
+        background-color var(--morph-surface-duration) var(--morph-surface-ease),
+        color var(--morph-surface-duration) var(--morph-surface-ease),
+        border-color var(--morph-surface-duration) var(--morph-surface-ease);
+    }
+
+    .morph-btn:hover,
+    .morph-btn:focus-visible,
+    .morph-btn:active,
+    .morph-btn[aria-pressed="true"] {
+      border-radius: 20px;
+    }
+
+    .morph-btn:hover:not([aria-pressed="true"]) {
+      background: color-mix(in srgb, var(--primary) 8%, transparent);
+    }
+
+    .morph-btn[aria-pressed="true"] {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      border-color: transparent;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .section-lead {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+      margin-bottom: 16px;
+      max-width: 62ch;
+    }
+
+    .decision-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+
+    .decision-table th,
+    .decision-table td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    .decision-table th { font-weight: 600; }
+
+    footer {
+      margin-top: 32px;
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Button — corner radius · decisión cerrada</h1>
+      <p>
+        <strong>ADR 004:</strong> reposo <strong>0dp</strong> (<code>Corner/None</code>), morph a <strong>20dp</strong> (<code>Corner/Large-increased</code>)
+        en hover, focus, pressed y selected. Abajo, exploración histórica A–D. Card 12px.
+      </p>
+      <div class="toolbar">
+        <button type="button" class="chip" id="theme-light" aria-pressed="true">Light</button>
+        <button type="button" class="chip" id="theme-dark" aria-pressed="false">Dark</button>
+      </div>
+    </header>
+
+    <section class="lab-e" aria-labelledby="lab-e-title">
+      <div class="lab-e__head">
+        <div class="lab-e__tag">E · Aceptada · ADR 004</div>
+        <h2 id="lab-e-title">Morph 0 → 20 en interacción</h2>
+        <p>
+          Reposo rectangular (Corner/None). Al pasar el ratón, enfocar, pulsar o seleccionar, el radio anima a 20dp en todos los tamaños.
+          En móvil: pressed, focus y selected (sin hover). Transición ~520ms, curva M3 decelerate — sin rebote.
+        </p>
+      </div>
+      <div class="lab-e__body">
+        <div class="state-toolbar" role="group" aria-label="Simular estado del botón">
+          <span class="state-toolbar__label">Simular</span>
+          <button type="button" class="state-chip" data-state-pin="none" aria-pressed="true">Reposo (0)</button>
+          <button type="button" class="state-chip" data-state-pin="hover" aria-pressed="false">Hover (20)</button>
+          <button type="button" class="state-chip" data-state-pin="focus" aria-pressed="false">Focus (20)</button>
+          <button type="button" class="state-chip" data-state-pin="pressed" aria-pressed="false">Pressed (20)</button>
+          <button type="button" class="state-chip" data-state-pin="selected" aria-pressed="false">Selected (20)</button>
+        </div>
+        <p class="state-hint" id="state-hint">
+          <strong>Tip:</strong> con «Reposo» activo, pasa el ratón sobre cualquier botón E para ver el morph en vivo.
+          El simulador fija el estado en todos los botones de la fila para comparar tamaños sin ratón.
+        </p>
+
+        <div class="lab-e__grid">
+          <div>
+            <h3 class="section-title" style="font-size:1rem;margin-bottom:14px">Por tamaño — outlined</h3>
+            <div class="size-block">
+              <div class="size-label"><span>XSmall · h 32</span><span>0 → 20</span></div>
+              <div class="btn-row"><button type="button" class="btn btn--morph btn--xs" data-morph-demo>Añadir</button></div>
+            </div>
+            <div class="size-block">
+              <div class="size-label"><span>Small · h 40</span><span>0 → 20</span></div>
+              <div class="btn-row"><button type="button" class="btn btn--morph btn--sm" data-morph-demo>Cancelar</button></div>
+            </div>
+            <div class="size-block">
+              <div class="size-label"><span>Medium · h 48</span><span>0 → 20</span></div>
+              <div class="btn-row"><button type="button" class="btn btn--morph btn--md" data-morph-demo>Guardar</button></div>
+            </div>
+            <div class="size-block">
+              <div class="size-label"><span>Large · h 56</span><span>0 → 20</span></div>
+              <div class="btn-row"><button type="button" class="btn btn--morph btn--lg" data-morph-demo>Crear viaje</button></div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="section-title" style="font-size:1rem;margin-bottom:14px">Variantes — Medium</h3>
+            <div class="size-block">
+              <div class="size-label"><span>Outlined</span><span>0 → 20</span></div>
+              <div class="btn-row"><button type="button" class="btn btn--morph btn--md" data-morph-demo>Guardar cambios</button></div>
+            </div>
+            <div class="size-block">
+              <div class="size-label"><span>Filled</span><span>0 → 20</span></div>
+              <div class="btn-row"><button type="button" class="btn btn--morph btn--filled btn--md" data-morph-demo>Guardar cambios</button></div>
+            </div>
+            <div class="size-block">
+              <div class="size-label"><span>Toggle group</span><span>selected = 20</span></div>
+              <div class="segmented" role="group" aria-label="Sección del viaje" id="morph-group-e">
+                <button type="button" class="morph-btn" data-morph aria-pressed="true">Itinerario</button>
+                <button type="button" class="morph-btn" data-morph aria-pressed="false">Wallet</button>
+                <button type="button" class="morph-btn" data-morph aria-pressed="false">Diario</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <h3 class="section-title" style="font-size:1rem;margin-bottom:12px">Contexto en card (12px)</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+            <div style="border:1px solid var(--outline-variant);border-radius:12px;padding:16px;background:var(--surface)">
+              <div style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tertiary);margin-bottom:4px">Lisboa · Día 2</div>
+              <div style="font-weight:600;margin-bottom:4px">LX Factory</div>
+              <div style="font-size:0.8125rem;color:var(--on-surface-variant);margin-bottom:14px">Parada por la tarde</div>
+              <button type="button" class="btn btn--morph btn--sm" data-morph-demo>Ver en mapa</button>
+            </div>
+            <div style="border:1px solid var(--outline-variant);border-radius:12px;padding:16px;background:var(--surface)">
+              <div style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tertiary);margin-bottom:4px">Wallet</div>
+              <div style="font-weight:600;margin-bottom:4px">Entrada guardada</div>
+              <div style="font-size:0.8125rem;color:var(--on-surface-variant);margin-bottom:14px">PDF · vuelo de ida</div>
+              <button type="button" class="btn btn--morph btn--filled btn--lg" data-morph-demo style="width:100%">Añadir otra entrada</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="section-title" style="margin-bottom:6px">Referencia A–D (estático)</h2>
+    <p class="section-lead" style="margin-bottom:16px">Opciones anteriores sin morph; solo para comparar radios fijos.</p>
+
+    <div class="compare-grid">
+      <article class="option" data-option="a">
+        <div class="option__head">
+          <div class="option__tag">A · M3 kit</div>
+          <h2>Proporcional</h2>
+          <p>12 · 12 · 16 · 28</p>
+        </div>
+        <div class="option__body">
+          <div class="size-block">
+            <div class="size-label"><span>XSmall</span><span>r 12</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--xs" style="border-radius:12px">Añadir</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Small</span><span>r 12</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--sm" style="border-radius:12px">Cancelar</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Medium</span><span>r 16</span></div>
+            <div class="btn-row">
+              <button type="button" class="btn btn--md" style="border-radius:16px">Guardar</button>
+              <button type="button" class="btn btn--filled btn--md" style="border-radius:16px">Guardar</button>
+            </div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Large</span><span>r 28</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--lg" style="border-radius:28px">Crear viaje</button></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="option" data-option="b">
+        <div class="option__head">
+          <div class="option__tag">B · Fijo</div>
+          <h2>8dp todo</h2>
+          <p>Corner/Small en todos</p>
+        </div>
+        <div class="option__body">
+          <div class="size-block">
+            <div class="size-label"><span>XSmall</span><span>r 8</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--xs" style="border-radius:8px">Añadir</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Small</span><span>r 8</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--sm" style="border-radius:8px">Cancelar</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Medium</span><span>r 8</span></div>
+            <div class="btn-row">
+              <button type="button" class="btn btn--md" style="border-radius:8px">Guardar</button>
+              <button type="button" class="btn btn--filled btn--md" style="border-radius:8px">Guardar</button>
+            </div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Large</span><span>r 8</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--lg" style="border-radius:8px">Crear viaje</button></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="option" data-option="c">
+        <div class="option__head">
+          <div class="option__tag">C · Híbrido</div>
+          <h2>Híbrido</h2>
+          <p>8 · 8 · 8 · 12</p>
+        </div>
+        <div class="option__body">
+          <div class="size-block">
+            <div class="size-label"><span>XSmall</span><span>r 8</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--xs" style="border-radius:8px">Añadir</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Small</span><span>r 8</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--sm" style="border-radius:8px">Cancelar</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Medium</span><span>r 8</span></div>
+            <div class="btn-row">
+              <button type="button" class="btn btn--md" style="border-radius:8px">Guardar</button>
+              <button type="button" class="btn btn--filled btn--md" style="border-radius:8px">Guardar</button>
+            </div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Large</span><span>r 12</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--lg" style="border-radius:12px">Crear viaje</button></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="option" data-option="d">
+        <div class="option__head">
+          <div class="option__tag">D · None</div>
+          <h2>0dp todo</h2>
+          <p>Corner/None · recto puro</p>
+        </div>
+        <div class="option__body">
+          <div class="size-block">
+            <div class="size-label"><span>XSmall</span><span>r 0</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--xs" style="border-radius:0">Añadir</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Small</span><span>r 0</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--sm" style="border-radius:0">Cancelar</button></div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Medium</span><span>r 0</span></div>
+            <div class="btn-row">
+              <button type="button" class="btn btn--md" style="border-radius:0">Guardar</button>
+              <button type="button" class="btn btn--filled btn--md" style="border-radius:0">Guardar</button>
+            </div>
+          </div>
+          <div class="size-block">
+            <div class="size-label"><span>Large</span><span>r 0</span></div>
+            <div class="btn-row"><button type="button" class="btn btn--lg" style="border-radius:0">Crear viaje</button></div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <section style="margin-top:40px">
+      <h2 class="section-title">Tabla de decisión</h2>
+      <table class="decision-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>A M3</th>
+            <th>B Fijo</th>
+            <th>C Híbrido</th>
+            <th>D None</th>
+            <th style="color:var(--tertiary)">E Morph</th>
+            <th>Token Figma</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>XSmall</td><td>12</td><td>8</td><td>8</td><td>0</td><td style="font-weight:600">0 → 20</td><td style="font-family:monospace">None → 20</td>
+          </tr>
+          <tr>
+            <td>Small</td><td>12</td><td>8</td><td>8</td><td>0</td><td style="font-weight:600">0 → 20</td><td style="font-family:monospace">None → 20</td>
+          </tr>
+          <tr>
+            <td>Medium</td><td>16</td><td>8</td><td>8</td><td>0</td><td style="font-weight:600">0 → 20</td><td style="font-family:monospace">None → 20</td>
+          </tr>
+          <tr>
+            <td>Large</td><td>28</td><td>8</td><td>12</td><td>0</td><td style="font-weight:600">0 → 20</td><td style="font-family:monospace">None → 20</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>Decisión ADR 004 · junio 2026 · Docs: docs/design-system/shape.md</footer>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const lightBtn = document.getElementById('theme-light');
+    const darkBtn = document.getElementById('theme-dark');
+
+    function setTheme(theme) {
+      const dark = theme === 'dark';
+      if (dark) {
+        root.setAttribute('data-theme', 'dark');
+      } else {
+        root.removeAttribute('data-theme');
+      }
+      darkBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      lightBtn.setAttribute('aria-pressed', dark ? 'false' : 'true');
+    }
+
+    lightBtn.addEventListener('click', () => setTheme('light'));
+    darkBtn.addEventListener('click', () => setTheme('dark'));
+
+    const morphGroupE = document.getElementById('morph-group-e');
+    morphGroupE.querySelectorAll('[data-morph]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        morphGroupE.querySelectorAll('[data-morph]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+      });
+    });
+
+    const stateClasses = {
+      none: [],
+      hover: ['is-state-hover'],
+      focus: ['is-state-focus'],
+      pressed: ['is-state-pressed'],
+      selected: ['is-state-selected'],
+    };
+
+    const stateHints = {
+      none: 'Pasa el ratón sobre los botones para ver el morph 0 → 20 en vivo.',
+      hover: 'Estado hover fijado: radio 20dp + state layer 8% primary.',
+      focus: 'Estado focus fijado: radio 20dp + anillo de foco.',
+      pressed: 'Estado pressed fijado: radio 20dp + state layer 10%.',
+      selected: 'Estado selected fijado: radio 20dp + primaryContainer.',
+    };
+
+    const demoButtons = document.querySelectorAll('[data-morph-demo]');
+    const stateChips = document.querySelectorAll('[data-state-pin]');
+    const stateHintEl = document.getElementById('state-hint');
+
+    function applyPinnedState(state) {
+      demoButtons.forEach((btn) => {
+        Object.values(stateClasses).flat().forEach((cls) => btn.classList.remove(cls));
+        stateClasses[state].forEach((cls) => btn.classList.add(cls));
+      });
+      stateHintEl.innerHTML = '<strong>Simulador:</strong> ' + stateHints[state];
+    }
+
+    stateChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        stateChips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
+        chip.setAttribute('aria-pressed', 'true');
+        applyPinnedState(chip.getAttribute('data-state-pin'));
+      });
+    });
+  </script>
+</body>
+</html>

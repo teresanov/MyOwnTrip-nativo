@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyOwnTrip — Direcciones de logo / wordmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface: #FFF8F2;
+      --on-surface: #1F1B13;
+      --on-surface-variant: #4C4639;
+      --outline-variant: #CEC6B4;
+      --primary: #3E5F90;
+      --tertiary: #825513;
+      --paper: #F4F0E8;
+      --radius: 12px;
+      --font-serif: "Fraunces", Georgia, serif;
+      --font-sans: "Inter", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--surface);
+      color: var(--on-surface);
+      line-height: 1.55;
+    }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+    header {
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    header p { color: var(--on-surface-variant); font-size: 0.9375rem; max-width: 62ch; }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .direction {
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    .direction-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--outline-variant);
+      background: var(--surface);
+    }
+
+    .direction-header h2 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .direction-header .tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+    }
+
+    .direction-header p {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      margin-top: 8px;
+    }
+
+    .logo-stage {
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      background: var(--paper);
+    }
+
+    .logo-stage.dark {
+      background: #17130B;
+    }
+
+    .criteria {
+      padding: 16px 20px;
+      background: var(--surface);
+      border-top: 1px solid var(--outline-variant);
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+    }
+
+    .criteria ul { padding-left: 1.1rem; margin-top: 6px; }
+    .criteria li { margin-bottom: 4px; }
+
+    /* Direction A — Editorial wordmark */
+    .wordmark-a {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: var(--on-surface);
+    }
+
+    .wordmark-a .trip { font-weight: 400; opacity: 0.85; }
+
+    /* Direction B — Own emphasis */
+    .wordmark-b {
+      font-family: var(--font-sans);
+      font-size: 1.75rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--on-surface);
+    }
+
+    .wordmark-b .own {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--primary);
+    }
+
+    .wordmark-b .my { font-weight: 400; opacity: 0.7; }
+
+    /* Direction C — Monogram + wordmark */
+    .lockup-c {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .monogram {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      border: 1.5px solid var(--on-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .monogram::after {
+      content: "";
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      right: 10px;
+      height: 2px;
+      background: var(--tertiary);
+      opacity: 0.9;
+    }
+
+    .wordmark-c {
+      font-family: var(--font-sans);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .wordmark-c span {
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+      margin-top: 2px;
+    }
+
+    .dark .wordmark-a,
+    .dark .wordmark-b,
+    .dark .wordmark-c { color: #F9EFE2; }
+    .dark .wordmark-b .own { color: #A7C8FF; }
+    .dark .monogram { border-color: #F9EFE2; }
+
+    .icon-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--outline-variant);
+    }
+
+    .icon-row h3 {
+      width: 100%;
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .app-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.75rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(31, 27, 19, 0.12);
+    }
+
+    .app-icon.a { background: var(--paper); color: var(--on-surface); border: 1px solid var(--outline-variant); }
+    .app-icon.b { background: var(--primary); color: #fff; }
+    .app-icon.c { background: var(--on-surface); color: var(--paper); }
+
+    .app-icon-label {
+      text-align: center;
+      font-size: 0.6875rem;
+      color: var(--on-surface-variant);
+      margin-top: 6px;
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Logo & wordmark — 3 direcciones</h1>
+      <p>Híbrido III: cuaderno personal + criterio editorial. Exploración tipográfica; no son logos finales. Criterio: legible a 24px, funciona en papel cálido y en icono de app.</p>
+    </header>
+
+    <div class="grid">
+      <article class="direction">
+        <div class="direction-header">
+          <div class="tag">A · Editorial puro</div>
+          <h2>Wordmark Fraunces</h2>
+          <p>Revista de viaje. El nombre completo en serif; sobrio, sin isotipo obligatorio.</p>
+        </div>
+        <div class="logo-stage">
+          <div class="wordmark-a">My<span class="trip">OwnTrip</span></div>
+        </div>
+        <div class="logo-stage dark">
+          <div class="wordmark-a">My<span class="trip">OwnTrip</span></div>
+        </div>
+        <div class="criteria">
+          <strong>Criterios</strong>
+          <ul>
+            <li>Coherente con Display/Headline de la app</li>
+            <li>Funciona solo tipografía en splash y cabeceras</li>
+            <li>Riesgo: poco memorable en icono 48×48</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="direction">
+        <div class="direction-header">
+          <div class="tag">B · Own como ancla</div>
+          <h2>Híbrido tipográfico</h2>
+          <p>«Own» en serif/itálica = tu criterio; resto en Inter. Diferencial de marca en una sílaba.</p>
+        </div>
+        <div class="logo-stage">
+          <div class="wordmark-b"><span class="my">My</span><span class="own">Own</span>Trip</div>
+        </div>
+        <div class="logo-stage dark">
+          <div class="wordmark-b"><span class="my">My</span><span class="own">Own</span>Trip</div>
+        </div>
+        <div class="criteria">
+          <strong>Criterios</strong>
+          <ul>
+            <li>Refuerza el posicionamiento «mi viaje, mi criterio»</li>
+            <li>Equilibra íntimo (serif) y funcional (sans)</li>
+            <li>Recomendada como dirección principal</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="direction">
+        <div class="direction-header">
+          <div class="tag">C · Cuaderno</div>
+          <h2>Monograma M + lockup</h2>
+          <p>«M» en marco de libreta + línea roja (cinta/señal). Wordmark compacto debajo o al lado.</p>
+        </div>
+        <div class="logo-stage">
+          <div class="lockup-c">
+            <div class="monogram">M</div>
+            <div class="wordmark-c">MyOwnTrip<span>cuaderno de viaje</span></div>
+          </div>
+        </div>
+        <div class="logo-stage dark">
+          <div class="lockup-c">
+            <div class="monogram">M</div>
+            <div class="wordmark-c">MyOwnTrip<span>cuaderno de viaje</span></div>
+          </div>
+        </div>
+        <div class="criteria">
+          <strong>Criterios</strong>
+          <ul>
+            <li>Mejor para icono de app y favicon</li>
+            <li>Metáfora Moleskine sin parecer marca de cuero</li>
+            <li>Evitar cliché de avión/mundo/pin</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <section class="icon-row">
+      <h3>Derivados de icono (borrador)</h3>
+      <div>
+        <div class="app-icon a">M</div>
+        <div class="app-icon-label">A · papel</div>
+      </div>
+      <div>
+        <div class="app-icon b">O</div>
+        <div class="app-icon-label">B · Own</div>
+      </div>
+      <div>
+        <div class="app-icon c">M</div>
+        <div class="app-icon-label">C · monograma</div>
+      </div>
+    </section>
+
+    <footer>Borrador exploratorio · junio 2026 · No usar en producción sin refinamiento vectorial</footer>
+  </div>
+</body>
+</html>

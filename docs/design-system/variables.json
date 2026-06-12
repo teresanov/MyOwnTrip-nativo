@@ -12,7 +12,7 @@
               "name": "Schemes/Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/On Primary",
@@ -24,19 +24,19 @@
               "name": "Schemes/Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#244777"
+              "value": "#2E363D"
             },
             {
               "name": "Schemes/Secondary",
               "type": "color",
               "isAlias": false,
-              "value": "#3D5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/On Secondary",
@@ -48,13 +48,13 @@
               "name": "Schemes/Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#234776"
+              "value": "#2E363D"
             },
             {
               "name": "Schemes/Tertiary",
@@ -108,7 +108,7 @@
               "name": "Schemes/Background",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F7F4EF"
             },
             {
               "name": "Schemes/On Background",
@@ -156,7 +156,7 @@
               "name": "Schemes/Surface Tint",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/Shadow",
@@ -186,55 +186,55 @@
               "name": "Schemes/Inverse Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC0"
             },
             {
               "name": "Schemes/Primary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Primary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#1C2228"
             },
             {
               "name": "Schemes/Primary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#98A1AA"
             },
             {
               "name": "Schemes/On Primary Fixed Variant",
               "type": "color",
               "isAlias": false,
-              "value": "#244777"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/Secondary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Secondary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#1C2228"
             },
             {
               "name": "Schemes/Secondary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF"
+              "value": "#98A1AA"
             },
             {
               "name": "Schemes/On Secondary Fixed Variant",
               "type": "color",
               "isAlias": false,
-              "value": "#234776"
+              "value": "#2E363D"
             },
             {
               "name": "Schemes/Tertiary Fixed",
@@ -306,7 +306,7 @@
               "name": "State Layers/Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "Add-ons/Section background",
@@ -318,13 +318,13 @@
               "name": "State Layers/Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/On Primary/Opacity-08",
@@ -348,55 +348,55 @@
               "name": "State Layers/Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#24477714"
+              "value": "#2E363D14"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2447771A"
+              "value": "#2E363D1A"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#24477729"
+              "value": "#2E363D29"
             },
             {
               "name": "State Layers/Secondary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3D5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "State Layers/Secondary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3D5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Secondary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3D5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/On Secondary/Opacity-08",
@@ -420,37 +420,37 @@
               "name": "State Layers/Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#23477614"
+              "value": "#2E363D14"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2347761A"
+              "value": "#2E363D1A"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#23477629"
+              "value": "#2E363D29"
             },
             {
               "name": "State Layers/Tertiary/Opacity-08",
@@ -732,19 +732,19 @@
               "name": "State Layers/Surface Tint/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/Shadow/Opacity-08",
@@ -822,163 +822,163 @@
               "name": "State Layers/Inverse Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC014"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC01A"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC029"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B14"
+              "value": "#1C222814"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B1A"
+              "value": "#1C22281A"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B29"
+              "value": "#1C222829"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#98A1AA14"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#98A1AA1A"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#98A1AA29"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#24477714"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2447771A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#24477729"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B14"
+              "value": "#1C222814"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B1A"
+              "value": "#1C22281A"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B29"
+              "value": "#1C222829"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF14"
+              "value": "#98A1AA14"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF1A"
+              "value": "#98A1AA1A"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF29"
+              "value": "#98A1AA29"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#23477614"
+              "value": "#2E363D14"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2347761A"
+              "value": "#2E363D1A"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#23477629"
+              "value": "#2E363D29"
             },
             {
               "name": "State Layers/Tertiary Fixed/Opacity-08",
@@ -1266,31 +1266,31 @@
               "name": "Surfaces/Surface Tint 5%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F900D"
+              "value": "#4A58640D"
             },
             {
               "name": "Surfaces/Surface Tint 8%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "Surfaces/Surface Tint 11%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901C"
+              "value": "#4A58641C"
             },
             {
               "name": "Surfaces/Surface Tint 12%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901F"
+              "value": "#4A58641F"
             },
             {
               "name": "Surfaces/Surface Tint 14%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9024"
+              "value": "#4A586424"
             },
             {
               "name": "Extended Colors/Custom Color 1",
@@ -1350,97 +1350,97 @@
               "name": "Palettes/Primary 99",
               "type": "color",
               "isAlias": false,
-              "value": "#FDFBFF"
+              "value": "#FCFCFF"
             },
             {
               "name": "Palettes/Primary 98",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F6F9FF"
             },
             {
               "name": "Palettes/Primary 95",
               "type": "color",
               "isAlias": false,
-              "value": "#EBF1FF"
+              "value": "#E6F2FF"
             },
             {
               "name": "Palettes/Primary 90",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#D5E4F3"
             },
             {
               "name": "Palettes/Primary 80",
               "type": "color",
               "isAlias": false,
-              "value": "#AEC8F4"
+              "value": "#BAC8D6"
             },
             {
               "name": "Palettes/Primary 70",
               "type": "color",
               "isAlias": false,
-              "value": "#93ACD8"
+              "value": "#9EADBB"
             },
             {
               "name": "Palettes/Primary 60",
               "type": "color",
               "isAlias": false,
-              "value": "#7892BC"
+              "value": "#8492A0"
             },
             {
               "name": "Palettes/Primary 50",
               "type": "color",
               "isAlias": false,
-              "value": "#5F78A1"
+              "value": "#6B7985"
             },
             {
               "name": "Palettes/Primary 40",
               "type": "color",
               "isAlias": false,
-              "value": "#465F86"
+              "value": "#52606C"
             },
             {
               "name": "Palettes/Primary 35",
               "type": "color",
               "isAlias": false,
-              "value": "#3A537A"
+              "value": "#465460"
             },
             {
               "name": "Palettes/Primary 30",
               "type": "color",
               "isAlias": false,
-              "value": "#2D476D"
+              "value": "#3A4854"
             },
             {
               "name": "Palettes/Primary 25",
               "type": "color",
               "isAlias": false,
-              "value": "#213C61"
+              "value": "#2F3D48"
             },
             {
               "name": "Palettes/Primary 20",
               "type": "color",
               "isAlias": false,
-              "value": "#143155"
+              "value": "#24323D"
             },
             {
               "name": "Palettes/Primary 15",
               "type": "color",
               "isAlias": false,
-              "value": "#06264A"
+              "value": "#192732"
             },
             {
               "name": "Palettes/Primary 10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#0F1D27"
             },
             {
               "name": "Palettes/Primary 5",
               "type": "color",
               "isAlias": false,
-              "value": "#001128"
+              "value": "#04121C"
             },
             {
               "name": "Palettes/Primary 0",
@@ -1997,7 +1997,7 @@
               "name": "Schemes/Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/On Primary",
@@ -2009,7 +2009,7 @@
               "name": "Schemes/Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#264A79"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Primary Container",
@@ -2021,7 +2021,7 @@
               "name": "Schemes/Secondary",
               "type": "color",
               "isAlias": false,
-              "value": "#002C58"
+              "value": "#2E363D"
             },
             {
               "name": "Schemes/On Secondary",
@@ -2033,7 +2033,7 @@
               "name": "Schemes/Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#254A79"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Secondary Container",
@@ -2093,7 +2093,7 @@
               "name": "Schemes/Background",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F7F4EF"
             },
             {
               "name": "Schemes/On Background",
@@ -2141,7 +2141,7 @@
               "name": "Schemes/Surface Tint",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/Shadow",
@@ -2171,13 +2171,13 @@
               "name": "Schemes/Inverse Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/Primary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#264A79"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Primary Fixed",
@@ -2189,7 +2189,7 @@
               "name": "Schemes/Primary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#073361"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Primary Fixed Variant",
@@ -2201,7 +2201,7 @@
               "name": "Schemes/Secondary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#254A79"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Secondary Fixed",
@@ -2213,7 +2213,7 @@
               "name": "Schemes/Secondary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#053361"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Secondary Fixed Variant",
@@ -2291,7 +2291,7 @@
               "name": "State Layers/Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "Add-ons/Section background",
@@ -2303,13 +2303,13 @@
               "name": "State Layers/Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/On Primary/Opacity-08",
@@ -2333,19 +2333,19 @@
               "name": "State Layers/Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#264A7914"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#264A791A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#264A7929"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-08",
@@ -2369,19 +2369,19 @@
               "name": "State Layers/Secondary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#002C5814"
+              "value": "#2E363D14"
             },
             {
               "name": "State Layers/Secondary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#002C581A"
+              "value": "#2E363D1A"
             },
             {
               "name": "State Layers/Secondary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#002C5829"
+              "value": "#2E363D29"
             },
             {
               "name": "State Layers/On Secondary/Opacity-08",
@@ -2405,19 +2405,19 @@
               "name": "State Layers/Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#254A7914"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#254A791A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#254A7929"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-08",
@@ -2717,19 +2717,19 @@
               "name": "State Layers/Surface Tint/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/Shadow/Opacity-08",
@@ -2807,37 +2807,37 @@
               "name": "State Layers/Inverse Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#264A7914"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#264A791A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#264A7929"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-08",
@@ -2861,19 +2861,19 @@
               "name": "State Layers/Primary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#07336114"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#0733611A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#07336129"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-08",
@@ -2897,19 +2897,19 @@
               "name": "State Layers/Secondary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#254A7914"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#254A791A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#254A7929"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-08",
@@ -2933,19 +2933,19 @@
               "name": "State Layers/Secondary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#05336114"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#0533611A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#05336129"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-08",
@@ -3251,31 +3251,31 @@
               "name": "Surfaces/Surface Tint 5%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F900D"
+              "value": "#4A58640D"
             },
             {
               "name": "Surfaces/Surface Tint 8%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "Surfaces/Surface Tint 11%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901C"
+              "value": "#4A58641C"
             },
             {
               "name": "Surfaces/Surface Tint 12%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901F"
+              "value": "#4A58641F"
             },
             {
               "name": "Surfaces/Surface Tint 14%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9024"
+              "value": "#4A586424"
             },
             {
               "name": "Extended Colors/Custom Color 1",
@@ -3335,97 +3335,97 @@
               "name": "Palettes/Primary 99",
               "type": "color",
               "isAlias": false,
-              "value": "#FDFBFF"
+              "value": "#FCFCFF"
             },
             {
               "name": "Palettes/Primary 98",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F6F9FF"
             },
             {
               "name": "Palettes/Primary 95",
               "type": "color",
               "isAlias": false,
-              "value": "#EBF1FF"
+              "value": "#E6F2FF"
             },
             {
               "name": "Palettes/Primary 90",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#D5E4F3"
             },
             {
               "name": "Palettes/Primary 80",
               "type": "color",
               "isAlias": false,
-              "value": "#AEC8F4"
+              "value": "#BAC8D6"
             },
             {
               "name": "Palettes/Primary 70",
               "type": "color",
               "isAlias": false,
-              "value": "#93ACD8"
+              "value": "#9EADBB"
             },
             {
               "name": "Palettes/Primary 60",
               "type": "color",
               "isAlias": false,
-              "value": "#7892BC"
+              "value": "#8492A0"
             },
             {
               "name": "Palettes/Primary 50",
               "type": "color",
               "isAlias": false,
-              "value": "#5F78A1"
+              "value": "#6B7985"
             },
             {
               "name": "Palettes/Primary 40",
               "type": "color",
               "isAlias": false,
-              "value": "#465F86"
+              "value": "#52606C"
             },
             {
               "name": "Palettes/Primary 35",
               "type": "color",
               "isAlias": false,
-              "value": "#3A537A"
+              "value": "#465460"
             },
             {
               "name": "Palettes/Primary 30",
               "type": "color",
               "isAlias": false,
-              "value": "#2D476D"
+              "value": "#3A4854"
             },
             {
               "name": "Palettes/Primary 25",
               "type": "color",
               "isAlias": false,
-              "value": "#213C61"
+              "value": "#2F3D48"
             },
             {
               "name": "Palettes/Primary 20",
               "type": "color",
               "isAlias": false,
-              "value": "#143155"
+              "value": "#24323D"
             },
             {
               "name": "Palettes/Primary 15",
               "type": "color",
               "isAlias": false,
-              "value": "#06264A"
+              "value": "#192732"
             },
             {
               "name": "Palettes/Primary 10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#0F1D27"
             },
             {
               "name": "Palettes/Primary 5",
               "type": "color",
               "isAlias": false,
-              "value": "#001128"
+              "value": "#04121C"
             },
             {
               "name": "Palettes/Primary 0",
@@ -3982,7 +3982,7 @@
               "name": "Schemes/Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/On Primary",
@@ -3994,7 +3994,7 @@
               "name": "Schemes/Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA0"
+              "value": "#5A6572"
             },
             {
               "name": "Schemes/On Primary Container",
@@ -4006,7 +4006,7 @@
               "name": "Schemes/Secondary",
               "type": "color",
               "isAlias": false,
-              "value": "#0C3765"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Secondary",
@@ -4018,7 +4018,7 @@
               "name": "Schemes/Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA0"
+              "value": "#5A6572"
             },
             {
               "name": "Schemes/On Secondary Container",
@@ -4078,7 +4078,7 @@
               "name": "Schemes/Background",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F7F4EF"
             },
             {
               "name": "Schemes/On Background",
@@ -4126,7 +4126,7 @@
               "name": "Schemes/Surface Tint",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/Shadow",
@@ -4156,13 +4156,13 @@
               "name": "Schemes/Inverse Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/Primary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA0"
+              "value": "#5A6572"
             },
             {
               "name": "Schemes/On Primary Fixed",
@@ -4174,7 +4174,7 @@
               "name": "Schemes/Primary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#335686"
+              "value": "#5A6572"
             },
             {
               "name": "Schemes/On Primary Fixed Variant",
@@ -4186,7 +4186,7 @@
               "name": "Schemes/Secondary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA0"
+              "value": "#5A6572"
             },
             {
               "name": "Schemes/On Secondary Fixed",
@@ -4198,7 +4198,7 @@
               "name": "Schemes/Secondary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#325685"
+              "value": "#5A6572"
             },
             {
               "name": "Schemes/On Secondary Fixed Variant",
@@ -4276,7 +4276,7 @@
               "name": "State Layers/Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "Add-ons/Section background",
@@ -4288,13 +4288,13 @@
               "name": "State Layers/Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/On Primary/Opacity-08",
@@ -4318,19 +4318,19 @@
               "name": "State Layers/Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA014"
+              "value": "#5A657214"
             },
             {
               "name": "State Layers/Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA01A"
+              "value": "#5A65721A"
             },
             {
               "name": "State Layers/Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA029"
+              "value": "#5A657229"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-08",
@@ -4354,19 +4354,19 @@
               "name": "State Layers/Secondary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#0C376514"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Secondary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#0C37651A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Secondary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#0C376529"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Secondary/Opacity-08",
@@ -4390,19 +4390,19 @@
               "name": "State Layers/Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA014"
+              "value": "#5A657214"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA01A"
+              "value": "#5A65721A"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA029"
+              "value": "#5A657229"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-08",
@@ -4702,19 +4702,19 @@
               "name": "State Layers/Surface Tint/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/Shadow/Opacity-08",
@@ -4792,37 +4792,37 @@
               "name": "State Layers/Inverse Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA014"
+              "value": "#5A657214"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA01A"
+              "value": "#5A65721A"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#4D6EA029"
+              "value": "#5A657229"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-08",
@@ -4846,19 +4846,19 @@
               "name": "State Layers/Primary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#33568614"
+              "value": "#5A657214"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3356861A"
+              "value": "#5A65721A"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#33568629"
+              "value": "#5A657229"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-08",
@@ -4882,19 +4882,19 @@
               "name": "State Layers/Secondary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA014"
+              "value": "#5A657214"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA01A"
+              "value": "#5A65721A"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#4C6EA029"
+              "value": "#5A657229"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-08",
@@ -4918,19 +4918,19 @@
               "name": "State Layers/Secondary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#32568514"
+              "value": "#5A657214"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3256851A"
+              "value": "#5A65721A"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#32568529"
+              "value": "#5A657229"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-08",
@@ -5236,31 +5236,31 @@
               "name": "Surfaces/Surface Tint 5%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F900D"
+              "value": "#4A58640D"
             },
             {
               "name": "Surfaces/Surface Tint 8%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "Surfaces/Surface Tint 11%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901C"
+              "value": "#4A58641C"
             },
             {
               "name": "Surfaces/Surface Tint 12%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901F"
+              "value": "#4A58641F"
             },
             {
               "name": "Surfaces/Surface Tint 14%",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9024"
+              "value": "#4A586424"
             },
             {
               "name": "Extended Colors/Custom Color 1",
@@ -5320,97 +5320,97 @@
               "name": "Palettes/Primary 99",
               "type": "color",
               "isAlias": false,
-              "value": "#FDFBFF"
+              "value": "#FCFCFF"
             },
             {
               "name": "Palettes/Primary 98",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F6F9FF"
             },
             {
               "name": "Palettes/Primary 95",
               "type": "color",
               "isAlias": false,
-              "value": "#EBF1FF"
+              "value": "#E6F2FF"
             },
             {
               "name": "Palettes/Primary 90",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#D5E4F3"
             },
             {
               "name": "Palettes/Primary 80",
               "type": "color",
               "isAlias": false,
-              "value": "#AEC8F4"
+              "value": "#BAC8D6"
             },
             {
               "name": "Palettes/Primary 70",
               "type": "color",
               "isAlias": false,
-              "value": "#93ACD8"
+              "value": "#9EADBB"
             },
             {
               "name": "Palettes/Primary 60",
               "type": "color",
               "isAlias": false,
-              "value": "#7892BC"
+              "value": "#8492A0"
             },
             {
               "name": "Palettes/Primary 50",
               "type": "color",
               "isAlias": false,
-              "value": "#5F78A1"
+              "value": "#6B7985"
             },
             {
               "name": "Palettes/Primary 40",
               "type": "color",
               "isAlias": false,
-              "value": "#465F86"
+              "value": "#52606C"
             },
             {
               "name": "Palettes/Primary 35",
               "type": "color",
               "isAlias": false,
-              "value": "#3A537A"
+              "value": "#465460"
             },
             {
               "name": "Palettes/Primary 30",
               "type": "color",
               "isAlias": false,
-              "value": "#2D476D"
+              "value": "#3A4854"
             },
             {
               "name": "Palettes/Primary 25",
               "type": "color",
               "isAlias": false,
-              "value": "#213C61"
+              "value": "#2F3D48"
             },
             {
               "name": "Palettes/Primary 20",
               "type": "color",
               "isAlias": false,
-              "value": "#143155"
+              "value": "#24323D"
             },
             {
               "name": "Palettes/Primary 15",
               "type": "color",
               "isAlias": false,
-              "value": "#06264A"
+              "value": "#192732"
             },
             {
               "name": "Palettes/Primary 10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#0F1D27"
             },
             {
               "name": "Palettes/Primary 5",
               "type": "color",
               "isAlias": false,
-              "value": "#001128"
+              "value": "#04121C"
             },
             {
               "name": "Palettes/Primary 0",
@@ -5967,49 +5967,49 @@
               "name": "Schemes/Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#03305F"
+              "value": "#1A2228"
             },
             {
               "name": "Schemes/Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#244777"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/Secondary",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Secondary",
               "type": "color",
               "isAlias": false,
-              "value": "#02315E"
+              "value": "#1A2228"
             },
             {
               "name": "Schemes/Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#234776"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/On Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/Tertiary",
@@ -6111,7 +6111,7 @@
               "name": "Schemes/Surface Tint",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/Shadow",
@@ -6141,13 +6141,13 @@
               "name": "Schemes/Inverse Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F90"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/Primary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Primary Fixed",
@@ -6159,19 +6159,19 @@
               "name": "Schemes/Primary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#98A1AA"
             },
             {
               "name": "Schemes/On Primary Fixed Variant",
               "type": "color",
               "isAlias": false,
-              "value": "#244777"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/Secondary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Secondary Fixed",
@@ -6183,13 +6183,13 @@
               "name": "Schemes/Secondary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF"
+              "value": "#98A1AA"
             },
             {
               "name": "Schemes/On Secondary Fixed Variant",
               "type": "color",
               "isAlias": false,
-              "value": "#234776"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/Tertiary Fixed",
@@ -6261,7 +6261,7 @@
               "name": "State Layers/Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "Add-ons/Section background",
@@ -6273,139 +6273,139 @@
               "name": "State Layers/Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#03305F14"
+              "value": "#1A222814"
             },
             {
               "name": "State Layers/On Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#03305F1A"
+              "value": "#1A22281A"
             },
             {
               "name": "State Layers/On Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#03305F29"
+              "value": "#1A222829"
             },
             {
               "name": "State Layers/Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#24477714"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2447771A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#24477729"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/Secondary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Secondary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Secondary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Secondary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#02315E14"
+              "value": "#1A222814"
             },
             {
               "name": "State Layers/On Secondary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#02315E1A"
+              "value": "#1A22281A"
             },
             {
               "name": "State Layers/On Secondary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#02315E29"
+              "value": "#1A222829"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#23477614"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2347761A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#23477629"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/Tertiary/Opacity-08",
@@ -6687,19 +6687,19 @@
               "name": "State Layers/Surface Tint/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/Shadow/Opacity-08",
@@ -6777,37 +6777,37 @@
               "name": "State Layers/Inverse Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9014"
+              "value": "#4A586414"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F901A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#3E5F9029"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-08",
@@ -6831,55 +6831,55 @@
               "name": "State Layers/Primary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#98A1AA14"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#98A1AA1A"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#98A1AA29"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#24477714"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2447771A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#24477729"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-08",
@@ -6903,37 +6903,37 @@
               "name": "State Layers/Secondary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF14"
+              "value": "#98A1AA14"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF1A"
+              "value": "#98A1AA1A"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF29"
+              "value": "#98A1AA29"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#23477614"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2347761A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#23477629"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/Tertiary Fixed/Opacity-08",
@@ -7221,31 +7221,31 @@
               "name": "Surfaces/Surface Tint 5%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF0D"
+              "value": "#B4BAC20D"
             },
             {
               "name": "Surfaces/Surface Tint 8%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "Surfaces/Surface Tint 11%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1C"
+              "value": "#B4BAC21C"
             },
             {
               "name": "Surfaces/Surface Tint 12%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1F"
+              "value": "#B4BAC21F"
             },
             {
               "name": "Surfaces/Surface Tint 14%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF24"
+              "value": "#B4BAC224"
             },
             {
               "name": "Extended Colors/Custom Color 1",
@@ -7305,97 +7305,97 @@
               "name": "Palettes/Primary 99",
               "type": "color",
               "isAlias": false,
-              "value": "#FDFBFF"
+              "value": "#FCFCFF"
             },
             {
               "name": "Palettes/Primary 98",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F6F9FF"
             },
             {
               "name": "Palettes/Primary 95",
               "type": "color",
               "isAlias": false,
-              "value": "#EBF1FF"
+              "value": "#E6F2FF"
             },
             {
               "name": "Palettes/Primary 90",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#D5E4F3"
             },
             {
               "name": "Palettes/Primary 80",
               "type": "color",
               "isAlias": false,
-              "value": "#AEC8F4"
+              "value": "#BAC8D6"
             },
             {
               "name": "Palettes/Primary 70",
               "type": "color",
               "isAlias": false,
-              "value": "#93ACD8"
+              "value": "#9EADBB"
             },
             {
               "name": "Palettes/Primary 60",
               "type": "color",
               "isAlias": false,
-              "value": "#7892BC"
+              "value": "#8492A0"
             },
             {
               "name": "Palettes/Primary 50",
               "type": "color",
               "isAlias": false,
-              "value": "#5F78A1"
+              "value": "#6B7985"
             },
             {
               "name": "Palettes/Primary 40",
               "type": "color",
               "isAlias": false,
-              "value": "#465F86"
+              "value": "#52606C"
             },
             {
               "name": "Palettes/Primary 35",
               "type": "color",
               "isAlias": false,
-              "value": "#3A537A"
+              "value": "#465460"
             },
             {
               "name": "Palettes/Primary 30",
               "type": "color",
               "isAlias": false,
-              "value": "#2D476D"
+              "value": "#3A4854"
             },
             {
               "name": "Palettes/Primary 25",
               "type": "color",
               "isAlias": false,
-              "value": "#213C61"
+              "value": "#2F3D48"
             },
             {
               "name": "Palettes/Primary 20",
               "type": "color",
               "isAlias": false,
-              "value": "#143155"
+              "value": "#24323D"
             },
             {
               "name": "Palettes/Primary 15",
               "type": "color",
               "isAlias": false,
-              "value": "#06264A"
+              "value": "#192732"
             },
             {
               "name": "Palettes/Primary 10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#0F1D27"
             },
             {
               "name": "Palettes/Primary 5",
               "type": "color",
               "isAlias": false,
-              "value": "#001128"
+              "value": "#04121C"
             },
             {
               "name": "Palettes/Primary 0",
@@ -7952,7 +7952,7 @@
               "name": "Schemes/Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Primary",
@@ -7964,7 +7964,7 @@
               "name": "Schemes/Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#A3C4FB"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Primary Container",
@@ -7976,7 +7976,7 @@
               "name": "Schemes/Secondary",
               "type": "color",
               "isAlias": false,
-              "value": "#EAF0FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Secondary",
@@ -7988,7 +7988,7 @@
               "name": "Schemes/Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#A2C4FB"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Secondary Container",
@@ -8096,7 +8096,7 @@
               "name": "Schemes/Surface Tint",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/Shadow",
@@ -8126,13 +8126,13 @@
               "name": "Schemes/Inverse Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#254978"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/Primary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Primary Fixed",
@@ -8144,7 +8144,7 @@
               "name": "Schemes/Primary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Primary Fixed Variant",
@@ -8156,7 +8156,7 @@
               "name": "Schemes/Secondary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Secondary Fixed",
@@ -8168,7 +8168,7 @@
               "name": "Schemes/Secondary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Secondary Fixed Variant",
@@ -8246,7 +8246,7 @@
               "name": "State Layers/Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "Add-ons/Section background",
@@ -8258,13 +8258,13 @@
               "name": "State Layers/Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Primary/Opacity-08",
@@ -8288,19 +8288,19 @@
               "name": "State Layers/Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A3C4FB14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A3C4FB1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A3C4FB29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-08",
@@ -8324,19 +8324,19 @@
               "name": "State Layers/Secondary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#EAF0FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Secondary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#EAF0FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Secondary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#EAF0FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Secondary/Opacity-08",
@@ -8360,19 +8360,19 @@
               "name": "State Layers/Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A2C4FB14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A2C4FB1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A2C4FB29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-08",
@@ -8672,19 +8672,19 @@
               "name": "State Layers/Surface Tint/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/Shadow/Opacity-08",
@@ -8762,37 +8762,37 @@
               "name": "State Layers/Inverse Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#25497814"
+              "value": "#4A586414"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2549781A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#25497829"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-08",
@@ -8816,19 +8816,19 @@
               "name": "State Layers/Primary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-08",
@@ -8852,19 +8852,19 @@
               "name": "State Layers/Secondary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-08",
@@ -8888,19 +8888,19 @@
               "name": "State Layers/Secondary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-08",
@@ -9206,31 +9206,31 @@
               "name": "Surfaces/Surface Tint 5%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF0D"
+              "value": "#B4BAC20D"
             },
             {
               "name": "Surfaces/Surface Tint 8%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "Surfaces/Surface Tint 11%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1C"
+              "value": "#B4BAC21C"
             },
             {
               "name": "Surfaces/Surface Tint 12%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1F"
+              "value": "#B4BAC21F"
             },
             {
               "name": "Surfaces/Surface Tint 14%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF24"
+              "value": "#B4BAC224"
             },
             {
               "name": "Extended Colors/Custom Color 1",
@@ -9290,97 +9290,97 @@
               "name": "Palettes/Primary 99",
               "type": "color",
               "isAlias": false,
-              "value": "#FDFBFF"
+              "value": "#FCFCFF"
             },
             {
               "name": "Palettes/Primary 98",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F6F9FF"
             },
             {
               "name": "Palettes/Primary 95",
               "type": "color",
               "isAlias": false,
-              "value": "#EBF1FF"
+              "value": "#E6F2FF"
             },
             {
               "name": "Palettes/Primary 90",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#D5E4F3"
             },
             {
               "name": "Palettes/Primary 80",
               "type": "color",
               "isAlias": false,
-              "value": "#AEC8F4"
+              "value": "#BAC8D6"
             },
             {
               "name": "Palettes/Primary 70",
               "type": "color",
               "isAlias": false,
-              "value": "#93ACD8"
+              "value": "#9EADBB"
             },
             {
               "name": "Palettes/Primary 60",
               "type": "color",
               "isAlias": false,
-              "value": "#7892BC"
+              "value": "#8492A0"
             },
             {
               "name": "Palettes/Primary 50",
               "type": "color",
               "isAlias": false,
-              "value": "#5F78A1"
+              "value": "#6B7985"
             },
             {
               "name": "Palettes/Primary 40",
               "type": "color",
               "isAlias": false,
-              "value": "#465F86"
+              "value": "#52606C"
             },
             {
               "name": "Palettes/Primary 35",
               "type": "color",
               "isAlias": false,
-              "value": "#3A537A"
+              "value": "#465460"
             },
             {
               "name": "Palettes/Primary 30",
               "type": "color",
               "isAlias": false,
-              "value": "#2D476D"
+              "value": "#3A4854"
             },
             {
               "name": "Palettes/Primary 25",
               "type": "color",
               "isAlias": false,
-              "value": "#213C61"
+              "value": "#2F3D48"
             },
             {
               "name": "Palettes/Primary 20",
               "type": "color",
               "isAlias": false,
-              "value": "#143155"
+              "value": "#24323D"
             },
             {
               "name": "Palettes/Primary 15",
               "type": "color",
               "isAlias": false,
-              "value": "#06264A"
+              "value": "#192732"
             },
             {
               "name": "Palettes/Primary 10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#0F1D27"
             },
             {
               "name": "Palettes/Primary 5",
               "type": "color",
               "isAlias": false,
-              "value": "#001128"
+              "value": "#04121C"
             },
             {
               "name": "Palettes/Primary 0",
@@ -9937,7 +9937,7 @@
               "name": "Schemes/Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Primary",
@@ -9949,7 +9949,7 @@
               "name": "Schemes/Primary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#7192C6"
+              "value": "#6B7580"
             },
             {
               "name": "Schemes/On Primary Container",
@@ -9961,7 +9961,7 @@
               "name": "Schemes/Secondary",
               "type": "color",
               "isAlias": false,
-              "value": "#CBDDFF"
+              "value": "#D8DCE0"
             },
             {
               "name": "Schemes/On Secondary",
@@ -9973,7 +9973,7 @@
               "name": "Schemes/Secondary Container",
               "type": "color",
               "isAlias": false,
-              "value": "#7092C6"
+              "value": "#6B7580"
             },
             {
               "name": "Schemes/On Secondary Container",
@@ -10081,7 +10081,7 @@
               "name": "Schemes/Surface Tint",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/Shadow",
@@ -10111,13 +10111,13 @@
               "name": "Schemes/Inverse Primary",
               "type": "color",
               "isAlias": false,
-              "value": "#254978"
+              "value": "#4A5864"
             },
             {
               "name": "Schemes/Primary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Primary Fixed",
@@ -10129,7 +10129,7 @@
               "name": "Schemes/Primary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Primary Fixed Variant",
@@ -10141,7 +10141,7 @@
               "name": "Schemes/Secondary Fixed",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#E4E1DC"
             },
             {
               "name": "Schemes/On Secondary Fixed",
@@ -10153,13 +10153,13 @@
               "name": "Schemes/Secondary Fixed Dim",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF"
+              "value": "#B4BAC2"
             },
             {
               "name": "Schemes/On Secondary Fixed Variant",
               "type": "color",
               "isAlias": false,
-              "value": "#0C3765"
+              "value": "#3A444C"
             },
             {
               "name": "Schemes/Tertiary Fixed",
@@ -10231,7 +10231,7 @@
               "name": "State Layers/Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "Add-ons/Section background",
@@ -10243,13 +10243,13 @@
               "name": "State Layers/Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Primary/Opacity-08",
@@ -10273,19 +10273,19 @@
               "name": "State Layers/Primary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#7192C614"
+              "value": "#6B758014"
             },
             {
               "name": "State Layers/Primary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#7192C61A"
+              "value": "#6B75801A"
             },
             {
               "name": "State Layers/Primary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#7192C629"
+              "value": "#6B758029"
             },
             {
               "name": "State Layers/On Primary Container/Opacity-08",
@@ -10309,19 +10309,19 @@
               "name": "State Layers/Secondary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#CBDDFF14"
+              "value": "#D8DCE014"
             },
             {
               "name": "State Layers/Secondary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#CBDDFF1A"
+              "value": "#D8DCE01A"
             },
             {
               "name": "State Layers/Secondary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#CBDDFF29"
+              "value": "#D8DCE029"
             },
             {
               "name": "State Layers/On Secondary/Opacity-08",
@@ -10345,19 +10345,19 @@
               "name": "State Layers/Secondary Container/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#7092C614"
+              "value": "#6B758014"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#7092C61A"
+              "value": "#6B75801A"
             },
             {
               "name": "State Layers/Secondary Container/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#7092C629"
+              "value": "#6B758029"
             },
             {
               "name": "State Layers/On Secondary Container/Opacity-08",
@@ -10657,19 +10657,19 @@
               "name": "State Layers/Surface Tint/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Surface Tint/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/Shadow/Opacity-08",
@@ -10747,37 +10747,37 @@
               "name": "State Layers/Inverse Primary/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#25497814"
+              "value": "#4A586414"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#2549781A"
+              "value": "#4A58641A"
             },
             {
               "name": "State Layers/Inverse Primary/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#25497829"
+              "value": "#4A586429"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Primary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Primary Fixed/Opacity-08",
@@ -10801,19 +10801,19 @@
               "name": "State Layers/Primary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Primary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Primary Fixed Variant/Opacity-08",
@@ -10837,19 +10837,19 @@
               "name": "State Layers/Secondary Fixed/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF14"
+              "value": "#E4E1DC14"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF1A"
+              "value": "#E4E1DC1A"
             },
             {
               "name": "State Layers/Secondary Fixed/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF29"
+              "value": "#E4E1DC29"
             },
             {
               "name": "State Layers/On Secondary Fixed/Opacity-08",
@@ -10873,37 +10873,37 @@
               "name": "State Layers/Secondary Fixed Dim/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF1A"
+              "value": "#B4BAC21A"
             },
             {
               "name": "State Layers/Secondary Fixed Dim/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#A6C8FF29"
+              "value": "#B4BAC229"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-08",
               "type": "color",
               "isAlias": false,
-              "value": "#0C376514"
+              "value": "#3A444C14"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-10",
               "type": "color",
               "isAlias": false,
-              "value": "#0C37651A"
+              "value": "#3A444C1A"
             },
             {
               "name": "State Layers/On Secondary Fixed Variant/Opacity-16",
               "type": "color",
               "isAlias": false,
-              "value": "#0C376529"
+              "value": "#3A444C29"
             },
             {
               "name": "State Layers/Tertiary Fixed/Opacity-08",
@@ -11191,31 +11191,31 @@
               "name": "Surfaces/Surface Tint 5%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF0D"
+              "value": "#B4BAC20D"
             },
             {
               "name": "Surfaces/Surface Tint 8%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF14"
+              "value": "#B4BAC214"
             },
             {
               "name": "Surfaces/Surface Tint 11%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1C"
+              "value": "#B4BAC21C"
             },
             {
               "name": "Surfaces/Surface Tint 12%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF1F"
+              "value": "#B4BAC21F"
             },
             {
               "name": "Surfaces/Surface Tint 14%",
               "type": "color",
               "isAlias": false,
-              "value": "#A7C8FF24"
+              "value": "#B4BAC224"
             },
             {
               "name": "Extended Colors/Custom Color 1",
@@ -11275,97 +11275,97 @@
               "name": "Palettes/Primary 99",
               "type": "color",
               "isAlias": false,
-              "value": "#FDFBFF"
+              "value": "#FCFCFF"
             },
             {
               "name": "Palettes/Primary 98",
               "type": "color",
               "isAlias": false,
-              "value": "#F9F9FF"
+              "value": "#F6F9FF"
             },
             {
               "name": "Palettes/Primary 95",
               "type": "color",
               "isAlias": false,
-              "value": "#EBF1FF"
+              "value": "#E6F2FF"
             },
             {
               "name": "Palettes/Primary 90",
               "type": "color",
               "isAlias": false,
-              "value": "#D5E3FF"
+              "value": "#D5E4F3"
             },
             {
               "name": "Palettes/Primary 80",
               "type": "color",
               "isAlias": false,
-              "value": "#AEC8F4"
+              "value": "#BAC8D6"
             },
             {
               "name": "Palettes/Primary 70",
               "type": "color",
               "isAlias": false,
-              "value": "#93ACD8"
+              "value": "#9EADBB"
             },
             {
               "name": "Palettes/Primary 60",
               "type": "color",
               "isAlias": false,
-              "value": "#7892BC"
+              "value": "#8492A0"
             },
             {
               "name": "Palettes/Primary 50",
               "type": "color",
               "isAlias": false,
-              "value": "#5F78A1"
+              "value": "#6B7985"
             },
             {
               "name": "Palettes/Primary 40",
               "type": "color",
               "isAlias": false,
-              "value": "#465F86"
+              "value": "#52606C"
             },
             {
               "name": "Palettes/Primary 35",
               "type": "color",
               "isAlias": false,
-              "value": "#3A537A"
+              "value": "#465460"
             },
             {
               "name": "Palettes/Primary 30",
               "type": "color",
               "isAlias": false,
-              "value": "#2D476D"
+              "value": "#3A4854"
             },
             {
               "name": "Palettes/Primary 25",
               "type": "color",
               "isAlias": false,
-              "value": "#213C61"
+              "value": "#2F3D48"
             },
             {
               "name": "Palettes/Primary 20",
               "type": "color",
               "isAlias": false,
-              "value": "#143155"
+              "value": "#24323D"
             },
             {
               "name": "Palettes/Primary 15",
               "type": "color",
               "isAlias": false,
-              "value": "#06264A"
+              "value": "#192732"
             },
             {
               "name": "Palettes/Primary 10",
               "type": "color",
               "isAlias": false,
-              "value": "#001C3B"
+              "value": "#0F1D27"
             },
             {
               "name": "Palettes/Primary 5",
               "type": "color",
               "isAlias": false,
-              "value": "#001128"
+              "value": "#04121C"
             },
             {
               "name": "Palettes/Primary 0",
