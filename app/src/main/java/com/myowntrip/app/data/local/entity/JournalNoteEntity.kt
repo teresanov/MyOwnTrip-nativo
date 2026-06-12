@@ -22,5 +22,8 @@ data class JournalNoteEntity(
   val dayId: String,
   val text: String,
   val photoUri: String?,
+  val audioUri: String?,
+  val latitude: Double?,
+  val longitude: Double?,
   val createdAt: Long,
 )

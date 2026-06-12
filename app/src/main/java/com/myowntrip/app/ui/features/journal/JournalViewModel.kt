@@ -20,8 +20,6 @@ import javax.inject.Inject
 data class JournalUiState(
   val day: Day? = null,
   val notes: List<JournalNote> = emptyList(),
-  val text: String = "",
-  val textError: String? = null,
 )
 
 @HiltViewModel
@@ -46,20 +44,6 @@ class JournalViewModel @Inject constructor(
     }
     viewModelScope.launch {
       notes.collect { list -> _uiState.update { it.copy(notes = list) } }
-    }
-  }
-
-  fun onTextChange(value: String) = _uiState.update { it.copy(text = value, textError = null) }
-
-  fun saveNote(onSuccess: () -> Unit) {
-    if (_uiState.value.text.isBlank()) {
-      _uiState.update { it.copy(textError = "Write something") }
-      return
-    }
-    viewModelScope.launch {
-      journalRepository.addNote(dayId, _uiState.value.text.trim())
-      _uiState.update { it.copy(text = "") }
-      onSuccess()
     }
   }
 }

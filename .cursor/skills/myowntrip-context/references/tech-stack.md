@@ -30,10 +30,16 @@ MVVM + Clean Architecture + Repository pattern + **Offline-first**
 - Supabase Storage — fotos y PDFs
 - Sincronización **explícita** al reconectar: estrategia de conflictos documentada en código (p. ej. last-write-wins por entidad o preferencia por copia local hasta merge manual) — evitar sensación de “datos desaparecidos” (PP3)
 
-### Media
+### Media y sensores (capacidades nativas MVP)
 - Coil — carga y caché de imágenes
 - PdfRenderer — visualización de PDFs (Android nativo)
-- CameraX — captura de fotos desde la app
+- **CameraX** — captura de fotos (diario, recibo de gasto)
+- **MediaRecorder** / **AudioRecord** — notas de voz en diario
+- **Fused Location Provider** (Play Services) o **LocationManager** — lat/long al guardar nota o foto
+- **BiometricPrompt** — desbloqueo con huella / rostro / PIN
+- **Share Target** (`ImportActivity`) — `SEND` / `SEND_MULTIPLE` para PDF e imágenes → Wallet
+
+Permisos previstos en manifest: `CAMERA`, `RECORD_AUDIO`, `ACCESS_FINE_LOCATION` (y `ACCESS_COARSE_LOCATION`); solicitud en runtime con degradación si el usuario deniega.
 
 ## Por qué Supabase sobre Firebase
 - Open source
@@ -48,7 +54,7 @@ MVVM + Clean Architecture + Repository pattern + **Offline-first**
 | Trips | Lista, Crear, Detalle | Activación ≥1 viaje primera sesión |
 | Itinerary | Por día, Añadir bloque, Drag & drop | Must |
 | Wallet | Lista, Visor PDF, **Añadir / confirmar entrada** | Must; sin flujo “solo email sync” |
-| Journal | Notas del día, Añadir nota, Galería | Must |
+| Journal | Notas del día, Añadir nota, Galería, **cámara / audio / geo** | Must |
 | Restaurants | Lista, Añadir, Cambiar estado | **Could Have** |
 | Expenses | Resumen, Añadir gasto, Recibo | Should — pocos pasos |
 

@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.myowntrip.app.ui.features.expenses.ExpenseFormScreen
 import com.myowntrip.app.ui.features.journal.DayDetailScreen
+import com.myowntrip.app.ui.features.journal.JournalAddScreen
 import com.myowntrip.app.ui.features.trips.CreateTripScreen
 import com.myowntrip.app.ui.features.trips.TripDetailScreen
 import com.myowntrip.app.ui.features.trips.TripListScreen
@@ -79,7 +80,20 @@ fun AppNavGraph(
         navArgument("dayId") { type = NavType.StringType },
       ),
     ) {
-      DayDetailScreen(onBack = { navController.popBackStack() })
+      val dayId = it.arguments?.getString("dayId")!!
+      DayDetailScreen(
+        onBack = { navController.popBackStack() },
+        onAddNote = { navController.navigate(Routes.journalAdd(dayId)) },
+      )
+    }
+    composable(
+      route = Routes.JOURNAL_ADD,
+      arguments = listOf(navArgument("dayId") { type = NavType.StringType }),
+    ) {
+      JournalAddScreen(
+        onBack = { navController.popBackStack() },
+        onSaved = { navController.popBackStack() },
+      )
     }
   }
 }

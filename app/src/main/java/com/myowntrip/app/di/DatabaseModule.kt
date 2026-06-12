@@ -3,6 +3,7 @@ package com.myowntrip.app.di
 import android.content.Context
 import androidx.room.Room
 import com.myowntrip.app.data.local.AppDatabase
+import com.myowntrip.app.data.local.MIGRATION_1_2
 import com.myowntrip.app.data.local.dao.DayDao
 import com.myowntrip.app.data.local.dao.ExpenseDao
 import com.myowntrip.app.data.local.dao.JournalNoteDao
@@ -21,7 +22,9 @@ object DatabaseModule {
   @Provides
   @Singleton
   fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
-    Room.databaseBuilder(context, AppDatabase::class.java, "myowntrip.db").build()
+    Room.databaseBuilder(context, AppDatabase::class.java, "myowntrip.db")
+      .addMigrations(MIGRATION_1_2)
+      .build()
 
   @Provides fun provideTripDao(db: AppDatabase): TripDao = db.tripDao()
   @Provides fun provideDayDao(db: AppDatabase): DayDao = db.dayDao()

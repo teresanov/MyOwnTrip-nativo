@@ -17,13 +17,23 @@ class JournalRepository @Inject constructor(
   fun observeByDay(dayId: String): Flow<List<JournalNote>> =
     journalNoteDao.observeByDay(dayId).map { list -> list.map { it.toDomain() } }
 
-  suspend fun addNote(dayId: String, text: String, photoUri: String? = null) {
+  suspend fun addNote(
+    dayId: String,
+    text: String,
+    photoUri: String? = null,
+    audioUri: String? = null,
+    latitude: Double? = null,
+    longitude: Double? = null,
+  ) {
     journalNoteDao.insert(
       JournalNote(
         id = UUID.randomUUID().toString(),
         dayId = dayId,
         text = text,
         photoUri = photoUri,
+        audioUri = audioUri,
+        latitude = latitude,
+        longitude = longitude,
         createdAt = System.currentTimeMillis(),
       ).toEntity(),
     )

@@ -98,6 +98,9 @@ fun JournalNoteEntity.toDomain() = JournalNote(
   dayId = dayId,
   text = text,
   photoUri = photoUri,
+  audioUri = audioUri,
+  latitude = latitude,
+  longitude = longitude,
   createdAt = createdAt,
 )
 
@@ -106,5 +109,8 @@ fun JournalNote.toEntity() = JournalNoteEntity(
   dayId = dayId,
   text = text,
   photoUri = photoUri,
+  audioUri = audioUri,
+  latitude = latitude,
+  longitude = longitude,
   createdAt = createdAt,
 )

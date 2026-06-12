@@ -136,14 +136,14 @@ Documento de trabajo para implementación: **happy path**, **edge cases** y **cr
 ### Happy path
 
 1. Usuario abre **día** del viaje → **diario**.
-2. Añade nota de texto; opcional foto, audio, geo (según alcance).
+2. Añade nota de texto; opcional foto (cámara), audio (micrófono) y **geolocalización al guardar** (Must — degradación si permiso denegado).
 3. Ve galería o línea temporal del día.
 4. Persistencia local inmediata; media en almacenamiento accesible offline donde aplique.
 
 ### Edge cases prioritarios
 
 - **EC-OFFLINE**: captura y lectura sin red.
-- Permisos cámara/archivos: flujo claro si deniega.
+- Permisos cámara, micrófono, ubicación y archivos: flujo claro si deniega (guardar nota sin el adjunto o sin geo, nunca bloquear por completo).
 
 ### Criterios de éxito
 
@@ -189,4 +189,4 @@ Aceptar al menos: `application/pdf`, `image/*`, y valorar `message/rfc822` segú
 
 ---
 
-*Última actualización: abril 2026 — alineado con research Notion y reglas de desarrollo del repo.*
+*Última actualización: junio 2026 — geolocalización y capacidades nativas Android elevadas a Must; alineado con research Notion y `references/requirements.md`.*

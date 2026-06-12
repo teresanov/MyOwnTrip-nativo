@@ -50,7 +50,7 @@ Para **persona, dolores, JTBD, hipótesis y métricas de éxito** (resumen sincr
 - Toda decision nueva debe documentarse en la misma sesion en el archivo correcto.
 - Mapeo obligatorio de cambios:
   - producto/UX / North Star -> `references/product.md` y [North Star en Notion](https://www.notion.so/33e6a48d93c881d8b9cce1418607f3d7)
-  - alcance/prioridades MoSCoW -> `references/requirements.md`
+  - alcance/prioridades MoSCoW / capacidades nativas Android -> `references/requirements.md`
   - entidades/campos/relaciones -> `references/data-model.md`
   - arquitectura/librerias/patrones -> `references/tech-stack.md`
   - investigación UX (personas, pain points, hipótesis) -> actualizar primero `myowntrip-ux-notion/SKILL.md` (Notion) y después los `references/*.md` afectados

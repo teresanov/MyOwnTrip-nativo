@@ -36,13 +36,15 @@ Viajero independiente que planifica con criterio propio. Perfiles y pain points 
 **Un solo lugar** (como una libreta) para documentos y reservas (wallet), **itinerario vivo** por día y **diario** con contexto — con **offline-first real** y **fiabilidad** por encima del número de features. La sensación buscada: **anotar y atesorar**, no rellenar un ERP de viaje.
 
 ## Diferenciador
-Combinación nativa Android: wallet con PDFs + itinerario con drag-and-drop + diario con multimedia, **pensada offline-first** y con **entrada manual verificable** en wallet (evitar el patrón de auto-import poco fiable que aparece en reviews de TripIt y similares).
+Combinación nativa Android: wallet con PDFs + itinerario con drag-and-drop + diario con multimedia (**cámara, audio, geolocalización** en el momento del recuerdo), **pensada offline-first** y con **entrada manual verificable** en wallet (evitar el patrón de auto-import poco fiable que aparece en reviews de TripIt y similares).
+
+**Requisito nativo (académico):** el MVP debe demostrar capacidades que solo el móvil ofrece — ver tabla en `references/requirements.md` § *Capacidades nativas Android*.
 
 ## Pilares (prioridad MVP según research abril 2026)
 1. **Wallet centralizada** — dispersión (PP1) es el problema #1; import **manual** con verificación, no depender de sync mágico desde email como núcleo del MVP.
 2. **Offline-first** — lo esencial usable **sin pago** (lección Wanderlog: offline/documentos tras paywall genera abandono y malas reseñas — H9).
 3. **Itinerario** — reordenar en destino sin fricción (drag & drop).
-4. **Diario** — notas y multimedia con contexto (recuerdos — PP7).
+4. **Diario** — notas y multimedia con contexto: foto, audio y **geo** al guardar (recuerdos — PP7).
 5. **Gastos simples** — registro rápido; si el flujo es largo, se abandona (H5).
 
 **Depriorizado para MVP (Could Have):** estados de restaurante (H3 — no emerge como prioridad en entrevistas sintéticas). **v1.1:** sugerencias con IA solo con datos frescos y mecanismo de corrección (H6).
@@ -62,7 +64,7 @@ Combinación nativa Android: wallet con PDFs + itinerario con drag-and-drop + di
 ## Decisiones de diseño vigentes
 - **Wallet:** flujo principal = usuario **añade y revisa** entradas (PDF, enlaces, tipos); sin “conectar buzón” como requisito del MVP.
 - **Restaurantes:** modelo `SIN_RESERVA → RESERVADO → VISITADO` y campos opcionales de reserva — **implementación MVP opcional** (Could Have); no bloquea el resto del producto.
-- **Multimedia** (diario): fotos, audio, dibujos en notas — inspiración Day One.
+- **Multimedia** (diario): fotos (cámara), audio (micrófono), geo al guardar, dibujos en notas — inspiración Day One.
 - **Privacidad:** cifrado, biometría / código — alineado con viajeros que desconfían del servidor puro.
 - **Gastos y equipaje:** inspiración Lambus; gastos **muy pocos pasos**; equipaje Should Have.
 - **IA ciudad:** solo v1.1 y solo si hay fecha de actualización visible + reporte de errores.
