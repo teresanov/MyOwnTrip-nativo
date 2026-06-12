@@ -17,6 +17,6 @@
         android:pathData="M39,68 L39,46 L44.5,46 L50,56.5 L55.5,46 L61,46 L61,68 L56.5,68 L56.5,53 L50,62.5 L43.5,53 L43.5,68 Z" />
     <!-- Cinta marcapáginas ocre -->
     <path
-        android:fillColor="#825513"
+        android:fillColor="#C48328"
         android:pathData="M71,34 L77,34 L77,54 L74,58 L71,54 Z" />
 </vector>

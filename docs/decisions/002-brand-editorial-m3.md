@@ -65,3 +65,4 @@ Focus ring: capa separada (futuro ADR).
 
 ## Historial
 - **2026-06-12:** Primary de tinta azulada (`#1F3A5F`) a gris-azul (`#4A5864`); workflow Figma-first. Detalle en Changelog DS (Notion).
+- **2026-06-12:** Ocre logo = Tertiary 60 `#C48328`; `Schemes/Tertiary` UI sigue `#825513`.

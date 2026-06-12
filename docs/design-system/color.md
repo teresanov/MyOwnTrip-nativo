@@ -33,7 +33,8 @@ Script Bridge: `.cursor/skills/myowntrip-ds-audit/scripts/figma-fix-gris-azul-co
 | `primary` | `#4A5864` | Gris-azul tinta (decisión jun 2026) |
 | `primaryContainer` | `#E4E1DC` | Tonal — gris cálido, sin celeste |
 | `onPrimaryContainer` | `#2E363D` | Carbón sobre contenedor |
-| `tertiary` | `#825513` | Acento ocre editorial (marca) — **sin cambio** |
+| `tertiary` | `#825513` | Acento UI (botones, chips) |
+| `Brand/ocre` | `#C48328` | Logo/cinta — Palettes/Tertiary 60 (ver [`brand.md`](brand.md)) |
 | `error` | `#904A42` | Alerta; **distinto** de tertiary |
 | `surface` | `#FFF8F2` | Papel cálido |
 | `onSurface` | `#1F1B13` | |

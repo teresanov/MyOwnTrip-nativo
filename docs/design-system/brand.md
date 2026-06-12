@@ -20,9 +20,9 @@ Selector automático: `MyOwnTripBrand(height = …)`.
 |-------|-----|-----|
 | Tinta | `#4A5864` | Wordmark, marco C1, M/T atenuadas (= `primary` M3 Light) |
 | Papel | `#F4F0E8` | Fondo icono C1 |
-| **Acento ocre** | `#825513` | Cinta marcapáginas (= `tertiary` M3) |
+| **Acento ocre** | `#C48328` | Cinta marcapáginas — **Palettes/Tertiary 60** (más legible que `tertiary` UI) |
 
-> **Error** = `#B3261E` / `#904A42` — solo alertas, nunca acento de marca.
+> **UI:** `Schemes/Tertiary` = `#825513` (botones, chips). **Logo:** `Brand/ocre` = `#C48328`. No mezclar con **error** (`#B3261E` / `#904A42`).
 
 ## Tipografía logo
 
