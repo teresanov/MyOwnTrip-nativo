@@ -58,13 +58,13 @@ M3 canónico con identidad editorial. Ver `docs/design-system/README.md`.
 
 | Capa | Fuente |
 |------|--------|
-| **MTB** | Seeds `#1F3A5F` · Tonal Spot · ADR 002 |
+| **Color** | Primary gris-azul `#4A5864` · Figma Bridge → repo · ADR 002 |
 | **Figma** | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168) — **solo librería** (sin doc en canvas) |
 | **Showcase** | `ds-showcase/` — web estática (`npm run dev`) |
 | **Compose** | `MaterialTheme.colorScheme` + Fraunces/Inter |
 | **Notion** | [Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) · [Design System](https://www.notion.so/3796a48d93c88168b7dcf9d7e81f9bfa) |
 
-Pipeline: `MTB → Figma (librería) → Compose` + `Showcase (docs componentes)`.
+Pipeline: `Figma (Bridge) → variables.json → Compose` + `Showcase (docs componentes)`.
 
 DS histórico archivado: [MyOwnTrip](https://github.com/teresanov/MyOwnTrip).
 

@@ -22,7 +22,7 @@ enum class MonogramVariant {
 
 /**
  * Monograma MOT — toolbar (~21dp) y espacios estrechos.
- * M/T Light atenuadas (~62%); O Bold tinta profunda #152A47; cinta ocre.
+ * M/T Light atenuadas (~62%); O Bold tinta #4A5864; cinta ocre #825513.
  */
 @Composable
 fun MyOwnTripMonogram(

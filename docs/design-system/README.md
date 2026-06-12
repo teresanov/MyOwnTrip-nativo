@@ -15,7 +15,7 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 
 | Doc | Contenido |
 |-----|-----------|
-| [color.md](color.md) | MTB, roles M3, extensiones, state layers |
+| [color.md](color.md) | Gris-azul, workflow Figma→repo, roles M3, state layers |
 | [shape.md](shape.md) | Corner tokens, botones 0→20 morph, binding Figma |
 | [typography.md](typography.md) | Fraunces + Inter, mapeo a roles M3 |
 | [iconography.md](iconography.md) | Material Symbols Sharp + iconos propios |
@@ -32,10 +32,12 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 ## Pipeline activo
 
 ```text
-MTB → Figma (librería, sin documentación en canvas)
+Figma (variables · Desktop Bridge) → variables.json → Compose
          ↓
-    Compose + Showcase externo (documentación de componentes)
+    Showcase externo (documentación de componentes)
 ```
+
+Color: **no** MTB como bucle principal (re-harmoniza `primary`). Ver [color.md](color.md).
 
 **Figma:** solo variables y component sets — **no** láminas ni guías en el archivo DS.  
 **Showcase:** fichas de componente, variantes, a11y, ejemplos — ver [showcase.md](showcase.md).

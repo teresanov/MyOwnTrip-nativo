@@ -12859,19 +12859,19 @@
               "name": "ink",
               "type": "color",
               "isAlias": false,
-              "value": "#1F3A5F"
+              "value": "#4A5864"
             },
             {
               "name": "ink-deep",
               "type": "color",
               "isAlias": false,
-              "value": "#152A47"
+              "value": "#4A5864"
             },
             {
               "name": "ocre",
               "type": "color",
               "isAlias": false,
-              "value": "#C8862B"
+              "value": "#825513"
             }
           ]
         }

@@ -6,14 +6,25 @@ ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 
 > **Figma:** [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168) — misma colección M3 que `variables.json`.
 
-## Material Theme Builder
+## Workflow (fuente de verdad)
+
+```
+Figma (Desktop Bridge fija variables) → export → variables.json → Color.kt
+```
+
+**No** usar Material Theme Builder como bucle principal de color: re-harmoniza `primary` a azul (`#276389`) y Dark a celeste (`#98CCF9`). MTB solo para exploración inicial o neutros; **bloquear ocre** `tertiary` `#825513` si generas.
+
+Script Bridge: `.cursor/skills/myowntrip-ds-audit/scripts/figma-fix-gris-azul-colors.js` · Auditoría: `docs/design-system/audits/figma-color-gris-azul-bridge-2026-06-11.md`
+
+## Material Theme Builder (parámetros)
 
 | Parámetro | Valor |
 |-----------|-------|
 | Scheme | Tonal Spot |
-| Contrast | Default (+ Medium/High cuando aplique) |
+| Contrast | Default (+ Medium/High en Figma) |
 | Modos | Light + Dark |
 | Generate state layers | **NO** |
+| Neutros seeds (si regeneras) | `#8A8275` / `#847E72` |
 
 ### Roles Light (desde `variables.json` · `Schemes/*`)
 
@@ -31,7 +42,7 @@ Dark: `primary` `#B4BAC2`, `primaryContainer` `#3A444C`, `tertiary` `#F8BB71`, `
 
 ### Paleta gris-azul (jun 2026)
 
-Decisión de producto tras laboratorio [`previews/color-ink-comparison.html`](previews/color-ink-comparison.html): sustituir celeste pastel por **gris-azul** en roles `primary*`, conservar **ocre** en `tertiary*`. Importar `M3_MOTrip.json` o alinear variables Figma `Schemes/Primary*`.
+Decisión de producto tras laboratorio [`previews/color-ink-comparison.html`](previews/color-ink-comparison.html): sustituir celeste pastel por **gris-azul** en roles `primary*`, conservar **ocre** en `tertiary*`. Aplicado en Figma vía Bridge (2026-06-12).
 
 ### Check de superficie
 

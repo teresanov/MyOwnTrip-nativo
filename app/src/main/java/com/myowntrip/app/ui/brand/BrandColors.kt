@@ -3,13 +3,14 @@ package com.myowntrip.app.ui.brand
 import androidx.compose.ui.graphics.Color
 
 /**
- * Colores de marca (logo / wordmark). Distintos de roles M3 en pantalla.
- * Acento logo: ocre #C8862B · Error UI: `MaterialTheme.colorScheme.error` (#B3261E).
+ * Colores de marca (logo / wordmark), alineados con roles M3.
+ * Tinta = `primary` Light (#4A5864) · Ocre = `tertiary` (#825513).
  */
 object BrandColors {
-  val Ink = Color(0xFF1F3A5F)
-  val InkDeep = Color(0xFF152A47)
+  val Ink = Color(0xFF4A5864)
+  /** Misma tinta que [Ink] desde jun 2026 (gris-azul unificado). */
+  val InkDeep = Ink
   val Paper = Color(0xFFF4F0E8)
-  val AccentOcre = Color(0xFFC8862B)
+  val AccentOcre = Color(0xFF825513)
   val OnDark = Color(0xFFF9EFE2)
 }

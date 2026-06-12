@@ -17,7 +17,7 @@ El repo `MyOwnTrip` construyó un DS custom (semánticos propios, Pencil, ARC) i
 8. **MTB scheme:** Tonal Spot — seeds y marca editorial en **ADR 002**.
 9. **Custom colors:** `success`, `warning`, `info` vía `LocalExtendedColors`; focus ring en iteración futura.
 
-> Seeds v0.1.0 (`#3D63D1` / `#219A60`) sustituidos por ADR 002 (`#1F3A5F`, paleta editorial).
+> Seeds v0.1.0 sustituidos por ADR 002. Primary actual (jun 2026): gris-azul `#4A5864` — ver ADR 002 y changelog DS.
 
 ## Consecuencias
 - Figma nuevo: **MyOwnTrip · Design System (M3 Native)** — sembrar con MTB (tarea de diseño en paralelo).

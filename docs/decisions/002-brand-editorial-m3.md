@@ -17,13 +17,14 @@ ADR 001 fijó M3 estructural; este ADR fija identidad de marca y reglas de consu
 - Estética: editorial, papel cálido, acento ocre con moderación.
 - Tertiary (`#825513`) = acento de marca; **error** (`#B3261E`) = rojo profundo distinto a propósito.
 
-### Color (MTB)
-- Scheme: **Tonal Spot** · Contrast: Default (+ Medium/High cuando aplique).
-- Source color (primary): `#1F3A5F`.
-- Core overrides: secondary `#3A4A63`, tertiary `#825513`, neutral `#8A8275`, neutral variant `#847E72`, error `#B3261E`.
-- Custom: success `#2E7D32`, warning `#F9A825`, info `#1565C0` (info opcional).
-- **Generate state layers = NO** en MTB (runtime only).
-- Check: `surface` Light ≈ `#F4F0E8` (papel cálido). Si sale frío → neutral `#8C8472` y regenerar.
+### Color
+- **Primary (gris-azul, jun 2026):** Light `#4A5864` · Dark `#B4BAC2` · `primaryContainer` Light `#E4E1DC` · Dark `#3A444C`.
+- **Tertiary (ocre):** `#825513` Light · `#F8BB71` Dark (armonía MTB en Dark).
+- **Error:** `#B3261E` — distinto de tertiary a propósito.
+- Neutros seeds (si regeneras en MTB): `#8A8275` / `#847E72`.
+- **Workflow:** Figma (Bridge) → `variables.json` → `Color.kt`. **No** MTB como bucle principal (re-harmoniza a azul).
+- **Generate state layers = NO** (runtime only).
+- Check: `surface` Light ≈ `#F4F0E8` (papel cálido).
 
 ### Tipografía
 - **Fraunces** (400/500/600): Display + Headline.
@@ -54,10 +55,13 @@ Focus ring: capa separada (futuro ADR).
 
 ## Consecuencias
 - Figma: [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168)
-- `Color.kt` / `Type.kt` se actualizan al recibir export MTB + fuentes.
-- `docs/design-system/color.md` documenta seeds hasta tener tabla completa Light/Dark.
+- `Color.kt` / `Type.kt` se actualizan desde export Figma (`variables.json`).
+- `docs/design-system/color.md` — tabla Light/Dark y workflow Bridge (jun 2026).
 - Quality gates en `docs/design-system/governance.md`.
 
 ## Referencias
 - ADR 001: `001-m3-native-ds.md`
 - Handoff: brief de marca (junio 2026)
+
+## Historial
+- **2026-06-12:** Primary de tinta azulada (`#1F3A5F`) a gris-azul (`#4A5864`); workflow Figma-first. Detalle en Changelog DS (Notion).

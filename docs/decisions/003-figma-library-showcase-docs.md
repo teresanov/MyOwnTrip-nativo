@@ -19,7 +19,7 @@ El equipo construye componentes y variables en Figma (kit M3 tematizado), pero d
 ## Pipeline
 
 ```text
-MTB → Figma (librería) → Compose
+Figma (variables · Bridge) → variables.json → Compose
               ↓
         Showcase externo (documentación componentes)
 ```

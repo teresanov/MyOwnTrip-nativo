@@ -7,7 +7,7 @@ description: Audita el design system M3 nativo de MyOwnTrip (Figma ↔ variables
 
 ## Qué es este DS (y qué NO es)
 
-- **Sí:** M3 canónico adaptado a marca editorial (MTB → colección Figma `M3` → Compose).
+- **Sí:** M3 canónico adaptado a marca editorial (Figma Bridge → `variables.json` → Compose).
 - **Sí:** Roles `Schemes/*`, extensiones `Extended Colors/*`, componentes `androidx.compose.material3.*`.
 - **No:** Semánticos custom (`SemanticColors`, `text/primary`, `border/strong`).
 - **No:** Pencil, ARC, pipeline `ds-audit` del repo **`../MyOwnTrip`**.

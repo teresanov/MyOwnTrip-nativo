@@ -18,12 +18,11 @@ Selector automático: `MyOwnTripBrand(height = …)`.
 
 | Token | Hex | Uso |
 |-------|-----|-----|
-| Tinta | `#1F3A5F` | Wordmark, marco C1, M/T atenuadas |
-| Tinta profunda | `#152A47` | **O** del monograma MOT |
+| Tinta | `#4A5864` | Wordmark, marco C1, M/T atenuadas (= `primary` M3 Light) |
 | Papel | `#F4F0E8` | Fondo icono C1 |
-| **Acento ocre** | `#C8862B` | Cinta marcapáginas (logo) |
+| **Acento ocre** | `#825513` | Cinta marcapáginas (= `tertiary` M3) |
 
-> **No confundir:** acento **logo** = `#C8862B`. Rol M3 `tertiary` = `#825513` (UI). **Error** = `#B3261E` / `#904A42` — solo alertas.
+> **Error** = `#B3261E` / `#904A42` — solo alertas, nunca acento de marca.
 
 ## Tipografía logo
 
@@ -31,7 +30,7 @@ Selector automático: `MyOwnTripBrand(height = …)`.
 |-------|--------|------|
 | Wordmark W4 | Fraunces | Medium (500); «Own» itálica |
 | MOT — M, T | Fraunces | Light (300) @ ~62% opacidad |
-| MOT — O | Fraunces | Bold (700), `#152A47` |
+| MOT — O | Fraunces | Bold (700), `#4A5864` |
 | C1 — M | Vector (SemiBold-inspired) | En `ic_launcher_foreground.xml` |
 
 Fuentes bundled: `res/font/fraunces.ttf`, `fraunces_italic.ttf`, `inter.ttf`.

@@ -51,7 +51,7 @@ Verificación Bridge (`Schemes/Primary`):
 
 Verificación post-fix manual:
 
-- [ ] Button **Filled** + **Tonal** en Light y Dark (sin celeste)
+- [x] Button **Filled** + **Tonal** en Light y Dark (revisión visual jun 2026 — OK)
 - [ ] Publicar librería si hay cambios sin publicar
 - [ ] **No** re-exportar a MTB salvo para inspección — MTB puede volver a fastidiar
 
