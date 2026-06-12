@@ -1,4 +1,4 @@
-import{i as e}from"./bootstrap-CL5TkAFG.js";import{t as s}from"./tokens-BB720Taq.js";e("typography");document.getElementById("typography-main").innerHTML=`
+import{i as e}from"./bootstrap-wuHOfVfr.js";import{t as s}from"./tokens-CH2VayQ6.js";e("typography");document.getElementById("typography-main").innerHTML=`
   <section class="section card">
     <p class="type-sample--display">Cuaderno del viaje</p>
     <p><strong>Display</strong> · ${s.typography.display} · solo titulares hero</p>

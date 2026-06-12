@@ -1,4 +1,4 @@
-import{i as t,a as n,c as o,s}from"./bootstrap-CL5TkAFG.js";t("overview");const a=[{href:"color.html",title:"Color",desc:"Roles M3 desde variables.json"},{href:"typography.html",title:"Typography",desc:"Fraunces + Inter"}];document.getElementById("foundations-grid").innerHTML=a.map(e=>`
+import{i as t,a as n,c as o,s}from"./bootstrap-wuHOfVfr.js";t("overview");const a=[{href:"color.html",title:"Color",desc:"Roles M3 desde variables.json"},{href:"typography.html",title:"Typography",desc:"Fraunces + Inter"}];document.getElementById("foundations-grid").innerHTML=a.map(e=>`
     <a class="component-link" href="${n(e.href)}">
       <h3>${e.title}</h3>
       <p>${e.desc}</p>
