@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.components.OfflineBanner
+import com.myowntrip.app.ui.theme.MOTButton
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +85,7 @@ private fun EmptyTripsState(modifier: Modifier = Modifier, onCreateTrip: () -> U
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
       )
-      androidx.compose.material3.Button(onClick = onCreateTrip) {
+      MOTButton(onClick = onCreateTrip) {
         Text("Create trip")
       }
     }

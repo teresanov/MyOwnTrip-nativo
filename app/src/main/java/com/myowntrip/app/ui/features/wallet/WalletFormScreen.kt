@@ -11,17 +11,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +32,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.EntryType
+import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTTextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +55,7 @@ fun WalletFormScreen(
       TopAppBar(
         title = { Text(if (state.isImport) "Review import" else "Add wallet entry") },
         navigationIcon = {
-          IconButton(onClick = onBack) {
+          MOTIconButton(onClick = onBack) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
           }
         },
@@ -150,7 +150,7 @@ fun WalletFormScreen(
         modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
       )
 
-      Button(
+      MOTButton(
         onClick = { viewModel.requestConfirm() },
         modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
       ) {
@@ -173,10 +173,10 @@ fun WalletFormScreen(
         }
       },
       confirmButton = {
-        TextButton(onClick = { viewModel.confirmSave(onSaved) }) { Text("Save") }
+        MOTTextButton(onClick = { viewModel.confirmSave(onSaved) }) { Text("Save") }
       },
       dismissButton = {
-        TextButton(onClick = { viewModel.dismissConfirm() }) { Text("Edit") }
+        MOTTextButton(onClick = { viewModel.dismissConfirm() }) { Text("Edit") }
       },
     )
   }

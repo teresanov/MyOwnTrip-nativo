@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -38,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.myowntrip.app.ui.theme.MOTIconButton
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -65,7 +65,7 @@ fun TakePhotoScreen(
       TopAppBar(
         title = { Text("Take photo") },
         navigationIcon = {
-          IconButton(onClick = onCancel) {
+          MOTIconButton(onClick = onCancel) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
           }
         },

@@ -66,8 +66,28 @@ Zona de respeto: altura de la **M** alrededor del lockup.
 - Wordmark/MOT: composables vectoriales (texto Fraunces + `BrandRibbon`); icono: vector drawable.
 - Assets en **vector** — no PNG para logo.
 
-## Variantes Figma (pendiente montaje)
+## Interacción editorial (botones)
 
-- Wordmark W4: positivo · oscuro · monocromo
-- MOT: claro · oscuro
-- Icono C1
+Firma de marca en controles táctiles — ADR [`004-button-shape-morph`](../decisions/004-button-shape-morph.md):
+
+| Estado | Radio | Notas |
+|--------|-------|-------|
+| Reposo | **0dp** | Rectángulo editorial |
+| Pressed / focus / hover | **20dp** | Morph ~520ms, curva M3 emphasized decelerate |
+| Reduce motion | 0ms | Sin animación de radio |
+
+**Compose:** `MOTButton`, `MOTTextButton`, `MOTIconButton` en `ui/theme/MOTButtons.kt` — delegan en `rememberMOTButtonShape()`. **FAB** permanece circular (excepción ADR 004).
+
+**Figma (Design System):** Button Type=Square en reposo; binding `Corner/None` → `Corner/Large-increased` en interacción. Publicado en librería [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System).
+
+## Variantes Figma (logo)
+
+Página **Brand** (librería aparte del DS M3):
+
+| Activo | Variantes |
+|--------|-----------|
+| Wordmark W4 | positivo · oscuro · monocromo |
+| MOT | claro · oscuro |
+| Icono C1 | adaptive (3 capas) |
+
+Montaje en Figma en curso; assets de referencia en `app/.../ui/brand/` y `res/drawable/ic_launcher_*`.

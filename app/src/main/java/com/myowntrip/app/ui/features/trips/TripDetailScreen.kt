@@ -16,7 +16,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -37,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Expense
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.ui.theme.MOTIconButton
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +58,7 @@ fun TripDetailScreen(
       TopAppBar(
         title = { Text(state.trip?.name ?: "Trip") },
         navigationIcon = {
-          IconButton(onClick = onBack) {
+          MOTIconButton(onClick = onBack) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
           }
         },

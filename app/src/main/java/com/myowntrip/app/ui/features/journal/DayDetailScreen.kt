@@ -20,7 +20,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.myowntrip.app.ui.theme.MOTIconButton
 import java.io.File
 import java.text.DateFormat
 import java.util.Date
@@ -55,7 +55,7 @@ fun DayDetailScreen(
       TopAppBar(
         title = { Text(state.day?.let { "Day ${it.dayNumber}" } ?: "Day") },
         navigationIcon = {
-          IconButton(onClick = onBack) {
+          MOTIconButton(onClick = onBack) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
           }
         },

@@ -7,7 +7,8 @@
 | Color roles | `variables.json` → `Color.kt` → `Theme.kt` | `MaterialTheme.colorScheme` |
 | Shape / corner | `variables.json` → `Shapes.kt` → `Theme.kt` | `MaterialTheme.shapes` + `rememberMOTButtonShape()` |
 | Tipografía | `res/font/` → `Type.kt` | `MaterialTheme.typography` |
-| Librería visual | Figma DS (variables + component sets) | Diseño de pantallas |
+| Librería visual | Figma DS (variables + component sets) | Mantenimiento de componentes |
+| Diseño de app | Figma design-file (`Vf2tNMXyKAlJSV53A1v4Is`) | Pantallas y flujos (fuente de verdad diseño) |
 | **Documentación componentes** | **Showcase externo** | Equipo + handoff dev |
 | Implementación | M3 Compose | `androidx.compose.material3.*` |
 | UX runtime | `docs/ux/android-compose-ux.md` | Pantallas `app/` |

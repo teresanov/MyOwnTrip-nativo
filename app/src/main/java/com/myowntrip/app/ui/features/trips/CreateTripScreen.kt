@@ -9,18 +9,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
+import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTTextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +54,7 @@ fun CreateTripScreen(
       TopAppBar(
         title = { Text("New trip") },
         navigationIcon = {
-          IconButton(onClick = {
+          MOTIconButton(onClick = {
             if (dirty) showDiscard = true else onBack()
           }) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -95,7 +95,7 @@ fun CreateTripScreen(
           .fillMaxWidth()
           .padding(top = 12.dp),
         trailingIcon = {
-          TextButton(onClick = { showStartPicker = true }) { Text("Pick") }
+          MOTTextButton(onClick = { showStartPicker = true }) { Text("Pick") }
         },
       )
       OutlinedTextField(
@@ -109,10 +109,10 @@ fun CreateTripScreen(
           .fillMaxWidth()
           .padding(top = 12.dp),
         trailingIcon = {
-          TextButton(onClick = { showEndPicker = true }) { Text("Pick") }
+          MOTTextButton(onClick = { showEndPicker = true }) { Text("Pick") }
         },
       )
-      Button(
+      MOTButton(
         onClick = { viewModel.save(onCreated) },
         modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
       ) {
@@ -126,7 +126,7 @@ fun CreateTripScreen(
     DatePickerDialog(
       onDismissRequest = { showStartPicker = false },
       confirmButton = {
-        TextButton(onClick = {
+        MOTTextButton(onClick = {
           pickerState.selectedDateMillis?.let { millis ->
             dirty = true
             viewModel.onStartDateChange(millis.toLocalDate())
@@ -135,7 +135,7 @@ fun CreateTripScreen(
         }) { Text("OK") }
       },
       dismissButton = {
-        TextButton(onClick = { showStartPicker = false }) { Text("Cancel") }
+        MOTTextButton(onClick = { showStartPicker = false }) { Text("Cancel") }
       },
     ) { DatePicker(state = pickerState) }
   }
@@ -145,7 +145,7 @@ fun CreateTripScreen(
     DatePickerDialog(
       onDismissRequest = { showEndPicker = false },
       confirmButton = {
-        TextButton(onClick = {
+        MOTTextButton(onClick = {
           pickerState.selectedDateMillis?.let { millis ->
             dirty = true
             viewModel.onEndDateChange(millis.toLocalDate())
@@ -154,7 +154,7 @@ fun CreateTripScreen(
         }) { Text("OK") }
       },
       dismissButton = {
-        TextButton(onClick = { showEndPicker = false }) { Text("Cancel") }
+        MOTTextButton(onClick = { showEndPicker = false }) { Text("Cancel") }
       },
     ) { DatePicker(state = pickerState) }
   }
@@ -164,10 +164,10 @@ fun CreateTripScreen(
       onDismissRequest = { showDiscard = false },
       title = { Text("Discard changes?") },
       confirmButton = {
-        TextButton(onClick = { showDiscard = false; onBack() }) { Text("Discard") }
+        MOTTextButton(onClick = { showDiscard = false; onBack() }) { Text("Discard") }
       },
       dismissButton = {
-        TextButton(onClick = { showDiscard = false }) { Text("Keep editing") }
+        MOTTextButton(onClick = { showDiscard = false }) { Text("Keep editing") }
       },
     )
   }

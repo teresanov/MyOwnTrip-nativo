@@ -20,7 +20,9 @@ description: Audita el design system M3 nativo de MyOwnTrip (Figma ↔ variables
 | Variables | `docs/design-system/variables.json` |
 | Tema Kotlin | `app/.../ui/theme/Color.kt` → `Theme.kt` |
 | Reglas | `docs/design-system/governance.md`, `.cursor/rules/m3-native-ui.mdc` |
-| Figma | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System) |
+| Figma DS (librería) | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System) · `zrGAL4v6MEMc9hzZemU432` |
+| Figma design-file (pantallas) | [MyOwnTrip_design-file](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file) · `Vf2tNMXyKAlJSV53A1v4Is` — ver [`figma-libraries.md`](../../../docs/design-system/figma-libraries.md) |
+| Android UI Kit | [MyOwnTrip_Andorid-UI](https://www.figma.com/design/WyjZMISihVMTMg5RYSJWba/MyOwnTrip_Andorid-UI) · `WyjZMISihVMTMg5RYSJWba` |
 
 Si `variables.json` y otra doc discrepan, **gana `variables.json`**.
 
