@@ -18,9 +18,11 @@ Selector automático: `MyOwnTripBrand(height = …)`.
 
 | Token | Hex | Uso |
 |-------|-----|-----|
-| Tinta | `#4A5864` | Wordmark, marco C1, M/T atenuadas (= `primary` M3 Light) |
-| Papel | `#F4F0E8` | Fondo icono C1 |
-| **Acento ocre** | `#C48328` | Cinta marcapáginas — **Palettes/Tertiary 60** (más legible que `tertiary` UI) |
+| Tinta (`ink`) | `#4A5864` | Wordmark light, marco C1, M/T atenuadas (= `primary` M3 Light) |
+| Tinta profunda (`ink-deep`) | `#4A5864` | MOT — letra O en variante light |
+| Papel (`paper`) | `#F4F0E8` | Fondo icono C1 |
+| **Acento ocre** (`ocre`) | `#C48328` | Cinta marcapáginas — **Palettes/Tertiary 60** (más legible que `tertiary` UI) |
+| Sobre oscuro (`on-dark`) | `#F9EFE2` | Wordmark/MOT en previews dark |
 
 > **UI:** `Schemes/Tertiary` = `#825513` (botones, chips). **Logo:** `Brand/ocre` = `#C48328`. No mezclar con **error** (`#B3261E` / `#904A42`).
 
@@ -34,6 +36,19 @@ Selector automático: `MyOwnTripBrand(height = …)`.
 | C1 — M | Vector (SemiBold-inspired) | En `ic_launcher_foreground.xml` |
 
 Fuentes bundled: `res/font/fraunces.ttf`, `fraunces_italic.ttf`, `inter.ttf`.
+
+**Estilos Figma (`Brand/*`):** tipografía en text styles; color en variables de nodo (limitación API).
+
+| Estilo | Uso |
+|--------|-----|
+| `Brand/W4/My-Trip` · `Brand/W4/Own` | Wordmark |
+| `Brand/MOT/Muted` · `Brand/MOT/Emphasis` | Monograma |
+| `Brand/C1/M/96` · `Brand/C1/M/48` | Glifo M del icono |
+| `Brand/Meta/Label` · `Section-Title` · `Note` | Labels del frame showcase |
+
+Scripts Bridge: `scripts/figma-brand-bind-vars-part*.js`, `figma-brand-text-styles.js`.
+
+**Quirk Bridge:** al bindear con color base `#000`, Figma muestra el enlace correcto pero el canvas en negro/blanco hasta unlink+⌘Z. Los scripts resuelven el valor de la variable como color del paint antes de `setBoundVariableForPaint` (ver `figma-brand-bind-utils.js`).
 
 ## Glifo cinta (marca atómica)
 

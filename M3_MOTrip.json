@@ -12872,6 +12872,12 @@
               "type": "color",
               "isAlias": false,
               "value": "#C48328"
+            },
+            {
+              "name": "on-dark",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F9EFE2"
             }
           ]
         }
