@@ -41,6 +41,7 @@ import com.myowntrip.app.ui.theme.MOTTextButton
 fun WalletFormScreen(
   onBack: () -> Unit,
   onSaved: () -> Unit,
+  onCreateTrip: () -> Unit = {},
   viewModel: WalletFormViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -104,6 +105,18 @@ fun WalletFormScreen(
               )
             }
           }
+        }
+      } else {
+        Text(
+          "No trips yet. Create one to save this document in Wallet.",
+          style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+          modifier = Modifier.padding(top = 12.dp),
+        )
+        MOTButton(
+          onClick = onCreateTrip,
+          modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+        ) {
+          Text("Create trip")
         }
       }
 

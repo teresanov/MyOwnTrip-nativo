@@ -181,11 +181,31 @@ Aceptar al menos: `application/pdf`, `image/*`, y valorar `message/rfc822` segú
 
 ## Checklist rápido por feature
 
-- [ ] JTBD y PP identificados en este doc
-- [ ] Happy path implementado primero
+- [x] JTBD y PP identificados en este doc
+- [x] Diseño Figma happy path por JTBD (páginas `00`–`06` en design-file)
+- [x] Rutas Compose documentadas en captions Figma
+- [ ] Happy path implementado primero (parcial — ver `AppNavGraph`)
 - [ ] Edge cases de la tabla cubiertos o explícitamente diferidos con issue
 - [ ] Offline y guardado local antes de sync
 - [ ] Criterios de éxito comprobables (pasos, métricas, tests)
+
+### Mapa diseño → Compose (jun 2026)
+
+| Ruta | Pantalla | JTBD |
+|------|----------|------|
+| `trip_list` | TripListScreen | Shell |
+| `trip_create` | CreateTripScreen | Shell |
+| `trip_detail/{tripId}` | TripDetailScreen (tabs) | 1, 3, 4, 6 |
+| `wallet_add/{tripId}` | WalletFormScreen | 1 |
+| `wallet_import` | WalletFormScreen / ImportActivity | 1 |
+| `wallet_detail/{entryId}` | WalletDetailScreen | 1 |
+| `day_hub/{tripId}/{dayId}` | DayHubScreen (Plan \| Journal) | 3, 5 |
+| `journal_add/{dayId}` | JournalAddScreen | 5 |
+| `expense_add/{tripId}?dayId=` | ExpenseFormScreen | 6 |
+| `restaurant_add/{tripId}` | RestaurantFormScreen | 4 |
+| `restaurant_detail/{id}` | RestaurantDetailScreen | 4 |
+
+Decisiones de diseño: **Day hub** con sub-tabs Plan \| Diario; **Restaurantes** en tab del viaje.
 
 ---
 

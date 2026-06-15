@@ -79,9 +79,9 @@ fun TripListScreen(
 private fun EmptyTripsState(modifier: Modifier = Modifier, onCreateTrip: () -> Unit) {
   Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-      Text("No trips yet", style = MaterialTheme.typography.titleMedium)
+      Text("Your travel notebook", style = MaterialTheme.typography.titleMedium)
       Text(
-        "Create your first trip to start your travel notebook",
+        "Create your first trip, then add flights, hotels and documents to Wallet.",
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
       )

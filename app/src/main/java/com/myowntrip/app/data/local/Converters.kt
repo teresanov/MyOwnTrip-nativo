@@ -3,6 +3,7 @@ package com.myowntrip.app.data.local
 import androidx.room.TypeConverter
 import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.ExpenseCategory
+import com.myowntrip.app.domain.model.RestaurantStatus
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -30,4 +31,10 @@ class Converters {
 
   @TypeConverter
   fun toExpenseCategory(value: String): ExpenseCategory = ExpenseCategory.valueOf(value)
+
+  @TypeConverter
+  fun fromRestaurantStatus(value: RestaurantStatus): String = value.name
+
+  @TypeConverter
+  fun toRestaurantStatus(value: String): RestaurantStatus = RestaurantStatus.valueOf(value)
 }

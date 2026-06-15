@@ -35,7 +35,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Expense
+import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.ui.features.restaurants.statusLabel
 import com.myowntrip.app.ui.theme.MOTIconButton
 import java.util.Locale
 
@@ -46,12 +48,15 @@ fun TripDetailScreen(
   onBack: () -> Unit,
   onAddWallet: () -> Unit,
   onAddExpense: () -> Unit,
+  onAddRestaurant: () -> Unit,
+  onWalletEntryClick: (String) -> Unit,
   onDayClick: (String) -> Unit,
+  onRestaurantClick: (String) -> Unit,
   viewModel: TripDetailViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
   var tabIndex by remember { mutableIntStateOf(0) }
-  val tabs = listOf("Wallet", "Days", "Expenses")
+  val tabs = listOf("Wallet", "Days", "Expenses", "Restaurants")
 
   Scaffold(
     topBar = {
@@ -74,6 +79,10 @@ fun TripDetailScreen(
           onClick = onAddExpense,
           modifier = Modifier.semantics { contentDescription = "Add expense" },
         ) { Icon(Icons.Default.Add, contentDescription = null) }
+        3 -> FloatingActionButton(
+          onClick = onAddRestaurant,
+          modifier = Modifier.semantics { contentDescription = "Add restaurant" },
+        ) { Icon(Icons.Default.Add, contentDescription = null) }
         else -> {}
       }
     },
@@ -85,16 +94,17 @@ fun TripDetailScreen(
         }
       }
       when (tabIndex) {
-        0 -> WalletTab(entries = state.walletEntries)
+        0 -> WalletTab(entries = state.walletEntries, onEntryClick = onWalletEntryClick)
         1 -> DaysTab(days = state.days, onDayClick = onDayClick)
         2 -> ExpensesTab(expenses = state.expenses)
+        3 -> RestaurantsTab(restaurants = state.restaurants, onRestaurantClick = onRestaurantClick)
       }
     }
   }
 }
 
 @Composable
-private fun WalletTab(entries: List<WalletEntry>) {
+private fun WalletTab(entries: List<WalletEntry>, onEntryClick: (String) -> Unit) {
   if (entries.isEmpty()) {
     BoxText("No wallet entries yet. Add flights, hotels or documents.")
   } else {
@@ -103,7 +113,11 @@ private fun WalletTab(entries: List<WalletEntry>) {
       verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
       items(entries, key = { it.id }) { entry ->
-        Card(modifier = Modifier.fillMaxWidth()) {
+        Card(
+          modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onEntryClick(entry.id) },
+        ) {
           Column(modifier = Modifier.padding(16.dp)) {
             Text(entry.title, style = MaterialTheme.typography.titleSmall)
             Text(entry.type.name, style = MaterialTheme.typography.bodySmall)
@@ -160,6 +174,38 @@ private fun ExpensesTab(expenses: List<Expense>) {
             Text(
               "${expense.amount} ${expense.currency} · ${expense.category.name}",
               style = MaterialTheme.typography.bodyMedium,
+            )
+          }
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun RestaurantsTab(
+  restaurants: List<Restaurant>,
+  onRestaurantClick: (String) -> Unit,
+) {
+  if (restaurants.isEmpty()) {
+    BoxText("No restaurants yet. Save places you want to visit.")
+  } else {
+    LazyColumn(
+      contentPadding = PaddingValues(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      items(restaurants, key = { it.id }) { restaurant ->
+        Card(
+          modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onRestaurantClick(restaurant.id) },
+        ) {
+          Column(modifier = Modifier.padding(16.dp)) {
+            Text(restaurant.name, style = MaterialTheme.typography.titleSmall)
+            Text(
+              statusLabel(restaurant.status),
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.tertiary,
             )
           }
         }

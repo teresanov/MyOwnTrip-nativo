@@ -12,6 +12,9 @@ interface WalletEntryDao {
   @Query("SELECT * FROM wallet_entries WHERE tripId = :tripId ORDER BY date DESC, title")
   fun observeByTrip(tripId: String): Flow<List<WalletEntryEntity>>
 
+  @Query("SELECT * FROM wallet_entries WHERE id = :id")
+  fun observeById(id: String): Flow<WalletEntryEntity?>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(entry: WalletEntryEntity)
 

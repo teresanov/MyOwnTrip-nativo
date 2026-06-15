@@ -98,7 +98,11 @@ class WalletFormViewModel @Inject constructor(
   fun requestConfirm() {
     val state = _uiState.value
     if (state.tripId.isBlank()) {
-      _uiState.update { it.copy(titleError = "Select a trip") }
+      _uiState.update {
+        it.copy(
+          titleError = if (state.trips.isEmpty()) "Create a trip first" else "Select a trip",
+        )
+      }
       return
     }
     if (state.title.isBlank()) {

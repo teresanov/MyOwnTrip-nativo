@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 data class ExpenseFormUiState(
   val tripId: String,
+  val dayId: String? = null,
   val amountText: String = "",
   val currency: String = "EUR",
   val concept: String = "",
@@ -29,8 +30,9 @@ class ExpenseFormViewModel @Inject constructor(
   private val expenseRepository: ExpenseRepository,
 ) : ViewModel() {
   private val tripId: String = checkNotNull(savedStateHandle["tripId"])
+  private val dayId: String? = savedStateHandle["dayId"]
 
-  private val _uiState = MutableStateFlow(ExpenseFormUiState(tripId = tripId))
+  private val _uiState = MutableStateFlow(ExpenseFormUiState(tripId = tripId, dayId = dayId))
   val uiState: StateFlow<ExpenseFormUiState> = _uiState.asStateFlow()
 
   fun onAmountChange(value: String) = _uiState.update { it.copy(amountText = value, amountError = null) }
@@ -46,7 +48,7 @@ class ExpenseFormViewModel @Inject constructor(
     viewModelScope.launch {
       expenseRepository.addExpense(
         tripId = tripId,
-        dayId = null,
+        dayId = _uiState.value.dayId,
         amount = amount,
         currency = _uiState.value.currency,
         concept = _uiState.value.concept,

@@ -1,0 +1,62 @@
+---
+description: "Pantallas Figma por JTBD: estructura JTBD X · flow, teléfono 360×800, hi-fi con DS + edge cases mid-fi."
+alwaysApply: false
+---
+
+# Figma — Pantallas por JTBD (design-file)
+
+Aplica al montar o editar flujos en **[MyOwnTrip_design-file](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file)** (`Vf2tNMXyKAlJSV53A1v4Is`).
+
+## Páginas (una por JTBD + shell)
+
+| Página | JTBD |
+|--------|------|
+| `00 · Shell & transversal` | Lista, crear/editar viaje, onboarding, biometría, share import |
+| `01 · Centralizar` | Wallet + import + detalle |
+| `02 · Sin cobertura` | Kit patrones offline/sync (transversal) |
+| `03 · Improvisar` | Day hub **Plan \| Diario**, itinerario, reorder |
+| `04 · Restaurantes` | Lista + estados |
+| `05 · Recordar` | Diario, media, permisos |
+| `06 · Controlar gasto` | Alta rápida, recibo, categorías |
+
+Legacy mid-fi: `_archive · Wireframes legacy` (no ampliar).
+
+## Fidelidad
+
+- **Happy path:** hi-fi con instancias de **MyOwnTrip_nativo — Design System** (`zrGAL4v6MEMc9hzZemU432`).
+- **Edge cases:** mid-fi en frame `Edge cases` (anotaciones, sin bloquear la fila `Screens`).
+- Chrome Android (status bar, permisos): **MyOwnTrip_Andorid-UI** cuando aplique.
+
+## Estructura obligatoria por flujo
+
+```
+JTBD X · flow          ← FRAME vertical · hug · sin fill
+├── [título hi-fi]     ← TEXT (ej. "03 · Improvisar — happy path hi-fi")
+├── Screens            ← FRAME horizontal · hug · itemSpacing 40
+│   └── [cap N]        ← FRAME vertical · hug · itemSpacing 8
+│       ├── cap        ← TEXT etiqueta + route Compose (ej. route: day_hub/{tripId}/{dayId})
+│       └── phone      ← FRAME 360×800 fijo
+└── Edge cases         ← FRAME vertical · mid-fi + bullets EC-*
+```
+
+## Reglas
+
+| Elemento | Regla |
+|----------|--------|
+| **Teléfono** | Fijo **360×800**, `clipsContent = true` |
+| **Screens** | Autolayout **horizontal**, hug, `itemSpacing = 40` |
+| **Columna cap+phone** | Autolayout **vertical**, hug, `itemSpacing = 8` |
+| **Flow exterior** | Autolayout **vertical**, hug, `itemSpacing = 16` |
+| **Captions** | Incluir **ruta Compose** en la caption para trazabilidad diseño → código |
+| **Componentes** | Instanciar DS; no duplicar component sets en design-file |
+
+## Objetivo
+
+Seleccionar `Screens` o `JTBD X · flow` y mover **todo el flujo en bloque** sin desalinear títulos, captions ni pantallas.
+
+## Prohibido
+
+- Pantallas sueltas en la página sin el frame `Screens`.
+- Captions posicionadas a mano fuera del bloque del flujo.
+- `layoutSizing FILL` antes de `appendChild` al padre autolayout.
+- Crear componentes reutilizables en design-file (solo en la librería DS).

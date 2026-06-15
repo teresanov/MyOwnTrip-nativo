@@ -1,0 +1,37 @@
+package com.myowntrip.app.data.repository
+
+import com.myowntrip.app.data.local.dao.ItineraryBlockDao
+import com.myowntrip.app.data.local.toDomain
+import com.myowntrip.app.data.local.toEntity
+import com.myowntrip.app.domain.model.ItineraryBlock
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class ItineraryRepository @Inject constructor(
+  private val itineraryBlockDao: ItineraryBlockDao,
+) {
+  fun observeByDay(dayId: String): Flow<List<ItineraryBlock>> =
+    itineraryBlockDao.observeByDay(dayId).map { blocks -> blocks.map { it.toDomain() } }
+
+  suspend fun addBlockAtEnd(dayId: String, title: String, timeLabel: String?, currentCount: Int) {
+    itineraryBlockDao.insert(
+      ItineraryBlock(
+        id = UUID.randomUUID().toString(),
+        dayId = dayId,
+        title = title,
+        timeLabel = timeLabel,
+        sortOrder = currentCount,
+      ).toEntity(),
+    )
+  }
+
+  suspend fun saveOrder(blocks: List<ItineraryBlock>) {
+    itineraryBlockDao.insertAll(
+      blocks.mapIndexed { index, block -> block.copy(sortOrder = index).toEntity() },
+    )
+  }
+}

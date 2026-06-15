@@ -28,9 +28,10 @@ Para **persona, dolores, JTBD, hipótesis y métricas de éxito** (resumen sincr
 - [x] Presentación en Figma creada (7 slides)
 - [x] User flows por JTBD en repo (`docs/myowntrip-jtbd-flows.md`)
 - [x] Diagramas de flujo JTBD en Figma (página **08 · JTBD — Flujos**)
-- [ ] Wireframes / UI detallada en Figma
+- [x] Wireframes / UI por JTBD en Figma ([design-file](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file) — páginas `00`–`06`)
+- [x] Navegación Compose alineada a rutas de diseño (day hub, wallet detail, restaurants, EC-NO-TRIPS)
 - [ ] Setup Android Studio
-- [ ] Desarrollo por features
+- [ ] Desarrollo por features (iteración hi-fi ↔ Compose)
 
 ---
 
