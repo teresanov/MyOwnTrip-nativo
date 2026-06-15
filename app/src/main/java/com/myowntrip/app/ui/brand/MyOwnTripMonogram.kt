@@ -7,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -22,7 +21,7 @@ enum class MonogramVariant {
 
 /**
  * Monograma MOT — toolbar (~21dp) y espacios estrechos.
- * M/T Light atenuadas (~62%); O Bold tinta #4A5864; cinta ocre #C48328 (Tertiary 60).
+ * M/T: Brand/MOT/Muted + fill `ink`/`on-dark` + Appearance 85%; O: ocre / on-dark.
  */
 @Composable
 fun MyOwnTripMonogram(
@@ -32,11 +31,11 @@ fun MyOwnTripMonogram(
   showRibbon: Boolean = true,
 ) {
   val mutedInk = when (variant) {
-    MonogramVariant.Light -> BrandColors.Ink.copy(alpha = 0.62f)
-    MonogramVariant.Dark -> BrandColors.OnDark.copy(alpha = 0.62f)
+    MonogramVariant.Light -> BrandColors.Ink.copy(alpha = BrandColors.MotMutedLayerOpacity)
+    MonogramVariant.Dark -> BrandColors.OnDark.copy(alpha = BrandColors.MotMutedLayerOpacity)
   }
   val oColor = when (variant) {
-    MonogramVariant.Light -> BrandColors.InkDeep
+    MonogramVariant.Light -> BrandColors.AccentOcre
     MonogramVariant.Dark -> BrandColors.OnDark
   }
   val ribbonTint = when (variant) {

@@ -9,9 +9,15 @@ import androidx.compose.ui.graphics.Color
  */
 object BrandColors {
   val Ink = Color(0xFF4A5864)
-  /** Misma tinta que [Ink] desde jun 2026 (gris-azul unificado). */
+  /** Reservado (token Figma `ink-deep`); lockups jun 2026 usan `ink` u `ocre`. */
   val InkDeep = Ink
   val Paper = Color(0xFFF4F0E8)
   val AccentOcre = Color(0xFFC48328)
   val OnDark = Color(0xFFF9EFE2)
+
+  /**
+   * MOT M/T muted — Figma Appearance 85% con fill enlazado a `ink`/`on-dark` al 100%.
+   * En Compose: alpha en color (equivalente a layer opacity).
+   */
+  const val MotMutedLayerOpacity = 0.85f
 }

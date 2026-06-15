@@ -23,7 +23,7 @@ enum class WordmarkVariant {
 
 /**
  * Wordmark W4 — splash, onboarding, store, about.
- * Fraunces Medium; «Own» en itálica; cinta ocre a la derecha.
+ * Fraunces Medium; «Own» itálica en ocre; My/Trip en tinta o on-dark; cinta ocre.
  * Usar cuando la altura del lockup sea ≥ 19dp.
  */
 @Composable
@@ -37,6 +37,12 @@ fun MyOwnTripWordmark(
     WordmarkVariant.Positive -> BrandColors.Ink
     WordmarkVariant.Dark -> BrandColors.OnDark
     WordmarkVariant.Monochrome -> BrandColors.Ink
+  }
+  val ownColor = when (variant) {
+    WordmarkVariant.Positive,
+    WordmarkVariant.Dark,
+    -> BrandColors.AccentOcre
+    WordmarkVariant.Monochrome -> textColor
   }
   val ribbonTint = when (variant) {
     WordmarkVariant.Monochrome -> textColor
@@ -58,7 +64,7 @@ fun MyOwnTripWordmark(
     horizontalArrangement = Arrangement.spacedBy(0.dp),
   ) {
     Text(text = "My", style = style)
-    Text(text = "Own", style = ownStyle)
+    Text(text = "Own", style = ownStyle.copy(color = ownColor))
     Text(text = "Trip", style = style)
     if (showRibbon) {
       BrandRibbon(

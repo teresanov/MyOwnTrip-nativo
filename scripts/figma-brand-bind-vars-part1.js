@@ -32,7 +32,6 @@ if (!onDark) {
 
 const V = {
   ink: v('ink'),
-  inkDeep: v('ink-deep'),
   ocre: v('ocre'),
   paper: v('paper'),
   onDark: onDark,
@@ -73,13 +72,20 @@ function resolveVariableColor(variable, collections, allVars, node) {
   return { r: value.r, g: value.g, b: value.b };
 }
 
-function bindFill(node, variable, opacity) {
+function bindFill(node, variable) {
   if (!node || !('fills' in node) || !variable) return;
   const color = resolveVariableColor(variable, collections, vars, node);
   const base = { type: 'SOLID', color, visible: true };
-  if (opacity !== undefined && opacity < 1) base.opacity = opacity;
   node.fills = [figma.variables.setBoundVariableForPaint(base, 'color', variable)];
 }
+
+function bindFillWithAppearance(node, variable, layerOpacity) {
+  bindFill(node, variable);
+  if (!node) return;
+  node.opacity = layerOpacity !== undefined && layerOpacity < 1 ? layerOpacity : 1;
+}
+
+const MOT_MUTED_APPEARANCE = 0.85;
 
 function bindStroke(node, variable, index) {
   if (!node || !variable || !('strokes' in node)) return;
@@ -106,18 +112,30 @@ function clearStrokes(node) {
   }
 }
 
-async function bindTextIn(parent, variable, opacity) {
+async function bindTextIn(parent, variable) {
   if (!parent || !('findAll' in parent)) return;
   for (const t of parent.findAll((n) => n.type === 'TEXT')) {
-    await bindFill(t, variable, opacity);
+    bindFill(t, variable);
+    t.opacity = 1;
   }
 }
 
-async function bindTextNamed(parent, names, variable, opacity) {
+async function bindTextNamed(parent, names, variable) {
   if (!parent) return;
   for (const name of names) {
     const t = parent.findOne((n) => n.type === 'TEXT' && n.name === name);
-    if (t) await bindFill(t, variable, opacity);
+    if (t) {
+      bindFill(t, variable);
+      t.opacity = 1;
+    }
+  }
+}
+
+async function bindTextNamedWithAppearance(parent, names, variable, layerOpacity) {
+  if (!parent) return;
+  for (const name of names) {
+    const t = parent.findOne((n) => n.type === 'TEXT' && n.name === name);
+    if (t) bindFillWithAppearance(t, variable, layerOpacity);
   }
 }
 
@@ -131,12 +149,14 @@ async function bindRibbons(parent) {
 
 // Wordmark W4 / Positive
 const wPos = await figma.getNodeByIdAsync('61084:30351');
-await bindTextIn(wPos, V.ink);
+await bindTextNamed(wPos, ['My', 'Trip'], V.ink);
+await bindTextNamed(wPos, ['Own'], V.ocre);
 await bindRibbons(wPos);
 
 // Wordmark W4 / Dark
 const wDark = await figma.getNodeByIdAsync('61084:30352');
-await bindTextIn(wDark, V.onDark);
+await bindTextNamed(wDark, ['My', 'Trip'], V.onDark);
+await bindTextNamed(wDark, ['Own'], V.ocre);
 await bindRibbons(wDark);
 
 // Wordmark W4 / Monochrome
@@ -148,15 +168,15 @@ if (monoRibbon) {
   clearStrokes(monoRibbon);
 }
 
-// Monogram MOT / Light
+// Monogram MOT / Light — M/T: fill ink + Appearance 85%
 const motLight = await figma.getNodeByIdAsync('61084:30354');
-await bindTextNamed(motLight, ['M', 'T'], V.ink, 0.62);
-await bindTextNamed(motLight, ['O'], V.inkDeep);
+await bindTextNamedWithAppearance(motLight, ['M', 'T'], V.ink, MOT_MUTED_APPEARANCE);
+await bindTextNamed(motLight, ['O'], V.ocre);
 await bindRibbons(motLight);
 
-// Monogram MOT / Dark
+// Monogram MOT / Dark — M/T: fill on-dark + Appearance 85%; O: on-dark pleno
 const motDark = await figma.getNodeByIdAsync('61084:30355');
-await bindTextNamed(motDark, ['M', 'T'], V.onDark, 0.62);
+await bindTextNamedWithAppearance(motDark, ['M', 'T'], V.onDark, MOT_MUTED_APPEARANCE);
 await bindTextNamed(motDark, ['O'], V.onDark);
 await bindRibbons(motDark);
 

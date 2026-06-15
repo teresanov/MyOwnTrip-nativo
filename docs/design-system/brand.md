@@ -18,11 +18,36 @@ Selector automático: `MyOwnTripBrand(height = …)`.
 
 | Token | Hex | Uso |
 |-------|-----|-----|
-| Tinta (`ink`) | `#4A5864` | Wordmark light, marco C1, M/T atenuadas (= `primary` M3 Light) |
-| Tinta profunda (`ink-deep`) | `#4A5864` | MOT — letra O en variante light |
+| Tinta (`ink`) | `#4A5864` | My/Trip (W4+), M/T MOT (fill 100%), marco C1, monocromo |
+| Tinta profunda (`ink-deep`) | `#4A5864` | Token DS; sin uso en lockups jun 2026 |
 | Papel (`paper`) | `#F4F0E8` | Fondo icono C1 |
-| **Acento ocre** (`ocre`) | `#C48328` | Cinta marcapáginas — **Palettes/Tertiary 60** (más legible que `tertiary` UI) |
-| Sobre oscuro (`on-dark`) | `#F9EFE2` | Wordmark/MOT en previews dark |
+| **Acento ocre** (`ocre`) | `#C48328` | **Own** (W4+ / dark), **O** (MOT light), cinta |
+| Sobre oscuro (`on-dark`) | `#F9EFE2` | My/Trip (W4 dark), MOT dark (M/O/T) |
+
+### Bindings por variante (Figma ↔ Compose)
+
+| Activo | Variante | My / Trip / M / T | Own / O | Cinta |
+|--------|----------|-------------------|---------|-------|
+| W4 | Positive | `ink` | `ocre` | `ocre` |
+| W4 | Dark | `on-dark` | `ocre` | `ocre` |
+| W4 | Monochrome | `ink` | `ink` | `ink` |
+| MOT | Light | `ink` fill + **Appearance 85%** (Muted) | `ocre` (Emphasis) | `ocre` |
+| MOT | Dark | `on-dark` fill + **Appearance 85%** (Muted) | `on-dark` (Emphasis) | `ocre` |
+| C1 | — | `ink` (M) | — | `ocre` |
+
+### Accesibilidad (contraste, jun 2026)
+
+Criterio: texto grande / logotipo ≥ **3:1** · texto normal ≥ **4.5:1** · gráficos UI ≥ **3:1** (WCAG 2.2). Fondos de referencia: `paper` `#F4F0E8`, `Schemes/Surface` Light `#FFF8F2`, Dark `#17130B`.
+
+| Par | Ratio | Large 3:1 | Notas |
+|-----|-------|-----------|-------|
+| `ink` sobre `paper` / surface | 6.4–7.0:1 | ✓ | My, Trip, monocromo |
+| `on-dark` sobre surface dark | 16.3:1 | ✓ | W4 / MOT dark |
+| `ocre` sobre surface dark | 5.8:1 | ✓ | Own dark, cinta en dark |
+| `ocre` sobre surface light | **3.0:1** | ✓ (límite) | Own positive, O MOT — OK en splash/UI (`surface`) |
+| `ink` + Appearance **85%** sobre surface light (M/T MOT) | **4.8:1** | ✓ normal | Mínimo editorial que cumple WCAG; Compose `MotMutedLayerOpacity` |
+
+> Los lockups son **logotipos** (exención WCAG 1.4.3 para texto de marca). Aun así, el acento ocre cumple 3:1 sobre `surface` Light donde se usa el wordmark en app.
 
 > **UI:** `Schemes/Tertiary` = `#825513` (botones, chips). **Logo:** `Brand/ocre` = `#C48328`. No mezclar con **error** (`#B3261E` / `#904A42`).
 
@@ -30,9 +55,9 @@ Selector automático: `MyOwnTripBrand(height = …)`.
 
 | Pieza | Fuente | Peso |
 |-------|--------|------|
-| Wordmark W4 | Fraunces | Medium (500); «Own» itálica |
-| MOT — M, T | Fraunces | Light (300) @ ~62% opacidad |
-| MOT — O | Fraunces | Bold (700), `#4A5864` |
+| Wordmark W4 | Fraunces | Medium (500); «Own» itálica **ocre** en +/dark |
+| MOT — M, T | Fraunces | Light (300) — **Brand/MOT/Muted**; fill `ink` / `on-dark` + **Appearance 85%** |
+| MOT — O | Fraunces | Bold (700) — **Brand/MOT/Emphasis**; `ocre` (light) / `on-dark` (dark) |
 | C1 — M | Vector (SemiBold-inspired) | En `ic_launcher_foreground.xml` |
 
 Fuentes bundled: `res/font/fraunces.ttf`, `fraunces_italic.ttf`, `inter.ttf`.
@@ -49,6 +74,8 @@ Fuentes bundled: `res/font/fraunces.ttf`, `fraunces_italic.ttf`, `inter.ttf`.
 Scripts Bridge: `scripts/figma-brand-bind-vars-part*.js`, `figma-brand-text-styles.js`.
 
 **Quirk Bridge:** al bindear con color base `#000`, Figma muestra el enlace correcto pero el canvas en negro/blanco hasta unlink+⌘Z. Los scripts resuelven el valor de la variable como color del paint antes de `setBoundVariableForPaint` (ver `figma-brand-bind-utils.js`).
+
+**MOT muted (M/T):** fill enlazado a variable al **100%**; atenuación vía **Appearance** (capa) al **85%** — no opacidad del fill (rompe el link en UI). Compose: `BrandColors.MotMutedLayerOpacity` (= `Ink`/`OnDark` con alpha 0.85).
 
 ## Glifo cinta (marca atómica)
 

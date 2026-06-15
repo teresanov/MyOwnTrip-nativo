@@ -19,7 +19,7 @@ function v(name) {
 
 const V = {
   ink: v('ink'),
-  inkDeep: v('ink-deep'),
+  ocre: v('ocre'),
   onDark: v('on-dark'),
   onSurfaceVariant: v('Schemes/On Surface Variant'),
   onSurface: v('Schemes/On Surface'),
@@ -66,10 +66,9 @@ function resolveVariableColor(variable, collections, allVars, node) {
   return { r: value.r, g: value.g, b: value.b };
 }
 
-function paintVar(variable, opacity, node) {
+function paintVar(variable, node) {
   const color = resolveVariableColor(variable, collections, allVars, node);
   const base = { type: 'SOLID', color, visible: true };
-  if (opacity !== undefined && opacity < 1) base.opacity = opacity;
   return figma.variables.setBoundVariableForPaint(base, 'color', variable);
 }
 
@@ -107,41 +106,49 @@ async function applyStyle(node, style) {
   await node.setTextStyleIdAsync(style.id);
 }
 
-async function bindFill(node, variable, opacity) {
+async function bindFill(node, variable) {
   if (!node || !variable) return;
-  node.fills = [paintVar(variable, opacity, node)];
+  node.fills = [paintVar(variable, node)];
 }
 
-async function applyWordmark(componentId, colorVar) {
+const MOT_MUTED_APPEARANCE = 0.85;
+
+async function bindFillWithAppearance(node, variable, layerOpacity) {
+  await bindFill(node, variable);
+  if (node) node.opacity = layerOpacity !== undefined && layerOpacity < 1 ? layerOpacity : 1;
+}
+
+async function applyWordmark(componentId, tripVar, ownVar) {
   const comp = await figma.getNodeByIdAsync(componentId);
   if (!comp) return;
   for (const t of comp.findAll((n) => n.type === 'TEXT')) {
     if (t.name === 'Own') await applyStyle(t, styles.w4Own);
     else await applyStyle(t, styles.w4Trip);
-    await bindFill(t, colorVar);
+    await bindFill(t, t.name === 'Own' ? ownVar : tripVar);
   }
 }
 
-await applyWordmark('61084:30351', V.ink);
-await applyWordmark('61084:30352', V.onDark);
-await applyWordmark('61084:30353', V.ink);
+await applyWordmark('61084:30351', V.ink, V.ocre);
+await applyWordmark('61084:30352', V.onDark, V.ocre);
+await applyWordmark('61084:30353', V.ink, V.ink);
 
-async function applyMot(componentId, mutedVar, emphasisVar, mutedOpacity) {
+async function applyMot(componentId, mutedVar, emphasisVar, mutedAppearance) {
   const comp = await figma.getNodeByIdAsync(componentId);
   if (!comp) return;
   for (const t of comp.findAll((n) => n.type === 'TEXT')) {
     if (t.name === 'M' || t.name === 'T') {
       await applyStyle(t, styles.motMuted);
-      await bindFill(t, mutedVar, mutedOpacity);
+      await bindFillWithAppearance(t, mutedVar, mutedAppearance);
     } else if (t.name === 'O') {
       await applyStyle(t, styles.motEmphasis);
       await bindFill(t, emphasisVar);
+      t.opacity = 1;
     }
   }
 }
 
-await applyMot('61084:30354', V.ink, V.inkDeep, 0.62);
-await applyMot('61084:30355', V.onDark, V.onDark, 0.62);
+await applyMot('61084:30354', V.ink, V.ocre, MOT_MUTED_APPEARANCE);
+await applyMot('61084:30355', V.onDark, V.onDark, MOT_MUTED_APPEARANCE);
 
 const c1m = await figma.getNodeByIdAsync('61084:30349');
 if (c1m) {
