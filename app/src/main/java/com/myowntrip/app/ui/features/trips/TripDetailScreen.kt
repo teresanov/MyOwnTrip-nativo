@@ -36,8 +36,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Expense
 import com.myowntrip.app.domain.model.Restaurant
-import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.ui.features.restaurants.statusLabel
+import com.myowntrip.app.ui.features.wallet.WalletScreen
 import com.myowntrip.app.ui.theme.MOTIconButton
 import java.util.Locale
 
@@ -71,10 +71,6 @@ fun TripDetailScreen(
     },
     floatingActionButton = {
       when (tabIndex) {
-        0 -> FloatingActionButton(
-          onClick = onAddWallet,
-          modifier = Modifier.semantics { contentDescription = "Add wallet entry" },
-        ) { Icon(Icons.Default.Add, contentDescription = null) }
         2 -> FloatingActionButton(
           onClick = onAddExpense,
           modifier = Modifier.semantics { contentDescription = "Add expense" },
@@ -94,36 +90,15 @@ fun TripDetailScreen(
         }
       }
       when (tabIndex) {
-        0 -> WalletTab(entries = state.walletEntries, onEntryClick = onWalletEntryClick)
+        0 -> WalletScreen(
+          trip = state.trip,
+          entries = state.walletEntries,
+          onAddEntry = onAddWallet,
+          onEntryClick = onWalletEntryClick,
+        )
         1 -> DaysTab(days = state.days, onDayClick = onDayClick)
         2 -> ExpensesTab(expenses = state.expenses)
         3 -> RestaurantsTab(restaurants = state.restaurants, onRestaurantClick = onRestaurantClick)
-      }
-    }
-  }
-}
-
-@Composable
-private fun WalletTab(entries: List<WalletEntry>, onEntryClick: (String) -> Unit) {
-  if (entries.isEmpty()) {
-    BoxText("No wallet entries yet. Add flights, hotels or documents.")
-  } else {
-    LazyColumn(
-      contentPadding = PaddingValues(16.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-      items(entries, key = { it.id }) { entry ->
-        Card(
-          modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onEntryClick(entry.id) },
-        ) {
-          Column(modifier = Modifier.padding(16.dp)) {
-            Text(entry.title, style = MaterialTheme.typography.titleSmall)
-            Text(entry.type.name, style = MaterialTheme.typography.bodySmall)
-            entry.notes?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
-          }
-        }
       }
     }
   }
