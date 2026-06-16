@@ -420,9 +420,9 @@ private fun entryScheduleLabel(entry: WalletEntry): String {
   }
 }
 
-@Preview(showBackground = true, widthDp = 360, heightDp = 800)
+@Preview(name = "Wallet — con documentos", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
-private fun WalletScreenPreview() {
+fun WalletScreenPreview() {
   MyOwnTripTheme {
     Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
       WalletScreen(
@@ -435,9 +435,9 @@ private fun WalletScreenPreview() {
   }
 }
 
-@Preview(showBackground = true, widthDp = 360, heightDp = 800)
+@Preview(name = "Wallet — vacío", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
-private fun WalletScreenEmptyPreview() {
+fun WalletScreenEmptyPreview() {
   MyOwnTripTheme {
     Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
       WalletScreen(
