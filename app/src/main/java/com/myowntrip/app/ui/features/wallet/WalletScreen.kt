@@ -25,8 +25,10 @@ import androidx.compose.material.icons.filled.ConfirmationNumber
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Flight
 import androidx.compose.material.icons.filled.Hotel
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Upload
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -36,7 +38,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +55,8 @@ import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import com.myowntrip.app.ui.theme.rememberMOTButtonShape
 import java.time.LocalDate
@@ -68,11 +75,27 @@ fun WalletScreen(
   onAddEntry: () -> Unit,
   onImportEntry: () -> Unit = onAddEntry,
   onEntryClick: (String) -> Unit,
+  onDeleteEntry: ((String) -> Unit)? = null,
+  embeddedInTrip: Boolean = false,
   modifier: Modifier = Modifier,
 ) {
+  var entryPendingDelete by remember { mutableStateOf<WalletEntry?>(null) }
+
+  if (entryPendingDelete != null) {
+    WalletDeleteEntryDialog(
+      entryTitle = entryPendingDelete!!.title,
+      onDismiss = { entryPendingDelete = null },
+      onConfirmDelete = {
+        onDeleteEntry?.invoke(entryPendingDelete!!.id)
+        entryPendingDelete = null
+      },
+    )
+  }
+
   if (entries.isEmpty()) {
     WalletEmptyState(
       onAddEntry = onAddEntry,
+      onImportEntry = onImportEntry,
       modifier = modifier.fillMaxSize(),
     )
     return
@@ -86,14 +109,18 @@ fun WalletScreen(
 
   LazyColumn(
     modifier = modifier.fillMaxSize(),
-    contentPadding = PaddingValues(bottom = 24.dp),
-    verticalArrangement = Arrangement.spacedBy(8.dp),
+    contentPadding = PaddingValues(bottom = MOTSpacing.screenContentBottom),
+    verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
   ) {
     item {
       WalletHeader(
         trip = trip,
         entryCount = entries.size,
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+        showTitle = !embeddedInTrip,
+        modifier = Modifier.padding(
+          horizontal = MOTSpacing.screenHorizontal,
+          vertical = MOTSpacing.componentSm,
+        ),
       )
     }
 
@@ -101,7 +128,7 @@ fun WalletScreen(
       WalletQuickActions(
         onAddEntry = onAddEntry,
         onImportEntry = onImportEntry,
-        modifier = Modifier.padding(horizontal = 20.dp),
+        modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
       )
     }
 
@@ -110,7 +137,7 @@ fun WalletScreen(
         WalletHighlightsSection(
           entries = highlights,
           onEntryClick = onEntryClick,
-          modifier = Modifier.padding(top = 8.dp),
+          modifier = Modifier.padding(top = MOTSpacing.componentSm),
         )
       }
     }
@@ -119,7 +146,10 @@ fun WalletScreen(
       Text(
         text = "Todos los documentos",
         style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+        modifier = Modifier.padding(
+          horizontal = MOTSpacing.screenHorizontal,
+          vertical = MOTSpacing.layoutMd,
+        ),
       )
     }
 
@@ -127,9 +157,14 @@ fun WalletScreen(
       WalletDocumentRow(
         entry = entry,
         onClick = { onEntryClick(entry.id) },
+        onDelete = if (onDeleteEntry != null) {
+          { entryPendingDelete = entry }
+        } else {
+          null
+        },
       )
       HorizontalDivider(
-        modifier = Modifier.padding(horizontal = 20.dp),
+        modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
         color = MaterialTheme.colorScheme.outlineVariant,
       )
     }
@@ -140,21 +175,32 @@ fun WalletScreen(
 private fun WalletHeader(
   trip: Trip?,
   entryCount: Int,
+  showTitle: Boolean = true,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
-    Text(
-      text = "Wallet",
-      style = MaterialTheme.typography.headlineLarge,
-      maxLines = 1,
-      overflow = TextOverflow.Ellipsis,
-    )
+    if (showTitle) {
+      Text(
+        text = "Wallet",
+        style = MaterialTheme.typography.headlineLarge,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+      )
+    }
     trip?.let {
       Text(
         text = it.destination,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(top = 4.dp),
+        style = if (showTitle) {
+          MaterialTheme.typography.titleMedium
+        } else {
+          MaterialTheme.typography.headlineSmall
+        },
+        color = if (showTitle) {
+          MaterialTheme.colorScheme.onSurfaceVariant
+        } else {
+          MaterialTheme.colorScheme.onSurface
+        },
+        modifier = Modifier.padding(top = if (showTitle) 4.dp else 0.dp),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
       )
@@ -169,8 +215,8 @@ private fun WalletHeader(
     }
     Text(
       text = entryCountLabel(entryCount),
-      style = MaterialTheme.typography.headlineSmall,
-      modifier = Modifier.padding(top = 20.dp),
+      style = MaterialTheme.typography.titleLarge,
+      modifier = Modifier.padding(top = if (showTitle) 20.dp else 12.dp),
       maxLines = 1,
       overflow = TextOverflow.Ellipsis,
     )
@@ -193,7 +239,7 @@ private fun WalletQuickActions(
 ) {
   Row(
     modifier = modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.spacedBy(12.dp),
+    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.gutterGrid),
   ) {
     MOTButton(
       onClick = onAddEntry,
@@ -225,14 +271,20 @@ private fun WalletHighlightsSection(
     Text(
       text = "Próximos",
       style = MaterialTheme.typography.titleMedium,
-      modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+      modifier = Modifier.padding(
+        horizontal = MOTSpacing.screenHorizontal,
+        vertical = MOTSpacing.componentXs,
+      ),
     )
     Row(
       modifier = Modifier
         .fillMaxWidth()
         .horizontalScroll(rememberScrollState())
-        .padding(horizontal = 20.dp, vertical = 8.dp),
-      horizontalArrangement = Arrangement.spacedBy(12.dp),
+        .padding(
+          horizontal = MOTSpacing.screenHorizontal,
+          vertical = MOTSpacing.componentSm,
+        ),
+      horizontalArrangement = Arrangement.spacedBy(MOTSpacing.gutterGrid),
     ) {
       entries.forEach { entry ->
         WalletHighlightCard(
@@ -251,18 +303,25 @@ private fun WalletHighlightCard(
   modifier: Modifier = Modifier,
 ) {
   val label = entryTypeLabel(entry.type)
+  val hasQr = !entry.qrPayload.isNullOrBlank()
   Surface(
     modifier = modifier
       .width(248.dp)
       .semantics(mergeDescendants = true) {
-        contentDescription = "$label, ${entry.title}"
+        contentDescription = buildString {
+          append("$label, ${entry.title}")
+          if (hasQr) append(", QR de embarque guardado")
+        }
       }
       .clickable(onClick = onClick),
     shape = MaterialTheme.shapes.medium,
     color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
-      Row(verticalAlignment = Alignment.CenterVertically) {
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
         EntryTypeIcon(
           type = entry.type,
           modifier = Modifier
@@ -278,7 +337,11 @@ private fun WalletHighlightCard(
           color = MaterialTheme.colorScheme.tertiary,
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
+          modifier = Modifier.weight(1f),
         )
+        if (hasQr) {
+          WalletQrListIcon()
+        }
       }
       Text(
         text = entry.title,
@@ -303,13 +366,20 @@ private fun WalletHighlightCard(
 private fun WalletDocumentRow(
   entry: WalletEntry,
   onClick: () -> Unit,
+  onDelete: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
 ) {
   val label = entryTypeLabel(entry.type)
+  val hasQr = !entry.qrPayload.isNullOrBlank()
   ListItem(
     modifier = modifier
       .clickable(onClick = onClick)
-      .semantics { contentDescription = "$label, ${entry.title}" },
+      .semantics {
+        contentDescription = buildString {
+          append("$label, ${entry.title}")
+          if (hasQr) append(", QR de embarque guardado")
+        }
+      },
     headlineContent = {
       Text(
         text = entry.title,
@@ -340,7 +410,38 @@ private fun WalletDocumentRow(
           .padding(8.dp),
       )
     },
+    trailingContent = if (hasQr || onDelete != null) {
+      {
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+          if (hasQr) WalletQrListIcon()
+          if (onDelete != null) {
+            MOTIconButton(onClick = onDelete) {
+              Icon(
+                Icons.Default.Delete,
+                contentDescription = "Eliminar documento",
+                tint = MaterialTheme.colorScheme.error,
+              )
+            }
+          }
+        }
+      }
+    } else {
+      null
+    },
     colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surface),
+  )
+}
+
+@Composable
+private fun WalletQrListIcon(modifier: Modifier = Modifier) {
+  Icon(
+    imageVector = Icons.Default.QrCode,
+    contentDescription = "QR de embarque guardado",
+    modifier = modifier.size(24.dp),
+    tint = MaterialTheme.colorScheme.tertiary,
   )
 }
 
@@ -360,10 +461,13 @@ private fun EntryTypeIcon(
 @Composable
 private fun WalletEmptyState(
   onAddEntry: () -> Unit,
+  onImportEntry: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier = modifier.padding(horizontal = 24.dp),
+    modifier = modifier
+      .padding(horizontal = MOTSpacing.screenHorizontal)
+      .padding(bottom = MOTSpacing.screenContentBottom),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
@@ -377,29 +481,21 @@ private fun WalletEmptyState(
       text = "Centraliza vuelos, hoteles y PDFs del viaje. Todo disponible sin conexión cuando lo necesites.",
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
-      modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
+      modifier = Modifier.padding(top = MOTSpacing.layoutMd, bottom = MOTSpacing.layoutLg),
       maxLines = 4,
       overflow = TextOverflow.Ellipsis,
     )
-    MOTButton(onClick = onAddEntry) {
-      Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-      Spacer(Modifier.width(8.dp))
-      Text("Añadir primer documento")
-    }
+    WalletQuickActions(
+      onAddEntry = onAddEntry,
+      onImportEntry = onImportEntry,
+      modifier = Modifier.fillMaxWidth(),
+    )
   }
 }
 
 private fun entryCountLabel(count: Int): String = when (count) {
   1 -> "1 documento"
   else -> "$count documentos"
-}
-
-private fun entryTypeLabel(type: EntryType): String = when (type) {
-  EntryType.FLIGHT -> "Vuelo"
-  EntryType.HOTEL -> "Hotel"
-  EntryType.ACTIVITY -> "Actividad"
-  EntryType.TRANSPORT -> "Transporte"
-  EntryType.GENERIC -> "Documento"
 }
 
 private fun entryTypeIcon(type: EntryType): ImageVector = when (type) {
@@ -444,6 +540,7 @@ fun WalletScreenEmptyPreview() {
         trip = previewTrip(),
         entries = emptyList(),
         onAddEntry = {},
+        onImportEntry = {},
         onEntryClick = {},
       )
     }
@@ -467,6 +564,7 @@ private fun previewWalletEntries() = listOf(
     title = "IB 3254 · Madrid → Barcelona",
     date = LocalDate.of(2026, 6, 14),
     time = LocalTime.of(9, 15),
+    qrPayload = "M1DEMO/PAX EIB3254 MADBCNIB 3254 314Y014A0001 349>5180  5140BIB              2A825513825513 0000",
   ),
   WalletEntry(
     id = "2",

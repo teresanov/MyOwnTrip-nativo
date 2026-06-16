@@ -5,7 +5,7 @@ object Routes {
   const val TRIP_CREATE = "trip_create"
   const val TRIP_EDIT = "trip_edit/{tripId}"
   const val TRIP_DETAIL = "trip_detail/{tripId}"
-  const val WALLET_ADD = "wallet_add/{tripId}"
+  const val WALLET_ADD = "wallet_add/{tripId}?pickAttachment={pickAttachment}"
   const val WALLET_IMPORT = "wallet_import"
   const val WALLET_DETAIL = "wallet_detail/{entryId}"
   const val EXPENSE_ADD = "expense_add/{tripId}?dayId={dayId}"
@@ -17,7 +17,8 @@ object Routes {
 
   fun tripDetail(tripId: String) = "trip_detail/$tripId"
   fun tripEdit(tripId: String) = "trip_edit/$tripId"
-  fun walletAdd(tripId: String) = "wallet_add/$tripId"
+  fun walletAdd(tripId: String, pickAttachment: Boolean = false) =
+    "wallet_add/$tripId?pickAttachment=$pickAttachment"
   fun walletDetail(entryId: String) = "wallet_detail/$entryId"
   fun expenseAdd(tripId: String, dayId: String? = null) =
     if (dayId.isNullOrBlank()) "expense_add/$tripId" else "expense_add/$tripId?dayId=$dayId"

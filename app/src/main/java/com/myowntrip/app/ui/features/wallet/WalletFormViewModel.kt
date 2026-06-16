@@ -10,6 +10,9 @@ import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +40,24 @@ data class WalletFormUiState(
   val pendingEntry: WalletEntry? = null,
   val saved: Boolean = false,
   val isImport: Boolean = false,
-)
+  val pickAttachmentOnStart: Boolean = false,
+  val isParsing: Boolean = false,
+  val parseFailed: Boolean = false,
+  val showTypeCorrection: Boolean = false,
+  val showNotesField: Boolean = false,
+  val qrPayload: String? = null,
+) {
+  val isImportFlow: Boolean
+    get() = pickAttachmentOnStart || isImport || attachmentUri != null
+
+  val showTripPicker: Boolean
+    get() = trips.isNotEmpty() && tripId.isBlank()
+
+  /** Borrador en curso: importación, adjunto o campos editados sin guardar. */
+  val hasDraft: Boolean
+    get() = showConfirm || isParsing || attachmentUri != null ||
+      title.isNotBlank() || notes.isNotBlank()
+}
 
 @HiltViewModel
 class WalletFormViewModel @Inject constructor(
@@ -46,9 +66,14 @@ class WalletFormViewModel @Inject constructor(
   tripRepository: TripRepository,
 ) : ViewModel() {
   private val initialTripId: String? = savedStateHandle["tripId"]
+  private val pickAttachmentOnStart: Boolean = savedStateHandle["pickAttachment"] ?: false
+  private var importJob: Job? = null
 
   private val _uiState = MutableStateFlow(
-    WalletFormUiState(tripId = initialTripId.orEmpty()),
+    WalletFormUiState(
+      tripId = initialTripId.orEmpty(),
+      pickAttachmentOnStart = pickAttachmentOnStart,
+    ),
   )
   val uiState: StateFlow<WalletFormUiState> = _uiState.asStateFlow()
 
@@ -74,18 +99,78 @@ class WalletFormViewModel @Inject constructor(
     uri: Uri?,
     mimeType: String?,
     fileName: String?,
-    suggestedTitle: String?,
   ) {
-    val type = walletRepository.suggestEntryType(mimeType, fileName)
+    if (uri == null) return
+    importJob?.cancel()
+    importJob = viewModelScope.launch {
+      _uiState.update {
+        it.copy(
+          isParsing = true,
+          attachmentUri = uri,
+          attachmentFileName = fileName,
+          showTypeCorrection = false,
+          parseFailed = false,
+        )
+      }
+      delay(350)
+      ensureActive()
+      val parsed = walletRepository.parseDocument(
+        uri = uri,
+        mimeType = mimeType,
+        fileName = fileName,
+      )
+      _uiState.update {
+        it.copy(
+          isImport = !parsed.parseFailed,
+          isParsing = false,
+          parseFailed = parsed.parseFailed,
+          type = parsed.type,
+          title = parsed.title,
+          date = parsed.date,
+          time = parsed.time,
+          notes = parsed.notes.orEmpty(),
+          showNotesField = !parsed.notes.isNullOrBlank(),
+          showTypeCorrection = false,
+          titleError = null,
+          qrPayload = parsed.qrPayload,
+        )
+      }
+    }
+  }
+
+  fun cancelImport() {
+    importJob?.cancel()
+    importJob = null
     _uiState.update {
       it.copy(
-        isImport = uri != null,
-        attachmentUri = uri,
-        attachmentFileName = fileName,
-        type = type,
-        title = suggestedTitle ?: fileName?.substringBeforeLast('.') ?: "",
+        isParsing = false,
+        isImport = false,
+        parseFailed = false,
+        pickAttachmentOnStart = false,
+        attachmentUri = null,
+        attachmentFileName = null,
+        title = "",
+        type = EntryType.GENERIC,
+        date = null,
+        time = null,
+        notes = "",
+        showNotesField = false,
+        showTypeCorrection = false,
+        qrPayload = null,
+        titleError = null,
       )
     }
+  }
+
+  fun prepareAbandon() = abandonDraft()
+
+  fun abandonDraft() {
+    importJob?.cancel()
+    importJob = null
+    walletRepository.deleteStoredFile(_uiState.value.storedFileUri)
+    val tripId = _uiState.value.tripId
+    val trips = _uiState.value.trips
+    _uiState.value = WalletFormUiState(tripId = tripId, trips = trips)
   }
 
   fun onTripSelected(tripId: String) = _uiState.update { it.copy(tripId = tripId) }
@@ -95,18 +180,21 @@ class WalletFormViewModel @Inject constructor(
   fun onTimeChange(value: LocalTime?) = _uiState.update { it.copy(time = value) }
   fun onNotesChange(value: String) = _uiState.update { it.copy(notes = value) }
 
+  fun setShowTypeCorrection(show: Boolean) = _uiState.update { it.copy(showTypeCorrection = show) }
+  fun setShowNotesField(show: Boolean) = _uiState.update { it.copy(showNotesField = show) }
+
   fun requestConfirm() {
     val state = _uiState.value
     if (state.tripId.isBlank()) {
       _uiState.update {
         it.copy(
-          titleError = if (state.trips.isEmpty()) "Create a trip first" else "Select a trip",
+          titleError = if (state.trips.isEmpty()) "Crea un viaje primero" else "Selecciona un viaje",
         )
       }
       return
     }
     if (state.title.isBlank()) {
-      _uiState.update { it.copy(titleError = "Required") }
+      _uiState.update { it.copy(titleError = "Obligatorio") }
       return
     }
     viewModelScope.launch {
@@ -126,6 +214,7 @@ class WalletFormViewModel @Inject constructor(
         fileUri = storedUri,
         linkUrl = null,
         notes = state.notes.ifBlank { null },
+        qrPayload = state.qrPayload,
       )
       _uiState.update { it.copy(showConfirm = true, pendingEntry = entry, storedFileUri = storedUri) }
     }
@@ -140,5 +229,34 @@ class WalletFormViewModel @Inject constructor(
     }
   }
 
-  fun dismissConfirm() = _uiState.update { it.copy(showConfirm = false, pendingEntry = null) }
+  fun clearPickAttachmentOnStart() =
+    _uiState.update { it.copy(pickAttachmentOnStart = false) }
+
+  fun switchToManualEntry() {
+    _uiState.update {
+      it.copy(
+        pickAttachmentOnStart = false,
+        isImport = false,
+        parseFailed = false,
+        isParsing = false,
+        attachmentUri = null,
+        attachmentFileName = null,
+        title = "",
+        type = EntryType.GENERIC,
+        date = null,
+        time = null,
+        notes = "",
+        showNotesField = false,
+        titleError = null,
+      )
+    }
+  }
+
+  fun dismissConfirm() {
+    val storedUri = _uiState.value.storedFileUri
+    walletRepository.deleteStoredFile(storedUri)
+    _uiState.update {
+      it.copy(showConfirm = false, pendingEntry = null, storedFileUri = null)
+    }
+  }
 }

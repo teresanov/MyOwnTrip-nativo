@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class TripDetailUiState(
@@ -39,6 +40,7 @@ class TripDetailViewModel @Inject constructor(
   restaurantRepository: RestaurantRepository,
 ) : ViewModel() {
   private val tripId: String = checkNotNull(savedStateHandle["tripId"])
+  private val walletRepository: WalletRepository = walletRepository
 
   private val trip = tripRepository.observeTrip(tripId)
   private val days = tripRepository.observeDays(tripId)
@@ -58,5 +60,11 @@ class TripDetailViewModel @Inject constructor(
 
   fun selectTab(tab: TripTab) {
     // handled in composable via local state for simplicity
+  }
+
+  fun deleteWalletEntry(entryId: String) {
+    viewModelScope.launch {
+      walletRepository.deleteEntry(entryId)
+    }
   }
 }

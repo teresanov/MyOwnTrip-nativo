@@ -19,7 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,6 +48,7 @@ fun TripDetailScreen(
   tripId: String,
   onBack: () -> Unit,
   onAddWallet: () -> Unit,
+  onImportWallet: () -> Unit,
   onAddExpense: () -> Unit,
   onAddRestaurant: () -> Unit,
   onWalletEntryClick: (String) -> Unit,
@@ -56,15 +58,21 @@ fun TripDetailScreen(
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
   var tabIndex by remember { mutableIntStateOf(0) }
-  val tabs = listOf("Wallet", "Days", "Expenses", "Restaurants")
+  val tabs = listOf("Wallet", "Días", "Gastos", "Sitios")
 
   Scaffold(
     topBar = {
       TopAppBar(
-        title = { Text(state.trip?.name ?: "Trip") },
+        title = {
+          Text(
+            text = state.trip?.name ?: "Viaje",
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+          )
+        },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -84,9 +92,22 @@ fun TripDetailScreen(
     },
   ) { padding ->
     Column(modifier = Modifier.padding(padding).fillMaxSize()) {
-      TabRow(selectedTabIndex = tabIndex) {
+      ScrollableTabRow(
+        selectedTabIndex = tabIndex,
+        edgePadding = 0.dp,
+      ) {
         tabs.forEachIndexed { index, title ->
-          Tab(selected = tabIndex == index, onClick = { tabIndex = index }, text = { Text(title) })
+          Tab(
+            selected = tabIndex == index,
+            onClick = { tabIndex = index },
+            text = {
+              Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+              )
+            },
+          )
         }
       }
       when (tabIndex) {
@@ -94,7 +115,10 @@ fun TripDetailScreen(
           trip = state.trip,
           entries = state.walletEntries,
           onAddEntry = onAddWallet,
+          onImportEntry = onImportWallet,
           onEntryClick = onWalletEntryClick,
+          onDeleteEntry = viewModel::deleteWalletEntry,
+          embeddedInTrip = true,
         )
         1 -> DaysTab(days = state.days, onDayClick = onDayClick)
         2 -> ExpensesTab(expenses = state.expenses)

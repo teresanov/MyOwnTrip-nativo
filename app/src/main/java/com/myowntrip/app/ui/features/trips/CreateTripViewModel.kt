@@ -41,31 +41,53 @@ class CreateTripViewModel @Inject constructor(
     _uiState.update { it.copy(endDate = value, dateError = null) }
 
   fun save(onSuccess: (String) -> Unit) {
+    if (!validate()) return
+    viewModelScope.launch {
+      val id = createTripFromState()
+      onSuccess(id)
+    }
+  }
+
+  fun ensureTripSaved(onReady: (String) -> Unit) {
+    val existing = _uiState.value.savedTripId
+    if (existing != null) {
+      onReady(existing)
+      return
+    }
+    if (!validate()) return
+    viewModelScope.launch {
+      val id = createTripFromState()
+      onReady(id)
+    }
+  }
+
+  private fun validate(): Boolean {
     val state = _uiState.value
     var valid = true
     if (state.name.isBlank()) {
-      _uiState.update { it.copy(nameError = "Required") }
+      _uiState.update { it.copy(nameError = "Obligatorio") }
       valid = false
     }
     if (state.destination.isBlank()) {
-      _uiState.update { it.copy(destinationError = "Required") }
+      _uiState.update { it.copy(destinationError = "Obligatorio") }
       valid = false
     }
     if (state.endDate.isBefore(state.startDate)) {
-      _uiState.update { it.copy(dateError = "End date must be after start") }
+      _uiState.update { it.copy(dateError = "La fecha de fin debe ser posterior al inicio") }
       valid = false
     }
-    if (!valid) return
+    return valid
+  }
 
-    viewModelScope.launch {
-      val id = tripRepository.createTrip(
-        name = state.name.trim(),
-        destination = state.destination.trim(),
-        startDate = state.startDate,
-        endDate = state.endDate,
-      )
-      _uiState.update { it.copy(savedTripId = id) }
-      onSuccess(id)
-    }
+  private suspend fun createTripFromState(): String {
+    val state = _uiState.value
+    val id = tripRepository.createTrip(
+      name = state.name.trim(),
+      destination = state.destination.trim(),
+      startDate = state.startDate,
+      endDate = state.endDate,
+    )
+    _uiState.update { it.copy(savedTripId = id) }
+    return id
   }
 }

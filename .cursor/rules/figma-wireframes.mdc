@@ -43,12 +43,14 @@ JTBD X · flow          ← FRAME vertical · hug · sin fill
 
 | Elemento | Regla |
 |----------|--------|
-| **Teléfono** | Fijo **360×800**, `clipsContent = true` |
+| **Teléfono** | Fijo **360×800**, `clipsContent = true` — único frame con ancho fijo |
+| **Width en padres** | **Hug contents** en `JTBD X · flow`, `Screens` y cada columna `cap N` (nunca ancho fijo en contenedores de pantalla) |
 | **Screens** | Autolayout **horizontal**, hug, `itemSpacing = 40` |
 | **Columna cap+phone** | Autolayout **vertical**, hug, `itemSpacing = 8` |
 | **Flow exterior** | Autolayout **vertical**, hug, `itemSpacing = 16` |
 | **Captions** | Incluir **ruta Compose** en la caption para trazabilidad diseño → código |
 | **Componentes** | Instanciar DS; no duplicar component sets en design-file |
+| **Contenido en `phone`** | Frame cuerpo (lista, form, empty con scroll): `paddingBottom` = **`spacing-layout-lg`** (24) — colchón de seguridad ante barra inferior / gestos; no variar por pantalla |
 
 ## Objetivo
 
@@ -58,5 +60,6 @@ Seleccionar `Screens` o `JTBD X · flow` y mover **todo el flujo en bloque** sin
 
 - Pantallas sueltas en la página sin el frame `Screens`.
 - Captions posicionadas a mano fuera del bloque del flujo.
+- Ancho **Fixed** en frames padre de pantalla (`cap N`, `Screens`, `JTBD X · flow`) — siempre **Hug**.
 - `layoutSizing FILL` antes de `appendChild` al padre autolayout.
 - Crear componentes reutilizables en design-file (solo en la librería DS).

@@ -12,6 +12,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.myowntrip.app.ui.features.wallet.WalletFormScreen
 import com.myowntrip.app.ui.features.wallet.WalletFormViewModel
+import com.myowntrip.app.ui.features.wallet.resolveAttachmentDisplayName
 import com.myowntrip.app.ui.theme.LocalReduceMotion
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import com.myowntrip.app.ui.theme.rememberReduceMotion
@@ -24,7 +25,7 @@ class ImportActivity : ComponentActivity() {
     enableEdgeToEdge()
     val shareUri = extractShareUri(intent)
     val mimeType = intent.type
-    val fileName = shareUri?.lastPathSegment
+    val fileName = shareUri?.let { resolveAttachmentDisplayName(this, it) }
 
     setContent {
       val reduceMotion = rememberReduceMotion()
@@ -36,7 +37,6 @@ class ImportActivity : ComponentActivity() {
               uri = shareUri,
               mimeType = mimeType,
               fileName = fileName,
-              suggestedTitle = fileName?.substringBeforeLast('.'),
             )
           }
           WalletFormScreen(

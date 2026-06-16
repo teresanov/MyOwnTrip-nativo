@@ -30,4 +30,5 @@ data class WalletEntryEntity(
   val pdfUri: String?,
   val linkUrl: String?,
   val notes: String?,
+  val qrPayload: String?,
 )

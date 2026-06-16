@@ -61,6 +61,7 @@ fun WalletEntryEntity.toDomain() = WalletEntry(
   pdfUri = pdfUri,
   linkUrl = linkUrl,
   notes = notes,
+  qrPayload = qrPayload,
 )
 
 fun WalletEntry.toEntity() = WalletEntryEntity(
@@ -73,6 +74,7 @@ fun WalletEntry.toEntity() = WalletEntryEntity(
   pdfUri = pdfUri,
   linkUrl = linkUrl,
   notes = notes,
+  qrPayload = qrPayload,
 )
 
 fun ExpenseEntity.toDomain() = Expense(

@@ -33,9 +33,15 @@ fun AppNavGraph(
     composable(Routes.TRIP_CREATE) {
       CreateTripScreen(
         onBack = { navController.popBackStack() },
-        onCreated = { tripId ->
+        onOpenTrip = { tripId ->
           navController.popBackStack()
           navController.navigate(Routes.tripDetail(tripId))
+        },
+        onImportDocument = { tripId ->
+          navController.navigate(Routes.walletAdd(tripId, pickAttachment = true))
+        },
+        onAddDocumentManual = { tripId ->
+          navController.navigate(Routes.walletAdd(tripId, pickAttachment = false))
         },
       )
     }
@@ -48,6 +54,7 @@ fun AppNavGraph(
         tripId = tripId,
         onBack = { navController.popBackStack() },
         onAddWallet = { navController.navigate(Routes.walletAdd(tripId)) },
+        onImportWallet = { navController.navigate(Routes.walletAdd(tripId, pickAttachment = true)) },
         onAddExpense = { navController.navigate(Routes.expenseAdd(tripId)) },
         onAddRestaurant = { navController.navigate(Routes.restaurantAdd(tripId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
@@ -59,7 +66,13 @@ fun AppNavGraph(
     }
     composable(
       route = Routes.WALLET_ADD,
-      arguments = listOf(navArgument("tripId") { type = NavType.StringType }),
+      arguments = listOf(
+        navArgument("tripId") { type = NavType.StringType },
+        navArgument("pickAttachment") {
+          type = NavType.BoolType
+          defaultValue = false
+        },
+      ),
     ) {
       WalletFormScreen(
         onBack = { navController.popBackStack() },
@@ -80,7 +93,10 @@ fun AppNavGraph(
       route = Routes.WALLET_DETAIL,
       arguments = listOf(navArgument("entryId") { type = NavType.StringType }),
     ) {
-      WalletDetailScreen(onBack = { navController.popBackStack() })
+      WalletDetailScreen(
+        onBack = { navController.popBackStack() },
+        onDeleted = { navController.popBackStack() },
+      )
     }
     composable(
       route = Routes.EXPENSE_ADD,

@@ -9,15 +9,23 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WalletDetailViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  walletRepository: WalletRepository,
+  private val walletRepository: WalletRepository,
 ) : ViewModel() {
   private val entryId: String = checkNotNull(savedStateHandle["entryId"])
 
   val entry: StateFlow<WalletEntry?> = walletRepository.observeById(entryId)
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+  fun deleteEntry(onDeleted: () -> Unit) {
+    viewModelScope.launch {
+      walletRepository.deleteEntry(entryId)
+      onDeleted()
+    }
+  }
 }

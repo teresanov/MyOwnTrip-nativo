@@ -15,6 +15,9 @@ interface WalletEntryDao {
   @Query("SELECT * FROM wallet_entries WHERE id = :id")
   fun observeById(id: String): Flow<WalletEntryEntity?>
 
+  @Query("SELECT * FROM wallet_entries WHERE id = :id")
+  suspend fun getById(id: String): WalletEntryEntity?
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(entry: WalletEntryEntity)
 
