@@ -27,6 +27,20 @@ Legacy mid-fi: `_archive · Wireframes legacy` (no ampliar).
 - **Edge cases:** mid-fi en frame `Edge cases` (anotaciones, sin bloquear la fila `Screens`).
 - Chrome Android (status bar, permisos): **MyOwnTrip_Andorid-UI** cuando aplique.
 
+## Contenido MVP (pantallas finales)
+
+El design-file es **hi-fi de producto**, no wireframe exploratorio. Cada `phone` del happy path debe poder presentarse como pantalla final del MVP.
+
+| Qué | Regla |
+|-----|--------|
+| **Copy** | Textos reales en español: nombres de viaje, destinos, fechas, duración, CTAs — alineados a previews Compose y JTBD (`docs/product/jtbd-flows.md`). **No** Lorem ipsum, «Header»/«Title» del kit sin override, ni «Label» genérico. |
+| **Datos** | Escenarios creíbles y coherentes entre pantallas del mismo flujo (mismo viaje, mismas fechas, ≥3 entradas Wallet cuando aplique). Reutilizar datos de preview del repo cuando existan (p. ej. Barcelona, Lisboa, Tokio). |
+| **Imágenes** | Portadas de viaje, media de cards y adjuntos con **fotos de ejemplo** (destino editorial, no bloques de color ni iniciales «A»/«BA»). Usar assets del repo (`docs/ux/inspiration/`, muestras Wallet) o imágenes libres acordes a la marca. |
+| **Vacío** | Empty states con copy de producto real; ilustración o foto suave opcional, nunca slot del kit sin rellenar. |
+| **Edge cases** | Siguen mid-fi; bullets EC-* + anotación. Sin obligación de foto real salvo que el caso lo exija (p. ej. EC-PARSE-FAIL con PDF de muestra). |
+
+**Figma ↔ Compose:** si la pantalla ya existe en código, el contenido del diseño debe coincidir con los previews o datos seed de la app.
+
 ## Estructura obligatoria por flujo
 
 ```

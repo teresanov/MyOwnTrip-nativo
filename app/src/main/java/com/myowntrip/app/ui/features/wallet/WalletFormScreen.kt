@@ -76,6 +76,7 @@ fun WalletFormScreen(
   var dirty by remember { mutableStateOf(false) }
   var autoPickLaunched by remember { mutableStateOf(false) }
   var showDiscard by remember { mutableStateOf(false) }
+  var pickerCancelExitsFlow by remember { mutableStateOf(false) }
 
   val requestExit: () -> Unit = {
     when {
@@ -89,7 +90,10 @@ fun WalletFormScreen(
     contract = ActivityResultContracts.OpenDocument(),
   ) { uri ->
     viewModel.clearPickAttachmentOnStart()
-    if (uri == null) return@rememberLauncherForActivityResult
+    if (uri == null) {
+      if (pickerCancelExitsFlow) onBack()
+      return@rememberLauncherForActivityResult
+    }
     runCatching {
       context.contentResolver.takePersistableUriPermission(
         uri,
@@ -106,16 +110,26 @@ fun WalletFormScreen(
     )
   }
 
+  val launchDocumentPicker: (cancelExitsFlow: Boolean) -> Unit = { cancelExitsFlow ->
+    pickerCancelExitsFlow = cancelExitsFlow
+    documentPicker.launch(WalletAttachmentMimeTypes)
+  }
+
   LaunchedEffect(state.pickAttachmentOnStart, state.attachmentUri) {
     if (state.pickAttachmentOnStart && state.attachmentUri == null && !autoPickLaunched) {
       autoPickLaunched = true
-      documentPicker.launch(WalletAttachmentMimeTypes)
+      launchDocumentPicker(true)
     }
   }
 
   BackHandler(enabled = state.showConfirm || state.hasDraft) { requestExit() }
 
+  val awaitingSystemPicker = state.pickAttachmentOnStart &&
+    state.attachmentUri == null &&
+    !state.isParsing
+
   val screenTitle = when {
+    awaitingSystemPicker -> "Importar documento"
     state.isParsing -> "Importar documento"
     state.parseFailed && state.attachmentUri != null -> "Completar manualmente"
     state.isImport && state.attachmentUri != null -> "Revisar importación"
@@ -128,7 +142,7 @@ fun WalletFormScreen(
       TopAppBar(
         title = { Text(screenTitle) },
         navigationIcon = {
-          MOTIconButton(onClick = requestExit) {
+          MOTIconButton(onClick = if (awaitingSystemPicker) onBack else requestExit) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
           }
         },
@@ -149,12 +163,11 @@ fun WalletFormScreen(
       verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
     ) {
       when {
-        state.isParsing -> WalletParsingStep(
-          onCancel = requestExit,
-        )
-        state.isImportFlow && state.attachmentUri == null -> WalletPickFileStep(
-          onPickFile = { documentPicker.launch(WalletAttachmentMimeTypes) },
+        awaitingSystemPicker -> WalletAwaitingPickerStep(
           onManualEntry = { viewModel.switchToManualEntry() },
+          onCancel = onBack,
+        )
+        state.isParsing -> WalletParsingStep(
           onCancel = requestExit,
         )
         state.parseFailed && state.attachmentUri != null -> WalletParseFailStep(
@@ -162,7 +175,7 @@ fun WalletFormScreen(
           tripExpanded = tripExpanded,
           onTripExpandedChange = { tripExpanded = it },
           onCreateTrip = onCreateTrip,
-          onPickFile = { documentPicker.launch(WalletAttachmentMimeTypes) },
+          onPickFile = { launchDocumentPicker(false) },
           onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
@@ -173,7 +186,7 @@ fun WalletFormScreen(
         )
         state.isImportFlow -> WalletImportReviewStep(
           state = state,
-          onPickFile = { documentPicker.launch(WalletAttachmentMimeTypes) },
+          onPickFile = { launchDocumentPicker(false) },
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
           onShowTypeCorrection = viewModel::setShowTypeCorrection,
@@ -238,6 +251,35 @@ private fun WalletParsingStep(onCancel: () -> Unit) {
     )
     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
     WalletFormCancelButton(label = "Cancelar análisis", onClick = onCancel)
+  }
+}
+
+@Composable
+private fun WalletAwaitingPickerStep(
+  onManualEntry: () -> Unit,
+  onCancel: () -> Unit,
+) {
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(vertical = MOTSpacing.layoutLg),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
+  ) {
+    CircularProgressIndicator()
+    Text(
+      text = "Selecciona un archivo",
+      style = MaterialTheme.typography.titleMedium,
+    )
+    Text(
+      text = "Se abrirá el selector del sistema (Descargas, Drive, etc.). Elige un billete, reserva o PDF del viaje.",
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+    MOTTextButton(onClick = onManualEntry, modifier = Modifier.fillMaxWidth()) {
+      Text("Rellenar manualmente")
+    }
+    WalletFormCancelButton(label = "Cancelar", onClick = onCancel)
   }
 }
 
