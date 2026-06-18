@@ -1,4 +1,4 @@
-import{i as a,c as n,a as t,s as e}from"./bootstrap-wuHOfVfr.js";a("components");document.getElementById("components-list").innerHTML=n.components.map(s=>`
+import{i as a,c as n,a as t,s as e}from"./bootstrap-BJUcQClb.js";a("components");document.getElementById("components-list").innerHTML=n.components.map(s=>`
     <a class="component-link" href="${t(s.href)}" style="display:block;margin-bottom:16px">
       ${e(s.status)}
       <span style="margin-left:8px;font-size:0.75rem;color:var(--on-surface-variant)">${s.priority}</span>
