@@ -1,0 +1,67 @@
+{
+  "id": "stacked-card",
+  "name": "Stacked card",
+  "status": "ready",
+  "priority": "P1",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52346-27573",
+  "purpose": "Card vertical editorial: Outlined en listas/feeds, Elevated en destacados. Layouts Media & text (avatar + media + copy) y Text only (header + supporting + dismiss). Filled está CUT.",
+  "anatomy": [
+    "Surface — OutlinedCard o ElevatedCard, shapes.medium (12dp)",
+    "Header row — Header text + Subhead text (avatar oculto en Home vacío Figma)",
+    "Dismiss — IconButton close si Show secondary action",
+    "Media — imagen full-bleed bajo header (Media & text)",
+    "Supporting text — cuerpo en Text only"
+  ],
+  "variants": [
+    {
+      "id": "outlined-media-text",
+      "label": "Outlined · Media & text",
+      "usage": "Home vacío, cards editoriales en feed."
+    },
+    {
+      "id": "elevated-text-only",
+      "label": "Elevated · Text only",
+      "usage": "Wallet promo, avisos descartables."
+    },
+    {
+      "id": "outlined-text-only",
+      "label": "Outlined · Text only",
+      "usage": "Mensajes inline en listas (filtro vacío)."
+    }
+  ],
+  "properties": [
+    { "name": "Header text", "type": "TEXT", "example": "Sin viajes todavía" },
+    { "name": "Subhead text", "type": "TEXT", "example": "Planea tu primera aventura" },
+    { "name": "Supporting text", "type": "TEXT", "example": "Vuelos, hoteles y PDFs…" },
+    { "name": "Show secondary action", "type": "BOOLEAN", "example": "true → onDismiss" },
+    { "name": "Style", "type": "VARIANT", "example": "Outlined | Elevated" }
+  ],
+  "tokens": [
+    "onSurface / onSurfaceVariant (texto default)",
+    "tertiaryContainer + onTertiaryContainer (Wallet promo)",
+    "surfaceContainerHigh (avatar)",
+    "shapes.medium"
+  ],
+  "dos": [
+    "Outlined en feeds; Elevated en promos destacadas.",
+    "Mapear properties Figma 1:1 a MotStackedCard.",
+    "Home vacío: HomeEmptyStackedCard (instancia documentada)."
+  ],
+  "donts": [
+    "No Filled (CUT).",
+    "No OutlinedCard ad hoc en pantallas si encaja un layout de este set.",
+    "No icono ticket en Wallet — patrón Text only + dismiss."
+  ],
+  "a11y": [
+    "Dismiss con contentDescription.",
+    "Imagen media con alt cuando es informativa.",
+    "Avatar decorativo si el header ya se anuncia."
+  ],
+  "compose": "MotStackedCard(style, headerText, subheadText, …)\nWalletPromoCard(onDismiss)\nHomeEmptyStackedCard()",
+  "changelog": [
+    {
+      "date": "2026-06-17",
+      "note": "Binding Figma → MotStackedCard; fichas Home cap 1 y Wallet."
+    }
+  ]
+}

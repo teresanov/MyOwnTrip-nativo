@@ -10,7 +10,7 @@
 | Librería visual | Figma DS (variables + component sets) | Mantenimiento de componentes |
 | Diseño de app | Figma design-file (`Vf2tNMXyKAlJSV53A1v4Is`) | Pantallas y flujos (fuente de verdad diseño) |
 | **Documentación componentes** | **Showcase externo** | Equipo + handoff dev |
-| Implementación | M3 Compose | `androidx.compose.material3.*` |
+| Implementación | M3 Compose | `androidx.compose.material3.*` + bindings [`figma-compose-bindings.md`](figma-compose-bindings.md) |
 | UX runtime | `docs/ux/android-compose-ux.md` | Pantallas `app/` |
 | Producto | `docs/product/jtbd-flows.md` | Features |
 

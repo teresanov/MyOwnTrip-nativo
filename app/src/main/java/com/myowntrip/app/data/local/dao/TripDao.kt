@@ -21,6 +21,9 @@ interface TripDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(trip: TripEntity)
 
+  @Query("UPDATE trips SET coverPhoto = :coverPhoto WHERE id = :id")
+  suspend fun updateCoverPhoto(id: String, coverPhoto: String)
+
   @Query("DELETE FROM trips WHERE id = :id")
   suspend fun deleteById(id: String)
 }

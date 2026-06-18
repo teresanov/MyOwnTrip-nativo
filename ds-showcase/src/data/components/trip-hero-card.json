@@ -65,7 +65,7 @@
     "Imagen decorativa — sin alt aparte.",
     "Show countdown=false oculta la línea de countdown."
   ],
-  "compose": "ElevatedCard { Column(spacedBy = 8.dp) {\n  Box(280.dp, clip top 12dp) { image + scrim + EyebrowLabel + texts }\n  FilledTonalButton(\"Ver detalles\") // única acción\n}}",
+  "compose": "com.myowntrip.app.ui.components.TripHeroCard(trip, today, onClick)",
   "changelog": [
     {
       "date": "2026-06-17",

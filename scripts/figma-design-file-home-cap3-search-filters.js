@@ -84,8 +84,8 @@ async function setMenuItemLabel(item, text, selected) {
   }
   setProps(item, {
     Selected: selected ? 'True' : 'False',
-    'Show leading element': false,
-    'Show trailing element': selected,
+    'Show leading element': true,
+    'Show trailing element': false,
   });
 }
 

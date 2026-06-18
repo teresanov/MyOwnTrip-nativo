@@ -32,10 +32,10 @@ Los iconos propios no sustituyen acciones estándar (cerrar, atrás, más, edita
 
 ## Menús de selección
 
-| Contexto | Icono seleccionado | No usar |
-|----------|-------------------|---------|
-| `DropdownMenu` / Menu-item seleccionado | **`check`** | `chevron_right` (submenú) |
-| Radio group / formulario | `radio_button_checked` | En menús contextuales de filtro |
+| Contexto | Icono seleccionado | Slot | No usar |
+|----------|-------------------|------|---------|
+| `DropdownMenu` / Menu-item selección única | **`check`** leading (caja reservada) | Leading siempre; trailing oculto | `chevron_right` (submenú) · `radio_button_checked` |
+| Radio group / formulario | `radio_button_checked` | Leading o trailing según patrón form | En menús contextuales de filtro |
 
 Ver [`patterns/home-filter-menu.md`](patterns/home-filter-menu.md).
 

@@ -43,10 +43,10 @@
     {
       "id": "card",
       "name": "Card",
-      "status": "draft",
+      "status": "ready",
       "priority": "P1",
-      "href": "components.html",
-      "summary": "Stacked / Horizontal — layouts Media & text, Text only, Media only, Slot."
+      "href": "components/stacked-card.html",
+      "summary": "Stacked / Horizontal — MotStackedCard, MotHorizontalCard; bindings en figma-compose-bindings.md."
     },
     {
       "id": "trip-hero-card",

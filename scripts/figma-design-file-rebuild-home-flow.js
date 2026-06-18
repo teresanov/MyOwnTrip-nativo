@@ -206,7 +206,7 @@ async function createWalletBanner() {
     'Header text': 'Todo en Wallet',
     'Subhead text': 'Documentos y reservas',
     'Supporting text':
-      'Vuelos, hoteles y PDFs en un solo sitio — incluso sin red.',
+      'Vuelos, hoteles y PDFs en un solo sitio, incluso sin red.',
     'Show secondary action': true,
   });
   return inst;
@@ -319,8 +319,8 @@ function setMenuItemLabel(item, text, selected) {
   if (label) label.characters = text;
   for (const key of Object.keys(item.componentProperties || {})) {
     if (/selected/i.test(key)) item.setProperties({ [key]: selected ? 'True' : 'False' });
-    if (/leading element/i.test(key)) item.setProperties({ [key]: false });
-    if (/trailing element/i.test(key) && selected) item.setProperties({ [key]: true });
+    if (/leading element/i.test(key)) item.setProperties({ [key]: true });
+    if (/trailing element/i.test(key)) item.setProperties({ [key]: false });
   }
 }
 

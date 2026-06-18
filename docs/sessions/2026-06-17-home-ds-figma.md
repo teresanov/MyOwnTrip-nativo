@@ -1,10 +1,10 @@
-# Sesión 2026-06-17 — Home DS + Figma + Compose
+# Sesión 2026-06-17 — Home DS + Figma + Compose (cierre)
 
-> **Notion:** pegar este bloque en [MyOwnTrip · Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) o en el diario de diseño DS. El MCP de Notion no estaba conectado al cerrar la sesión.
+> **Notion:** [Sesión 2026-06-17 — Home DS, filtros, portadas y calendario](https://www.notion.so/) (hijo de MyOwnTrip · Proyecto)
 
 ## Resumen
 
-Cierre del patrón **TripHeroCard** y **Eyebrow label** en librería DS + Compose; limpieza de chips decorativos en Home; diseño de **cap 3** (búsqueda + menú filtros) en design-file clonando cap 2.
+Cierre del patrón **TripHeroCard** y **Eyebrow label** en librería DS + Compose; **Home cap 3** (búsqueda + menú filtros) clonando cap 2; extracción de componentes Home a `ui/components/home`; **portadas de destino** con caché Wikimedia; **calendario** año → mes → día en crear viaje.
 
 ## Decisiones
 
@@ -13,62 +13,51 @@ Cierre del patrón **TripHeroCard** y **Eyebrow label** en librería DS + Compos
 | Eyebrow en portada | Componente **Eyebrow label** (no Assist chip) · `Color=Tertiary` · `Size=Medium` · HUG |
 | TripHeroCard | Imagen en `Background` · CTA tonal «Ver detalles» **única acción** · portada no clickable |
 | Home chips metadata | **Eliminados** («3 viajes», «Offline», «Wallet») — redundantes con subhead y Wallet banner |
-| Filtros Home | **Menu** `Groups=2` al pulsar `tune` — no Filter chips en fila |
-| Ítem seleccionado en menú | Fondo Selected + icono **`check`** — **no** chevron (submenú) |
-| Caps design-file | cap 1 vacío · cap 2 con viajes · cap 3 = **clone cap 2** + menú (cap 2 intacto) |
+| Filtros Home | **Menu** `Groups=2` al pulsar `tune` — overlay 328×362dp · top 192dp · `#FCF2E5` |
+| Ítem seleccionado en menú | Leading slot + **`check`** 20dp al seleccionar · sin submenú |
+| Portadas destino | **Wikimedia Commons** + caché local en `files/destination-covers/` · ADR 003 |
+| Calendario crear viaje | **`MotTripDatePickerDialog`**: año (rejilla) → mes (rejilla) → día · sin flechas mes a mes |
+| M3 Expressive PickerGroup | Solo **Wear OS** — no aplicable a phone; custom dialog con `DatePickerDefaults.colors()` |
 
-## Componentes / variantes creados o actualizados (librería DS)
+## Componentes Compose nuevos
 
-| Componente | Ubicación Figma | Variantes | Estado |
-|------------|-----------------|-----------|--------|
-| **TripHeroCard** | [61199:7862](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61199-7862) | `Style=Elevated` · `Outlined` | Ready · showcase |
-| **Eyebrow label** | [61202:16834](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834) | 3×2 Color×Size | Ready · showcase |
-| Search bar | kit M3 (existente) | Enabled/Pressed · avatar off · 2nd trailing `tune` | Instanciado en design-file |
-| Menu | kit M3 `Groups=2` | Standard | Instanciado en cap 3 |
-
-Scripts DS: `scripts/figma-trip-hero-card.js` · `scripts/figma-eyebrow-label.js`
+| Componente | Ruta |
+|------------|------|
+| TripHeroCard | `ui/components/TripHeroCard.kt` |
+| EyebrowLabel | `ui/components/EyebrowLabel.kt` |
+| StackedCard / HorizontalCard | `ui/components/StackedCard.kt`, `HorizontalCard.kt` |
+| Home (search, filter, hero, wallet) | `ui/components/home/` |
+| MotTripDatePickerDialog | `ui/components/date/MotTripDatePickerDialog.kt` |
+| DestinationCoverRepository | `data/cover/` + `domain/cover/` |
 
 ## Design-file — Shell Home · flow
 
 | Cap | Node | Contenido |
 |-----|------|-----------|
 | cap 1 | [205:816](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-816) | Home vacío + Search bar |
-| cap 2 | [205:1018](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-1018) | Home con viajes (TripHeroCard, Wallet, Más viajes) |
-| cap 3 | [228:8161](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=228-8161) | Clone cap 2 · Search Pressed «Barcelona» · Filter menu overlay |
-
-Scripts design-file:
-- `scripts/figma-design-file-home-cap3-search-filters.js` — **usar este** (duplica cap 2)
-- `scripts/figma-design-file-remove-home-quick-chips.js`
-- `scripts/figma-design-file-trip-hero-instance.js`
-- `scripts/figma-design-file-rebuild-home-flow.js` — rebuild completo (conserva cap 2 si existe)
-- `scripts/figma-design-file-home-cap2-search-filters.js` — **deprecated**
-
-## Compose alineado
-
-| Archivo | Cambio |
-|---------|--------|
-| `TripListScreen.kt` | TripHeroCard (ElevatedCard + EyebrowLabel + FilledTonalButton) · sin `HomeQuickChips` |
+| cap 2 | [205:1018](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-1018) | Home con viajes |
+| cap 3 | [228:8161](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=228-8161) | Clone cap 2 · Search Pressed · Filter menu overlay |
 
 ## Documentación repo
 
 | Archivo | Qué |
 |---------|-----|
-| `docs/design-system/patterns/home-filter-menu.md` | Patrón menú filtros (nuevo) |
-| `docs/design-system/figma-prune-inventory.md` | § TripHeroCard · Eyebrow · Menu selección · Shell Home |
-| `docs/design-system/components.md` | Enlaces TripHeroCard · Eyebrow · patrón menú |
+| `docs/design-system/patterns/home-filter-menu.md` | Patrón menú filtros |
+| `docs/design-system/figma-compose-bindings.md` | Bindings Figma ↔ Compose |
+| `docs/decisions/003-destination-cover-cache.md` | ADR portadas destino |
 | `ds-showcase/…/trip-hero-card.json` | Ficha ready |
 | `ds-showcase/…/eyebrow-label.json` | Ficha ready |
+| `ds-showcase/…/stacked-card.json` | Ficha ready |
 
-## Pendiente
+## Pendiente (mañana)
 
-- [ ] **DS Figma:** trailing Selected en Menu-item → icono `check` (hoy `radio_button_checked` en kit)
-- [ ] **Compose:** `DropdownMenu` filtros/orden en `TripListScreen` (ViewModel + estado)
-- [ ] **Showcase:** ficha patrón `home-filter-menu` (opcional; hoy solo `docs/`)
-- [ ] **Publicar** librería DS tras cambio Menu-item (si se toca el set)
-- [ ] **Verificar** TripHeroCard import en design-file (clave publicada; falló una vez por nodo huérfano)
+- [ ] Verificar menú filtros con insets reales (offset 192dp vs status bar)
+- [ ] Showcase ficha patrón `home-filter-menu` (opcional)
+- [ ] Entrada por teclado en date picker (opcional)
+- [ ] Publicar librería DS tras cambio Menu-item en Figma
 
 ## Enlaces rápidos
 
 - [Design-file Home flow](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-813)
 - [DS TripHeroCard](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61199-7862)
-- [DS Eyebrow label](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834)
+- [GitHub — MyOwnTrip-nativo](https://github.com/teresanov/MyOwnTrip-nativo)

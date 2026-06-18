@@ -2,6 +2,7 @@ package com.myowntrip.app.ui.navigation
 
 object Routes {
   const val TRIP_LIST = "trip_list"
+  const val HOME_FLOW_REVIEW = "home_flow_review"
   const val TRIP_CREATE = "trip_create"
   const val TRIP_EDIT = "trip_edit/{tripId}"
   const val TRIP_DETAIL = "trip_detail/{tripId}"

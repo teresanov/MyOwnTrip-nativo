@@ -105,10 +105,10 @@ function setMenuItemLabel(item, text, selected) {
       item.setProperties({ [key]: selected ? 'True' : 'False' });
     }
     if (/leading element/i.test(key)) {
-      item.setProperties({ [key]: false });
-    }
-    if (/trailing element/i.test(key) && selected) {
       item.setProperties({ [key]: true });
+    }
+    if (/trailing element/i.test(key)) {
+      item.setProperties({ [key]: false });
     }
   }
 }

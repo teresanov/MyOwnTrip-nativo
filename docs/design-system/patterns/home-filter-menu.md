@@ -43,37 +43,88 @@ Ocultar en instancia: `Menu-item 04`, `05`, `06` (placeholders del kit M3).
 | Propiedad | Valor |
 |-----------|--------|
 | Ancho panel | 328dp (ancho contenido con padding 16) |
-| Posición | `ABSOLUTE` · `x=0` en Body · `y` = debajo de Search bar + 8dp |
+| Posición | Centrado horizontal · `marginTop = 192dp` desde body (`228:8306`) |
 | Comportamiento | **Overlay** sobre TripHeroCard (no empuja el scroll) |
 | cap 2 | **Sin menú** — estado reposo con viajes |
 
 Script: `scripts/figma-design-file-home-cap3-search-filters.js` (clona cap 2 → cap 3; **no modifica cap 2**).
 
-## Selección visual (M3)
+## Selección visual (M3 — menú de selección, sin submenú)
+
+Patrón canónico para filtros de primer nivel: [Menus M3](https://m3.material.io/components/menus/guidelines) + `DropdownMenuItem.selectedLeadingIcon` en [Compose](https://developer.android.com/reference/kotlin/androidx/compose/material3/DropdownMenuItem.composable).
 
 | Señal | Uso |
 |-------|-----|
-| Contenedor fila `Selected` | Fondo tertiary / shape seleccionada del Menu-item |
-| Icono trailing **`check`** | Ítem activo — **no** `chevron_right` (submenú) ni `radio_button_checked` (semántica de formulario) |
-| Sin leading icon | Ítems no seleccionados |
+| **Leading slot siempre visible** | Caja reservada 24dp en todas las filas — alinea labels aunque no haya check |
+| **Leading `check`** | Solo en ítem `Selected=True` — color `primary` — **no** en trailing |
+| **Trailing oculto** | `Show trailing element=False` — **sin** `chevron_right` (no hay submenú) |
+| **Contenedor seleccionado (Expressive)** | `secondaryContainer` + `onSecondaryContainer` · shape 12dp · borde `outline` 1dp (1.4.11) |
+| **Fondo menú** | `surfaceContainerLow` |
 
-Iconografía: Material Symbols **Sharp** w300 · rol `onSurface` o `primary` según tema del ítem.
+**No usar:** `radio_button_checked` (semántica de formulario) · `chevron_right` (navegación a subnivel).
 
-Compose: `DropdownMenuItem(selected = …, trailingIcon = { if (selected) Icon(Icons.Default.Check) })` o `selectedLeadingIcon` según alineación.
+Iconografía: Material Symbols **Sharp** w300 · check seleccionado → `primary`.
+
+### Variables y text styles (gate `figmaAliasChainValid`)
+
+| Nodo | Text style | Variable fill |
+|------|------------|---------------|
+| Section label («Mostrar», «Ordenar») | `M3/label/large` | `Schemes/On Surface Variant` |
+| Ítem label no seleccionado | `M3/label/large` | `Schemes/On Surface` |
+| Ítem label seleccionado | `M3/label/large` | `Schemes/On Secondary Container` |
+| Fondo menú / listas | — | `Schemes/Surface Container Low` |
+| State layer seleccionado | — | `Schemes/Secondary Container` + stroke `Schemes/Outline` |
+| Check leading | — | `Schemes/Primary` |
+
+**No dejar hex sueltos** en instancias del design-file — rompen propagación. Overrides deben vivir en **Menu-item/Standard** (DS) en variantes `Selected=True/False`.
+
+Script instancia cap 3: `scripts/figma-design-file-filter-menu-bind-vars.js`  
+Script selección + expressive: `scripts/figma-menu-item-selection-filter.js`
+
+Compose:
+
+```kotlin
+DropdownMenuItem(
+    selected = isSelected,
+    onClick = { … },
+    text = { Text(label) },
+    colors = MenuDefaults.selectableItemColors(
+        selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+        selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+    ),
+    shapes = MenuDefaults.itemShape(index, count),
+    selectedLeadingIcon = {
+        Icon(
+            imageVector = Icons.Default.Check,
+            contentDescription = null,
+            modifier = Modifier.size(MenuDefaults.LeadingIconSize),
+        )
+    },
+    // trailingIcon = null — sin chevron
+)
+```
 
 ### Deuda DS Figma
 
-El `Menu-item` publicado mapea `Selected=True` → trailing `radio_button_checked`. **Pendiente:** sustituir por instancia **`check`** en la variante Selected del component set (o documentar override solo en design-file hasta publicar).
+El `Menu-item` publicado enlaza `Selected=True` → trailing `radio_button_checked`. **Corregir** a leading `check` + trailing oculto.
+
+Script: `scripts/figma-menu-item-selection-filter.js` (DS + design-file instancia `228:8306`).
 
 ## Accesibilidad
 
 - TalkBack: anunciar sección («Mostrar», «Ordenar») y estado «seleccionado» en el ítem activo.
-- Contraste selección: ≥ 3:1 entre fila seleccionada y no seleccionada (M3 menus).
+- Contraste selección: texto/icono ≥ 4.5:1 / 3:1; borde `outline` del chip seleccionado ≥ 3:1 vs `surfaceContainerLow` (la paleta cálida no alcanza 3:1 solo con fill — el borde + check cumplen 1.4.1 y 1.4.11).
 - Cerrar menú: tap fuera, back, o al elegir ítem (MVP).
 
-## Compose (pendiente)
+## Compose
 
-`TripListScreen`: `DropdownMenu` anclado al `IconButton` `tune` de la barra de búsqueda; estado `filterPhase` + `sortOrder` en ViewModel.
+`HomeFilterMenuPanel` + `HomeFilterMenuOverlay` en `ui/components/home/HomeSearchAndFilter.kt`:
+
+- Ancho `328.dp` · esquina `16.dp` · `surfaceContainerLow` · elevación `3.dp`
+- Ítems custom (no `DropdownMenuItem`): seleccionado = `secondaryContainer` + borde `outline` + check `20.dp`
+- Overlay: `HomeFilterMenuSpec.OverlayTop` = `192.dp` · `TopCenter`
+- `TripListScreen`: `HomeFilterMenuPresentation.Overlay` al abrir menú
 
 ## Referencias
 

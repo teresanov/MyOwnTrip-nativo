@@ -267,8 +267,9 @@ MVP: sin pantalla galería cerrada → **no diseñar con estos sets**; backup CS
 ### Menu · `55141:14250` — **hecho**
 - **MVP:** Menu density **0** · Theme **Standard** · Menu item/Standard + BB
 - **CUT:** density -2/-4 (BB + baseline variants) · Theme **Vibrant** + Menu item/Vibrant — **hecho**
-- **Selección en menú (producto):** ítem activo = contenedor `Selected` + trailing **`check`** (Sharp w300) — **no** `chevron_right` (submenú) · **no** `radio_button_checked` en menús contextuales
-- **Deuda kit:** variante `Selected=True` del Menu-item publicado aún enlaza `radio_button_checked` → corregir a `check` antes de próxima publicación librería
+- **Selección en menú (producto):** ítem activo = leading slot reservado + **`check`** al seleccionar — trailing/chevron **oculto** (sin submenú) · **no** `radio_button_checked`
+- **Script:** `scripts/figma-menu-item-selection-filter.js` — corrige component set + instancia Filter menu
+- **Deuda kit:** variante `Selected=True` del Menu-item publicado aún enlaza `radio_button_checked` en trailing → corregir a leading `check` antes de próxima publicación librería
 - **Patrón Home filtros:** [`patterns/home-filter-menu.md`](patterns/home-filter-menu.md) · design-file cap 3 · script `figma-design-file-home-cap3-search-filters.js`
 
 ### Navigation · `55141:14251` — **hecho**

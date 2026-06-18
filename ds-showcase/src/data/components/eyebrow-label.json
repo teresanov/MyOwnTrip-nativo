@@ -72,7 +72,7 @@
     "Nunca role Button ni onClick.",
     "Contraste mínimo 4.5:1 entre label y container en todos los pares Color."
   ],
-  "compose": "// Surface(shape = RoundedCornerShape(8.dp), color = colorScheme.tertiaryFixedDim) {\n//   Text(eyebrow, style = typography.labelMedium, color = colorScheme.onTertiaryContainer,\n//     modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))\n// }",
+  "compose": "com.myowntrip.app.ui.components.EyebrowLabel(text, color = EyebrowLabelColor.Tertiary)",
   "changelog": [
     {
       "date": "2026-06-17",

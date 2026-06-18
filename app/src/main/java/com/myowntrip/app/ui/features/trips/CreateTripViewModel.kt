@@ -3,7 +3,10 @@ package com.myowntrip.app.ui.features.trips
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.myowntrip.app.data.repository.TripRepository
+import com.myowntrip.app.domain.cover.DestinationCoverRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,18 +24,33 @@ data class CreateTripUiState(
   val destinationError: String? = null,
   val dateError: String? = null,
   val savedTripId: String? = null,
+  val coverPreviewModel: String? = null,
 )
 
 @HiltViewModel
 class CreateTripViewModel @Inject constructor(
   private val tripRepository: TripRepository,
+  private val destinationCoverRepository: DestinationCoverRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(CreateTripUiState())
   val uiState: StateFlow<CreateTripUiState> = _uiState.asStateFlow()
+  private var coverPreviewJob: Job? = null
 
   fun onNameChange(value: String) = _uiState.update { it.copy(name = value, nameError = null) }
-  fun onDestinationChange(value: String) =
-    _uiState.update { it.copy(destination = value, destinationError = null) }
+
+  fun onDestinationChange(value: String) {
+    _uiState.update { it.copy(destination = value, destinationError = null, coverPreviewModel = null) }
+    coverPreviewJob?.cancel()
+    coverPreviewJob = viewModelScope.launch {
+      delay(COVER_PREVIEW_DEBOUNCE_MS)
+      val trimmed = value.trim()
+      if (trimmed.isEmpty()) return@launch
+      val preview = destinationCoverRepository.lookupPreviewImage(trimmed)
+      _uiState.update { state ->
+        if (state.destination.trim() == trimmed) state.copy(coverPreviewModel = preview) else state
+      }
+    }
+  }
 
   fun onStartDateChange(value: LocalDate) =
     _uiState.update { it.copy(startDate = value, dateError = null) }
@@ -81,13 +99,19 @@ class CreateTripViewModel @Inject constructor(
 
   private suspend fun createTripFromState(): String {
     val state = _uiState.value
+    val destination = state.destination.trim()
     val id = tripRepository.createTrip(
       name = state.name.trim(),
-      destination = state.destination.trim(),
+      destination = destination,
       startDate = state.startDate,
       endDate = state.endDate,
     )
+    destinationCoverRepository.attachCoverToTrip(id, destination)
     _uiState.update { it.copy(savedTripId = id) }
     return id
+  }
+
+  companion object {
+    private const val COVER_PREVIEW_DEBOUNCE_MS = 450L
   }
 }

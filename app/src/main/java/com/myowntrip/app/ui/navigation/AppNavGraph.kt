@@ -14,6 +14,7 @@ import com.myowntrip.app.ui.features.restaurants.RestaurantDetailScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantFormScreen
 import com.myowntrip.app.ui.features.trips.CreateTripScreen
 import com.myowntrip.app.ui.features.trips.TripDetailScreen
+import com.myowntrip.app.ui.features.trips.HomeFlowReviewScreen
 import com.myowntrip.app.ui.features.trips.TripListScreen
 import com.myowntrip.app.ui.features.wallet.WalletDetailScreen
 import com.myowntrip.app.ui.features.wallet.WalletFormScreen
@@ -29,6 +30,9 @@ fun AppNavGraph(
         onCreateTrip = { navController.navigate(Routes.TRIP_CREATE) },
         onTripClick = { navController.navigate(Routes.tripDetail(it)) },
       )
+    }
+    composable(Routes.HOME_FLOW_REVIEW) {
+      HomeFlowReviewScreen(onBack = { navController.popBackStack() })
     }
     composable(Routes.TRIP_CREATE) {
       CreateTripScreen(
