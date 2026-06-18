@@ -30,6 +30,15 @@ Los iconos propios no sustituyen acciones estándar (cerrar, atrás, más, edita
 - Decorativos: `contentDescription = null` o `Modifier.semantics { invisibleToUser() }`.
 - Error / éxito / aviso: **icono + texto**; no depender solo del color del icono.
 
+## Menús de selección
+
+| Contexto | Icono seleccionado | No usar |
+|----------|-------------------|---------|
+| `DropdownMenu` / Menu-item seleccionado | **`check`** | `chevron_right` (submenú) |
+| Radio group / formulario | `radio_button_checked` | En menús contextuales de filtro |
+
+Ver [`patterns/home-filter-menu.md`](patterns/home-filter-menu.md).
+
 ## Figma
 
 Kit M3 Design Kit tematizado; catálogo **Material Symbols Sharp (w300)** en la sección Icons del DS. Sin biblioteca paralela de UI icons.

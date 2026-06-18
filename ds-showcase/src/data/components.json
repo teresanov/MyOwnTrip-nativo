@@ -46,7 +46,23 @@
       "status": "draft",
       "priority": "P1",
       "href": "components.html",
-      "summary": "Contenedores de viaje y entradas. Restaurar set en Figma desde backup."
+      "summary": "Stacked / Horizontal — layouts Media & text, Text only, Media only, Slot."
+    },
+    {
+      "id": "trip-hero-card",
+      "name": "TripHeroCard",
+      "status": "ready",
+      "priority": "P1",
+      "href": "components/trip-hero-card.html",
+      "summary": "Portada del viaje destacado en Home (imagen + scrim + CTA)."
+    },
+    {
+      "id": "eyebrow-label",
+      "name": "Eyebrow label",
+      "status": "ready",
+      "priority": "P1",
+      "href": "components/eyebrow-label.html",
+      "summary": "Etiqueta informativa no interactiva; fase/contexto sobre media o surface."
     }
   ]
 }

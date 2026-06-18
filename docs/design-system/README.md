@@ -20,6 +20,7 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | [typography.md](typography.md) | Fraunces + Inter, mapeo a roles M3 |
 | [iconography.md](iconography.md) | Material Symbols Sharp + iconos propios |
 | [components.md](components.md) | M3 puro vs wrappers `MyOwnTrip*` |
+| [patterns/home-filter-menu.md](patterns/home-filter-menu.md) | Home · menú filtros/orden (`tune` + Menu Groups=2) |
 | [showcase.md](showcase.md) | Documentación de componentes (showcase externo) |
 | [governance.md](governance.md) | Gate `m3Canonical` + quality gates, source of truth |
 | [breakpoints.md](breakpoints.md) | Window size classes, foldables Samsung, frames Figma, iOS futuro |
@@ -28,7 +29,7 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | [../decisions/003-figma-library-showcase-docs.md](../decisions/003-figma-library-showcase-docs.md) | Figma = librería; showcase = docs |
 | [../decisions/001-m3-native-ds.md](../decisions/001-m3-native-ds.md) | ADR estructura M3 |
 | [../decisions/002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md) | ADR marca editorial |
-| [../decisions/004-button-shape-morph.md](../decisions/004-button-shape-morph.md) | ADR shape botones 0→20 |
+| [../sessions/2026-06-17-home-ds-figma.md](../sessions/2026-06-17-home-ds-figma.md) | Sesión Home DS + Figma (jun 2026) |
 
 ## Pipeline activo
 

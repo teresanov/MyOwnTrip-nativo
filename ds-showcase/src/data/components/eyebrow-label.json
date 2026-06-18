@@ -1,0 +1,82 @@
+{
+  "id": "eyebrow-label",
+  "name": "Eyebrow label",
+  "status": "ready",
+  "priority": "P1",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834",
+  "purpose": "Etiqueta informativa no interactiva para contexto editorial (fase del viaje, categoría, aviso breve). Sustituye al Assist chip cuando el fondo es variable (fotos, scrims) y Outlined no garantiza contraste. Los chips del DS siguen reservados a filtros, selección y acciones.",
+  "anatomy": [
+    "Container — pill auto-layout horizontal, **HUG contents** (ancho = texto + padding), fill según Color, Corner/Small (8dp), sin sombra ni borde",
+    "Label text — Inter Medium, tamaño según Size, textAutoResize WIDTH_AND_HEIGHT"
+  ],
+  "variants": [
+    {
+      "id": "tertiary-medium",
+      "label": "Color=Tertiary · Size=Medium",
+      "usage": "Default en TripHeroCard y portadas sobre media."
+    },
+    {
+      "id": "tertiary-small",
+      "label": "Color=Tertiary · Size=Small",
+      "usage": "Portadas compactas o overlays densos."
+    },
+    {
+      "id": "surface-medium",
+      "label": "Color=Surface · Size=Medium",
+      "usage": "Etiqueta sobre surface o cards sin foto."
+    },
+    {
+      "id": "surface-small",
+      "label": "Color=Surface · Size=Small",
+      "usage": "Variante compacta en listas."
+    },
+    {
+      "id": "secondary-medium",
+      "label": "Color=Secondary · Size=Medium",
+      "usage": "Acento suave en superficies claras."
+    },
+    {
+      "id": "secondary-small",
+      "label": "Color=Secondary · Size=Small",
+      "usage": "Misma función en espacios reducidos."
+    }
+  ],
+  "properties": [
+    { "name": "Label text", "type": "TEXT", "example": "Próximo viaje" },
+    { "name": "Color", "type": "VARIANT", "example": "Tertiary | Surface | Secondary" },
+    { "name": "Size", "type": "VARIANT", "example": "Medium (default) | Small" }
+  ],
+  "tokens": [
+    "tertiaryFixedDim + onTertiaryContainer (Color=Tertiary)",
+    "surfaceContainerHigh + onSurfaceVariant (Color=Surface)",
+    "secondaryContainer + onSecondaryContainer (Color=Secondary)",
+    "Corner/Small (8dp)",
+    "labelMedium / labelSmall (Inter Medium)"
+  ],
+  "dos": [
+    "Usar para fase o contexto («Próximo viaje», «En destino», «Recuerdo»).",
+    "Color=Tertiary sobre fotos y scrims.",
+    "Color=Surface o Secondary en superficies planas.",
+    "Property Label text en instancia — no duplicar capas de texto sueltas.",
+    "Sizing HUG: el ancho crece con el copy; no FILL del contenedor padre."
+  ],
+  "donts": [
+    "No usar como sustituto de Filter chip ni Assist chip interactivo.",
+    "No añadir sombra Elevated ni borde Outlined — no es chip.",
+    "No hacer clickable en producto.",
+    "No usar Assist chip Elevated (CUT) para este patrón."
+  ],
+  "a11y": [
+    "Decorativo en sí: el texto se anuncia en el bloque padre (card o sección).",
+    "Modifier.semantics { invisibleToUser() } si el padre ya incluye la fase en contentDescription.",
+    "Nunca role Button ni onClick.",
+    "Contraste mínimo 4.5:1 entre label y container en todos los pares Color."
+  ],
+  "compose": "// Surface(shape = RoundedCornerShape(8.dp), color = colorScheme.tertiaryFixedDim) {\n//   Text(eyebrow, style = typography.labelMedium, color = colorScheme.onTertiaryContainer,\n//     modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))\n// }",
+  "changelog": [
+    {
+      "date": "2026-06-17",
+      "note": "Component set Eyebrow label en página Labels — 3×2 variantes Color×Size."
+    }
+  ]
+}

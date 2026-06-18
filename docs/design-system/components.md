@@ -17,6 +17,14 @@ Empezar **M3 puro**: `androidx.compose.material3.*` con el tema MTB.
 
 Cards **12dp** y chips **8dp** fijos; FAB circular (excepción).
 
+**Cards — layouts** (Figma `52346:27573`): `Text only`, `Media only`, `Media & text`, `Slot` — ver [figma-prune-inventory.md](figma-prune-inventory.md) § Cards.
+
+**TripHeroCard** — [61199:7862](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61199-7862): portada 280dp + CTA tonal «Ver detalles»; showcase [`trip-hero-card.html`](../ds-showcase/components/trip-hero-card.html). Eyebrow = instancia **Eyebrow label** (no chip).
+
+**Eyebrow label** — [61202:16834](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834): etiqueta informativa no interactiva; showcase [`eyebrow-label.html`](../ds-showcase/components/eyebrow-label.html). Chips = filtros/acciones; eyebrow = contexto sobre media o surface.
+
+**Home · menú filtros** — patrón documentado en [`patterns/home-filter-menu.md`](patterns/home-filter-menu.md): Search bar + `Menu Groups=2` al pulsar `tune`; ítem seleccionado con **`check`** (no chevron).
+
 ## Cuándo crear `MyOwnTrip*`
 
 Solo si M3 no ofrece el default o variante de producto necesaria **y** queda documentado en el **showcase** (o ADR).

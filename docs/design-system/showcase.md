@@ -14,7 +14,7 @@ Figma conserva la **librería** (variables + component sets para diseñar pantal
 |------|-----------|
 | **Showcase** | Ficha por componente: propósito, anatomía, variantes, estados, tokens usados, a11y, ejemplos interactivos, changelog |
 | **Figma** | Component set publicado, variables M3, instancias para UI de producto |
-| **Repo `docs/design-system/`** | Foundations (color, tipo, iconos, governance) — no fichas de Button/TextField |
+| **Repo `docs/design-system/`** | Foundations (color, tipo, iconos, governance) · **patrones de producto** en [`patterns/`](patterns/) |
 | **Notion DS** | Enlaces al showcase; resumen para negocio |
 
 ## Plantilla mínima por componente (showcase)

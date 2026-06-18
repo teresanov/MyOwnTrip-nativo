@@ -174,9 +174,52 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 - **CUT:** Split button (144) · Connected + Standard button groups + BB Connected (86) — **hecho**
 - **Checklist binding:** [shape.md](shape.md) § Binding Figma
 
-### Cards · `55141:14171`
-- **KEEP:** Stacked + Horizontal, Outlined + Elevated, Media & text + Slot
-- **CUT:** Filled — **hecho** (−9: 4 variantes Stacked/Horizontal + BB states Filled)
+### Cards · `55141:14171` · [Stacked card](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52346-27573)
+
+- **KEEP:** Stacked + Horizontal · **Outlined + Elevated** · **CUT Filled** — **hecho** (−9)
+- **Stacked · Layout** (eje `Layout` en component set):
+  | Layout | Contenido | Uso producto |
+  |--------|-----------|--------------|
+  | `Media & text` | Header (avatar) + media + copy + acciones | Viaje destacado, card editorial completa |
+  | `Text only` | **Header** (`Header` + `Subhead`) + **close** · cuerpo = solo `Supporting text` · sin avatar, sin Headline/Title, sin acciones | Mensaje descartable (promo, aviso) |
+  | `Media only` | **Solo imagen** (fill persistente, ~16:9) | Decoración / portada cuando no hay copy |
+  | `Slot` | Composición custom | Prototipo; no abusar en MVP |
+- **Horizontal · Layout:** `Media & text` · `Only Text` · `Slot` (sin `Media only` — patrón fila compacta)
+- **Regla superficie:** Outlined = listas/feeds; Elevated = destacados; **nunca Filled**
+- **TripHeroCard** · [component set](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61199-7862) (no variante de Stacked):
+  | Parte | Contenido |
+  |-------|-----------|
+  | Tamaño | **360×368** (portada 280 + CTA tonal 48 + gap) |
+  | Superficie | `Style=Elevated` (default Home) · `Outlined` |
+  | Portada | `Background` (image fill) + `Scrim` + **Eyebrow label** (`Color=Tertiary, Size=Medium`) + `Content` (countdown, title, meta) |
+  | CTA | **Button - tonal** XSmall «Ver detalles» **bajo** la imagen — **única acción** |
+  | Properties | `Countdown text`, `Show countdown`, `Title text`, `Meta text` |
+  | Eyebrow / CTA label | Eyebrow: property `Label text` en instancia Eyebrow label · CTA: editar en instancia Button |
+  | Uso | Home — viaje destacado |
+
+### Labels · página [61202:16812](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16812)
+
+Etiquetas **informativas no interactivas**. No sustituyen chips (filtros/acciones).
+
+| Componente | Variantes | Uso producto |
+|------------|-----------|--------------|
+| **Eyebrow label** · [61202:16834](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834) | `Color` = Tertiary · Surface · Secondary × `Size` = Medium · Small | Fase/contexto sobre media (TripHeroCard) o surface plana |
+| Property | `Label text` (TEXT) | «Próximo viaje», «En destino», «Recuerdo», etc. |
+| Sizing | **HUG** — ancho según copy + padding; **no** ancho fijo ni FILL del padre | En instancia dentro de TripHeroCard: posicionar top-start con padding del card |
+
+**Regla:** `Color=Tertiary` sobre fotos/scrims. Chips Assist **Outlined** solo en superficie plana e interactivos. Eyebrow label **sin** onClick en producto.
+
+### Design-file · Shell Home · `00 · Shell & transversal`
+
+Flujo **[205:813](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-813)** · `route: trip_list`
+
+| Cap | Estado | Notas |
+|-----|--------|-------|
+| cap 1 · Home vacío | [205:816](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-816) | Search bar placeholder «Buscar destinos o viajes» |
+| cap 2 · Home con viajes | [205:1018](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-1018) | TripHeroCard + Wallet + Horizontal cards · **sin** chips metadata |
+| cap 3 · búsqueda + menú | [228:8161](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=228-8161) | Clone cap 2 · Search Pressed · Menu overlay 328dp — ver [`patterns/home-filter-menu.md`](patterns/home-filter-menu.md) |
+
+Sesión y pendientes: [`docs/sessions/2026-06-17-home-ds-figma.md`](../sessions/2026-06-17-home-ds-figma.md)
 
 ### Carousel · `55141:14172`
 
@@ -224,6 +267,9 @@ MVP: sin pantalla galería cerrada → **no diseñar con estos sets**; backup CS
 ### Menu · `55141:14250` — **hecho**
 - **MVP:** Menu density **0** · Theme **Standard** · Menu item/Standard + BB
 - **CUT:** density -2/-4 (BB + baseline variants) · Theme **Vibrant** + Menu item/Vibrant — **hecho**
+- **Selección en menú (producto):** ítem activo = contenedor `Selected` + trailing **`check`** (Sharp w300) — **no** `chevron_right` (submenú) · **no** `radio_button_checked` en menús contextuales
+- **Deuda kit:** variante `Selected=True` del Menu-item publicado aún enlaza `radio_button_checked` → corregir a `check` antes de próxima publicación librería
+- **Patrón Home filtros:** [`patterns/home-filter-menu.md`](patterns/home-filter-menu.md) · design-file cap 3 · script `figma-design-file-home-cap3-search-filters.js`
 
 ### Navigation · `55141:14251` — **hecho**
 - **MVP:** Navigation Bar H/V (3–6 items) + BB Vertical/Horizontal nav items

@@ -1,0 +1,79 @@
+{
+  "id": "trip-hero-card",
+  "name": "TripHeroCard",
+  "status": "ready",
+  "priority": "P1",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61199-7862",
+  "purpose": "Portada del viaje destacado en Home: Background con image fill + scrim editorial, Eyebrow label de fase, countdown opcional, título y meta; CTA tonal «Ver detalles» debajo de la portada (única acción). Patrón MyOwnTrip — no es variante de Stacked card.",
+  "anatomy": [
+    "Background — Card states Elevated u Outlined (280dp alto) con image fill full-bleed",
+    "Scrim — degradado vertical sobre la portada",
+    "Eyebrow label — instancia Color=Tertiary, Size=Medium («Próximo viaje», «En destino», «Recuerdo») — no interactiva",
+    "Content — Countdown (opcional) + Title (Fraunces) + Meta (Inter)",
+    "Button - tonal — XSmall ancho completo bajo la portada: «Ver detalles»"
+  ],
+  "variants": [
+    {
+      "id": "elevated",
+      "label": "Elevated",
+      "usage": "Default en Home — viaje destacado."
+    },
+    {
+      "id": "outlined",
+      "label": "Outlined",
+      "usage": "Misma anatomía con marco Outlined."
+    }
+  ],
+  "properties": [
+    { "name": "Countdown text", "type": "TEXT", "example": "Sale en 3 días" },
+    { "name": "Show countdown", "type": "BOOLEAN", "example": "true si próximo; false en curso o pasado" },
+    { "name": "Title text", "type": "TEXT", "example": "Barcelona fin de semana" },
+    { "name": "Meta text", "type": "TEXT", "example": "20 jun 2026 – 22 jun 2026 · 3 días" }
+  ],
+  "nestedEditable": [
+    "Eyebrow label — property Label text en instancia anidada",
+    "Button - tonal — Label «Ver detalles» (sin icono visible)"
+  ],
+  "tokens": [
+    "ElevatedCard / OutlinedCard",
+    "scrim",
+    "tertiaryFixedDim + onTertiaryContainer (Eyebrow label)",
+    "tertiaryFixed (countdown)",
+    "inverseOnSurface (título y meta sobre scrim)",
+    "secondaryContainer (Button tonal)",
+    "headlineMedium / titleMedium / bodyMedium",
+    "shapes.medium (12dp)"
+  ],
+  "dos": [
+    "Una TripHeroCard por Home (viaje destacado).",
+    "Image fill en Background — se adapta al ancho del card con padding de pantalla.",
+    "Eyebrow label Color=Tertiary según fase del viaje.",
+    "CTA «Ver detalles» como única acción interactiva.",
+    "Instanciar desde librería DS publicada."
+  ],
+  "donts": [
+    "No usar Stacked · Media only para este patrón.",
+    "No Assist chip ni Filter chip en la portada.",
+    "No hacer clickable la portada ni el eyebrow.",
+    "No duplicar el saludo/displaySmall del hero de página.",
+    "No avatar ni menú en la portada."
+  ],
+  "a11y": [
+    "Único control interactivo: CTA «Ver detalles» (48dp).",
+    "Eyebrow y textos de portada: incluir fase y countdown en contentDescription del bloque o del CTA según implementación.",
+    "stateDescription según fase (próximo / en curso / pasado).",
+    "Imagen decorativa — sin alt aparte.",
+    "Show countdown=false oculta la línea de countdown."
+  ],
+  "compose": "ElevatedCard { Column(spacedBy = 8.dp) {\n  Box(280.dp, clip top 12dp) { image + scrim + EyebrowLabel + texts }\n  FilledTonalButton(\"Ver detalles\") // única acción\n}}",
+  "changelog": [
+    {
+      "date": "2026-06-17",
+      "note": "Component set TripHeroCard en librería Cards."
+    },
+    {
+      "date": "2026-06-17",
+      "note": "Eyebrow label (no chip); image fill en Background; CTA única acción."
+    }
+  ]
+}

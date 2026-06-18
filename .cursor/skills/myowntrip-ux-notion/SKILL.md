@@ -7,6 +7,8 @@ description: Resúmenes de investigación UX de MyOwnTrip desde Notion — perso
 
 **Hub Notion producto:** [MyOwnTrip · Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) · **Research:** [MyOwnTrip · UX Research](https://www.notion.so/33d6a48d93c881b7be98c0bc33bbdcf1). Copia resumida para el agente; **si hay discrepancia, manda Notion**.
 
+**Última sesión DS (repo):** [`docs/sessions/2026-06-17-home-ds-figma.md`](../../docs/sessions/2026-06-17-home-ds-figma.md) — TripHeroCard, Eyebrow label, Home cap 1–3, menú filtros. **Pegar en Notion** si el MCP no está conectado.
+
 **Sincronización skill:** junio 2026 (capacidades nativas Android en Must; geo elevada de Should a Must). Pain points / hipótesis: abril 2026.
 
 **North Star (cuaderno del viaje / Moleskine):** [North Star — El cuaderno del viaje](https://www.notion.so/33e6a48d93c881d8b9cce1418607f3d7).

@@ -2,7 +2,6 @@ package com.myowntrip.app.ui.features.trips
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,20 +11,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.ConfirmationNumber
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -42,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,8 +52,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTCorner
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
+import com.myowntrip.app.ui.theme.rememberMOTButtonShape
 import java.io.File
 import java.time.LocalDate
 import java.time.LocalTime
@@ -131,12 +133,6 @@ fun TripListScreen(
         HomeActionBar(
           featuredTrip = featuredTrip,
           onCreateTrip = onCreateTrip,
-          modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-        )
-      }
-      item {
-        HomeQuickChips(
-          tripCount = sortedTrips.size,
           modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
         )
       }
@@ -264,46 +260,6 @@ private fun HomeActionBar(
 }
 
 @Composable
-private fun HomeQuickChips(
-  tripCount: Int,
-  modifier: Modifier = Modifier,
-) {
-  Row(
-    modifier = modifier
-      .fillMaxWidth()
-      .horizontalScroll(rememberScrollState()),
-    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
-  ) {
-    AssistChip(
-      onClick = {},
-      label = { Text(if (tripCount == 1) "1 viaje" else "$tripCount viajes") },
-    )
-    AssistChip(
-      onClick = {},
-      label = { Text("Offline listo") },
-      leadingIcon = {
-        Icon(
-          Icons.Outlined.CloudOff,
-          contentDescription = null,
-          modifier = Modifier.size(AssistChipDefaults.IconSize),
-        )
-      },
-    )
-    AssistChip(
-      onClick = {},
-      label = { Text("Wallet") },
-      leadingIcon = {
-        Icon(
-          Icons.Outlined.ConfirmationNumber,
-          contentDescription = null,
-          modifier = Modifier.size(AssistChipDefaults.IconSize),
-        )
-      },
-    )
-  }
-}
-
-@Composable
 private fun WalletPromoBanner(modifier: Modifier = Modifier) {
   ElevatedCard(
     modifier = modifier.fillMaxWidth(),
@@ -423,6 +379,27 @@ private fun HomeEmptyState(
 }
 
 @Composable
+private fun EyebrowLabel(
+  text: String,
+  modifier: Modifier = Modifier,
+) {
+  Surface(
+    modifier = modifier.semantics { hideFromAccessibility() },
+    shape = MaterialTheme.shapes.small,
+    color = MaterialTheme.colorScheme.tertiaryFixedDim,
+  ) {
+    Text(
+      text = text,
+      style = MaterialTheme.typography.labelMedium,
+      color = MaterialTheme.colorScheme.onTertiaryContainer,
+      modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+    )
+  }
+}
+
+@Composable
 private fun TripHeroCard(
   trip: Trip,
   today: LocalDate,
@@ -434,93 +411,100 @@ private fun TripHeroCard(
   val meta = tripMetaLabel(trip)
   val countdown = tripCountdownLabel(trip, today)
   val a11yPhase = phaseStateDescription(phase)
+  val heroContentDescription = tripHeroContentDescription(
+    eyebrow = eyebrow,
+    countdown = countdown,
+    tripName = trip.name,
+    meta = meta,
+  )
+  val portadaShape = RoundedCornerShape(
+    topStart = MOTCorner.Medium,
+    topEnd = MOTCorner.Medium,
+  )
 
   ElevatedCard(
-    modifier = modifier
-      .fillMaxWidth()
-      .semantics(mergeDescendants = true) {
-        contentDescription = "${trip.name}, ${trip.destination}, $meta"
-        stateDescription = a11yPhase
-      }
-      .clickable(onClick = onClick),
+    modifier = modifier.fillMaxWidth(),
   ) {
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(280.dp),
+    Column(
+      verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
     ) {
-      TripCoverImage(
-        trip = trip,
-        modifier = Modifier
-          .fillMaxSize()
-          .clip(MaterialTheme.shapes.medium),
-      )
       Box(
         modifier = Modifier
-          .fillMaxSize()
-          .background(
-            Brush.verticalGradient(
-              0f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.08f),
-              0.45f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.02f),
-              0.7f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.55f),
-              1f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.82f),
-            ),
-          ),
-      )
-      AssistChip(
-        onClick = onClick,
-        label = { Text(eyebrow) },
-        modifier = Modifier
-          .padding(MOTSpacing.layoutMd)
-          .align(Alignment.TopStart),
-        colors = AssistChipDefaults.assistChipColors(
-          containerColor = MaterialTheme.colorScheme.tertiary,
-          labelColor = MaterialTheme.colorScheme.onTertiary,
-        ),
-        border = null,
-      )
-      Column(
-        modifier = Modifier
-          .align(Alignment.BottomStart)
-          .padding(MOTSpacing.layoutMd),
+          .fillMaxWidth()
+          .height(280.dp)
+          .clip(portadaShape),
       ) {
-        if (countdown != null) {
+        TripCoverImage(
+          trip = trip,
+          modifier = Modifier
+            .fillMaxSize()
+            .semantics { hideFromAccessibility() },
+        )
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .background(
+              Brush.verticalGradient(
+                0f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.08f),
+                0.45f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.02f),
+                0.7f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.55f),
+                1f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.82f),
+              ),
+            )
+            .semantics { hideFromAccessibility() },
+        )
+        EyebrowLabel(
+          text = eyebrow,
+          modifier = Modifier
+            .align(Alignment.TopStart)
+            .padding(MOTSpacing.layoutMd),
+        )
+        Column(
+          modifier = Modifier
+            .align(Alignment.BottomStart)
+            .padding(MOTSpacing.layoutMd)
+            .semantics { hideFromAccessibility() },
+        ) {
+          if (countdown != null) {
+            Text(
+              text = countdown,
+              style = MaterialTheme.typography.titleMedium,
+              color = MaterialTheme.colorScheme.tertiaryFixed,
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
+            )
+          }
           Text(
-            text = countdown,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.tertiaryFixed,
-            maxLines = 1,
+            text = trip.name,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.inverseOnSurface,
+            modifier = Modifier.padding(top = if (countdown != null) 4.dp else 0.dp),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+          )
+          Text(
+            text = meta,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = 0.88f),
+            modifier = Modifier.padding(top = MOTSpacing.componentXs),
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
           )
         }
-        Text(
-          text = trip.name,
-          style = MaterialTheme.typography.headlineMedium,
-          color = MaterialTheme.colorScheme.inverseOnSurface,
-          modifier = Modifier.padding(top = if (countdown != null) 4.dp else 0.dp),
-          maxLines = 2,
-          overflow = TextOverflow.Ellipsis,
-        )
-        Text(
-          text = meta,
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = 0.88f),
-          modifier = Modifier.padding(top = MOTSpacing.componentXs),
-          maxLines = 2,
-          overflow = TextOverflow.Ellipsis,
-        )
-        MOTButton(
-          onClick = onClick,
-          modifier = Modifier
-            .padding(top = MOTSpacing.layoutMd)
-            .fillMaxWidth(),
-          colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.tertiary,
-            contentColor = MaterialTheme.colorScheme.onTertiary,
-          ),
-        ) {
-          Text("Abrir cuaderno")
-        }
+      }
+      FilledTonalButton(
+        onClick = onClick,
+        modifier = Modifier
+          .fillMaxWidth()
+          .heightIn(min = 48.dp)
+          .semantics {
+            contentDescription = heroContentDescription
+            stateDescription = a11yPhase
+          },
+        shape = rememberMOTButtonShape(),
+        colors = ButtonDefaults.filledTonalButtonColors(),
+      ) {
+        Text("Ver detalles")
       }
     }
   }
@@ -669,6 +653,24 @@ private fun phaseStateDescription(phase: TripPhase): String = when (phase) {
   TripPhase.Past -> "Viaje pasado"
 }
 
+private fun tripHeroContentDescription(
+  eyebrow: String,
+  countdown: String?,
+  tripName: String,
+  meta: String,
+): String = buildString {
+  append(eyebrow)
+  if (countdown != null) {
+    append(". ")
+    append(countdown)
+  }
+  append(". ")
+  append(tripName)
+  append(". ")
+  append(meta)
+  append(". Ver detalles")
+}
+
 private fun tripMetaLabel(trip: Trip): String {
   val days = ChronoUnit.DAYS.between(trip.startDate, trip.endDate) + 1
   val duration = if (days == 1L) "1 día" else "$days días"
@@ -735,12 +737,6 @@ fun TripListWithTripsPreview() {
           HomeActionBar(
             featuredTrip = sorted.first(),
             onCreateTrip = {},
-            modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-          )
-        }
-        item {
-          HomeQuickChips(
-            tripCount = sorted.size,
             modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
           )
         }
