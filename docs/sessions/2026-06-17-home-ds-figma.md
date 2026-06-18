@@ -1,6 +1,6 @@
 # Sesión 2026-06-17 — Home DS + Figma + Compose (cierre)
 
-> **Notion:** [Sesión 2026-06-17 — Home DS, filtros, portadas y calendario](https://www.notion.so/) (hijo de MyOwnTrip · Proyecto)
+> **Notion:** [Sesión 2026-06-17 — Home DS, filtros, portadas y calendario](https://www.notion.so/3836a48d93c881d79653f8095d95f411)
 
 ## Resumen
 
