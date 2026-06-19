@@ -88,7 +88,7 @@ Scripts Bridge: `scripts/figma-brand-bind-vars-part*.js`, `figma-brand-text-styl
 | Capa | Drawable | Contenido |
 |------|----------|-----------|
 | Background | `ic_launcher_background.xml` | Papel `#F4F0E8` |
-| Foreground | `ic_launcher_foreground.xml` | Marco keyline + M + cinta ocre |
+| Foreground | `ic_launcher_foreground.xml` | Marco 96×96 + M (contorno Figma) + cinta ocre — ref. [61084:30347](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61084-30347) |
 | Monochrome | `ic_launcher_monochrome.xml` | Marco + M + cinta (themed Android 13+) |
 
 Zona de respeto: altura de la **M** alrededor del lockup.
@@ -132,4 +132,4 @@ Página **Brand** (librería aparte del DS M3):
 | MOT | claro · oscuro |
 | Icono C1 | adaptive (3 capas) |
 
-Montaje en Figma en curso; assets de referencia en `app/.../ui/brand/` y `res/drawable/ic_launcher_*`.
+Montaje Figma: [App icon C1 · 61084:30344](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61084-30344). Android adaptive: artefacto Figma **96×96** escalado **0,6875** (→ **66dp** safe zone) desde centro **54,54**; marco **solo trazo** (papel en `ic_launcher_background`); sin relleno en foreground para no leerse como círculo bajo máscara OEM.
