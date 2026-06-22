@@ -17,7 +17,22 @@ class ItineraryRepository @Inject constructor(
   fun observeByDay(dayId: String): Flow<List<ItineraryBlock>> =
     itineraryBlockDao.observeByDay(dayId).map { blocks -> blocks.map { it.toDomain() } }
 
-  suspend fun addBlockAtEnd(dayId: String, title: String, timeLabel: String?, currentCount: Int) {
+  fun observeByTrip(tripId: String): Flow<List<ItineraryBlock>> =
+    itineraryBlockDao.observeByTrip(tripId).map { blocks -> blocks.map { it.toDomain() } }
+
+  suspend fun findBlockByWalletEntryId(walletEntryId: String): ItineraryBlock? =
+    itineraryBlockDao.findByWalletEntryId(walletEntryId)?.toDomain()
+
+  suspend fun getBlocksForDay(dayId: String): List<ItineraryBlock> =
+    itineraryBlockDao.getByDay(dayId).map { it.toDomain() }
+
+  suspend fun addBlockAtEnd(
+    dayId: String,
+    title: String,
+    timeLabel: String?,
+    currentCount: Int,
+    walletEntryId: String? = null,
+  ) {
     itineraryBlockDao.insert(
       ItineraryBlock(
         id = UUID.randomUUID().toString(),
@@ -25,8 +40,13 @@ class ItineraryRepository @Inject constructor(
         title = title,
         timeLabel = timeLabel,
         sortOrder = currentCount,
+        walletEntryId = walletEntryId,
       ).toEntity(),
     )
+  }
+
+  suspend fun updateBlock(block: ItineraryBlock) {
+    itineraryBlockDao.insert(block.toEntity())
   }
 
   suspend fun saveOrder(blocks: List<ItineraryBlock>) {

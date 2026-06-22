@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.AttachFile
+import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,6 +37,10 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Switch
+import com.myowntrip.app.domain.model.Day
+import com.myowntrip.app.domain.plan.PlanPlacementLogic
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -54,6 +62,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.wallet.WalletDocumentParser
+import com.myowntrip.app.ui.components.DocumentAttachmentCard
+import com.myowntrip.app.ui.features.journal.JournalPermission
+import com.myowntrip.app.ui.features.journal.TakePhotoScreen
+import com.myowntrip.app.ui.features.journal.rememberJournalPermissionRequest
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
@@ -68,6 +80,7 @@ fun WalletFormScreen(
   onBack: () -> Unit,
   onSaved: () -> Unit,
   onCreateTrip: () -> Unit = {},
+  onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
   viewModel: WalletFormViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -77,6 +90,45 @@ fun WalletFormScreen(
   var autoPickLaunched by remember { mutableStateOf(false) }
   var showDiscard by remember { mutableStateOf(false) }
   var pickerCancelExitsFlow by remember { mutableStateOf(false) }
+
+  val requestCamera = rememberJournalPermissionRequest(
+    permission = JournalPermission.Camera,
+    onGranted = { viewModel.prepareCameraCapture() },
+    onDenied = {},
+  )
+
+  val requestQrCamera = rememberJournalPermissionRequest(
+    permission = JournalPermission.Camera,
+    onGranted = { viewModel.showQrScanner() },
+    onDenied = {},
+  )
+
+  val pickGalleryImage = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.GetContent(),
+  ) { uri: Uri? ->
+    if (uri == null) return@rememberLauncherForActivityResult
+    dirty = true
+    val fileName = resolveAttachmentDisplayName(context, uri) ?: "entrada.jpg"
+    val mimeType = resolveAttachmentMimeType(context, uri)
+    viewModel.attachDocument(uri, mimeType, fileName)
+  }
+
+  if (state.showCamera && state.pendingPhotoFile != null) {
+    TakePhotoScreen(
+      outputFile = state.pendingPhotoFile!!,
+      onPhotoSaved = viewModel::onPhotoCaptured,
+      onCancel = viewModel::cancelCamera,
+    )
+    return
+  }
+
+  if (state.showQrScan) {
+    QrScanScreen(
+      onQrScanned = viewModel::onQrScanned,
+      onCancel = viewModel::cancelQrScan,
+    )
+    return
+  }
 
   val requestExit: () -> Unit = {
     when {
@@ -170,12 +222,13 @@ fun WalletFormScreen(
         state.isParsing -> WalletParsingStep(
           onCancel = requestExit,
         )
-        state.parseFailed && state.attachmentUri != null -> WalletParseFailStep(
+        state.parseFailed && state.attachmentUri != null && !state.manualEntryMode -> WalletParseFailStep(
           state = state,
           tripExpanded = tripExpanded,
           onTripExpandedChange = { tripExpanded = it },
           onCreateTrip = onCreateTrip,
           onPickFile = { launchDocumentPicker(false) },
+          onViewDocument = onViewDocument,
           onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
@@ -187,6 +240,7 @@ fun WalletFormScreen(
         state.isImportFlow -> WalletImportReviewStep(
           state = state,
           onPickFile = { launchDocumentPicker(false) },
+          onViewDocument = onViewDocument,
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
           onShowTypeCorrection = viewModel::setShowTypeCorrection,
@@ -198,6 +252,12 @@ fun WalletFormScreen(
           tripExpanded = tripExpanded,
           onTripExpandedChange = { tripExpanded = it },
           onCreateTrip = onCreateTrip,
+          onPickFile = { launchDocumentPicker(false) },
+          onTakePhoto = requestCamera,
+          onPickGallery = { pickGalleryImage.launch("image/*") },
+          onScanQr = requestQrCamera,
+          onViewDocument = onViewDocument,
+          onClearAttachment = { viewModel.clearAttachment() },
           onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
@@ -226,6 +286,15 @@ fun WalletFormScreen(
     WalletConfirmDialog(
       entry = state.pendingEntry!!,
       attachmentFileName = state.attachmentFileName,
+      planAddToPlan = state.planAddToPlan,
+      planCanPlace = state.planCanPlace,
+      planSummary = state.planSummary,
+      planTripDays = state.planTripDays,
+      planDayId = state.planDayId,
+      planTime = state.planTime,
+      onPlanAddToPlanChange = viewModel::onPlanAddToPlanChange,
+      onPlanDaySelected = viewModel::onPlanDaySelected,
+      onPlanTimeChange = viewModel::onPlanTimeChange,
       onDismiss = { viewModel.dismissConfirm() },
       onSave = { viewModel.confirmSave(onSaved) },
     )
@@ -233,7 +302,7 @@ fun WalletFormScreen(
 }
 
 @Composable
-private fun WalletParsingStep(onCancel: () -> Unit) {
+internal fun WalletParsingStep(onCancel: () -> Unit) {
   Column(
     modifier = Modifier.fillMaxWidth().padding(vertical = MOTSpacing.layoutLg),
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -255,7 +324,7 @@ private fun WalletParsingStep(onCancel: () -> Unit) {
 }
 
 @Composable
-private fun WalletAwaitingPickerStep(
+internal fun WalletAwaitingPickerStep(
   onManualEntry: () -> Unit,
   onCancel: () -> Unit,
 ) {
@@ -306,7 +375,7 @@ private fun WalletPickFileStep(
 }
 
 @Composable
-private fun WalletParseFailBanner() {
+internal fun WalletParseFailBanner() {
   Card(
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
   ) {
@@ -330,12 +399,13 @@ private fun WalletParseFailBanner() {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-private fun WalletParseFailStep(
+internal fun WalletParseFailStep(
   state: WalletFormUiState,
   tripExpanded: Boolean,
   onTripExpandedChange: (Boolean) -> Unit,
   onCreateTrip: () -> Unit,
   onPickFile: () -> Unit,
+  onViewDocument: (source: String, title: String?) -> Unit,
   onTripSelected: (String) -> Unit,
   onTitleChange: (String) -> Unit,
   onTypeChange: (EntryType) -> Unit,
@@ -349,6 +419,7 @@ private fun WalletParseFailStep(
     attachmentUri = state.attachmentUri,
     fileName = state.attachmentFileName,
     onChangeFile = onPickFile,
+    onViewDocument = onViewDocument,
   )
   WalletManualAddStep(
     state = state,
@@ -367,9 +438,10 @@ private fun WalletParseFailStep(
 }
 
 @Composable
-private fun WalletImportReviewStep(
+internal fun WalletImportReviewStep(
   state: WalletFormUiState,
   onPickFile: () -> Unit,
+  onViewDocument: (source: String, title: String?) -> Unit,
   onTitleChange: (String) -> Unit,
   onTypeChange: (EntryType) -> Unit,
   onShowTypeCorrection: (Boolean) -> Unit,
@@ -380,6 +452,7 @@ private fun WalletImportReviewStep(
     attachmentUri = state.attachmentUri,
     fileName = state.attachmentFileName,
     onChangeFile = onPickFile,
+    onViewDocument = onViewDocument,
   )
   Card(
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
@@ -419,7 +492,7 @@ private fun WalletImportReviewStep(
         )
       }
       state.qrPayload?.let { payload ->
-        WalletBoardingQrCard(payload = payload, compact = true)
+        WalletQrCard(payload = payload, compact = true, entryType = state.type)
       }
       if (!state.showTypeCorrection) {
         MOTTextButton(onClick = { onShowTypeCorrection(true) }) {
@@ -455,7 +528,7 @@ private fun WalletImportReviewStep(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-private fun WalletManualAddStep(
+internal fun WalletManualAddStep(
   state: WalletFormUiState,
   tripExpanded: Boolean,
   onTripExpandedChange: (Boolean) -> Unit,
@@ -469,10 +542,16 @@ private fun WalletManualAddStep(
   onCancel: () -> Unit = {},
   showIntro: Boolean = true,
   showCancel: Boolean = true,
+  onPickFile: () -> Unit = {},
+  onTakePhoto: () -> Unit = {},
+  onPickGallery: () -> Unit = {},
+  onScanQr: () -> Unit = {},
+  onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
+  onClearAttachment: () -> Unit = {},
 ) {
   if (showIntro) {
     Text(
-      text = "Entrada manual cuando no tienes un archivo a mano.",
+      text = "Añade entradas físicas, billetes o documentos. Puedes fotografiarlos, escanear un QR o subir un PDF.",
       style = MaterialTheme.typography.bodyMedium,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -522,6 +601,51 @@ private fun WalletManualAddStep(
   )
   Text("Tipo", style = MaterialTheme.typography.labelLarge)
   EntryTypeChips(selected = state.type, onSelect = onTypeChange)
+  Text("Entrada o documento", style = MaterialTheme.typography.labelLarge)
+  if (state.attachmentUri != null) {
+    WalletAttachmentPreview(
+      attachmentUri = state.attachmentUri,
+      fileName = state.attachmentFileName,
+      onChangeFile = onPickFile,
+      onViewDocument = onViewDocument,
+    )
+    MOTTextButton(onClick = onClearAttachment) {
+      Text("Quitar adjunto")
+    }
+  } else {
+    FlowRow(
+      horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+      verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+    ) {
+      FilterChip(
+        selected = false,
+        onClick = onTakePhoto,
+        label = { Text("Hacer foto") },
+        leadingIcon = { Icon(Icons.Default.PhotoCamera, contentDescription = null) },
+      )
+      FilterChip(
+        selected = false,
+        onClick = onPickGallery,
+        label = { Text("Galería") },
+        leadingIcon = { Icon(Icons.Default.PhotoLibrary, contentDescription = null) },
+      )
+      FilterChip(
+        selected = false,
+        onClick = onPickFile,
+        label = { Text("PDF o archivo") },
+        leadingIcon = { Icon(Icons.Default.AttachFile, contentDescription = null) },
+      )
+      FilterChip(
+        selected = false,
+        onClick = onScanQr,
+        label = { Text("Escanear QR") },
+        leadingIcon = { Icon(Icons.Default.QrCodeScanner, contentDescription = null) },
+      )
+    }
+  }
+  state.qrPayload?.let { payload ->
+    WalletQrCard(payload = payload, compact = true, entryType = state.type)
+  }
   if (state.showNotesField) {
     OutlinedTextField(
       value = state.notes,
@@ -569,51 +693,41 @@ private fun WalletAttachmentPreview(
   attachmentUri: Uri?,
   fileName: String?,
   onChangeFile: () -> Unit,
+  onViewDocument: (source: String, title: String?) -> Unit,
 ) {
   if (attachmentUri != null) {
-    val isImage = fileName?.substringAfterLast('.', "")?.lowercase() in setOf("jpg", "jpeg", "png", "webp", "gif")
-    if (isImage) {
-      AsyncImage(
-        model = attachmentUri,
-        contentDescription = "Vista previa del adjunto",
-        modifier = Modifier.fillMaxWidth().height(160.dp),
-        contentScale = ContentScale.Crop,
-      )
-    } else {
-      Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-      ) {
-        Column(
-          modifier = Modifier.padding(MOTSpacing.layoutMd),
-          horizontalAlignment = Alignment.CenterHorizontally,
-          verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
-        ) {
-          Icon(
-            Icons.AutoMirrored.Filled.InsertDriveFile,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-          )
-          Text(
-            text = fileName ?: "Documento",
-            style = MaterialTheme.typography.bodyMedium,
-          )
-        }
-      }
-    }
+    DocumentAttachmentCard(
+      source = attachmentUri.toString(),
+      fileName = fileName,
+      onOpen = { onViewDocument(attachmentUri.toString(), fileName) },
+    )
     MOTTextButton(onClick = onChangeFile) {
       Text("Cambiar archivo")
     }
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun WalletConfirmDialog(
+internal fun WalletConfirmDialog(
   entry: com.myowntrip.app.domain.model.WalletEntry,
   attachmentFileName: String?,
+  planAddToPlan: Boolean = false,
+  planCanPlace: Boolean = false,
+  planSummary: String? = null,
+  planTripDays: List<Day> = emptyList(),
+  planDayId: String? = null,
+  planTime: java.time.LocalTime? = null,
+  onPlanAddToPlanChange: (Boolean) -> Unit = {},
+  onPlanDaySelected: (String) -> Unit = {},
+  onPlanTimeChange: (java.time.LocalTime?) -> Unit = {},
   onDismiss: () -> Unit,
   onSave: () -> Unit,
 ) {
+  var dayExpanded by remember { mutableStateOf(false) }
+  val selectedDay = planTripDays.find { it.id == planDayId }
+  val timeText = remember(planTime) { planTime?.let { PlanPlacementLogic.formatTime(it) }.orEmpty() }
+
   AlertDialog(
     onDismissRequest = onDismiss,
     title = { Text("Confirmar guardado") },
@@ -622,10 +736,79 @@ private fun WalletConfirmDialog(
         Text("Tipo: ${entryTypeLabel(entry.type)}")
         Text("Título: ${entry.title}")
         parsedScheduleLabel(entry)?.let { Text("Cuándo: $it") }
-        entry.qrPayload?.let { Text("QR de embarque: guardado para uso sin conexión.") }
+        entry.qrPayload?.let { Text("Código QR guardado para uso sin conexión.") }
         entry.notes?.let { Text("Notas: $it") }
         if (entry.pdfUri != null || attachmentFileName != null) {
           Text("Adjunto: se guardará en el dispositivo para uso sin conexión.")
+        }
+        HorizontalDivider(modifier = Modifier.padding(vertical = MOTSpacing.componentSm))
+        Text("Plan del viaje", style = MaterialTheme.typography.titleSmall)
+        if (planCanPlace) {
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Text("Añadir al plan", style = MaterialTheme.typography.bodyMedium)
+            Switch(checked = planAddToPlan, onCheckedChange = onPlanAddToPlanChange)
+          }
+          if (planAddToPlan) {
+            planSummary?.let {
+              Text(
+                it,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            }
+            if (planTripDays.size > 1) {
+              ExposedDropdownMenuBox(
+                expanded = dayExpanded,
+                onExpandedChange = { dayExpanded = it },
+                modifier = Modifier.fillMaxWidth(),
+              ) {
+                OutlinedTextField(
+                  value = selectedDay?.let { "Día ${it.dayNumber}" }.orEmpty(),
+                  onValueChange = {},
+                  readOnly = true,
+                  label = { Text("Día") },
+                  trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dayExpanded) },
+                  modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth(),
+                )
+                ExposedDropdownMenu(
+                  expanded = dayExpanded,
+                  onDismissRequest = { dayExpanded = false },
+                ) {
+                  planTripDays.forEach { day ->
+                    DropdownMenuItem(
+                      text = { Text("Día ${day.dayNumber} · ${WalletDocumentParser.formatParsedDate(day.date)}") },
+                      onClick = {
+                        onPlanDaySelected(day.id)
+                        dayExpanded = false
+                      },
+                    )
+                  }
+                }
+              }
+            }
+            OutlinedTextField(
+              value = timeText,
+              onValueChange = { raw ->
+                onPlanTimeChange(PlanPlacementLogic.parseTime(raw))
+              },
+              label = { Text("Hora (opcional)") },
+              placeholder = { Text("20:00") },
+              modifier = Modifier.fillMaxWidth(),
+              singleLine = true,
+            )
+          }
+        } else {
+          Text(
+            planSummary ?: "No se añadirá al plan: la fecha no coincide con ningún día del viaje.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+          )
         }
         Text(
           "Revisa todos los campos antes de guardar. Nada se almacena hasta que confirmes.",
@@ -659,55 +842,155 @@ private fun parsedScheduleLabel(date: java.time.LocalDate?, time: java.time.Loca
   }
 }
 
-@Preview(name = "Import · analizando", showBackground = true, widthDp = 360, heightDp = 640)
+@Preview(name = "cap 3 · Import · esperando picker", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
-private fun WalletFormParsingPreview() {
+private fun WalletAwaitingPickerPreview() {
   MyOwnTripTheme {
-    WalletParsingStep(onCancel = {})
+    WalletFormPreviewScaffold(title = "Importar documento") {
+      WalletAwaitingPickerStep(onManualEntry = {}, onCancel = {})
+    }
   }
 }
 
-@Preview(name = "Import · revisar", showBackground = true, widthDp = 360, heightDp = 800)
+@Preview(name = "cap 4 · Import · analizando", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletFormParsingPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Importar documento") {
+      WalletParsingStep(onCancel = {})
+    }
+  }
+}
+
+@Preview(name = "cap 5 · Import · revisar vuelo", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 private fun WalletFormImportReviewPreview() {
   MyOwnTripTheme {
-    WalletImportReviewStep(
-      state = WalletFormUiState(
-        tripId = "trip-1",
-        type = EntryType.FLIGHT,
-        title = "IB 3254 · Madrid → Barcelona",
-        date = java.time.LocalDate.of(2026, 6, 14),
-        time = java.time.LocalTime.of(9, 15),
-        attachmentFileName = "billete-barcelona.pdf",
-        isImport = true,
-        qrPayload = "M1DEMO/PAX EIB3254 MADBCNIB 3254 314Y014A0001 349>5180  5140BIB              2A825513825513 0000",
-      ),
-      onPickFile = {},
-      onTitleChange = {},
-      onTypeChange = {},
-      onShowTypeCorrection = {},
-      onConfirm = {},
-      onCancel = {},
+    WalletFormPreviewScaffold(title = "Revisar importación") {
+      WalletImportReviewStep(
+        state = previewFlightImportState,
+        onPickFile = {},
+        onViewDocument = { _, _ -> },
+        onTitleChange = {},
+        onTypeChange = {},
+        onShowTypeCorrection = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 6 · Import · revisar hotel", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletFormImportReviewHotelPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Revisar importación") {
+      WalletImportReviewStep(
+        state = previewHotelImportState,
+        onPickFile = {},
+        onViewDocument = { _, _ -> },
+        onTitleChange = {},
+        onTypeChange = {},
+        onShowTypeCorrection = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 7 · Import · confirmar guardado", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletConfirmDialogPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Revisar importación") {
+      WalletImportReviewStep(
+        state = previewFlightImportState,
+        onPickFile = {},
+        onViewDocument = { _, _ -> },
+        onTitleChange = {},
+        onTypeChange = {},
+        onShowTypeCorrection = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+    WalletConfirmDialog(
+      entry = previewConfirmEntry(),
+      attachmentFileName = "billete-barcelona.pdf",
+      onDismiss = {},
+      onSave = {},
     )
   }
 }
 
-@Preview(name = "Manual · alta", showBackground = true, widthDp = 360, heightDp = 800)
+@Preview(name = "cap 8 · Import · parse fail", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletParseFailPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Completar manualmente") {
+      WalletParseFailStep(
+        state = previewParseFailState,
+        tripExpanded = false,
+        onTripExpandedChange = {},
+        onCreateTrip = {},
+        onPickFile = {},
+        onViewDocument = { _, _ -> },
+        onTripSelected = {},
+        onTitleChange = {},
+        onTypeChange = {},
+        onNotesChange = {},
+        onShowNotes = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 9 · Manual · alta", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 private fun WalletFormManualPreview() {
   MyOwnTripTheme {
-    WalletManualAddStep(
-      state = WalletFormUiState(tripId = "trip-1", title = ""),
-      tripExpanded = false,
-      onTripExpandedChange = {},
-      onCreateTrip = {},
-      onTripSelected = {},
-      onTitleChange = {},
-      onTypeChange = {},
-      onNotesChange = {},
-      onShowNotes = {},
-      onConfirm = {},
-      showCancel = false,
+    WalletFormPreviewScaffold(title = "Añadir a Wallet") {
+      WalletManualAddStep(
+        state = previewManualFormState,
+        tripExpanded = false,
+        onTripExpandedChange = {},
+        onCreateTrip = {},
+        onTripSelected = {},
+        onTitleChange = {},
+        onTypeChange = {},
+        onNotesChange = {},
+        onShowNotes = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 12 · Descartar borrador", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletDiscardDialogPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Revisar importación") {
+      WalletImportReviewStep(
+        state = previewFlightImportState,
+        onPickFile = {},
+        onViewDocument = { _, _ -> },
+        onTitleChange = {},
+        onTypeChange = {},
+        onShowTypeCorrection = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+    WalletDiscardDialog(
+      hasAttachment = true,
+      onDismiss = {},
+      onConfirmDiscard = {},
     )
   }
 }

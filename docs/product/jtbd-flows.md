@@ -182,7 +182,7 @@ Aceptar al menos: `application/pdf`, `image/*`, y valorar `message/rfc822` segú
 ## Checklist rápido por feature
 
 - [x] JTBD y PP identificados en este doc
-- [x] Diseño Figma happy path por JTBD (páginas `00`–`06` en design-file)
+- [x] Diseño Figma — pantallas y flujos por módulo (páginas `00`–`08` en design-file; reglas en `.cursor/rules/figma-app-flows.mdc`)
 - [x] Rutas Compose documentadas en captions Figma
 - [ ] Happy path implementado primero (parcial — ver `AppNavGraph`)
 - [ ] Edge cases de la tabla cubiertos o explícitamente diferidos con issue
@@ -191,19 +191,21 @@ Aceptar al menos: `application/pdf`, `image/*`, y valorar `message/rfc822` segú
 
 ### Mapa diseño → Compose (jun 2026)
 
-| Ruta | Pantalla | JTBD |
-|------|----------|------|
-| `trip_list` | TripListScreen | Shell |
-| `trip_create` | CreateTripScreen | Shell |
-| `trip_detail/{tripId}` | TripDetailScreen (tabs) | 1, 3, 4, 6 |
-| `wallet_add/{tripId}` | WalletFormScreen | 1 |
-| `wallet_import` | WalletFormScreen / ImportActivity | 1 |
-| `wallet_detail/{entryId}` | WalletDetailScreen | 1 |
-| `day_hub/{tripId}/{dayId}` | DayHubScreen (Plan \| Journal) | 3, 5 |
-| `journal_add/{dayId}` | JournalAddScreen | 5 |
-| `expense_add/{tripId}?dayId=` | ExpenseFormScreen | 6 |
-| `restaurant_add/{tripId}` | RestaurantFormScreen | 4 |
-| `restaurant_detail/{id}` | RestaurantDetailScreen | 4 |
+Estructura del design-file: **secuencial por módulo** (`figma-app-flows.mdc`). JTBD en columna de trazabilidad.
+
+| Página Figma | Ruta | Pantalla | JTBD |
+|--------------|------|----------|------|
+| `01 · Home` | `trip_list` | TripListScreen | Shell |
+| `02 · Viajes` | `trip_create` | CreateTripScreen | Shell |
+| `03 · Detalle` | `trip_detail/{tripId}` | TripDetailScreen (tabs) | 1, 3, 4, 6 |
+| `04 · Wallet` | `wallet_add/{tripId}` | WalletFormScreen | 1 |
+| `04 · Wallet` | `wallet_import` | WalletFormScreen / ImportActivity | 1 |
+| `04 · Wallet` | `wallet_detail/{entryId}` | WalletDetailScreen | 1 |
+| `05 · Día` | `day_hub/{tripId}/{dayId}` | DayHubScreen (Plan \| Journal) | 3, 5 |
+| `05 · Día` | `journal_add/{dayId}` | JournalAddScreen | 5 |
+| `06 · Gastos` | `expense_add/{tripId}?dayId=` | ExpenseFormScreen | 6 |
+| `07 · Restaurantes` | `restaurant_add/{tripId}` | RestaurantFormScreen | 4 |
+| `07 · Restaurantes` | `restaurant_detail/{id}` | RestaurantDetailScreen | 4 |
 
 Decisiones de diseño: **Day hub** con sub-tabs Plan \| Diario; **Restaurantes** en tab del viaje.
 

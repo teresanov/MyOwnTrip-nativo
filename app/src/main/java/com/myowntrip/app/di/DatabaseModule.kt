@@ -6,6 +6,7 @@ import com.myowntrip.app.data.local.AppDatabase
 import com.myowntrip.app.data.local.MIGRATION_1_2
 import com.myowntrip.app.data.local.MIGRATION_2_3
 import com.myowntrip.app.data.local.MIGRATION_3_4
+import com.myowntrip.app.data.local.MIGRATION_4_5
 import com.myowntrip.app.data.local.dao.DayDao
 import com.myowntrip.app.data.local.dao.ExpenseDao
 import com.myowntrip.app.data.local.dao.ItineraryBlockDao
@@ -27,7 +28,7 @@ object DatabaseModule {
   @Singleton
   fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
     Room.databaseBuilder(context, AppDatabase::class.java, "myowntrip.db")
-      .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+      .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
       .build()
 
   @Provides fun provideTripDao(db: AppDatabase): TripDao = db.tripDao()

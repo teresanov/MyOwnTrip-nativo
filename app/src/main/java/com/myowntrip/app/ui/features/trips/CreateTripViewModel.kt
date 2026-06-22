@@ -25,6 +25,7 @@ data class CreateTripUiState(
   val dateError: String? = null,
   val savedTripId: String? = null,
   val coverPreviewModel: String? = null,
+  val isSaving: Boolean = false,
 )
 
 @HiltViewModel
@@ -59,10 +60,15 @@ class CreateTripViewModel @Inject constructor(
     _uiState.update { it.copy(endDate = value, dateError = null) }
 
   fun save(onSuccess: (String) -> Unit) {
-    if (!validate()) return
+    if (_uiState.value.isSaving || !validate()) return
     viewModelScope.launch {
-      val id = createTripFromState()
-      onSuccess(id)
+      _uiState.update { it.copy(isSaving = true) }
+      try {
+        val id = createTripFromState()
+        onSuccess(id)
+      } finally {
+        _uiState.update { it.copy(isSaving = false) }
+      }
     }
   }
 
@@ -72,10 +78,15 @@ class CreateTripViewModel @Inject constructor(
       onReady(existing)
       return
     }
-    if (!validate()) return
+    if (_uiState.value.isSaving || !validate()) return
     viewModelScope.launch {
-      val id = createTripFromState()
-      onReady(id)
+      _uiState.update { it.copy(isSaving = true) }
+      try {
+        val id = createTripFromState()
+        onReady(id)
+      } finally {
+        _uiState.update { it.copy(isSaving = false) }
+      }
     }
   }
 
@@ -106,8 +117,12 @@ class CreateTripViewModel @Inject constructor(
       startDate = state.startDate,
       endDate = state.endDate,
     )
-    destinationCoverRepository.attachCoverToTrip(id, destination)
     _uiState.update { it.copy(savedTripId = id) }
+    viewModelScope.launch {
+      runCatching {
+        destinationCoverRepository.attachCoverToTrip(id, destination)
+      }
+    }
     return id
   }
 

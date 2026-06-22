@@ -14,8 +14,14 @@ import androidx.room.PrimaryKey
       childColumns = ["dayId"],
       onDelete = ForeignKey.CASCADE,
     ),
+    ForeignKey(
+      entity = WalletEntryEntity::class,
+      parentColumns = ["id"],
+      childColumns = ["walletEntryId"],
+      onDelete = ForeignKey.SET_NULL,
+    ),
   ],
-  indices = [Index("dayId")],
+  indices = [Index("dayId"), Index("walletEntryId")],
 )
 data class ItineraryBlockEntity(
   @PrimaryKey val id: String,
@@ -23,4 +29,5 @@ data class ItineraryBlockEntity(
   val title: String,
   val timeLabel: String?,
   val sortOrder: Int,
+  val walletEntryId: String? = null,
 )

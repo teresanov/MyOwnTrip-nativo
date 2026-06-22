@@ -12,10 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +21,6 @@ import com.myowntrip.app.ui.components.MotStackedCard
 import com.myowntrip.app.ui.components.PreviewCityCovers
 import com.myowntrip.app.ui.components.TripHeroCard
 import com.myowntrip.app.ui.components.TripListCard
-import com.myowntrip.app.ui.components.WalletPromoCard
 import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.TripSortOrder
 import com.myowntrip.app.ui.features.trips.previewHomeTrips
@@ -49,7 +44,6 @@ data class HomeTripsContentState(
   val filterPhase: TripFilterPhase,
   val sortOrder: TripSortOrder,
   val filterMenuExpanded: Boolean,
-  val walletPromoDismissed: Boolean,
   val today: LocalDate,
   val userFirstName: String? = null,
   val searchPlaceholder: String = "Buscar viajes",
@@ -63,8 +57,8 @@ fun LazyListScope.homeTripsListItems(
   onFilterMenuExpandedChange: (Boolean) -> Unit,
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   onSortOrderChange: (TripSortOrder) -> Unit,
-  onWalletPromoDismiss: () -> Unit,
   onTripClick: (String) -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
 ) {
   val horizontal = Modifier.padding(horizontal = MOTSpacing.screenHorizontal)
@@ -94,6 +88,7 @@ fun LazyListScope.homeTripsListItems(
       sortOrder = state.sortOrder,
       onSortOrderChange = onSortOrderChange,
       filterMenuPresentation = filterMenuPresentation,
+      onClearAllData = onClearAllData,
       modifier = horizontal,
     )
   }
@@ -113,14 +108,6 @@ fun LazyListScope.homeTripsListItems(
         style = MotCardStyle.Outlined,
         headerText = "Ningún viaje coincide",
         subheadText = "Prueba otro término o cambia los filtros.",
-        modifier = horizontal,
-      )
-    }
-  }
-  item {
-    if (!state.walletPromoDismissed) {
-      WalletPromoCard(
-        onDismiss = onWalletPromoDismiss,
         modifier = horizontal,
       )
     }
@@ -159,8 +146,8 @@ fun HomeTripsScreen(
   onFilterMenuExpandedChange: (Boolean) -> Unit,
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   onSortOrderChange: (TripSortOrder) -> Unit,
-  onWalletPromoDismiss: () -> Unit,
   onTripClick: (String) -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
   modifier: Modifier = Modifier,
   contentPadding: PaddingValues = PaddingValues(bottom = MOTSpacing.screenContentBottomWithFab),
@@ -180,9 +167,9 @@ fun HomeTripsScreen(
         onFilterMenuExpandedChange = onFilterMenuExpandedChange,
         onFilterPhaseChange = onFilterPhaseChange,
         onSortOrderChange = onSortOrderChange,
-        onWalletPromoDismiss = onWalletPromoDismiss,
         onTripClick = onTripClick,
         filterMenuPresentation = filterMenuPresentation,
+        onClearAllData = onClearAllData,
       )
     }
     HomeFilterMenuOverlay(
@@ -192,6 +179,12 @@ fun HomeTripsScreen(
       sortOrder = state.sortOrder,
       onSortOrderChange = onSortOrderChange,
       onDismiss = { onFilterMenuExpandedChange(false) },
+      onClearAllData = onClearAllData?.let { clear ->
+        {
+          onFilterMenuExpandedChange(false)
+          clear()
+        }
+      },
     )
   }
 }
@@ -201,7 +194,6 @@ fun HomeTripsScreen(
 fun HomeCap2Preview() {
   val today = LocalDate.of(2026, 6, 17)
   val sorted = sortTripsForHome(previewHomeTrips(), today)
-  var walletDismissed by remember { mutableStateOf(false) }
   MyOwnTripTheme {
     HomeTripsScreen(
       state = HomeTripsContentState(
@@ -213,7 +205,6 @@ fun HomeCap2Preview() {
         filterPhase = TripFilterPhase.All,
         sortOrder = TripSortOrder.DateUpcoming,
         filterMenuExpanded = false,
-        walletPromoDismissed = walletDismissed,
         today = today,
         userFirstName = "Raquel",
         searchPlaceholder = "Barcelona",
@@ -224,7 +215,6 @@ fun HomeCap2Preview() {
       onFilterMenuExpandedChange = {},
       onFilterPhaseChange = {},
       onSortOrderChange = {},
-      onWalletPromoDismiss = { walletDismissed = true },
       onTripClick = {},
     )
   }
@@ -246,7 +236,6 @@ fun HomeCap3ClonePreview() {
         filterPhase = TripFilterPhase.All,
         sortOrder = TripSortOrder.DateUpcoming,
         filterMenuExpanded = true,
-        walletPromoDismissed = false,
         today = today,
         userFirstName = "Raquel",
         searchPlaceholder = "Barcelona",
@@ -257,7 +246,6 @@ fun HomeCap3ClonePreview() {
       onFilterMenuExpandedChange = {},
       onFilterPhaseChange = {},
       onSortOrderChange = {},
-      onWalletPromoDismiss = {},
       onTripClick = {},
       filterMenuPresentation = HomeFilterMenuPresentation.Overlay,
     )

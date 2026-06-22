@@ -15,23 +15,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.components.HomeEmptyStackedCard
-import com.myowntrip.app.ui.components.WalletPromoCard
 import com.myowntrip.app.ui.components.tripMetaLabel
 import com.myowntrip.app.ui.features.trips.HomeTripPhase
 import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.homePhase
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTSpacing
+import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.LocalDate
 import java.time.LocalTime
@@ -112,11 +108,10 @@ fun HomeHeroHeader(
 @Composable
 fun HomeEmptyState(
   onCreateTrip: () -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   userFirstName: String? = null,
   modifier: Modifier = Modifier,
 ) {
-  var walletDismissed by remember { mutableStateOf(false) }
-
   Column(
     modifier = modifier.verticalScroll(rememberScrollState()),
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
@@ -129,23 +124,27 @@ fun HomeEmptyState(
     HomeEmptyStackedCard(
       modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
     )
-    if (!walletDismissed) {
-      WalletPromoCard(
-        onDismiss = { walletDismissed = true },
-        modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-      )
-    }
     MOTButton(
       onClick = onCreateTrip,
       modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = MOTSpacing.screenHorizontal)
-        .padding(bottom = MOTSpacing.screenContentBottom),
+        .padding(horizontal = MOTSpacing.screenHorizontal),
     ) {
       Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
       Spacer(Modifier.width(MOTSpacing.componentSm))
       Text("Crear mi primer viaje")
     }
+    onClearAllData?.let { onClear ->
+      MOTTextButton(
+        onClick = onClear,
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = MOTSpacing.screenHorizontal)
+          .padding(bottom = MOTSpacing.screenContentBottom),
+      ) {
+        Text("Borrar todos los datos", color = MaterialTheme.colorScheme.error)
+      }
+    } ?: Spacer(Modifier.padding(bottom = MOTSpacing.screenContentBottom))
   }
 }
 

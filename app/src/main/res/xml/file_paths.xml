@@ -2,4 +2,6 @@
 <paths>
     <files-path name="journal_photos" path="journal/photos/" />
     <files-path name="journal_audio" path="journal/audio/" />
+    <files-path name="trip_wallet" path="trips/" />
+    <files-path name="trip_receipts" path="trips/" />
 </paths>

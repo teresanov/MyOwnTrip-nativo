@@ -62,7 +62,6 @@ document.getElementById("component-main").innerHTML = `
       <thead><tr><th>Frame</th><th>Composable</th></tr></thead>
       <tbody>
         <tr><td>205:816 vacío</td><td><code>HomeEmptyStackedCard</code></td></tr>
-        <tr><td>Wallet promo</td><td><code>WalletPromoCard</code></td></tr>
         <tr><td>Filtro vacío</td><td><code>MotStackedCard(Outlined, …)</code></td></tr>
       </tbody>
     </table>

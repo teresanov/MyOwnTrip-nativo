@@ -11,6 +11,7 @@ import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.domain.wallet.ParsedWalletDocument
 import com.myowntrip.app.domain.wallet.WalletDocumentParser
+import com.myowntrip.app.platform.documents.resolveFileFromSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,6 +26,8 @@ import javax.inject.Singleton
 class WalletRepository @Inject constructor(
   @ApplicationContext private val context: Context,
   private val walletEntryDao: WalletEntryDao,
+  private val tripRepository: TripRepository,
+  private val planPlacementService: PlanPlacementService,
 ) {
   fun observeByTrip(tripId: String): Flow<List<WalletEntry>> =
     walletEntryDao.observeByTrip(tripId).map { list -> list.map { it.toDomain() } }
@@ -93,4 +96,55 @@ class WalletRepository @Inject constructor(
     notes = notes,
     qrPayload = qrPayload,
   )
+
+  suspend fun importDebugWalletSamples(tripId: String): Int {
+    val assetDir = "samples/wallet"
+    val fileNames = context.assets.list(assetDir)?.filter { !it.startsWith('.') }.orEmpty()
+    if (fileNames.isEmpty()) return 0
+    var imported = 0
+    for (fileName in fileNames.sorted()) {
+      val assetPath = "$assetDir/$fileName"
+      val storedUri = copyAssetToTripStorage(tripId, assetPath, fileName)
+      val file = resolveFileFromSource(storedUri)
+      val mimeType = when (fileName.substringAfterLast('.').lowercase()) {
+        "pdf" -> "application/pdf"
+        "jpg", "jpeg" -> "image/jpeg"
+        "png" -> "image/png"
+        else -> null
+      }
+      val uri = file?.let { Uri.fromFile(it) }
+      val parsed = parseDocument(uri, mimeType, fileName)
+      val entry = buildEntry(
+        tripId = tripId,
+        type = parsed.type,
+        title = parsed.title,
+        date = parsed.date,
+        time = parsed.time,
+        fileUri = storedUri,
+        linkUrl = null,
+        notes = parsed.notes,
+        qrPayload = parsed.qrPayload,
+      )
+      saveEntry(entry)
+      val days = tripRepository.getDaysForTrip(tripId)
+      planPlacementService.apply(
+        entry = entry,
+        days = days,
+        enabled = true,
+        dayIdOverride = null,
+        timeOverride = null,
+      )
+      imported++
+    }
+    return imported
+  }
+
+  private fun copyAssetToTripStorage(tripId: String, assetPath: String, fileName: String): String {
+    val tripDir = File(context.filesDir, "trips/$tripId/wallet").apply { mkdirs() }
+    val dest = File(tripDir, "${UUID.randomUUID()}_$fileName")
+    context.assets.open(assetPath).use { input ->
+      dest.outputStream().use { output -> input.copyTo(output) }
+    }
+    return dest.toURI().toString()
+  }
 }

@@ -21,7 +21,7 @@
     {
       "id": "elevated-text-only",
       "label": "Elevated · Text only",
-      "usage": "Wallet promo, avisos descartables."
+      "usage": "Avisos descartables o mensajes destacados (si el producto los necesita)."
     },
     {
       "id": "outlined-text-only",
@@ -37,8 +37,8 @@
     { "name": "Style", "type": "VARIANT", "example": "Outlined | Elevated" }
   ],
   "tokens": [
-    "onSurface / onSurfaceVariant (texto default)",
-    "tertiaryContainer + onTertiaryContainer (Wallet promo)",
+    "surfaceContainerLow + onSurface / onSurfaceVariant (Elevated · Text only)",
+    "onSurface / onSurfaceVariant (Outlined · Media & text)",
     "surfaceContainerHigh (avatar)",
     "shapes.medium"
   ],
@@ -50,15 +50,19 @@
   "donts": [
     "No Filled (CUT).",
     "No OutlinedCard ad hoc en pantallas si encaja un layout de este set.",
-    "No icono ticket en Wallet — patrón Text only + dismiss."
+    "No icono decorativo arbitrario en Text only — copy + dismiss si aplica."
   ],
   "a11y": [
     "Dismiss con contentDescription.",
     "Imagen media con alt cuando es informativa.",
     "Avatar decorativo si el header ya se anuncia."
   ],
-  "compose": "MotStackedCard(style, headerText, subheadText, …)\nWalletPromoCard(onDismiss)\nHomeEmptyStackedCard()",
+  "compose": "MotStackedCard(style, headerText, subheadText, …)\nHomeEmptyStackedCard()",
   "changelog": [
+    {
+      "date": "2026-06-19",
+      "note": "Wallet promo retirada de Home; Elevated · Text only queda como layout genérico vía MotStackedCard."
+    },
     {
       "date": "2026-06-17",
       "note": "Binding Figma → MotStackedCard; fichas Home cap 1 y Wallet."

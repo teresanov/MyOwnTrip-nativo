@@ -88,10 +88,33 @@ Scripts Bridge: `scripts/figma-brand-bind-vars-part*.js`, `figma-brand-text-styl
 | Capa | Drawable | Contenido |
 |------|----------|-----------|
 | Background | `ic_launcher_background.xml` | Papel `#F4F0E8` |
-| Foreground | `ic_launcher_foreground.xml` | Marco 96×96 + M (contorno Figma) + cinta ocre — ref. [61084:30347](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61084-30347) |
+| Foreground | `ic_launcher_foreground.xml` | **C1 Circle Ø66** @ (21,21) — ref. Figma `61217:116` |
 | Monochrome | `ic_launcher_monochrome.xml` | Marco + M + cinta (themed Android 13+) |
 
 Zona de respeto: altura de la **M** alrededor del lockup.
+
+### Halo verde en el launcher (no es marca)
+
+**No es normal.** El anillo verde (~`#50E091` / verde plantilla Android Studio) aparece cuando:
+
+1. **WebP legacy** en `mipmap-*dpi/ic_launcher.webp` — icono por defecto de Android (fondo verde + robot blanco). Algunos launchers (p. ej. Samsung) lo mezclan con el adaptive o lo cachean.
+2. **Foreground con zonas transparentes** — el C1 Circle Ø66 no cubre todo el canvas 108; si la capa background no aplica bien, se ve el verde de abajo.
+3. **Caché del launcher** tras cambiar drawables.
+
+**Fix en repo:** `minSdk 26` → solo hace falta `mipmap-anydpi-v26/ic_launcher.xml` + drawables vector. Eliminar WebP legacy. Foreground incluye relleno papel full-bleed (`#F4F0E8`) bajo el C1 Circle.
+
+**En dispositivo:** desinstalar la app → reinstalar; o borrar caché del launcher.
+
+### Splash (Compose) vs launcher
+
+| | Splash | Launcher |
+|---|--------|----------|
+| Ruta | `Routes.SPLASH` → `TripListScreen` | `AndroidManifest` `@mipmap/ic_launcher` |
+| Código | `ui/splash/SplashScreen.kt` | `ic_launcher_foreground.xml` + background |
+| Forma icono | Marco cuadrado redondeado (morph animado) | **C1 Circle Ø66** (adaptive) |
+| Origen | Integrado desde `deliverables/splash/` (Claude) | Figma `61217:116` |
+
+El splash **no** usa los drawables del launcher; son sistemas independientes.
 
 ## Escala
 
@@ -130,6 +153,17 @@ Página **Brand** (librería aparte del DS M3):
 |--------|-----------|
 | Wordmark W4 | positivo · oscuro · monocromo |
 | MOT | claro · oscuro |
-| Icono C1 | adaptive (3 capas) |
+| Icono C1 | cuadrado 96 (marca) · **Circle 66** (Android adaptive) |
 
-Montaje Figma: [App icon C1 · 61084:30344](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61084-30344). Android adaptive: artefacto Figma **96×96** escalado **0,6875** (→ **66dp** safe zone) desde centro **54,54**; marco **solo trazo** (papel en `ic_launcher_background`); sin relleno en foreground para no leerse como círculo bajo máscara OEM.
+Montaje Figma: [App icon C1 · 61084:30344](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61084-30344) · [Android App Icon · 61217:120](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61217-120).
+
+**Dos formas, dos contextos:**
+
+| Forma | Tamaño | Uso |
+|-------|--------|-----|
+| **C1 cuadrado** | 96×96, radius 4 | Marca editorial, store, marketing |
+| **C1 Circle** | Ø66 en canvas 108 | Adaptive Android (foreground) |
+
+La safe zone del adaptive icon es un **círculo Ø66dp**, no un cuadrado. Un cuaderno cuadrado siempre se recorta en launchers circulares (Pixel, etc.); en **Samsung squircle** cabe más área. Por eso el export Android usa **círculo Ø66** centrado @ (21,21) en 108, con M y cinta escaladas desde el master 96.
+
+Componente Figma: `App icon C1 · Circle 66` · previews con máscara Circle y Squircle en fila **Row — Android App Icon** (sin diagrama de capas; export directo background + foreground).

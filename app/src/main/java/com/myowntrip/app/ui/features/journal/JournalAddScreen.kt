@@ -2,6 +2,9 @@ package com.myowntrip.app.ui.features.journal
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +18,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -81,6 +86,13 @@ fun JournalAddScreen(
       viewModel.onPermissionDenied(JournalPermission.Location)
     },
   )
+  val pickGalleryImage = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.GetContent(),
+  ) { uri: Uri? ->
+    if (uri != null) {
+      viewModel.importPhotoFromUri(uri)
+    }
+  }
 
   LaunchedEffect(state.infoMessage, state.permissionMessage) {
     val message = state.permissionMessage ?: state.infoMessage
@@ -99,13 +111,46 @@ fun JournalAddScreen(
     return
   }
 
+  if (state.isRecording) {
+    JournalRecordingDialog(
+      recordingLevels = state.recordingLevels,
+      onStop = viewModel::stopRecording,
+    )
+  }
+
+  if (state.isLoading) {
+    Scaffold(
+      topBar = {
+        TopAppBar(
+          title = { Text(if (viewModel.isEditMode) "Editar nota" else "Nueva nota") },
+          navigationIcon = {
+            MOTIconButton(onClick = onBack) {
+              Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            }
+          },
+        )
+      },
+    ) { padding ->
+      Column(
+        modifier = Modifier
+          .padding(padding)
+          .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+      ) {
+        CircularProgressIndicator()
+      }
+    }
+    return
+  }
+
   Scaffold(
     topBar = {
       TopAppBar(
-        title = { Text("New note") },
+        title = { Text(if (viewModel.isEditMode) "Editar nota" else "Nueva nota") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -122,31 +167,57 @@ fun JournalAddScreen(
       OutlinedTextField(
         value = state.text,
         onValueChange = viewModel::onTextChange,
-        label = { Text("What happened today?") },
+        label = { Text("¿Qué pasó hoy?") },
         isError = state.textError != null,
         supportingText = state.textError?.let { { Text(it) } },
         modifier = Modifier.fillMaxWidth(),
       )
 
       Text(
-        "Attach from your phone",
+        text = "Adjuntar desde el móvil",
         style = MaterialTheme.typography.titleSmall,
       )
+
+      if (state.photoPath == null) {
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalAlignment = Alignment.CenterVertically,
+        ) {
+          FilterChip(
+            selected = false,
+            onClick = requestCamera,
+            label = { Text("Cámara") },
+            leadingIcon = {
+              Icon(Icons.Default.PhotoCamera, contentDescription = null)
+            },
+            modifier = Modifier.semantics { contentDescription = "Hacer foto con la cámara" },
+          )
+          FilterChip(
+            selected = false,
+            onClick = { pickGalleryImage.launch("image/*") },
+            label = { Text("Galería") },
+            leadingIcon = {
+              Icon(Icons.Default.PhotoLibrary, contentDescription = null)
+            },
+            modifier = Modifier.semantics { contentDescription = "Elegir foto de la galería" },
+          )
+        }
+      } else {
+        FilterChip(
+          selected = true,
+          onClick = viewModel::removePhoto,
+          label = { Text("Quitar foto") },
+          leadingIcon = {
+            Icon(Icons.Default.PhotoCamera, contentDescription = null)
+          },
+          modifier = Modifier.semantics { contentDescription = "Quitar foto adjunta" },
+        )
+      }
 
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        FilterChip(
-          selected = state.photoPath != null,
-          onClick = {
-            if (state.photoPath == null) requestCamera() else viewModel.removePhoto()
-          },
-          label = { Text(if (state.photoPath != null) "Remove photo" else "Photo") },
-          leadingIcon = {
-            Icon(Icons.Default.PhotoCamera, contentDescription = null)
-          },
-        )
         FilterChip(
           selected = state.isRecording || state.audioPath != null,
           onClick = {
@@ -159,9 +230,9 @@ fun JournalAddScreen(
           label = {
             Text(
               when {
-                state.isRecording -> "Stop"
-                state.audioPath != null -> "Remove audio"
-                else -> "Voice"
+                state.isRecording -> "Detener"
+                state.audioPath != null -> "Quitar audio"
+                else -> "Voz"
               },
             )
           },
@@ -171,13 +242,20 @@ fun JournalAddScreen(
               contentDescription = null,
             )
           },
+          modifier = Modifier.semantics {
+            contentDescription = when {
+              state.isRecording -> "Detener grabación de voz"
+              state.audioPath != null -> "Quitar nota de voz"
+              else -> "Grabar nota de voz"
+            }
+          },
         )
       }
 
       state.photoPath?.let { path ->
         AsyncImage(
           model = File(path),
-          contentDescription = "Attached photo",
+          contentDescription = "Foto adjunta",
           contentScale = ContentScale.Crop,
           modifier = Modifier
             .fillMaxWidth()
@@ -186,9 +264,9 @@ fun JournalAddScreen(
         )
       }
 
-      if (state.audioPath != null) {
+      if (state.audioPath != null && !state.isRecording) {
         Text(
-          "Voice note attached",
+          text = "Nota de voz adjunta",
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -206,7 +284,7 @@ fun JournalAddScreen(
             tint = MaterialTheme.colorScheme.primary,
           )
           Text(
-            "Save location",
+            text = "Guardar ubicación",
             modifier = Modifier.padding(start = 8.dp),
             style = MaterialTheme.typography.bodyMedium,
           )
@@ -221,7 +299,7 @@ fun JournalAddScreen(
             }
           },
           modifier = Modifier.semantics {
-            contentDescription = "Attach location when saving note"
+            contentDescription = "Adjuntar ubicación al guardar la nota"
           },
         )
       }
@@ -230,10 +308,10 @@ fun JournalAddScreen(
         onClick = {
           viewModel.saveNote(hasLocationPermission = hasLocationPermission, onSuccess = onSaved)
         },
-        enabled = !state.isSaving,
+        enabled = !state.isSaving && !state.isRecording,
         modifier = Modifier.fillMaxWidth(),
       ) {
-        Text(if (state.isSaving) "Saving…" else "Save note")
+        Text(if (state.isSaving) "Guardando…" else if (viewModel.isEditMode) "Guardar cambios" else "Guardar nota")
       }
     }
   }

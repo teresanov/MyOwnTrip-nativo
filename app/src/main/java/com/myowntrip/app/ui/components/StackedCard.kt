@@ -202,27 +202,19 @@ fun MotStackedCard(
   }
 }
 
-/** Wallet promo — Stacked · Elevated · Text only (`205:816`, `205:1018`). */
+/** Stacked · Elevated · Text only — ejemplo de layout sin dismiss. */
+@Preview(name = "Stacked · Elevated · Text only")
 @Composable
-fun WalletPromoCard(
-  onDismiss: () -> Unit,
-  modifier: Modifier = Modifier,
-) {
-  val scheme = MaterialTheme.colorScheme
-  MotStackedCard(
-    style = MotCardStyle.Elevated,
-    headerText = "Todo en Wallet",
-    subheadText = "Documentos y reservas",
-    supportingText = "Vuelos, hoteles y PDFs en un solo sitio, incluso sin red.",
-    modifier = modifier,
-    onDismiss = onDismiss,
-    dismissContentDescription = "Cerrar aviso de Wallet",
-    colors = CardDefaults.elevatedCardColors(containerColor = scheme.tertiaryContainer),
-    headerColor = scheme.onTertiaryContainer,
-    subheadColor = scheme.onTertiaryContainer,
-    supportingColor = scheme.onTertiaryContainer,
-    dismissIconColor = scheme.onTertiaryContainer,
-  )
+private fun MotStackedCardTextPreview() {
+  MyOwnTripTheme {
+    MotStackedCard(
+      style = MotCardStyle.Elevated,
+      headerText = "Título de ejemplo",
+      subheadText = "Subtítulo",
+      supportingText = "Texto de apoyo en una card elevada solo texto.",
+      modifier = Modifier.padding(MOTSpacing.screenHorizontal),
+    )
+  }
 }
 
 /** Home vacío — Stacked · Outlined · Media & text (`205:816`).
@@ -253,10 +245,3 @@ private fun MotStackedCardMediaPreview() {
   }
 }
 
-@Preview(name = "Stacked · Elevated · Text only")
-@Composable
-private fun MotStackedCardTextPreview() {
-  MyOwnTripTheme {
-    WalletPromoCard(onDismiss = {}, Modifier.padding(MOTSpacing.screenHorizontal))
-  }
-}

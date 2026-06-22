@@ -25,10 +25,11 @@ flowchart LR
 ## 1. MyOwnTrip_design-file — diseño de la app
 
 - **URL:** [MyOwnTrip_design-file](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=0-1)
-- **Qué es:** archivo de **trabajo de producto** — pantallas hi-fi por JTBD (páginas `00`–`06`), exploraciones y mockups finales.
-- **Estructura (jun 2026):** una página por JTBD + shell; ver `.cursor/rules/figma-wireframes.mdc`.
-- **Legacy:** `_archive · Wireframes legacy` (mid-fi inicial; no ampliar).
+- **Qué es:** archivo de **trabajo de producto** — pantallas hi-fi por módulo de app (páginas `00`–`08`), exploraciones y mockups finales.
+- **Estructura (jun 2026):** mapa secuencial por área de la app; ver `.cursor/rules/figma-app-flows.mdc`.
+- **Legacy:** `_archive · Exploraciones legacy` (exploración mid-fi inicial; no ampliar).
 - **Fuente de verdad** para diseñadores y para **IA** cuando se diseña vía MCP: aquí se componen las pantallas, no en el DS.
+- **Flujo:** Compose (implementación + previews) → exportar a design-file con instancias DS → ajustes en Figma → devolver a Compose. Ver `.cursor/rules/figma-app-flows.mdc`.
 - **Consume** instancias de las dos librerías (DS M3 + Android UI Kit cuando aplique).
 - **No** es un catálogo de componentes: no duplicar sets del DS salvo excepción documentada.
 

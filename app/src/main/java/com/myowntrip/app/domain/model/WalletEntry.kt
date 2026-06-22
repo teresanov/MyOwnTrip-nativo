@@ -13,6 +13,6 @@ data class WalletEntry(
   val pdfUri: String? = null,
   val linkUrl: String? = null,
   val notes: String? = null,
-  /** Payload del QR de embarque (BCBP u otro), para mostrar offline en puerta. */
+  /** Payload del QR extraído o escaneado (entrada, billete, etc.) para mostrar offline en acceso. */
   val qrPayload: String? = null,
 )

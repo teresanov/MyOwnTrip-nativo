@@ -85,7 +85,6 @@ fun HomeFlowReviewScreen(
           filterPhase = TripFilterPhase.All,
           sortOrder = TripSortOrder.DateUpcoming,
           filterMenuExpanded = false,
-          walletPromoDismissed = false,
           today = today,
           userFirstName = "Raquel",
           searchPlaceholder = "Barcelona",
@@ -96,7 +95,6 @@ fun HomeFlowReviewScreen(
         onFilterMenuExpandedChange = {},
         onFilterPhaseChange = {},
         onSortOrderChange = {},
-        onWalletPromoDismiss = {},
         onTripClick = {},
         modifier = Modifier
           .fillMaxWidth()
@@ -116,7 +114,6 @@ fun HomeFlowReviewScreen(
           filterPhase = TripFilterPhase.All,
           sortOrder = TripSortOrder.DateUpcoming,
           filterMenuExpanded = true,
-          walletPromoDismissed = false,
           today = today,
           userFirstName = "Raquel",
           searchPlaceholder = "Barcelona",
@@ -127,7 +124,6 @@ fun HomeFlowReviewScreen(
         onFilterMenuExpandedChange = {},
         onFilterPhaseChange = {},
         onSortOrderChange = {},
-        onWalletPromoDismiss = {},
         onTripClick = {},
         filterMenuPresentation = HomeFilterMenuPresentation.Overlay,
         modifier = Modifier

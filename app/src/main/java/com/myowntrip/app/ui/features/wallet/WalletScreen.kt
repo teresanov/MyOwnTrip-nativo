@@ -51,12 +51,14 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.myowntrip.app.BuildConfig
 import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
+import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import com.myowntrip.app.ui.theme.rememberMOTButtonShape
 import java.time.LocalDate
@@ -74,6 +76,7 @@ fun WalletScreen(
   entries: List<WalletEntry>,
   onAddEntry: () -> Unit,
   onImportEntry: () -> Unit = onAddEntry,
+  onLoadDebugSamples: (() -> Unit)? = null,
   onEntryClick: (String) -> Unit,
   onDeleteEntry: ((String) -> Unit)? = null,
   embeddedInTrip: Boolean = false,
@@ -96,6 +99,7 @@ fun WalletScreen(
     WalletEmptyState(
       onAddEntry = onAddEntry,
       onImportEntry = onImportEntry,
+      onLoadDebugSamples = onLoadDebugSamples,
       modifier = modifier.fillMaxSize(),
     )
     return
@@ -310,7 +314,7 @@ private fun WalletHighlightCard(
       .semantics(mergeDescendants = true) {
         contentDescription = buildString {
           append("$label, ${entry.title}")
-          if (hasQr) append(", QR de embarque guardado")
+          if (hasQr) append(", código QR guardado")
         }
       }
       .clickable(onClick = onClick),
@@ -377,7 +381,7 @@ private fun WalletDocumentRow(
       .semantics {
         contentDescription = buildString {
           append("$label, ${entry.title}")
-          if (hasQr) append(", QR de embarque guardado")
+          if (hasQr) append(", código QR guardado")
         }
       },
     headlineContent = {
@@ -439,7 +443,7 @@ private fun WalletDocumentRow(
 private fun WalletQrListIcon(modifier: Modifier = Modifier) {
   Icon(
     imageVector = Icons.Default.QrCode,
-    contentDescription = "QR de embarque guardado",
+    contentDescription = "Código QR guardado",
     modifier = modifier.size(24.dp),
     tint = MaterialTheme.colorScheme.tertiary,
   )
@@ -462,6 +466,7 @@ private fun EntryTypeIcon(
 private fun WalletEmptyState(
   onAddEntry: () -> Unit,
   onImportEntry: () -> Unit,
+  onLoadDebugSamples: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
 ) {
   Column(
@@ -490,6 +495,14 @@ private fun WalletEmptyState(
       onImportEntry = onImportEntry,
       modifier = Modifier.fillMaxWidth(),
     )
+    if (BuildConfig.DEBUG && onLoadDebugSamples != null) {
+      MOTTextButton(
+        onClick = onLoadDebugSamples,
+        modifier = Modifier.padding(top = MOTSpacing.layoutMd),
+      ) {
+        Text("Cargar samples de prueba")
+      }
+    }
   }
 }
 
@@ -516,78 +529,35 @@ private fun entryScheduleLabel(entry: WalletEntry): String {
   }
 }
 
-@Preview(name = "Wallet — con documentos", showBackground = true, widthDp = 360, heightDp = 800)
+@Preview(name = "cap 1 · Wallet · con documentos", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun WalletScreenPreview() {
   MyOwnTripTheme {
     Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
       WalletScreen(
-        trip = previewTrip(),
-        entries = previewWalletEntries(),
+        trip = previewWalletTrip,
+        entries = previewWalletEntries,
         onAddEntry = {},
         onEntryClick = {},
+        embeddedInTrip = true,
       )
     }
   }
 }
 
-@Preview(name = "Wallet — vacío", showBackground = true, widthDp = 360, heightDp = 800)
+@Preview(name = "cap 2 · Wallet · vacío", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun WalletScreenEmptyPreview() {
   MyOwnTripTheme {
     Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
       WalletScreen(
-        trip = previewTrip(),
+        trip = previewWalletTrip,
         entries = emptyList(),
         onAddEntry = {},
         onImportEntry = {},
         onEntryClick = {},
+        embeddedInTrip = true,
       )
     }
   }
 }
-
-private fun previewTrip() = Trip(
-  id = "trip-1",
-  name = "Barcelona fin de semana",
-  destination = "Barcelona",
-  startDate = LocalDate.of(2026, 6, 14),
-  endDate = LocalDate.of(2026, 6, 16),
-  createdAt = 0L,
-)
-
-private fun previewWalletEntries() = listOf(
-  WalletEntry(
-    id = "1",
-    tripId = "trip-1",
-    type = EntryType.FLIGHT,
-    title = "IB 3254 · Madrid → Barcelona",
-    date = LocalDate.of(2026, 6, 14),
-    time = LocalTime.of(9, 15),
-    qrPayload = "M1DEMO/PAX EIB3254 MADBCNIB 3254 314Y014A0001 349>5180  5140BIB              2A825513825513 0000",
-  ),
-  WalletEntry(
-    id = "2",
-    tripId = "trip-1",
-    type = EntryType.HOTEL,
-    title = "Hotel Casa Bonay",
-    date = LocalDate.of(2026, 6, 14),
-    notes = "Check-in 15:00",
-  ),
-  WalletEntry(
-    id = "3",
-    tripId = "trip-1",
-    type = EntryType.TRANSPORT,
-    title = "AVE 03142",
-    date = LocalDate.of(2026, 6, 16),
-    time = LocalTime.of(18, 30),
-  ),
-  WalletEntry(
-    id = "4",
-    tripId = "trip-1",
-    type = EntryType.ACTIVITY,
-    title = "Entrada Sagrada Familia",
-    date = LocalDate.of(2026, 6, 15),
-    time = LocalTime.of(11, 0),
-  ),
-)

@@ -6,4 +6,5 @@ data class ItineraryBlock(
   val title: String,
   val timeLabel: String? = null,
   val sortOrder: Int,
+  val walletEntryId: String? = null,
 )

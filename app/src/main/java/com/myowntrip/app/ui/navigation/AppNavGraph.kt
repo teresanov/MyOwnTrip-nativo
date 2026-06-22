@@ -8,8 +8,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.myowntrip.app.ui.features.dayhub.DayHubScreen
+import com.myowntrip.app.ui.features.documents.DocumentViewerScreen
 import com.myowntrip.app.ui.features.expenses.ExpenseFormScreen
 import com.myowntrip.app.ui.features.journal.JournalAddScreen
+import com.myowntrip.app.ui.features.journal.JournalDetailScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantDetailScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantFormScreen
 import com.myowntrip.app.ui.features.trips.CreateTripScreen
@@ -17,22 +19,45 @@ import com.myowntrip.app.ui.features.trips.TripDetailScreen
 import com.myowntrip.app.ui.features.trips.HomeFlowReviewScreen
 import com.myowntrip.app.ui.features.trips.TripListScreen
 import com.myowntrip.app.ui.features.wallet.WalletDetailScreen
+import com.myowntrip.app.ui.features.wallet.WalletFlowReviewScreen
 import com.myowntrip.app.ui.features.wallet.WalletFormScreen
+import com.myowntrip.app.ui.splash.SplashScreen
 
 @Composable
 fun AppNavGraph(
   navController: NavHostController = rememberNavController(),
-  startDestination: String = Routes.TRIP_LIST,
+  startDestination: String = Routes.SPLASH,
 ) {
   NavHost(navController = navController, startDestination = startDestination) {
+    composable(Routes.SPLASH) {
+      SplashScreen(
+        onDone = {
+          navController.navigate(Routes.TRIP_LIST) {
+            popUpTo(Routes.SPLASH) { inclusive = true }
+          }
+        },
+      )
+    }
     composable(Routes.TRIP_LIST) {
       TripListScreen(
         onCreateTrip = { navController.navigate(Routes.TRIP_CREATE) },
         onTripClick = { navController.navigate(Routes.tripDetail(it)) },
+        onImportDocument = { tripId ->
+          navController.navigate(Routes.walletAdd(tripId, pickAttachment = true))
+        },
+        onManualDocument = { tripId ->
+          navController.navigate(Routes.walletAdd(tripId, pickAttachment = false))
+        },
+        onAddJournal = { dayId, tripId ->
+          navController.navigate(Routes.journalAdd(dayId, tripId))
+        },
       )
     }
     composable(Routes.HOME_FLOW_REVIEW) {
       HomeFlowReviewScreen(onBack = { navController.popBackStack() })
+    }
+    composable(Routes.WALLET_FLOW_REVIEW) {
+      WalletFlowReviewScreen(onBack = { navController.popBackStack() })
     }
     composable(Routes.TRIP_CREATE) {
       CreateTripScreen(
@@ -51,7 +76,13 @@ fun AppNavGraph(
     }
     composable(
       route = Routes.TRIP_DETAIL,
-      arguments = listOf(navArgument("tripId") { type = NavType.StringType }),
+      arguments = listOf(
+        navArgument("tripId") { type = NavType.StringType },
+        navArgument("tab") {
+          type = NavType.StringType
+          defaultValue = "wallet"
+        },
+      ),
     ) {
       val tripId = it.arguments?.getString("tripId")!!
       TripDetailScreen(
@@ -59,12 +90,21 @@ fun AppNavGraph(
         onBack = { navController.popBackStack() },
         onAddWallet = { navController.navigate(Routes.walletAdd(tripId)) },
         onImportWallet = { navController.navigate(Routes.walletAdd(tripId, pickAttachment = true)) },
+        onAddJournal = { dayId ->
+          navController.navigate(Routes.journalAdd(dayId, tripId))
+        },
         onAddExpense = { navController.navigate(Routes.expenseAdd(tripId)) },
         onAddRestaurant = { navController.navigate(Routes.restaurantAdd(tripId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
         onDayClick = { dayId -> navController.navigate(Routes.dayHub(tripId, dayId)) },
+        onJournalNoteClick = { noteId ->
+          navController.navigate(Routes.journalDetail(noteId))
+        },
         onRestaurantClick = { restaurantId ->
           navController.navigate(Routes.restaurantDetail(restaurantId))
+        },
+        onViewDocument = { source, title ->
+          navController.navigate(Routes.documentViewer(source, title))
         },
       )
     }
@@ -84,13 +124,27 @@ fun AppNavGraph(
         onCreateTrip = {
           navController.navigate(Routes.TRIP_CREATE)
         },
+        onViewDocument = { source, title ->
+          navController.navigate(Routes.documentViewer(source, title))
+        },
       )
     }
-    composable(Routes.WALLET_IMPORT) {
+    composable(
+      route = Routes.WALLET_IMPORT,
+      arguments = listOf(
+        navArgument("pickAttachment") {
+          type = NavType.BoolType
+          defaultValue = false
+        },
+      ),
+    ) {
       WalletFormScreen(
         onBack = { navController.navigate(Routes.TRIP_LIST) { popUpTo(Routes.TRIP_LIST) } },
         onSaved = { navController.navigate(Routes.TRIP_LIST) { popUpTo(Routes.TRIP_LIST) } },
         onCreateTrip = { navController.navigate(Routes.TRIP_CREATE) },
+        onViewDocument = { source, title ->
+          navController.navigate(Routes.documentViewer(source, title))
+        },
       )
     }
     composable(
@@ -100,6 +154,9 @@ fun AppNavGraph(
       WalletDetailScreen(
         onBack = { navController.popBackStack() },
         onDeleted = { navController.popBackStack() },
+        onViewDocument = { source, title ->
+          navController.navigate(Routes.documentViewer(source, title))
+        },
       )
     }
     composable(
@@ -116,6 +173,27 @@ fun AppNavGraph(
       ExpenseFormScreen(
         onBack = { navController.popBackStack() },
         onSaved = { navController.popBackStack() },
+        onViewDocument = { source, title ->
+          navController.navigate(Routes.documentViewer(source, title))
+        },
+      )
+    }
+    composable(
+      route = Routes.DOCUMENT_VIEWER,
+      arguments = listOf(
+        navArgument("source") { type = NavType.StringType },
+        navArgument("title") {
+          type = NavType.StringType
+          defaultValue = ""
+        },
+      ),
+    ) {
+      val source = it.arguments?.getString("source").orEmpty()
+      val title = it.arguments?.getString("title").orEmpty().ifBlank { null }
+      DocumentViewerScreen(
+        source = source,
+        title = title,
+        onBack = { navController.popBackStack() },
       )
     }
     composable(
@@ -130,7 +208,9 @@ fun AppNavGraph(
       DayHubScreen(
         onBack = { navController.popBackStack() },
         onAddNote = { navController.navigate(Routes.journalAdd(dayId)) },
-        onAddExpense = { navController.navigate(Routes.expenseAdd(tripId, dayId)) },
+        onNoteClick = { noteId -> navController.navigate(Routes.journalDetail(noteId)) },
+        onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
+        onAddWalletDocument = { navController.navigate(Routes.walletAdd(tripId)) },
       )
     }
     composable(
@@ -145,12 +225,55 @@ fun AppNavGraph(
       DayHubScreen(
         onBack = { navController.popBackStack() },
         onAddNote = { navController.navigate(Routes.journalAdd(dayId)) },
-        onAddExpense = { navController.navigate(Routes.expenseAdd(tripId, dayId)) },
+        onNoteClick = { noteId -> navController.navigate(Routes.journalDetail(noteId)) },
+        onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
+        onAddWalletDocument = { navController.navigate(Routes.walletAdd(tripId)) },
       )
     }
     composable(
       route = Routes.JOURNAL_ADD,
-      arguments = listOf(navArgument("dayId") { type = NavType.StringType }),
+      arguments = listOf(
+        navArgument("dayId") { type = NavType.StringType },
+        navArgument("tripId") {
+          type = NavType.StringType
+          nullable = true
+          defaultValue = null
+        },
+      ),
+    ) {
+      val returnTripId = it.arguments?.getString("tripId")
+      JournalAddScreen(
+        onBack = { navController.popBackStack() },
+        onSaved = {
+          navController.popBackStack()
+          if (!returnTripId.isNullOrBlank()) {
+            navController.navigate(Routes.tripDetailJournal(returnTripId)) {
+              launchSingleTop = true
+            }
+          }
+        },
+      )
+    }
+    composable(
+      route = Routes.JOURNAL_DETAIL,
+      arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
+    ) {
+      JournalDetailScreen(
+        onBack = { navController.popBackStack() },
+        onEdit = { noteId -> navController.navigate(Routes.journalEdit(noteId)) },
+        onDeleted = { navController.popBackStack() },
+      )
+    }
+    composable(
+      route = Routes.JOURNAL_EDIT,
+      arguments = listOf(
+        navArgument("noteId") { type = NavType.StringType },
+        navArgument("tripId") {
+          type = NavType.StringType
+          nullable = true
+          defaultValue = null
+        },
+      ),
     ) {
       JournalAddScreen(
         onBack = { navController.popBackStack() },

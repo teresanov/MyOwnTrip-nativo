@@ -48,4 +48,11 @@ class AudioNoteRecorder @Inject constructor() {
       outputFile = null
     }
   }
+
+  fun readMaxAmplitude(): Int =
+    try {
+      recorder?.maxAmplitude ?: 0
+    } catch (_: Exception) {
+      0
+    }
 }

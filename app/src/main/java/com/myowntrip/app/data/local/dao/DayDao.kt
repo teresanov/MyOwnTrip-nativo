@@ -12,8 +12,14 @@ interface DayDao {
   @Query("SELECT * FROM days WHERE tripId = :tripId ORDER BY dayNumber")
   fun observeByTrip(tripId: String): Flow<List<DayEntity>>
 
+  @Query("SELECT * FROM days WHERE tripId = :tripId ORDER BY dayNumber")
+  suspend fun getByTrip(tripId: String): List<DayEntity>
+
   @Query("SELECT * FROM days WHERE id = :id")
   fun observeById(id: String): Flow<DayEntity?>
+
+  @Query("SELECT * FROM days WHERE id = :id")
+  suspend fun getById(id: String): DayEntity?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertAll(days: List<DayEntity>)

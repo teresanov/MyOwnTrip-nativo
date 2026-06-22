@@ -72,6 +72,7 @@ fun HomeSearchBar(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
 ) {
@@ -113,6 +114,12 @@ fun HomeSearchBar(
         onFilterPhaseChange = onFilterPhaseChange,
         sortOrder = sortOrder,
         onSortOrderChange = onSortOrderChange,
+        onClearAllData = onClearAllData?.let { clear ->
+          {
+            onFilterMenuExpandedChange(false)
+            clear()
+          }
+        },
         modifier = Modifier.align(Alignment.TopEnd),
       )
     }
@@ -208,6 +215,7 @@ fun HomeFilterDropdownMenu(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
 ) {
   DropdownMenu(
@@ -223,6 +231,7 @@ fun HomeFilterDropdownMenu(
       onFilterPhaseChange = onFilterPhaseChange,
       sortOrder = sortOrder,
       onSortOrderChange = onSortOrderChange,
+      onClearAllData = onClearAllData,
       modifier = Modifier.width(HomeFilterMenuSpec.Width),
     )
   }
@@ -235,6 +244,7 @@ fun HomeFilterMenuPanel(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
 ) {
   Surface(
@@ -251,6 +261,7 @@ fun HomeFilterMenuPanel(
       onFilterPhaseChange = onFilterPhaseChange,
       sortOrder = sortOrder,
       onSortOrderChange = onSortOrderChange,
+      onClearAllData = onClearAllData,
     )
   }
 }
@@ -263,6 +274,7 @@ fun HomeFilterMenuOverlay(
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
   onDismiss: () -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
   overlayTop: androidx.compose.ui.unit.Dp = HomeFilterMenuSpec.OverlayTop,
 ) {
@@ -284,6 +296,7 @@ fun HomeFilterMenuOverlay(
       onFilterPhaseChange = onFilterPhaseChange,
       sortOrder = sortOrder,
       onSortOrderChange = onSortOrderChange,
+      onClearAllData = onClearAllData,
       modifier = Modifier
         .align(Alignment.TopCenter)
         .padding(top = overlayTop)
@@ -298,6 +311,7 @@ internal fun HomeFilterMenuPanelContent(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
+  onClearAllData: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
 ) {
   Column(
@@ -345,6 +359,17 @@ internal fun HomeFilterMenuPanelContent(
         onClick = { onSortOrderChange(TripSortOrder.DestinationAz) },
       )
     }
+    if (onClearAllData != null) {
+      HomeFilterMenuList {
+        HomeFilterMenuSectionLabel("Datos")
+        HomeFilterMenuItemRow(
+          label = "Borrar todos los datos",
+          selected = false,
+          onClick = onClearAllData,
+          destructive = true,
+        )
+      }
+    }
   }
 }
 
@@ -382,6 +407,7 @@ private fun HomeFilterMenuItemRow(
   label: String,
   selected: Boolean,
   onClick: () -> Unit,
+  destructive: Boolean = false,
 ) {
   val scheme = MaterialTheme.colorScheme
   val itemShape = RoundedCornerShape(HomeFilterMenuSpec.ItemCorner)
@@ -428,7 +454,11 @@ private fun HomeFilterMenuItemRow(
       Text(
         text = label,
         style = MaterialTheme.typography.labelLarge,
-        color = if (selected) scheme.onSecondaryContainer else scheme.onSurface,
+        color = when {
+          destructive -> scheme.error
+          selected -> scheme.onSecondaryContainer
+          else -> scheme.onSurface
+        },
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.weight(1f),

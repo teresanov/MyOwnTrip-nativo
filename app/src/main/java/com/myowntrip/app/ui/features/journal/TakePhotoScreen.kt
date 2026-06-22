@@ -63,10 +63,10 @@ fun TakePhotoScreen(
   Scaffold(
     topBar = {
       TopAppBar(
-        title = { Text("Take photo") },
+        title = { Text("Hacer foto") },
         navigationIcon = {
           MOTIconButton(onClick = onCancel) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -86,12 +86,12 @@ fun TakePhotoScreen(
 
               override fun onError(exception: ImageCaptureException) {
                 Log.e("TakePhotoScreen", "Capture failed", exception)
-                captureError = "Could not save photo"
+                captureError = "No se pudo guardar la foto"
               }
             },
           )
         },
-        modifier = Modifier.semantics { contentDescription = "Capture photo" },
+        modifier = Modifier.semantics { contentDescription = "Capturar foto" },
       ) {
         Icon(Icons.Default.CameraAlt, contentDescription = null)
       }

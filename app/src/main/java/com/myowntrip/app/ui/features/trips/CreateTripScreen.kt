@@ -25,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -166,12 +167,14 @@ fun CreateTripScreen(
       CreateTripDocumentsSection(
         onImport = { viewModel.ensureTripSaved(onImportDocument) },
         onManual = { viewModel.ensureTripSaved(onAddDocumentManual) },
+        enabled = !state.isSaving,
       )
 
       if (tripSaved) {
         MOTButton(
           onClick = { onOpenTrip(state.savedTripId!!) },
           modifier = Modifier.fillMaxWidth(),
+          enabled = !state.isSaving,
         ) {
           Text("Ver viaje")
         }
@@ -179,14 +182,26 @@ fun CreateTripScreen(
         MOTButton(
           onClick = { viewModel.save(onOpenTrip) },
           modifier = Modifier.fillMaxWidth(),
+          enabled = !state.isSaving,
         ) {
-          Text("Guardar viaje")
+          if (state.isSaving) {
+            CircularProgressIndicator(
+              modifier = Modifier.size(18.dp),
+              strokeWidth = 2.dp,
+              color = MaterialTheme.colorScheme.onPrimary,
+            )
+            Spacer(Modifier.width(MOTSpacing.componentSm))
+            Text("Guardando…")
+          } else {
+            Text("Guardar viaje")
+          }
         }
         MOTTextButton(
           onClick = {
             if (dirty) showDiscard = true else onBack()
           },
           modifier = Modifier.fillMaxWidth(),
+          enabled = !state.isSaving,
         ) {
           Text("Cancelar creación")
         }
@@ -278,6 +293,7 @@ private fun CreateTripSavedBanner() {
 private fun CreateTripDocumentsSection(
   onImport: () -> Unit,
   onManual: () -> Unit,
+  enabled: Boolean = true,
 ) {
   Column(verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm)) {
     Text(
@@ -297,12 +313,13 @@ private fun CreateTripDocumentsSection(
         onClick = onImport,
         modifier = Modifier.weight(1f),
         shape = rememberMOTButtonShape(),
+        enabled = enabled,
       ) {
         Icon(Icons.Default.Upload, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(MOTSpacing.componentSm))
         Text("Importar")
       }
-      MOTButton(onClick = onManual, modifier = Modifier.weight(1f)) {
+      MOTButton(onClick = onManual, modifier = Modifier.weight(1f), enabled = enabled) {
         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(MOTSpacing.componentSm))
         Text("Añadir")

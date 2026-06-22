@@ -8,6 +8,8 @@ import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Trip
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import com.myowntrip.app.ui.features.trips.resolveDefaultJournalDay
+import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import javax.inject.Inject
@@ -29,6 +31,15 @@ class TripRepository @Inject constructor(
 
   fun observeDay(dayId: String): Flow<Day?> =
     dayDao.observeById(dayId).map { it?.toDomain() }
+
+  suspend fun getDaysForTrip(tripId: String): List<Day> =
+    dayDao.getByTrip(tripId).map { it.toDomain() }
+
+  suspend fun defaultJournalDayId(tripId: String, today: LocalDate = LocalDate.now()): String? {
+    val trip = tripDao.getById(tripId)?.toDomain() ?: return null
+    val days = dayDao.getByTrip(tripId).map { it.toDomain() }
+    return resolveDefaultJournalDay(trip, days, today)?.id
+  }
 
   suspend fun hasTrips(): Boolean = tripDao.count() > 0
 
@@ -53,7 +64,8 @@ class TripRepository @Inject constructor(
   }
 
   private suspend fun generateDays(trip: Trip) {
-    val totalDays = ChronoUnit.DAYS.between(trip.startDate, trip.endDate).toInt() + 1
+    val spanDays = ChronoUnit.DAYS.between(trip.startDate, trip.endDate).toInt() + 1
+    val totalDays = spanDays.coerceIn(1, MAX_TRIP_DAYS)
     val days = (0 until totalDays).map { offset ->
       val date = trip.startDate.plusDays(offset.toLong())
       Day(
@@ -65,5 +77,9 @@ class TripRepository @Inject constructor(
       )
     }
     dayDao.insertAll(days.map { it.toEntity() })
+  }
+
+  companion object {
+    const val MAX_TRIP_DAYS = 366
   }
 }

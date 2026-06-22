@@ -49,3 +49,12 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
     db.execSQL("ALTER TABLE wallet_entries ADD COLUMN qrPayload TEXT")
   }
 }
+
+val MIGRATION_4_5 = object : Migration(4, 5) {
+  override fun migrate(db: SupportSQLiteDatabase) {
+    db.execSQL("ALTER TABLE itinerary_blocks ADD COLUMN walletEntryId TEXT")
+    db.execSQL(
+      "CREATE INDEX IF NOT EXISTS index_itinerary_blocks_walletEntryId ON itinerary_blocks(walletEntryId)",
+    )
+  }
+}

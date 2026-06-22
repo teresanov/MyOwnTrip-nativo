@@ -1,0 +1,111 @@
+---
+description: "Pantallas y flujos de app en Figma: estructura secuencial por módulo, teléfono 360×800, hi-fi con DS + edge cases mid-fi."
+alwaysApply: false
+---
+
+# Figma — Pantallas y flujos de app (design-file)
+
+Aplica al montar o editar pantallas en **[MyOwnTrip_design-file](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file)** (`Vf2tNMXyKAlJSV53A1v4Is`).
+
+**No usar «wireframes»** para este archivo: es **hi-fi de producto** (pantallas MVP). La exploración mid-fi vive en `_archive · Exploraciones legacy` (no ampliar).
+
+## Flujo de trabajo (Compose ↔ Figma)
+
+**Fuente de verdad del comportamiento:** Compose (`app/`). **Fuente de verdad visual tras tu revisión:** design-file.
+
+```
+1. Implementar / iterar flujo en Compose (+ @Preview por cap)
+2. Exportar el flujo completo a la página Figma del módulo (instancias DS, copy de previews)
+3. Ajustes visuales en Figma (espaciado, jerarquía, copy fino)
+4. Devolver cambios a Compose (sin inventar componentes fuera del DS)
+```
+
+| Paso | Responsable | Entregable |
+|------|-------------|------------|
+| Compose | Dev / agente | Pantallas + previews nombrados como caps Figma |
+| → Figma | Dev / agente | Frame `[Módulo] · flujo de app` con `Screens` + `Edge cases` |
+| Ajuste | Diseño | Hi-fi revisado en design-file |
+| → Compose | Dev / agente | Paridad con Figma + fila en `figma-compose-bindings.md` |
+
+**Reglas del roundtrip**
+
+- Cada cap en Figma enlaza a un `@Preview` o ruta Compose en la caption (`preview: WalletScreenPreview`, `route: wallet_add/...`).
+- Solo instancias del DS publicado; no primitivos sueltos que dupliquen un component set.
+- Si un cap no tiene preview aún, crearlo en Compose **antes** de pintar hi-fi en Figma.
+- JTBD y edge cases (`EC-*`) se anotan en caption o frame `Edge cases`; no organizan las páginas del archivo.
+
+## Páginas (estructura secuencial — mapa de la app)
+
+| Página | Módulo | Rutas Compose principales |
+|--------|--------|---------------------------|
+| `00 · Mapa de la app` | Sitemap / índice de flujos | — |
+| `01 · Home` | Lista de viajes, búsqueda, filtros | `trip_list` |
+| `02 · Viajes — crear y editar` | Alta y edición de viaje | `trip_create`, `trip_edit/{tripId}` |
+| `03 · Detalle de viaje` | Hub del viaje (tabs) | `trip_detail/{tripId}` |
+| `04 · Wallet` | Import, revisión, detalle, borrar | `wallet_add`, `wallet_detail`, `wallet_import` |
+| `05 · Día & itinerario` | Day hub Plan \| Diario, reorder, notas | `day_hub`, `journal_add` |
+| `06 · Gastos` | Alta rápida, recibo, listado | `expense_add` |
+| `07 · Restaurantes` | Lista, alta, detalle, estados | `restaurant_add`, `restaurant_detail` |
+| `08 · Transversal` | Offline/sync, share target, permisos, biometría | ImportActivity, patrones EC-* |
+
+**JTBD** (`docs/product/jtbd-flows.md`) sigue siendo la lente de producto; anotar en captions cuando aplique (`JTBD: 1`, `EC-PARSE-FAIL`, etc.).
+
+Legacy exploratorio: `_archive · Exploraciones legacy` (no ampliar).
+
+## Fidelidad
+
+- **Happy path:** hi-fi con instancias de **MyOwnTrip_nativo — Design System** (`zrGAL4v6MEMc9hzZemU432`).
+- **Edge cases:** mid-fi en frame `Edge cases` (anotaciones, sin bloquear la fila `Screens`).
+- Chrome Android (status bar, permisos): **MyOwnTrip_Andorid-UI** cuando aplique.
+
+## Contenido MVP (pantallas finales)
+
+Cada `phone` del happy path debe poder presentarse como pantalla final del MVP.
+
+| Qué | Regla |
+|-----|--------|
+| **Copy** | Textos reales en español: nombres de viaje, destinos, fechas, duración, CTAs — alineados a previews Compose y JTBD (`docs/product/jtbd-flows.md`). **No** Lorem ipsum, «Header»/«Title» del kit sin override, ni «Label» genérico. |
+| **Datos** | Escenarios creíbles y coherentes entre pantallas del mismo flujo (mismo viaje, mismas fechas, ≥3 entradas Wallet cuando aplique). Reutilizar datos de preview del repo cuando existan (p. ej. Barcelona, Lisboa, Tokio). |
+| **Imágenes** | Portadas de viaje, media de cards y adjuntos con **fotos de ejemplo** (destino editorial, no bloques de color ni iniciales «A»/«BA»). Usar assets del repo (`docs/ux/inspiration/`, muestras Wallet) o imágenes libres acordes a la marca. |
+| **Vacío** | Empty states con copy de producto real; ilustración o foto suave opcional, nunca slot del kit sin rellenar. |
+| **Edge cases** | Siguen mid-fi; bullets EC-* + anotación. Sin obligación de foto real salvo que el caso lo exija (p. ej. EC-PARSE-FAIL con PDF de muestra). |
+
+**Figma ↔ Compose:** si la pantalla ya existe en código, el contenido del diseño debe coincidir con los previews o datos seed de la app.
+
+## Estructura obligatoria por flujo
+
+```
+[Módulo] · flujo de app    ← FRAME vertical · hug · sin fill
+├── [título hi-fi]         ← TEXT (ej. "Home — happy path hi-fi")
+├── Screens                ← FRAME horizontal · hug · itemSpacing 40
+│   └── [cap N]            ← FRAME vertical · hug · itemSpacing 8
+│       ├── cap            ← TEXT etiqueta + route Compose (ej. route: trip_list)
+│       └── phone          ← FRAME 360×800 fijo
+└── Edge cases             ← FRAME vertical · mid-fi + bullets EC-*
+```
+
+## Reglas
+
+| Elemento | Regla |
+|----------|--------|
+| **Teléfono** | Fijo **360×800**, `clipsContent = true` — único frame con ancho fijo |
+| **Width en padres** | **Hug contents** en el flow, `Screens`, cada columna `cap N` y captions — **nunca Fixed** salvo `phone` (360×800) |
+| **Screens** | Autolayout **horizontal**, hug, `itemSpacing = 40` |
+| **Columna cap+phone** | Autolayout **vertical**, hug, `itemSpacing = 8` |
+| **Flow exterior** | Autolayout **vertical**, hug, `itemSpacing = 16` |
+| **Captions** | Incluir **ruta Compose** en la caption para trazabilidad diseño → código |
+| **Componentes** | Instanciar DS; no duplicar component sets en design-file |
+| **Contenido en `phone`** | Frame cuerpo (lista, form, empty con scroll): `paddingBottom` = **`spacing-layout-lg`** (24) — colchón de seguridad ante barra inferior / gestos; no variar por pantalla |
+
+## Objetivo
+
+Seleccionar `Screens` o el frame de flujo y mover **todo el bloque** sin desalinear títulos, captions ni pantallas.
+
+## Prohibido
+
+- Pantallas sueltas en la página sin el frame `Screens`.
+- Captions posicionadas a mano fuera del bloque del flujo.
+- Ancho **Fixed** en frames padre de pantalla (`cap N`, `Screens`, flow) — siempre **Hug**.
+- `layoutSizing FILL` antes de `appendChild` al padre autolayout.
+- Crear componentes reutilizables en design-file (solo en la librería DS).
+- Llamar «wireframes» a las pantallas hi-fi de este archivo.

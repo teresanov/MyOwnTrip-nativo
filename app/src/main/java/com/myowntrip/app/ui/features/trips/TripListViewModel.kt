@@ -2,6 +2,7 @@ package com.myowntrip.app.ui.features.trips
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.myowntrip.app.data.repository.AppDataRepository
 import com.myowntrip.app.data.repository.TripRepository
 import com.myowntrip.app.domain.cover.DestinationCoverRepository
 import com.myowntrip.app.domain.model.Trip
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 data class TripListUiState(
@@ -29,7 +31,8 @@ data class TripListUiState(
 
 @HiltViewModel
 class TripListViewModel @Inject constructor(
-  tripRepository: TripRepository,
+  private val tripRepository: TripRepository,
+  private val appDataRepository: AppDataRepository,
   private val destinationCoverRepository: DestinationCoverRepository,
 ) : ViewModel() {
   private val controls = MutableStateFlow(
@@ -49,7 +52,15 @@ class TripListViewModel @Inject constructor(
         .map { it.trips }
         .distinctUntilChanged()
         .collect { trips ->
-          destinationCoverRepository.ensureCoversForTrips(trips)
+          trips
+            .filter { trip -> trip.coverPhoto.isNullOrBlank() || !java.io.File(trip.coverPhoto).isFile }
+            .forEach { trip ->
+              launch {
+                runCatching {
+                  destinationCoverRepository.attachCoverToTrip(trip.id, trip.destination)
+                }
+              }
+            }
         }
     }
   }
@@ -68,5 +79,23 @@ class TripListViewModel @Inject constructor(
 
   fun onFilterMenuExpandedChange(expanded: Boolean) {
     controls.update { it.copy(filterMenuExpanded = expanded) }
+  }
+
+  fun resolveJournalDayId(
+    tripId: String,
+    today: LocalDate = LocalDate.now(),
+    onResult: (String?) -> Unit,
+  ) {
+    viewModelScope.launch {
+      onResult(tripRepository.defaultJournalDayId(tripId, today))
+    }
+  }
+
+  fun clearAllUserData(onDone: () -> Unit) {
+    viewModelScope.launch {
+      appDataRepository.clearAllUserData()
+      controls.value = TripListUiState()
+      onDone()
+    }
   }
 }

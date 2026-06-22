@@ -127,6 +127,7 @@ fun ItineraryBlockEntity.toDomain() = ItineraryBlock(
   title = title,
   timeLabel = timeLabel,
   sortOrder = sortOrder,
+  walletEntryId = walletEntryId,
 )
 
 fun ItineraryBlock.toEntity() = ItineraryBlockEntity(
@@ -135,6 +136,7 @@ fun ItineraryBlock.toEntity() = ItineraryBlockEntity(
   title = title,
   timeLabel = timeLabel,
   sortOrder = sortOrder,
+  walletEntryId = walletEntryId,
 )
 
 fun RestaurantEntity.toDomain() = Restaurant(
