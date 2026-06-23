@@ -1,8 +1,10 @@
 package com.myowntrip.app.ui.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -22,13 +23,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTSpacing
 
-/** Ancho fijo de media en fila horizontal — 80dp según design-file Home. */
+/** Figma `58710:12949` · design-file `214:593` — media 80dp ancho, alto = card. */
 val MotHorizontalCardMediaWidth = 80.dp
 
+/** Figma design-file `214:593` · DS Content `58710:12943` / `58710:12944`. */
+private val MotHorizontalCardHeight = 80.dp
+
+/** Figma `58710:12946` · gap entre Header y Subhead. */
+private val MotHorizontalCardTextGap = 4.dp
+
 /**
- * Figma: **Horizontal card** `52346:27573` · `Media & text` · 80dp fila en Home cap 2.
- *
- * Properties: `Header text`, `Subhead text`, `Supporting text` (meta fechas).
+ * Figma DS **Horizontal card** Outlined · Media & text · `58710:12943`.
+ * Content `58710:12944`: `p-[16px]`, texto `gap-[4px]`, media `80dp` fill.
  */
 @Composable
 fun MotHorizontalCard(
@@ -62,13 +68,14 @@ fun MotHorizontalCard(
     Row(
       modifier = Modifier
         .fillMaxWidth()
-        .height(80.dp),
+        .height(MotHorizontalCardHeight),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Column(
         modifier = Modifier
           .weight(1f)
-          .padding(horizontal = MOTSpacing.layoutMd, vertical = MOTSpacing.componentSm),
+          .padding(MOTSpacing.layoutMd),
+        verticalArrangement = Arrangement.spacedBy(MotHorizontalCardTextGap),
       ) {
         Text(
           text = title,
@@ -80,7 +87,6 @@ fun MotHorizontalCard(
           text = subtitle,
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
-          modifier = Modifier.padding(top = 2.dp),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
         )
@@ -89,7 +95,6 @@ fun MotHorizontalCard(
             text = supportingText,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 2.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
           )
@@ -98,8 +103,7 @@ fun MotHorizontalCard(
       androidx.compose.foundation.layout.Box(
         modifier = Modifier
           .width(MotHorizontalCardMediaWidth)
-          .height(80.dp)
-          .clip(MaterialTheme.shapes.small),
+          .height(MotHorizontalCardHeight),
       ) {
         media()
       }

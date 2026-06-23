@@ -7,20 +7,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
@@ -33,7 +31,8 @@ import com.myowntrip.app.ui.features.trips.HomeTripPhase
 import com.myowntrip.app.ui.features.trips.homePhase
 import com.myowntrip.app.ui.theme.MOTCorner
 import com.myowntrip.app.ui.theme.MOTSpacing
-import com.myowntrip.app.ui.theme.rememberMOTButtonShape
+import com.myowntrip.app.ui.theme.MOTTonalButton
+import com.myowntrip.app.ui.theme.MyOwnTripPreviewTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -42,8 +41,18 @@ import java.util.Locale
 private val SpanishLocale = Locale("es", "ES")
 private val DateFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", SpanishLocale)
 
+/** Figma `61199:7842` · portada 280dp. */
+private val TripHeroPortadaHeight = 280.dp
+
+/** Figma `61200:7944` · gap entre countdown / title / meta. */
+private val TripHeroOverlayTextGap = 8.dp
+
+/** Figma `61200:8087` · fila CTA 48dp, botón hug dentro. */
+private val TripHeroCtaRowHeight = 48.dp
+
 /**
- * Figma: **TripHeroCard** `61199:7862` — portada 280dp + CTA tonal «Ver detalles».
+ * Figma: **TripHeroCard** `61199:7862` / variante `61199:7842`.
+ * CTA: **Button - tonal** `61200:8087` (XSmall · Square · hug).
  */
 @Composable
 fun TripHeroCard(
@@ -66,14 +75,19 @@ fun TripHeroCard(
   )
   val portadaShape = RoundedCornerShape(MOTCorner.Medium)
 
-  ElevatedCard(modifier = modifier.fillMaxWidth()) {
-    Column(verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm)) {
-      Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(280.dp)
-          .clip(portadaShape),
-      ) {
+  Column(
+    modifier = modifier.fillMaxWidth(),
+    verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+  ) {
+    Surface(
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(TripHeroPortadaHeight),
+      shape = portadaShape,
+      color = MaterialTheme.colorScheme.surfaceContainerLow,
+      shadowElevation = 1.dp,
+    ) {
+      Box(modifier = Modifier.fillMaxSize()) {
         TripCoverImage(
           trip = trip,
           previewCoverRes = previewCoverRes,
@@ -84,14 +98,7 @@ fun TripHeroCard(
         Box(
           modifier = Modifier
             .fillMaxSize()
-            .background(
-              Brush.verticalGradient(
-                0f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.08f),
-                0.45f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.02f),
-                0.7f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.55f),
-                1f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.82f),
-              ),
-            )
+            .background(tripHeroScrimBrush(MaterialTheme.colorScheme.scrim))
             .semantics { hideFromAccessibility() },
         )
         EyebrowLabel(
@@ -105,6 +112,7 @@ fun TripHeroCard(
             .align(Alignment.BottomStart)
             .padding(MOTSpacing.layoutMd)
             .semantics { hideFromAccessibility() },
+          verticalArrangement = Arrangement.spacedBy(TripHeroOverlayTextGap),
         ) {
           if (countdown != null) {
             Text(
@@ -119,7 +127,6 @@ fun TripHeroCard(
             text = trip.name,
             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
             color = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.padding(top = if (countdown != null) 4.dp else 0.dp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
           )
@@ -127,25 +134,27 @@ fun TripHeroCard(
             text = meta,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.padding(top = MOTSpacing.componentXs),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
           )
         }
       }
-      FilledTonalButton(
+    }
+    Box(
+      modifier = Modifier.height(TripHeroCtaRowHeight),
+      contentAlignment = Alignment.CenterStart,
+    ) {
+      MOTTonalButton(
         onClick = onClick,
-        modifier = Modifier
-          .fillMaxWidth()
-          .heightIn(min = 48.dp)
-          .semantics {
-            contentDescription = heroContentDescription
-            stateDescription = a11yPhase
-          },
-        shape = rememberMOTButtonShape(),
-        colors = ButtonDefaults.filledTonalButtonColors(),
+        modifier = Modifier.semantics {
+          contentDescription = heroContentDescription
+          stateDescription = a11yPhase
+        },
       ) {
-        Text("Ver detalles")
+        Text(
+          text = "Ver detalles",
+          style = MaterialTheme.typography.labelLarge,
+        )
       }
     }
   }
@@ -159,12 +168,11 @@ fun TripListCard(
   modifier: Modifier = Modifier,
   @DrawableRes previewCoverRes: Int? = null,
 ) {
-  val meta = tripMetaLabel(trip)
   val phase = trip.homePhase(today)
   MotHorizontalCard(
     title = trip.name,
     subtitle = trip.destination,
-    supportingText = meta,
+    supportingText = null,
     onClick = onClick,
     modifier = modifier,
     stateDescription = phaseStateDescription(phase),
@@ -222,4 +230,40 @@ fun tripMetaLabel(trip: Trip): String {
   val days = ChronoUnit.DAYS.between(trip.startDate, trip.endDate) + 1
   val duration = if (days == 1L) "1 día" else "$days días"
   return "${trip.startDate.format(DateFormatter)} – ${trip.endDate.format(DateFormatter)} · $duration"
+}
+
+/** Degradado portada — Figma `61199:7825` (to-t, 3.929% / 62.443%). */
+private fun tripHeroScrimBrush(scrim: Color): Brush = Brush.verticalGradient(
+  colorStops = arrayOf(
+    0f to scrim.copy(alpha = 0.45f),
+    0.37557f to scrim.copy(alpha = 0.45f),
+    0.96071f to scrim.copy(alpha = 0.9f),
+    1f to scrim.copy(alpha = 0.9f),
+  ),
+)
+
+@Preview(
+  name = "TripHeroCard Elevated 61199-7842",
+  showBackground = true,
+  widthDp = 360,
+  backgroundColor = 0xFFF7F4EF,
+)
+@Composable
+private fun TripHeroCardElevatedPreview() {
+  MyOwnTripPreviewTheme {
+    TripHeroCard(
+      trip = Trip(
+        id = "1",
+        name = "Barcelona fin de semana",
+        destination = "Barcelona",
+        startDate = LocalDate.of(2026, 6, 20),
+        endDate = LocalDate.of(2026, 6, 22),
+        createdAt = 0L,
+      ),
+      today = LocalDate.of(2026, 6, 17),
+      onClick = {},
+      previewCoverRes = PreviewCityCovers.coverResForCity("Barcelona"),
+      modifier = Modifier.padding(MOTSpacing.screenHorizontal),
+    )
+  }
 }

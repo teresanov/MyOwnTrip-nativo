@@ -112,7 +112,7 @@ Zona de respeto: altura de la **M** alrededor del lockup.
 | Ruta | `Routes.SPLASH` → `TripListScreen` | `AndroidManifest` `@mipmap/ic_launcher` |
 | Código | `ui/splash/SplashScreen.kt` | `ic_launcher_foreground.xml` + background |
 | Forma icono | Marco cuadrado redondeado (morph animado) | **C1 Circle Ø66** (adaptive) |
-| Origen | Integrado desde `deliverables/splash/` (Claude) | Figma `61217:116` |
+| Origen | `app/.../ui/splash/SplashScreen.kt` | Figma `61217:116` |
 
 El splash **no** usa los drawables del launcher; son sistemas independientes.
 

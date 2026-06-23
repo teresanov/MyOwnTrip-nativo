@@ -1,12 +1,10 @@
-package com.myowntrip.app.ui.composepreview
+package com.myowntrip.app.ui.theme
 
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import com.myowntrip.app.ui.theme.LocalReduceMotion
-import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
-/** Tema estable para @Preview en Android Studio (sin dynamic color). */
+/** Tema estable para [@Preview][androidx.compose.ui.tooling.preview.Preview] en Android Studio. */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun MyOwnTripPreviewTheme(

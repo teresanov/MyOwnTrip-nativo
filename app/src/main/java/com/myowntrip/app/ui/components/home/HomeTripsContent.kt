@@ -12,6 +12,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -191,9 +195,13 @@ fun HomeTripsScreen(
 
 @Preview(name = "Home cap 2 — con viajes (205:1018)", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
-fun HomeCap2Preview() {
+fun TripListWithTripsPreview() {
   val today = LocalDate.of(2026, 6, 17)
   val sorted = sortTripsForHome(previewHomeTrips(), today)
+  var searchQuery by remember { mutableStateOf("") }
+  var filterMenuExpanded by remember { mutableStateOf(false) }
+  var filterPhase by remember { mutableStateOf(TripFilterPhase.All) }
+  var sortOrder by remember { mutableStateOf(TripSortOrder.DateUpcoming) }
   MyOwnTripTheme {
     HomeTripsScreen(
       state = HomeTripsContentState(
@@ -201,20 +209,20 @@ fun HomeCap2Preview() {
         otherTrips = sorted.drop(1),
         visibleTripCount = sorted.size,
         totalTripCount = sorted.size,
-        searchQuery = "",
-        filterPhase = TripFilterPhase.All,
-        sortOrder = TripSortOrder.DateUpcoming,
-        filterMenuExpanded = false,
+        searchQuery = searchQuery,
+        filterPhase = filterPhase,
+        sortOrder = sortOrder,
+        filterMenuExpanded = filterMenuExpanded,
         today = today,
         userFirstName = "Raquel",
         searchPlaceholder = "Barcelona",
         greetingOverride = "Buenas tardes",
         usePreviewCityCovers = true,
       ),
-      onSearchQueryChange = {},
-      onFilterMenuExpandedChange = {},
-      onFilterPhaseChange = {},
-      onSortOrderChange = {},
+      onSearchQueryChange = { searchQuery = it },
+      onFilterMenuExpandedChange = { filterMenuExpanded = it },
+      onFilterPhaseChange = { filterPhase = it },
+      onSortOrderChange = { sortOrder = it },
       onTripClick = {},
     )
   }
@@ -222,9 +230,13 @@ fun HomeCap2Preview() {
 
 @Preview(name = "Home cap 3 — búsqueda + menú (228:8161)", showBackground = true, widthDp = 360, heightDp = 1100)
 @Composable
-fun HomeCap3ClonePreview() {
+fun TripListFilterMenuPreview() {
   val today = LocalDate.of(2026, 6, 17)
   val sorted = sortTripsForHome(previewHomeTrips(), today)
+  var searchQuery by remember { mutableStateOf("Barcelona") }
+  var filterMenuExpanded by remember { mutableStateOf(true) }
+  var filterPhase by remember { mutableStateOf(TripFilterPhase.All) }
+  var sortOrder by remember { mutableStateOf(TripSortOrder.DateUpcoming) }
   MyOwnTripTheme {
     HomeTripsScreen(
       state = HomeTripsContentState(
@@ -232,20 +244,20 @@ fun HomeCap3ClonePreview() {
         otherTrips = sorted.drop(1),
         visibleTripCount = sorted.size,
         totalTripCount = sorted.size,
-        searchQuery = "Barcelona",
-        filterPhase = TripFilterPhase.All,
-        sortOrder = TripSortOrder.DateUpcoming,
-        filterMenuExpanded = true,
+        searchQuery = searchQuery,
+        filterPhase = filterPhase,
+        sortOrder = sortOrder,
+        filterMenuExpanded = filterMenuExpanded,
         today = today,
         userFirstName = "Raquel",
         searchPlaceholder = "Barcelona",
         greetingOverride = "Buenas tardes",
         usePreviewCityCovers = true,
       ),
-      onSearchQueryChange = {},
-      onFilterMenuExpandedChange = {},
-      onFilterPhaseChange = {},
-      onSortOrderChange = {},
+      onSearchQueryChange = { searchQuery = it },
+      onFilterMenuExpandedChange = { filterMenuExpanded = it },
+      onFilterPhaseChange = { filterPhase = it },
+      onSortOrderChange = { sortOrder = it },
       onTripClick = {},
       filterMenuPresentation = HomeFilterMenuPresentation.Overlay,
     )

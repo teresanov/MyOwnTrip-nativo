@@ -10,7 +10,7 @@
     "Scrim — degradado vertical sobre la portada",
     "Eyebrow label — instancia Color=Tertiary, Size=Medium («Próximo viaje», «En destino», «Recuerdo») — no interactiva",
     "Content — Countdown (opcional) + Title (Fraunces) + Meta (Inter)",
-    "Button - tonal — XSmall ancho completo bajo la portada: «Ver detalles»"
+    "Button - tonal — XSmall hug contents bajo la portada: «Ver detalles»"
   ],
   "variants": [
     {

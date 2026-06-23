@@ -17,13 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.components.home.ClearAllDataDialog
-import com.myowntrip.app.ui.components.home.HomeCap2Preview
-import com.myowntrip.app.ui.components.home.HomeCap3ClonePreview
 import com.myowntrip.app.ui.components.home.HomeEmptyState
 import com.myowntrip.app.ui.components.home.HomeFabAddMode
 import com.myowntrip.app.ui.components.home.HomeFabAddSheet
@@ -201,15 +198,3 @@ fun TripListScreen(
 
 private fun searchPlaceholder(featured: Trip?): String =
   featured?.destination ?: "Buscar viajes"
-
-@Preview(name = "Home cap 2 — con viajes (205:1018)", showBackground = true, widthDp = 360, heightDp = 800)
-@Composable
-fun TripListWithTripsPreview() {
-  HomeCap2Preview()
-}
-
-@Preview(name = "Home cap 3 — búsqueda + menú (228:8161)", showBackground = true, widthDp = 360, heightDp = 1100)
-@Composable
-fun TripListFilterMenuPreview() {
-  HomeCap3ClonePreview()
-}
