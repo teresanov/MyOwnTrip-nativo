@@ -65,7 +65,9 @@ fun WalletDeleteEntryDialog(
     title = { Text("¿Eliminar documento?") },
     text = {
       Text(
-        "Se borrará «$entryTitle» y su archivo del dispositivo. Esta acción no se puede deshacer.",
+        "Se borrará «$entryTitle» y su archivo del dispositivo. " +
+          "Si está enlazado al plan, el evento se mantiene sin documento. " +
+          "Esta acción no se puede deshacer.",
       )
     },
     confirmButton = {

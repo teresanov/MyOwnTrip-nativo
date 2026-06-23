@@ -23,6 +23,7 @@ fun TripEntity.toDomain() = Trip(
   endDate = endDate,
   coverPhoto = coverPhoto,
   createdAt = createdAt,
+  archivedAt = archivedAt,
 )
 
 fun Trip.toEntity() = TripEntity(
@@ -33,6 +34,7 @@ fun Trip.toEntity() = TripEntity(
   endDate = endDate,
   coverPhoto = coverPhoto,
   createdAt = createdAt,
+  archivedAt = archivedAt,
 )
 
 fun DayEntity.toDomain() = Day(
@@ -62,6 +64,7 @@ fun WalletEntryEntity.toDomain() = WalletEntry(
   linkUrl = linkUrl,
   notes = notes,
   qrPayload = qrPayload,
+  archivedAt = archivedAt,
 )
 
 fun WalletEntry.toEntity() = WalletEntryEntity(
@@ -75,6 +78,7 @@ fun WalletEntry.toEntity() = WalletEntryEntity(
   linkUrl = linkUrl,
   notes = notes,
   qrPayload = qrPayload,
+  archivedAt = archivedAt,
 )
 
 fun ExpenseEntity.toDomain() = Expense(

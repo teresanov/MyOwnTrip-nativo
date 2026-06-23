@@ -28,7 +28,7 @@ import androidx.compose.material.icons.filled.Hotel
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Upload
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -55,8 +55,11 @@ import com.myowntrip.app.BuildConfig
 import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.domain.wallet.accessibilityLabel
+import com.myowntrip.app.domain.wallet.isAvailableOffline
+import com.myowntrip.app.domain.wallet.isCloudOnly
+import com.myowntrip.app.domain.wallet.offlineAvailability
 import com.myowntrip.app.ui.theme.MOTButton
-import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -74,10 +77,14 @@ private val TimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 fun WalletScreen(
   trip: Trip?,
   entries: List<WalletEntry>,
+  filterPhase: WalletDocumentFilterPhase = WalletDocumentFilterPhase.Active,
+  onFilterPhaseChange: (WalletDocumentFilterPhase) -> Unit = {},
   onAddEntry: () -> Unit,
   onImportEntry: () -> Unit = onAddEntry,
   onLoadDebugSamples: (() -> Unit)? = null,
   onEntryClick: (String) -> Unit,
+  onArchiveEntry: (String) -> Unit = {},
+  onUnarchiveEntry: (String) -> Unit = {},
   onDeleteEntry: ((String) -> Unit)? = null,
   embeddedInTrip: Boolean = false,
   modifier: Modifier = Modifier,
@@ -95,7 +102,9 @@ fun WalletScreen(
     )
   }
 
-  if (entries.isEmpty()) {
+  val activeCount = remember(entries) { entries.count { !it.isArchived } }
+
+  if (activeCount == 0 && entries.isEmpty()) {
     WalletEmptyState(
       onAddEntry = onAddEntry,
       onImportEntry = onImportEntry,
@@ -105,11 +114,12 @@ fun WalletScreen(
     return
   }
 
-  val highlights = remember(entries) {
-    entries
-      .sortedWith(compareBy<WalletEntry> { it.date == null }.thenBy { it.date })
-      .take(4)
+  val visibleEntries = remember(entries, filterPhase) {
+    applyWalletDocumentFilters(entries, filterPhase)
+      .sortedByDescending { it.date ?: LocalDate.MIN }
   }
+  val highlights = remember(entries) { walletHighlights(entries) }
+  val showHighlights = filterPhase == WalletDocumentFilterPhase.Active && highlights.isNotEmpty()
 
   LazyColumn(
     modifier = modifier.fillMaxSize(),
@@ -119,7 +129,7 @@ fun WalletScreen(
     item {
       WalletHeader(
         trip = trip,
-        entryCount = entries.size,
+        entryCount = activeCount,
         showTitle = !embeddedInTrip,
         modifier = Modifier.padding(
           horizontal = MOTSpacing.screenHorizontal,
@@ -136,7 +146,18 @@ fun WalletScreen(
       )
     }
 
-    if (highlights.isNotEmpty()) {
+    item {
+      WalletDocumentFilterChips(
+        filterPhase = filterPhase,
+        onFilterPhaseChange = onFilterPhaseChange,
+        modifier = Modifier.padding(
+          horizontal = MOTSpacing.screenHorizontal,
+          vertical = MOTSpacing.componentXs,
+        ),
+      )
+    }
+
+    if (showHighlights) {
       item {
         WalletHighlightsSection(
           entries = highlights,
@@ -148,7 +169,7 @@ fun WalletScreen(
 
     item {
       Text(
-        text = "Todos los documentos",
+        text = walletListSectionTitle(filterPhase),
         style = MaterialTheme.typography.titleMedium,
         modifier = Modifier.padding(
           horizontal = MOTSpacing.screenHorizontal,
@@ -157,22 +178,74 @@ fun WalletScreen(
       )
     }
 
-    items(entries.sortedByDescending { it.date ?: LocalDate.MIN }, key = { it.id }) { entry ->
-      WalletDocumentRow(
-        entry = entry,
-        onClick = { onEntryClick(entry.id) },
-        onDelete = if (onDeleteEntry != null) {
-          { entryPendingDelete = entry }
-        } else {
-          null
-        },
-      )
-      HorizontalDivider(
-        modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-        color = MaterialTheme.colorScheme.outlineVariant,
-      )
+    if (visibleEntries.isEmpty()) {
+      item {
+        Text(
+          text = walletEmptyFilterMessage(filterPhase),
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          modifier = Modifier.padding(
+            horizontal = MOTSpacing.screenHorizontal,
+            vertical = MOTSpacing.componentSm,
+          ),
+        )
+      }
+    } else {
+      items(visibleEntries, key = { it.id }) { entry ->
+        SwipeableWalletDocumentRow(
+          entry = entry,
+          showArchivedActions = entry.isArchived,
+          onClick = { onEntryClick(entry.id) },
+          onArchive = { onArchiveEntry(entry.id) },
+          onUnarchive = { onUnarchiveEntry(entry.id) },
+          onDeleteRequest = { entryPendingDelete = entry },
+          showDivider = entry != visibleEntries.last(),
+        )
+      }
     }
   }
+}
+
+@Composable
+private fun WalletDocumentFilterChips(
+  filterPhase: WalletDocumentFilterPhase,
+  onFilterPhaseChange: (WalletDocumentFilterPhase) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .horizontalScroll(rememberScrollState()),
+    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+  ) {
+    FilterChip(
+      selected = filterPhase == WalletDocumentFilterPhase.Active,
+      onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Active) },
+      label = { Text("Activos") },
+    )
+    FilterChip(
+      selected = filterPhase == WalletDocumentFilterPhase.Archived,
+      onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Archived) },
+      label = { Text("Archivados") },
+    )
+    FilterChip(
+      selected = filterPhase == WalletDocumentFilterPhase.All,
+      onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.All) },
+      label = { Text("Todos") },
+    )
+  }
+}
+
+private fun walletListSectionTitle(filterPhase: WalletDocumentFilterPhase): String = when (filterPhase) {
+  WalletDocumentFilterPhase.Active -> "Documentos activos"
+  WalletDocumentFilterPhase.Archived -> "Archivados"
+  WalletDocumentFilterPhase.All -> "Todos los documentos"
+}
+
+private fun walletEmptyFilterMessage(filterPhase: WalletDocumentFilterPhase): String = when (filterPhase) {
+  WalletDocumentFilterPhase.Active -> "No hay documentos activos. Archiva los ya usados o añade uno nuevo."
+  WalletDocumentFilterPhase.Archived -> "No hay documentos archivados."
+  WalletDocumentFilterPhase.All -> "Este viaje aún no tiene documentos."
 }
 
 @Composable
@@ -307,6 +380,7 @@ private fun WalletHighlightCard(
   modifier: Modifier = Modifier,
 ) {
   val label = entryTypeLabel(entry.type)
+  val offline = remember(entry.id, entry.pdfUri, entry.qrPayload, entry.linkUrl) { entry.offlineAvailability() }
   val hasQr = !entry.qrPayload.isNullOrBlank()
   Surface(
     modifier = modifier
@@ -314,7 +388,10 @@ private fun WalletHighlightCard(
       .semantics(mergeDescendants = true) {
         contentDescription = buildString {
           append("$label, ${entry.title}")
-          if (hasQr) append(", código QR guardado")
+          offline.accessibilityLabel()?.let { append(", $it") }
+          if (hasQr && offline.isAvailableOffline()) {
+            append(", código QR guardado")
+          }
         }
       }
       .clickable(onClick = onClick),
@@ -343,9 +420,7 @@ private fun WalletHighlightCard(
           overflow = TextOverflow.Ellipsis,
           modifier = Modifier.weight(1f),
         )
-        if (hasQr) {
-          WalletQrListIcon()
-        }
+        WalletOfflineIndicator(availability = offline, compact = true)
       }
       Text(
         text = entry.title,
@@ -362,26 +437,31 @@ private fun WalletHighlightCard(
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
       )
+      if (offline.isAvailableOffline() || offline.isCloudOnly()) {
+        WalletOfflineIndicator(
+          availability = offline,
+          modifier = Modifier.padding(top = 8.dp),
+        )
+      }
     }
   }
 }
 
 @Composable
-private fun WalletDocumentRow(
+internal fun WalletDocumentRow(
   entry: WalletEntry,
   onClick: () -> Unit,
-  onDelete: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
 ) {
   val label = entryTypeLabel(entry.type)
-  val hasQr = !entry.qrPayload.isNullOrBlank()
+  val offline = remember(entry.id, entry.pdfUri, entry.qrPayload, entry.linkUrl) { entry.offlineAvailability() }
   ListItem(
     modifier = modifier
       .clickable(onClick = onClick)
       .semantics {
         contentDescription = buildString {
           append("$label, ${entry.title}")
-          if (hasQr) append(", código QR guardado")
+          offline.accessibilityLabel()?.let { append(", $it") }
         }
       },
     headlineContent = {
@@ -414,38 +494,14 @@ private fun WalletDocumentRow(
           .padding(8.dp),
       )
     },
-    trailingContent = if (hasQr || onDelete != null) {
+    trailingContent = if (offline.isAvailableOffline() || offline.isCloudOnly()) {
       {
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-          if (hasQr) WalletQrListIcon()
-          if (onDelete != null) {
-            MOTIconButton(onClick = onDelete) {
-              Icon(
-                Icons.Default.Delete,
-                contentDescription = "Eliminar documento",
-                tint = MaterialTheme.colorScheme.error,
-              )
-            }
-          }
-        }
+        WalletOfflineIndicator(availability = offline, compact = true)
       }
     } else {
       null
     },
     colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surface),
-  )
-}
-
-@Composable
-private fun WalletQrListIcon(modifier: Modifier = Modifier) {
-  Icon(
-    imageVector = Icons.Default.QrCode,
-    contentDescription = "Código QR guardado",
-    modifier = modifier.size(24.dp),
-    tint = MaterialTheme.colorScheme.tertiary,
   )
 }
 

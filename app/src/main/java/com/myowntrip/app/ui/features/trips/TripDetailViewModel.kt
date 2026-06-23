@@ -16,6 +16,7 @@ import com.myowntrip.app.domain.model.JournalNote
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.ui.features.wallet.WalletDocumentFilterPhase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
@@ -38,6 +39,7 @@ data class TripDetailUiState(
   val showWalletLinkDialog: Boolean = false,
   val walletLinkBlockId: String? = null,
   val pendingWalletEntryId: String? = null,
+  val walletFilterPhase: WalletDocumentFilterPhase = WalletDocumentFilterPhase.Active,
 )
 
 enum class TripDetailTab(val routeValue: String, val index: Int) {
@@ -70,6 +72,7 @@ class TripDetailViewModel @Inject constructor(
   private val tripRepository: TripRepository = tripRepository
 
   private val walletLinkDialog = MutableStateFlow(WalletLinkDialogState())
+  private val walletFilterPhase = MutableStateFlow(WalletDocumentFilterPhase.Active)
 
   private val trip = tripRepository.observeTrip(tripId)
   private val days = tripRepository.observeDays(tripId)
@@ -86,7 +89,8 @@ class TripDetailViewModel @Inject constructor(
     expenses,
     restaurants,
     walletLinkDialog,
-  ) { partial, e, r, linkDialog ->
+    walletFilterPhase,
+  ) { partial, e, r, linkDialog, filterPhase ->
     TripDetailUiState(
       trip = partial.trip,
       days = partial.days,
@@ -98,12 +102,31 @@ class TripDetailViewModel @Inject constructor(
       showWalletLinkDialog = linkDialog.show,
       walletLinkBlockId = linkDialog.blockId,
       pendingWalletEntryId = linkDialog.pendingEntryId,
+      walletFilterPhase = filterPhase,
     )
   }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TripDetailUiState())
+
+  fun onWalletFilterPhaseChange(phase: WalletDocumentFilterPhase) {
+    walletFilterPhase.value = phase
+  }
 
   fun deleteWalletEntry(entryId: String) {
     viewModelScope.launch {
       walletRepository.deleteEntry(entryId)
+    }
+  }
+
+  fun archiveWalletEntry(entryId: String, onArchived: (String) -> Unit) {
+    viewModelScope.launch {
+      val entry = uiState.value.walletEntries.find { it.id == entryId } ?: return@launch
+      walletRepository.archiveEntry(entryId)
+      onArchived(entry.title)
+    }
+  }
+
+  fun unarchiveWalletEntry(entryId: String) {
+    viewModelScope.launch {
+      walletRepository.unarchiveEntry(entryId)
     }
   }
 

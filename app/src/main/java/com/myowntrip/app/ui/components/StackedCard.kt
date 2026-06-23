@@ -237,6 +237,18 @@ fun HomeEmptyStackedCard(modifier: Modifier = Modifier) {
   )
 }
 
+/** Home cap 1b — Stacked · Outlined · Text only (`313:501` · `Plan next trip`). */
+@Composable
+fun HomeOnlyPastPlanStackedCard(modifier: Modifier = Modifier) {
+  MotStackedCard(
+    style = MotCardStyle.Outlined,
+    headerText = "¿Listo para el siguiente?",
+    subheadText = "Crea un cuaderno nuevo",
+    supportingText = "Tus documentos y recuerdos de viajes anteriores siguen en Wallet.",
+    modifier = modifier,
+  )
+}
+
 @Preview(name = "Stacked · Outlined · Media & text")
 @Composable
 private fun MotStackedCardMediaPreview() {

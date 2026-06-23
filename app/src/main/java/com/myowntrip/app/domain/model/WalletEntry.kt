@@ -15,4 +15,7 @@ data class WalletEntry(
   val notes: String? = null,
   /** Payload del QR extraído o escaneado (entrada, billete, etc.) para mostrar offline en acceso. */
   val qrPayload: String? = null,
-)
+  val archivedAt: Long? = null,
+) {
+  val isArchived: Boolean get() = archivedAt != null
+}

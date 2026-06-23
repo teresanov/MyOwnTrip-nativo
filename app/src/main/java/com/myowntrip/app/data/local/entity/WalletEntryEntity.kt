@@ -31,4 +31,5 @@ data class WalletEntryEntity(
   val linkUrl: String?,
   val notes: String?,
   val qrPayload: String?,
+  val archivedAt: Long?,
 )

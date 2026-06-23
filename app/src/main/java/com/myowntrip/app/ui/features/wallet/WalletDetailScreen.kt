@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.domain.wallet.isAvailableOffline
+import com.myowntrip.app.domain.wallet.isCloudOnly
+import com.myowntrip.app.domain.wallet.offlineAvailability
 import com.myowntrip.app.ui.components.DocumentAttachmentCard
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
@@ -126,11 +129,18 @@ internal fun WalletDetailContent(
   entry: WalletEntry,
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
 ) {
+  val offline = remember(entry.id, entry.pdfUri, entry.qrPayload, entry.linkUrl) { entry.offlineAvailability() }
   Text(
     entryTypeLabel(entry.type),
     style = MaterialTheme.typography.labelLarge,
     color = MaterialTheme.colorScheme.tertiary,
   )
+  if (offline.isAvailableOffline() || offline.isCloudOnly()) {
+    WalletOfflineIndicator(
+      availability = offline,
+      modifier = Modifier.padding(top = 8.dp),
+    )
+  }
   entry.date?.let {
     Text(
       "Fecha: ${it.format(SpanishDateFormatter)}",
@@ -154,6 +164,14 @@ internal fun WalletDetailContent(
     )
   }
   entry.pdfUri?.let { uri ->
+    DocumentAttachmentCard(
+      source = uri,
+      fileName = com.myowntrip.app.platform.documents.fileNameFromSource(uri),
+      onOpen = { onViewDocument(uri, entry.title) },
+      modifier = Modifier.padding(top = MOTSpacing.layoutMd),
+    )
+  }
+  entry.linkUrl?.takeIf { entry.pdfUri == null }?.let { uri ->
     DocumentAttachmentCard(
       source = uri,
       fileName = com.myowntrip.app.platform.documents.fileNameFromSource(uri),

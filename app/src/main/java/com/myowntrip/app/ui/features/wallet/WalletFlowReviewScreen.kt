@@ -111,6 +111,7 @@ fun WalletFlowReviewScreen(
             onTitleChange = {},
             onTypeChange = {},
             onShowTypeCorrection = {},
+            onSaveOfflineCopyChange = {},
             onConfirm = {},
             onCancel = {},
           )
@@ -128,6 +129,7 @@ fun WalletFlowReviewScreen(
             onTitleChange = {},
             onTypeChange = {},
             onShowTypeCorrection = {},
+            onSaveOfflineCopyChange = {},
             onConfirm = {},
             onCancel = {},
           )
@@ -146,6 +148,7 @@ fun WalletFlowReviewScreen(
               onTitleChange = {},
               onTypeChange = {},
               onShowTypeCorrection = {},
+              onSaveOfflineCopyChange = {},
               onConfirm = {},
               onCancel = {},
             )
@@ -173,8 +176,11 @@ fun WalletFlowReviewScreen(
             onTripSelected = {},
             onTitleChange = {},
             onTypeChange = {},
+            onDateChange = {},
+            onTimeChange = {},
             onNotesChange = {},
             onShowNotes = {},
+            onSaveOfflineCopyChange = {},
             onConfirm = {},
             onCancel = {},
           )
@@ -193,8 +199,11 @@ fun WalletFlowReviewScreen(
             onTripSelected = {},
             onTitleChange = {},
             onTypeChange = {},
+            onDateChange = {},
+            onTimeChange = {},
             onNotesChange = {},
             onShowNotes = {},
+            onSaveOfflineCopyChange = {},
             onConfirm = {},
             onCancel = {},
           )
@@ -243,6 +252,7 @@ fun WalletFlowReviewScreen(
               onTitleChange = {},
               onTypeChange = {},
               onShowTypeCorrection = {},
+              onSaveOfflineCopyChange = {},
               onConfirm = {},
               onCancel = {},
             )

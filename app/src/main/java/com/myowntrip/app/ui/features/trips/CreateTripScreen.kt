@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.ui.components.DestinationCoverPreview
-import com.myowntrip.app.ui.components.date.MotTripDatePickerDialog
+import com.myowntrip.app.ui.components.date.MotDateRangeField
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
@@ -52,10 +52,6 @@ import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import com.myowntrip.app.ui.theme.rememberMOTButtonShape
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
-
-private val SpanishDateFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale("es", "ES"))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,8 +63,6 @@ fun CreateTripScreen(
   viewModel: CreateTripViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
-  var showStartPicker by remember { mutableStateOf(false) }
-  var showEndPicker by remember { mutableStateOf(false) }
   var dirty by remember { mutableStateOf(false) }
   var showDiscard by remember { mutableStateOf(false) }
   val tripSaved = state.savedTripId != null
@@ -135,31 +129,17 @@ fun CreateTripScreen(
             .clip(MaterialTheme.shapes.medium),
         )
       }
-      OutlinedTextField(
-        value = state.startDate.format(SpanishDateFormatter),
-        onValueChange = {},
-        readOnly = true,
-        label = { Text("Fecha de inicio") },
-        modifier = Modifier.fillMaxWidth(),
-        trailingIcon = {
-          if (!tripSaved) {
-            MOTTextButton(onClick = { showStartPicker = true }) { Text("Elegir") }
-          }
+      MotDateRangeField(
+        startDate = state.startDate,
+        endDate = state.endDate,
+        onRangeChange = { start, end ->
+          dirty = true
+          viewModel.onDateRangeChange(start, end)
         },
-      )
-      OutlinedTextField(
-        value = state.endDate.format(SpanishDateFormatter),
-        onValueChange = {},
-        readOnly = true,
-        label = { Text("Fecha de fin") },
-        isError = state.dateError != null,
-        supportingText = state.dateError?.let { { Text(it) } },
+        label = "Fechas del viaje",
+        error = state.dateError,
+        enabled = !tripSaved,
         modifier = Modifier.fillMaxWidth(),
-        trailingIcon = {
-          if (!tripSaved) {
-            MOTTextButton(onClick = { showEndPicker = true }) { Text("Elegir") }
-          }
-        },
       )
 
       HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -207,36 +187,6 @@ fun CreateTripScreen(
         }
       }
     }
-  }
-
-  if (showStartPicker) {
-    MotTripDatePickerDialog(
-      title = "Fecha de inicio",
-      initialDate = state.startDate,
-      onDismiss = { showStartPicker = false },
-      onConfirm = { date ->
-        dirty = true
-        viewModel.onStartDateChange(date)
-        if (state.endDate.isBefore(date)) {
-          viewModel.onEndDateChange(date)
-        }
-        showStartPicker = false
-      },
-    )
-  }
-
-  if (showEndPicker) {
-    MotTripDatePickerDialog(
-      title = "Fecha de fin",
-      initialDate = state.endDate,
-      minDate = state.startDate,
-      onDismiss = { showEndPicker = false },
-      onConfirm = { date ->
-        dirty = true
-        viewModel.onEndDateChange(date)
-        showEndPicker = false
-      },
-    )
   }
 
   if (showDiscard) {

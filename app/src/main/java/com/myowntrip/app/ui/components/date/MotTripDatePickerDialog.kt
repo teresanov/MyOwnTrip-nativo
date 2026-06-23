@@ -70,14 +70,14 @@ private enum class MotDatePickerStep {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MotTripDatePickerDialog(
+internal fun MotTripDatePickerDialogImpl(
   title: String,
   initialDate: LocalDate,
   onDismiss: () -> Unit,
   onConfirm: (LocalDate) -> Unit,
   minDate: LocalDate? = null,
   maxDate: LocalDate? = null,
-  yearRange: IntRange = defaultTripYearRange(),
+  yearRange: IntRange = defaultMotYearRange(),
 ) {
   var step by remember { mutableStateOf(MotDatePickerStep.Year) }
   var selectedYear by remember { mutableIntStateOf(initialDate.year) }
@@ -210,7 +210,7 @@ private fun MotDatePickerDialogHeader(
         )
         Text(
           text = subtitle,
-          style = MaterialTheme.typography.headlineSmall,
+          style = MaterialTheme.typography.titleLarge,
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
         )
@@ -484,15 +484,9 @@ private fun MotPickerCell(
   }
 }
 
-private fun defaultTripYearRange(): IntRange {
-  val current = LocalDate.now().year
-  return (current - 5)..(current + 10)
-}
-
 private fun isDateInRange(date: LocalDate, minDate: LocalDate?, maxDate: LocalDate?): Boolean {
-  if (minDate != null && date.isBefore(minDate)) return false
-  if (maxDate != null && date.isAfter(maxDate)) return false
-  return true
+  val (min, max) = resolveMotDocumentDateBounds(minDate, maxDate)
+  return isDateInSelectableRange(date, min, max)
 }
 
 private fun isMonthInRange(

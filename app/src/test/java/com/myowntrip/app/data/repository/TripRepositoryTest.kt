@@ -26,7 +26,7 @@ class TripRepositoryTest {
   fun setup() {
     val context = ApplicationProvider.getApplicationContext<Context>()
     db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-    repository = TripRepository(db.tripDao(), db.dayDao())
+    repository = TripRepository(context, db.tripDao(), db.dayDao())
   }
 
   @After
@@ -48,6 +48,26 @@ class TripRepositoryTest {
     val days = repository.observeDays(tripId).first()
     assertEquals(3, days.size)
     assertEquals(1, days.first().dayNumber)
+  }
+
+  @Test
+  fun updateTrip_resyncsDaysWhenDatesChange() = runTest {
+    val tripId = repository.createTrip(
+      name = "Lisbon",
+      destination = "Portugal",
+      startDate = LocalDate.of(2026, 6, 1),
+      endDate = LocalDate.of(2026, 6, 3),
+    )
+    repository.updateTrip(
+      tripId = tripId,
+      name = "Lisbon",
+      destination = "Portugal",
+      startDate = LocalDate.of(2026, 6, 1),
+      endDate = LocalDate.of(2026, 6, 5),
+    )
+    val days = repository.observeDays(tripId).first()
+    assertEquals(5, days.size)
+    assertEquals(LocalDate.of(2026, 6, 5), days.last().date)
   }
 
   @Test

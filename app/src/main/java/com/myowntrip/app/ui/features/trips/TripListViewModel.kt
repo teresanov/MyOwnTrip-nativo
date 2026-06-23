@@ -98,4 +98,24 @@ class TripListViewModel @Inject constructor(
       onDone()
     }
   }
+
+  fun archiveTrip(tripId: String, onArchived: (String) -> Unit) {
+    viewModelScope.launch {
+      val trip = tripRepository.getTrip(tripId) ?: return@launch
+      tripRepository.archiveTrip(tripId)
+      onArchived(trip.name)
+    }
+  }
+
+  fun unarchiveTrip(tripId: String) {
+    viewModelScope.launch {
+      tripRepository.unarchiveTrip(tripId)
+    }
+  }
+
+  fun deleteTrip(tripId: String) {
+    viewModelScope.launch {
+      tripRepository.deleteTrip(tripId)
+    }
+  }
 }

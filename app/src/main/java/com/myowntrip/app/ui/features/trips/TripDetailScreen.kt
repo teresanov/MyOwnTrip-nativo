@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +25,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Tab
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
@@ -62,6 +66,7 @@ private val tripDetailTabs = listOf("Wallet", "Plan", "Diario", "Gastos", "Sitio
 fun TripDetailScreen(
   tripId: String,
   onBack: () -> Unit,
+  onEditTrip: () -> Unit,
   onAddWallet: () -> Unit,
   onImportWallet: () -> Unit,
   onAddJournal: (dayId: String) -> Unit,
@@ -108,6 +113,11 @@ fun TripDetailScreen(
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+          }
+        },
+        actions = {
+          MOTIconButton(onClick = onEditTrip) {
+            Icon(Icons.Default.Edit, contentDescription = "Editar viaje")
           }
         },
       )
@@ -163,16 +173,41 @@ fun TripDetailScreen(
         }
       }
       when (tabIndex) {
-        0 -> WalletScreen(
-          trip = state.trip,
-          entries = state.walletEntries,
-          onAddEntry = onAddWallet,
-          onImportEntry = onImportWallet,
-          onLoadDebugSamples = viewModel::loadDebugWalletSamples,
-          onEntryClick = onWalletEntryClick,
-          onDeleteEntry = viewModel::deleteWalletEntry,
-          embeddedInTrip = true,
-        )
+        0 -> {
+          val archiveEntry: (String) -> Unit = { entryId ->
+            viewModel.archiveWalletEntry(entryId) { title ->
+              scope.launch {
+                val result = snackbarHostState.showSnackbar(
+                  message = "«$title» archivado",
+                  actionLabel = "Deshacer",
+                  duration = SnackbarDuration.Short,
+                )
+                if (result == SnackbarResult.ActionPerformed) {
+                  viewModel.unarchiveWalletEntry(entryId)
+                }
+              }
+            }
+          }
+          WalletScreen(
+            trip = state.trip,
+            entries = state.walletEntries,
+            filterPhase = state.walletFilterPhase,
+            onFilterPhaseChange = viewModel::onWalletFilterPhaseChange,
+            onAddEntry = onAddWallet,
+            onImportEntry = onImportWallet,
+            onLoadDebugSamples = viewModel::loadDebugWalletSamples,
+            onEntryClick = onWalletEntryClick,
+            onArchiveEntry = archiveEntry,
+            onUnarchiveEntry = viewModel::unarchiveWalletEntry,
+            onDeleteEntry = { entryId ->
+              viewModel.deleteWalletEntry(entryId)
+              scope.launch {
+                snackbarHostState.showSnackbar("Documento eliminado")
+              }
+            },
+            embeddedInTrip = true,
+          )
+        }
         1 -> TripPlanTab(
           days = state.days,
           planBlocks = state.planBlocks,
@@ -194,7 +229,7 @@ fun TripDetailScreen(
 
   if (state.showWalletLinkDialog) {
     WalletLinkDialog(
-      walletEntries = state.walletEntries,
+      walletEntries = state.walletEntries.filter { !it.isArchived },
       selectedEntryId = state.pendingWalletEntryId,
       onSelectEntry = viewModel::onPendingWalletEntrySelected,
       onDismiss = viewModel::dismissWalletLinkDialog,

@@ -3,12 +3,18 @@ package com.myowntrip.app.ui.components.home
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,13 +28,17 @@ import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.components.MotCardStyle
 import com.myowntrip.app.ui.components.MotStackedCard
+import com.myowntrip.app.ui.components.HomeOnlyPastPlanStackedCard
 import com.myowntrip.app.ui.components.PreviewCityCovers
 import com.myowntrip.app.ui.components.TripHeroCard
 import com.myowntrip.app.ui.components.TripListCard
+import com.myowntrip.app.ui.components.home.SwipeableTripListRow
 import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.TripSortOrder
 import com.myowntrip.app.ui.features.trips.previewHomeTrips
+import com.myowntrip.app.ui.features.trips.previewHomeTripsOnlyPast
 import com.myowntrip.app.ui.features.trips.sortTripsForHome
+import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.LocalDate
@@ -53,6 +63,8 @@ data class HomeTripsContentState(
   val searchPlaceholder: String = "Buscar viajes",
   val greetingOverride: String? = null,
   val usePreviewCityCovers: Boolean = false,
+  /** Cap 1b (`313:501`): viajes en BD pero ninguno en curso/próximo. */
+  val onlyPastMode: Boolean = false,
 )
 
 fun LazyListScope.homeTripsListItems(
@@ -62,23 +74,35 @@ fun LazyListScope.homeTripsListItems(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   onSortOrderChange: (TripSortOrder) -> Unit,
   onTripClick: (String) -> Unit,
+  onArchiveTrip: (String) -> Unit = {},
+  onUnarchiveTrip: (String) -> Unit = {},
+  onDeleteTripRequest: (String) -> Unit = {},
   onClearAllData: (() -> Unit)? = null,
+  onCreateTrip: (() -> Unit)? = null,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
 ) {
   val horizontal = Modifier.padding(horizontal = MOTSpacing.screenHorizontal)
 
   item {
-    HomeHeroHeader(
-      featuredTrip = state.featuredTrip,
-      tripCount = state.visibleTripCount,
-      totalTripCount = state.totalTripCount,
-      filterPhase = state.filterPhase,
-      today = state.today,
-      userFirstName = state.userFirstName,
-      searchQuery = state.searchQuery,
-      greetingOverride = state.greetingOverride,
-      modifier = horizontal,
-    )
+    if (state.onlyPastMode) {
+      HomeOnlyPastHero(
+        userFirstName = state.userFirstName,
+        greetingOverride = state.greetingOverride,
+        modifier = horizontal,
+      )
+    } else {
+      HomeHeroHeader(
+        featuredTrip = state.featuredTrip,
+        tripCount = state.visibleTripCount,
+        totalTripCount = state.totalTripCount,
+        filterPhase = state.filterPhase,
+        today = state.today,
+        userFirstName = state.userFirstName,
+        searchQuery = state.searchQuery,
+        greetingOverride = state.greetingOverride,
+        modifier = horizontal,
+      )
+    }
   }
   item {
     HomeSearchBar(
@@ -96,7 +120,22 @@ fun LazyListScope.homeTripsListItems(
       modifier = horizontal,
     )
   }
-  if (state.featuredTrip != null) {
+  if (state.onlyPastMode && onCreateTrip != null) {
+    item {
+      HomeOnlyPastPlanStackedCard(modifier = horizontal)
+    }
+    item {
+      MOTButton(
+        onClick = onCreateTrip,
+        modifier = horizontal.fillMaxWidth(),
+      ) {
+        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+        Spacer(Modifier.width(MOTSpacing.componentSm))
+        Text("Crear viaje")
+      }
+    }
+  }
+  if (!state.onlyPastMode && state.featuredTrip != null) {
     item {
       TripHeroCard(
         trip = state.featuredTrip,
@@ -119,17 +158,25 @@ fun LazyListScope.homeTripsListItems(
   if (state.otherTrips.isNotEmpty()) {
     item {
       Text(
-        text = "Más viajes",
+        text = when {
+          state.filterPhase == TripFilterPhase.Archived -> "Archivados"
+          state.onlyPastMode -> "Viajes anteriores"
+          else -> "Más viajes"
+        },
         style = MaterialTheme.typography.titleLarge,
         modifier = horizontal.padding(vertical = MOTSpacing.componentXs),
       )
     }
     items(state.otherTrips, key = { it.id }) { trip ->
-      TripListCard(
+      SwipeableTripListRow(
         trip = trip,
         today = state.today,
+        showArchivedActions = state.filterPhase == TripFilterPhase.Archived,
         previewCoverRes = previewCoverFor(state, trip.destination),
         onClick = { onTripClick(trip.id) },
+        onArchive = { onArchiveTrip(trip.id) },
+        onUnarchive = { onUnarchiveTrip(trip.id) },
+        onDeleteRequest = { onDeleteTripRequest(trip.id) },
         modifier = horizontal,
       )
     }
@@ -151,7 +198,11 @@ fun HomeTripsScreen(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   onSortOrderChange: (TripSortOrder) -> Unit,
   onTripClick: (String) -> Unit,
+  onArchiveTrip: (String) -> Unit = {},
+  onUnarchiveTrip: (String) -> Unit = {},
+  onDeleteTripRequest: (String) -> Unit = {},
   onClearAllData: (() -> Unit)? = null,
+  onCreateTrip: (() -> Unit)? = null,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
   modifier: Modifier = Modifier,
   contentPadding: PaddingValues = PaddingValues(bottom = MOTSpacing.screenContentBottomWithFab),
@@ -172,8 +223,12 @@ fun HomeTripsScreen(
         onFilterPhaseChange = onFilterPhaseChange,
         onSortOrderChange = onSortOrderChange,
         onTripClick = onTripClick,
+        onArchiveTrip = onArchiveTrip,
+        onUnarchiveTrip = onUnarchiveTrip,
+        onDeleteTripRequest = onDeleteTripRequest,
         filterMenuPresentation = filterMenuPresentation,
         onClearAllData = onClearAllData,
+        onCreateTrip = onCreateTrip,
       )
     }
     HomeFilterMenuOverlay(
@@ -189,6 +244,43 @@ fun HomeTripsScreen(
           clear()
         }
       },
+    )
+  }
+}
+
+@Preview(name = "Home cap 1b — solo pasados (313:501)", showBackground = true, widthDp = 360, heightDp = 900)
+@Composable
+fun HomeOnlyPastPreview() {
+  val today = LocalDate.of(2026, 6, 17)
+  val sorted = sortTripsForHome(previewHomeTripsOnlyPast(), today)
+  var searchQuery by remember { mutableStateOf("") }
+  var filterMenuExpanded by remember { mutableStateOf(false) }
+  var filterPhase by remember { mutableStateOf(TripFilterPhase.All) }
+  var sortOrder by remember { mutableStateOf(TripSortOrder.DateUpcoming) }
+  MyOwnTripTheme {
+    HomeTripsScreen(
+      state = HomeTripsContentState(
+        featuredTrip = null,
+        otherTrips = sorted,
+        visibleTripCount = sorted.size,
+        totalTripCount = sorted.size,
+        searchQuery = searchQuery,
+        filterPhase = filterPhase,
+        sortOrder = sortOrder,
+        filterMenuExpanded = filterMenuExpanded,
+        today = today,
+        userFirstName = "Raquel",
+        searchPlaceholder = "Buscar viajes",
+        greetingOverride = "Buenas tardes",
+        usePreviewCityCovers = true,
+        onlyPastMode = true,
+      ),
+      onSearchQueryChange = { searchQuery = it },
+      onFilterMenuExpandedChange = { filterMenuExpanded = it },
+      onFilterPhaseChange = { filterPhase = it },
+      onSortOrderChange = { sortOrder = it },
+      onTripClick = {},
+      onCreateTrip = {},
     )
   }
 }

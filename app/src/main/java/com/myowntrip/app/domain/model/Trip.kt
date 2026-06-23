@@ -10,4 +10,7 @@ data class Trip(
   val endDate: LocalDate,
   val coverPhoto: String? = null,
   val createdAt: Long,
-)
+  val archivedAt: Long? = null,
+) {
+  val isArchived: Boolean get() = archivedAt != null
+}

@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.ui.components.date.MotTimeTextField
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
@@ -85,11 +86,9 @@ fun AddPlanActivitySheet(
           Text(if (linkedEntry != null) "Cambiar" else "Elegir")
         }
       }
-      OutlinedTextField(
+      MotTimeTextField(
         value = time,
         onValueChange = onTimeChange,
-        label = { Text("Hora (opcional)") },
-        placeholder = { Text("Ej. 19:30") },
         modifier = Modifier.fillMaxWidth(),
       )
       MOTButton(onClick = onConfirm, modifier = Modifier.fillMaxWidth()) {

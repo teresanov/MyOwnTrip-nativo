@@ -26,4 +26,7 @@ interface DayDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(day: DayEntity)
+
+  @Query("DELETE FROM days WHERE tripId = :tripId")
+  suspend fun deleteByTrip(tripId: String)
 }

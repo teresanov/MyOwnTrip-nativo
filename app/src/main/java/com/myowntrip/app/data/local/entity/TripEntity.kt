@@ -13,4 +13,5 @@ data class TripEntity(
   val endDate: LocalDate,
   val coverPhoto: String?,
   val createdAt: Long,
+  val archivedAt: Long?,
 )

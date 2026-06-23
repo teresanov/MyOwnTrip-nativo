@@ -21,6 +21,9 @@ interface WalletEntryDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(entry: WalletEntryEntity)
 
+  @Query("SELECT * FROM wallet_entries WHERE tripId = :tripId ORDER BY date DESC, title")
+  suspend fun getByTrip(tripId: String): List<WalletEntryEntity>
+
   @Query("DELETE FROM wallet_entries WHERE id = :id")
   suspend fun deleteById(id: String)
 }

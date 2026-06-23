@@ -8,6 +8,7 @@ enum class TripFilterPhase {
   Current,
   Upcoming,
   Past,
+  Archived,
 }
 
 enum class TripSortOrder {
@@ -25,6 +26,10 @@ fun applyHomeTripFilters(
 ): List<Trip> {
   val query = searchQuery.trim()
   var result = trips
+  result = when (filterPhase) {
+    TripFilterPhase.Archived -> result.filter { it.isArchived }
+    else -> result.filter { !it.isArchived }
+  }
   if (query.isNotEmpty()) {
     val normalized = query.lowercase()
     result = result.filter { trip ->
@@ -34,6 +39,7 @@ fun applyHomeTripFilters(
   }
   result = when (filterPhase) {
     TripFilterPhase.All -> result
+    TripFilterPhase.Archived -> result
     TripFilterPhase.Current -> result.filter { it.homePhase(today) == HomeTripPhase.Current }
     TripFilterPhase.Upcoming -> result.filter { it.homePhase(today) == HomeTripPhase.Upcoming }
     TripFilterPhase.Past -> result.filter { it.homePhase(today) == HomeTripPhase.Past }
@@ -53,6 +59,17 @@ internal fun Trip.homePhase(today: LocalDate = LocalDate.now()): HomeTripPhase =
   else -> HomeTripPhase.Past
 }
 
+/** `true` si hay al menos un viaje en curso o próximo (cap 1b cuando es `false` y hay viajes). */
+fun hasAnyCurrentOrUpcomingTrips(
+  trips: List<Trip>,
+  today: LocalDate = LocalDate.now(),
+): Boolean = trips.any { trip ->
+  !trip.isArchived && run {
+    val phase = trip.homePhase(today)
+    phase == HomeTripPhase.Current || phase == HomeTripPhase.Upcoming
+  }
+}
+
 internal fun sortTripsForHome(trips: List<Trip>, today: LocalDate = LocalDate.now()): List<Trip> =
   trips.sortedWith(
     compareBy<Trip> { trip ->
@@ -70,6 +87,34 @@ internal fun sortTripsForHome(trips: List<Trip>, today: LocalDate = LocalDate.no
     },
   )
 
+/** Datos de preview cap 1b · solo pasados (`313:501`). */
+fun previewHomeTripsOnlyPast(): List<Trip> = listOf(
+  Trip(
+    id = "1",
+    name = "Barcelona fin de semana",
+    destination = "Barcelona",
+    startDate = LocalDate.of(2026, 3, 20),
+    endDate = LocalDate.of(2026, 3, 22),
+    createdAt = 0L,
+  ),
+  Trip(
+    id = "2",
+    name = "Lisboa en abril",
+    destination = "Lisboa",
+    startDate = LocalDate.of(2026, 4, 12),
+    endDate = LocalDate.of(2026, 4, 18),
+    createdAt = 0L,
+  ),
+  Trip(
+    id = "3",
+    name = "Tokio otoño",
+    destination = "Tokio",
+    startDate = LocalDate.of(2025, 11, 1),
+    endDate = LocalDate.of(2025, 11, 10),
+    createdAt = 0L,
+  ),
+)
+
 /** Datos de preview alineados al design-file Home (`205:1018`, `228:8161`). */
 fun previewHomeTrips(): List<Trip> = listOf(
   Trip(
@@ -84,8 +129,8 @@ fun previewHomeTrips(): List<Trip> = listOf(
     id = "2",
     name = "Barcelona fin de semana",
     destination = "Barcelona",
-    startDate = LocalDate.of(2026, 6, 20),
-    endDate = LocalDate.of(2026, 6, 22),
+    startDate = LocalDate.of(2026, 7, 4),
+    endDate = LocalDate.of(2026, 7, 6),
     createdAt = 0L,
   ),
   Trip(

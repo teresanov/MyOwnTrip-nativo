@@ -32,7 +32,7 @@ endobj
 endobj
 6 0 obj
 <<
-/Author (anonymous) /CreationDate (D:20260622165056+02'00') /Creator (anonymous) /Keywords () /ModDate (D:20260622165056+02'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+/Author (anonymous) /CreationDate (D:20260623162735+02'00') /Creator (anonymous) /Keywords () /ModDate (D:20260623162735+02'00') /Producer (ReportLab PDF Library - \(opensource\)) 
   /Subject (unspecified) /Title (untitled) /Trapped /False
 >>
 endobj
@@ -43,7 +43,7 @@ endobj
 endobj
 8 0 obj
 <<
-/Length 5012
+/Length 5010
 >>
 stream
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
@@ -148,13 +148,13 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 65.02362 438.8661 Tm (Check-in) Tj T* ET
 BT /F2 11 Tf 13.2 TL ET
 .101961 .109804 .117647 rg
-BT 1 0 0 1 65.02362 424.8661 Tm (14 jun 2026 desde las 15:00) Tj T* ET
+BT 1 0 0 1 65.02362 424.8661 Tm (4 jul 2026 desde las 15:00) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .286275 .270588 .309804 rg
 BT 1 0 0 1 297.6378 438.8661 Tm (Check-out) Tj T* ET
 BT /F2 11 Tf 13.2 TL ET
 .101961 .109804 .117647 rg
-BT 1 0 0 1 297.6378 424.8661 Tm (16 jun 2026 hasta las 11:00) Tj T* ET
+BT 1 0 0 1 297.6378 424.8661 Tm (6 jul 2026 hasta las 11:00) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .286275 .270588 .309804 rg
 BT 1 0 0 1 65.02362 404.8661 Tm (Habitaci\363n) Tj T* ET
@@ -209,7 +209,7 @@ xref
 trailer
 <<
 /ID 
-[<e1403c1c815a327f8c7ecb05d56eebe4><e1403c1c815a327f8c7ecb05d56eebe4>]
+[<792f5ad15eaebc89e3e2b20542a26a24><792f5ad15eaebc89e3e2b20542a26a24>]
 % ReportLab generated PDF document -- digest (opensource)
 
 /Info 6 0 R
@@ -217,5 +217,5 @@ trailer
 /Size 9
 >>
 startxref
-5975
+5973
 %%EOF

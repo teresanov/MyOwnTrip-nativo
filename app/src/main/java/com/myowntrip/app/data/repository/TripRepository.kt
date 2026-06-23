@@ -1,11 +1,13 @@
 package com.myowntrip.app.data.repository
 
+import android.content.Context
 import com.myowntrip.app.data.local.dao.DayDao
 import com.myowntrip.app.data.local.dao.TripDao
 import com.myowntrip.app.data.local.toDomain
 import com.myowntrip.app.data.local.toEntity
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Trip
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.myowntrip.app.ui.features.trips.resolveDefaultJournalDay
@@ -17,6 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TripRepository @Inject constructor(
+  @ApplicationContext private val context: Context,
   private val tripDao: TripDao,
   private val dayDao: DayDao,
 ) {
@@ -34,6 +37,9 @@ class TripRepository @Inject constructor(
 
   suspend fun getDaysForTrip(tripId: String): List<Day> =
     dayDao.getByTrip(tripId).map { it.toDomain() }
+
+  suspend fun getTrip(tripId: String): Trip? =
+    tripDao.getById(tripId)?.toDomain()
 
   suspend fun defaultJournalDayId(tripId: String, today: LocalDate = LocalDate.now()): String? {
     val trip = tripDao.getById(tripId)?.toDomain() ?: return null
@@ -63,20 +69,65 @@ class TripRepository @Inject constructor(
     return tripId
   }
 
+  suspend fun updateTrip(
+    tripId: String,
+    name: String,
+    destination: String,
+    startDate: LocalDate,
+    endDate: LocalDate,
+  ) {
+    val existing = tripDao.getById(tripId)?.toDomain() ?: return
+    val updated = existing.copy(
+      name = name.trim(),
+      destination = destination.trim(),
+      startDate = startDate,
+      endDate = endDate,
+    )
+    tripDao.insert(updated.toEntity())
+    syncDays(updated)
+  }
+
+  suspend fun deleteTrip(tripId: String) {
+    tripDao.deleteById(tripId)
+    context.filesDir.resolve("trips/$tripId").deleteRecursively()
+  }
+
+  suspend fun archiveTrip(tripId: String) {
+    val existing = tripDao.getById(tripId)?.toDomain() ?: return
+    tripDao.insert(existing.copy(archivedAt = System.currentTimeMillis()).toEntity())
+  }
+
+  suspend fun unarchiveTrip(tripId: String) {
+    val existing = tripDao.getById(tripId)?.toDomain() ?: return
+    tripDao.insert(existing.copy(archivedAt = null).toEntity())
+  }
+
   private suspend fun generateDays(trip: Trip) {
+    val days = buildDaysForTrip(trip, existingDays = emptyList())
+    dayDao.insertAll(days.map { it.toEntity() })
+  }
+
+  private suspend fun syncDays(trip: Trip) {
+    val existing = dayDao.getByTrip(trip.id).map { it.toDomain() }
+    val days = buildDaysForTrip(trip, existingDays = existing)
+    dayDao.deleteByTrip(trip.id)
+    dayDao.insertAll(days.map { it.toEntity() })
+  }
+
+  private fun buildDaysForTrip(trip: Trip, existingDays: List<Day>): List<Day> {
     val spanDays = ChronoUnit.DAYS.between(trip.startDate, trip.endDate).toInt() + 1
     val totalDays = spanDays.coerceIn(1, MAX_TRIP_DAYS)
-    val days = (0 until totalDays).map { offset ->
-      val date = trip.startDate.plusDays(offset.toLong())
+    val sortedExisting = existingDays.sortedBy { it.dayNumber }
+    return (0 until totalDays).map { offset ->
+      val previous = sortedExisting.getOrNull(offset)
       Day(
-        id = UUID.randomUUID().toString(),
+        id = previous?.id ?: UUID.randomUUID().toString(),
         tripId = trip.id,
-        date = date,
+        date = trip.startDate.plusDays(offset.toLong()),
         dayNumber = offset + 1,
-        title = null,
+        title = previous?.title,
       )
     }
-    dayDao.insertAll(days.map { it.toEntity() })
   }
 
   companion object {

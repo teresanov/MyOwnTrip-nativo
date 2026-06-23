@@ -28,7 +28,7 @@ for (const key of Object.keys(inst.componentProperties)) {
   if (key.startsWith('Countdown text')) props[key] = 'Sale en 3 días';
   if (key.startsWith('Show countdown')) props[key] = true;
   if (key.startsWith('Title text')) props[key] = 'Barcelona fin de semana';
-  if (key.startsWith('Meta text')) props[key] = '20 jun 2026 – 22 jun 2026 · 3 días';
+  if (key.startsWith('Meta text')) props[key] = '4 jul 2026 – 6 jul 2026 · 3 días';
   if (key.startsWith('CTA label')) props[key] = 'Abrir cuaderno';
 }
 inst.setProperties(props);

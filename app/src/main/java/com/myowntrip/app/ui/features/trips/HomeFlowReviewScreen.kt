@@ -32,7 +32,7 @@ import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.LocalDate
 
 /**
- * Revisión visual del flow Home (Figma `205:813`) — caps 1, 2 y 3 apilados.
+ * Revisión visual del flow Home (Figma `205:813`) — caps 1, 1b, 2 y 3 apilados.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,7 +48,7 @@ fun HomeFlowReviewScreen(
     modifier = modifier,
     topBar = {
       TopAppBar(
-        title = { Text("Home · 3 caps") },
+        title = { Text("Home · 4 caps") },
         navigationIcon = {
           IconButton(onClick = onBack) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
@@ -70,6 +70,37 @@ fun HomeFlowReviewScreen(
         onCreateTrip = {},
         userFirstName = "Raquel",
         modifier = Modifier.fillMaxWidth(),
+      )
+
+      HorizontalDivider(modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal))
+
+      FlowCapLabel("Cap 1b · Home solo pasados (313:501)")
+      HomeTripsScreen(
+        state = HomeTripsContentState(
+          featuredTrip = null,
+          otherTrips = sortTripsForHome(previewHomeTripsOnlyPast(), today),
+          visibleTripCount = 3,
+          totalTripCount = 3,
+          searchQuery = "",
+          filterPhase = TripFilterPhase.All,
+          sortOrder = TripSortOrder.DateUpcoming,
+          filterMenuExpanded = false,
+          today = today,
+          userFirstName = "Raquel",
+          searchPlaceholder = "Buscar viajes",
+          greetingOverride = "Buenas tardes",
+          usePreviewCityCovers = true,
+          onlyPastMode = true,
+        ),
+        onSearchQueryChange = {},
+        onFilterMenuExpandedChange = {},
+        onFilterPhaseChange = {},
+        onSortOrderChange = {},
+        onTripClick = {},
+        onCreateTrip = {},
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(900.dp),
       )
 
       HorizontalDivider(modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal))
@@ -144,7 +175,7 @@ private fun FlowCapLabel(text: String) {
   )
 }
 
-@Preview(name = "Home flow · 3 caps (Figma 205:813)", showBackground = true, widthDp = 360, heightDp = 3200)
+@Preview(name = "Home flow · 4 caps (Figma 205:813)", showBackground = true, widthDp = 360, heightDp = 4000)
 @Composable
 fun HomeFlowReviewPreview() {
   MyOwnTripTheme {

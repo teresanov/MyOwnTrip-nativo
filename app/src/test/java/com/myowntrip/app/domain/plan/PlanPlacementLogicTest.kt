@@ -14,13 +14,13 @@ import java.time.LocalTime
 class PlanPlacementLogicTest {
 
   private val days = listOf(
-    Day("d1", "trip", LocalDate.of(2026, 6, 14), 1, null),
-    Day("d2", "trip", LocalDate.of(2026, 6, 15), 2, null),
+    Day("d1", "trip", LocalDate.of(2026, 7, 4), 1, null),
+    Day("d2", "trip", LocalDate.of(2026, 7, 5), 2, null),
   )
 
   @Test
   fun suggest_withDateAndTime_matchesDay() {
-    val entry = sampleEntry(date = LocalDate.of(2026, 6, 15), time = LocalTime.of(20, 0))
+    val entry = sampleEntry(date = LocalDate.of(2026, 7, 5), time = LocalTime.of(20, 0))
     val suggestion = PlanPlacementLogic.suggest(entry, days)
 
     assertTrue(suggestion.canPlace)

@@ -16,7 +16,7 @@ class WalletDocumentParserTest {
       BOARDING PASS
       IB 3254
       Madrid - Barcelona
-      2026-06-14
+      2026-07-04
       Departure 09:15
       Gate B12
     """.trimIndent()
@@ -29,15 +29,15 @@ class WalletDocumentParserTest {
 
     assertEquals(EntryType.FLIGHT, result.type)
     assertEquals("IB 3254 · Madrid → Barcelona", result.title)
-    assertEquals(LocalDate.of(2026, 6, 14), result.date)
+    assertEquals(LocalDate.of(2026, 7, 4), result.date)
     assertEquals(LocalTime.of(9, 15), result.time)
     assertFalse(result.parseFailed)
   }
 
   @Test
   fun findDate_spanishMonth() {
-    val date = WalletDocumentParser.findDate("check-in 15:00 14 jun 2026")
-    assertEquals(LocalDate.of(2026, 6, 14), date)
+    val date = WalletDocumentParser.findDate("check-in 15:00 4 jul 2026")
+    assertEquals(LocalDate.of(2026, 7, 4), date)
   }
 
   @Test
@@ -45,11 +45,11 @@ class WalletDocumentParserTest {
     val result = WalletDocumentParser.parse(
       fileName = "hotel-casa-bonay-booking.pdf",
       mimeType = "application/pdf",
-      contentText = "Booking confirmation check-in 15:00 14 jun 2026",
+      contentText = "Booking confirmation check-in 15:00 4 jul 2026",
     )
 
     assertEquals(EntryType.HOTEL, result.type)
-    assertEquals(LocalDate.of(2026, 6, 14), result.date)
+    assertEquals(LocalDate.of(2026, 7, 4), result.date)
     assertEquals(LocalTime.of(15, 0), result.time)
     assertFalse(result.parseFailed)
   }
@@ -63,8 +63,8 @@ class WalletDocumentParserTest {
       08010 Barcelona, España
       Huésped principal: María García López
       Confirmation number: 4829174630
-      Check-in: 14 jun 2026 desde las 15:00
-      Check-out: 16 jun 2026 hasta las 11:00
+      Check-in: 4 jul 2026 desde las 15:00
+      Check-out: 6 jul 2026 hasta las 11:00
       Habitación: Superior Double
       Hotel: Casa Bonay Barcelona
       Booking confirmation
@@ -78,7 +78,7 @@ class WalletDocumentParserTest {
 
     assertEquals(EntryType.HOTEL, result.type)
     assertEquals("Casa Bonay Barcelona", result.title)
-    assertEquals(LocalDate.of(2026, 6, 14), result.date)
+    assertEquals(LocalDate.of(2026, 7, 4), result.date)
     assertEquals(LocalTime.of(15, 0), result.time)
     assertTrue(result.notes?.contains("Check-in") == true)
     assertFalse(result.parseFailed)
@@ -89,12 +89,12 @@ class WalletDocumentParserTest {
     val result = WalletDocumentParser.parse(
       fileName = "ave-03142.pdf",
       mimeType = "application/pdf",
-      contentText = "RENFE AVE 03142 Madrid - Barcelona 16/06/2026 18:30",
+      contentText = "RENFE AVE 03142 Madrid - Barcelona 06/07/2026 18:30",
     )
 
     assertEquals(EntryType.TRANSPORT, result.type)
     assertTrue(result.title.contains("AVE 03142"))
-    assertEquals(LocalDate.of(2026, 6, 16), result.date)
+    assertEquals(LocalDate.of(2026, 7, 6), result.date)
     assertEquals(LocalTime.of(18, 30), result.time)
   }
 
@@ -115,11 +115,11 @@ class WalletDocumentParserTest {
     val result = WalletDocumentParser.parse(
       fileName = "entrada-sagrada-familia.pdf",
       mimeType = "application/pdf",
-      contentText = "Ticket event: Sagrada Familia 15 jun 2026 11:00",
+      contentText = "Ticket event: Sagrada Familia 5 jul 2026 11:00",
     )
 
     assertEquals(EntryType.ACTIVITY, result.type)
-    assertEquals(LocalDate.of(2026, 6, 15), result.date)
+    assertEquals(LocalDate.of(2026, 7, 5), result.date)
     assertEquals(LocalTime.of(11, 0), result.time)
   }
 }

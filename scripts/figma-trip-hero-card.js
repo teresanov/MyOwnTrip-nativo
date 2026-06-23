@@ -131,7 +131,7 @@ async function buildVariant(styleName, bgMc) {
   const meta = figma.createText();
   meta.name = 'Meta';
   meta.fontName = { family: 'Inter', style: 'Regular' };
-  meta.characters = '20 jun 2026 – 22 jun 2026 · 3 días';
+  meta.characters = '4 jul 2026 – 6 jul 2026 · 3 días';
   meta.fontSize = 14;
   meta.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1, a: 0.88 } }];
   meta.x = 16;
@@ -166,7 +166,7 @@ set.description =
 set.addComponentProperty('Countdown text', 'TEXT', 'Sale en 3 días');
 set.addComponentProperty('Show countdown', 'BOOLEAN', true);
 set.addComponentProperty('Title text', 'TEXT', 'Barcelona fin de semana');
-set.addComponentProperty('Meta text', 'TEXT', '20 jun 2026 – 22 jun 2026 · 3 días');
+set.addComponentProperty('Meta text', 'TEXT', '4 jul 2026 – 6 jul 2026 · 3 días');
 
 function bindTextProps(variant) {
   const defs = set.componentPropertyDefinitions;

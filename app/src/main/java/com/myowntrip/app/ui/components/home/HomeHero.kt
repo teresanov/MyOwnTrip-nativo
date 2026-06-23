@@ -104,6 +104,21 @@ fun HomeHeroHeader(
   )
 }
 
+/** Cap 1b · Home solo pasados — design-file `313:501`. */
+@Composable
+fun HomeOnlyPastHero(
+  userFirstName: String? = null,
+  greetingOverride: String? = null,
+  modifier: Modifier = Modifier,
+) {
+  HomePageHero(
+    eyebrow = homeTripsEyebrow(userFirstName, greetingOverride ?: timeGreeting()),
+    headline = "No tienes viajes planeados",
+    subheadline = "Crea uno nuevo o revisa tus viajes anteriores.",
+    modifier = modifier,
+  )
+}
+
 /** Cap 1 · Home vacío — design-file `205:816`. */
 @Composable
 fun HomeEmptyState(
@@ -201,6 +216,7 @@ private fun filterPhaseLabel(phase: TripFilterPhase): String = when (phase) {
   TripFilterPhase.Current -> "En curso"
   TripFilterPhase.Upcoming -> "Próximos"
   TripFilterPhase.Past -> "Pasados"
+  TripFilterPhase.Archived -> "Archivados"
 }
 
 private fun tripCountdownLabel(trip: Trip, today: LocalDate): String? {
@@ -219,5 +235,13 @@ private fun tripCountdownLabel(trip: Trip, today: LocalDate): String? {
 fun HomeEmptyStatePreview() {
   MyOwnTripTheme {
     HomeEmptyState(onCreateTrip = {}, userFirstName = "Raquel")
+  }
+}
+
+@Preview(name = "Home cap 1b — solo pasados (313:501)")
+@Composable
+fun HomeOnlyPastHeroPreview() {
+  MyOwnTripTheme {
+    HomeOnlyPastHero(userFirstName = "Raquel", greetingOverride = "Buenas tardes")
   }
 }

@@ -28,7 +28,7 @@
     { "name": "Countdown text", "type": "TEXT", "example": "Sale en 3 días" },
     { "name": "Show countdown", "type": "BOOLEAN", "example": "true si próximo; false en curso o pasado" },
     { "name": "Title text", "type": "TEXT", "example": "Barcelona fin de semana" },
-    { "name": "Meta text", "type": "TEXT", "example": "20 jun 2026 – 22 jun 2026 · 3 días" }
+    { "name": "Meta text", "type": "TEXT", "example": "4 jul 2026 – 6 jul 2026 · 3 días" }
   ],
   "nestedEditable": [
     "Eyebrow label — property Label text en instancia anidada",

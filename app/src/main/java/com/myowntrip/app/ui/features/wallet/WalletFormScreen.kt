@@ -63,6 +63,8 @@ import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.wallet.WalletDocumentParser
 import com.myowntrip.app.ui.components.DocumentAttachmentCard
+import com.myowntrip.app.ui.components.date.MotDateField
+import com.myowntrip.app.ui.components.date.MotTimeField
 import com.myowntrip.app.ui.features.journal.JournalPermission
 import com.myowntrip.app.ui.features.journal.TakePhotoScreen
 import com.myowntrip.app.ui.features.journal.rememberJournalPermissionRequest
@@ -232,8 +234,11 @@ fun WalletFormScreen(
           onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
+          onDateChange = { dirty = true; viewModel.onDateChange(it) },
+          onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
           onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
           onShowNotes = { viewModel.setShowNotesField(true) },
+          onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
           onConfirm = { viewModel.requestConfirm() },
           onCancel = requestExit,
         )
@@ -244,6 +249,7 @@ fun WalletFormScreen(
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
           onShowTypeCorrection = viewModel::setShowTypeCorrection,
+          onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
           onConfirm = { viewModel.requestConfirm() },
           onCancel = requestExit,
         )
@@ -261,8 +267,11 @@ fun WalletFormScreen(
           onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
           onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
           onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
+          onDateChange = { dirty = true; viewModel.onDateChange(it) },
+          onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
           onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
           onShowNotes = { viewModel.setShowNotesField(true) },
+          onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
           onConfirm = { viewModel.requestConfirm() },
           onCancel = requestExit,
         )
@@ -409,8 +418,11 @@ internal fun WalletParseFailStep(
   onTripSelected: (String) -> Unit,
   onTitleChange: (String) -> Unit,
   onTypeChange: (EntryType) -> Unit,
+  onDateChange: (java.time.LocalDate?) -> Unit,
+  onTimeChange: (java.time.LocalTime?) -> Unit,
   onNotesChange: (String) -> Unit,
   onShowNotes: () -> Unit,
+  onSaveOfflineCopyChange: (Boolean) -> Unit,
   onConfirm: () -> Unit,
   onCancel: () -> Unit,
 ) {
@@ -429,8 +441,11 @@ internal fun WalletParseFailStep(
     onTripSelected = onTripSelected,
     onTitleChange = onTitleChange,
     onTypeChange = onTypeChange,
+    onDateChange = onDateChange,
+    onTimeChange = onTimeChange,
     onNotesChange = onNotesChange,
     onShowNotes = onShowNotes,
+    onSaveOfflineCopyChange = onSaveOfflineCopyChange,
     onConfirm = onConfirm,
     onCancel = onCancel,
     showIntro = false,
@@ -445,6 +460,7 @@ internal fun WalletImportReviewStep(
   onTitleChange: (String) -> Unit,
   onTypeChange: (EntryType) -> Unit,
   onShowTypeCorrection: (Boolean) -> Unit,
+  onSaveOfflineCopyChange: (Boolean) -> Unit,
   onConfirm: () -> Unit,
   onCancel: () -> Unit,
 ) {
@@ -515,6 +531,12 @@ internal fun WalletImportReviewStep(
     supportingText = state.titleError?.let { { Text(it) } },
     modifier = Modifier.fillMaxWidth(),
   )
+  if (state.canChooseStorage) {
+    WalletOfflineStorageField(
+      saveOnDevice = state.saveOfflineCopy,
+      onSaveOnDeviceChange = onSaveOfflineCopyChange,
+    )
+  }
   Text(
     text = "Revisa y confirma. Nada se guarda hasta que pulses Confirmar.",
     style = MaterialTheme.typography.bodySmall,
@@ -536,8 +558,11 @@ internal fun WalletManualAddStep(
   onTripSelected: (String) -> Unit,
   onTitleChange: (String) -> Unit,
   onTypeChange: (EntryType) -> Unit,
+  onDateChange: (java.time.LocalDate?) -> Unit,
+  onTimeChange: (java.time.LocalTime?) -> Unit,
   onNotesChange: (String) -> Unit,
   onShowNotes: () -> Unit,
+  onSaveOfflineCopyChange: (Boolean) -> Unit,
   onConfirm: () -> Unit,
   onCancel: () -> Unit = {},
   showIntro: Boolean = true,
@@ -601,6 +626,17 @@ internal fun WalletManualAddStep(
   )
   Text("Tipo", style = MaterialTheme.typography.labelLarge)
   EntryTypeChips(selected = state.type, onSelect = onTypeChange)
+  MotDateField(
+    date = state.date,
+    onDateChange = onDateChange,
+    label = "Fecha (opcional)",
+    modifier = Modifier.fillMaxWidth(),
+  )
+  MotTimeField(
+    time = state.time,
+    onTimeChange = onTimeChange,
+    modifier = Modifier.fillMaxWidth(),
+  )
   Text("Entrada o documento", style = MaterialTheme.typography.labelLarge)
   if (state.attachmentUri != null) {
     WalletAttachmentPreview(
@@ -657,6 +693,12 @@ internal fun WalletManualAddStep(
     MOTTextButton(onClick = onShowNotes) {
       Text("Añadir notas (opcional)")
     }
+  }
+  if (state.canChooseStorage) {
+    WalletOfflineStorageField(
+      saveOnDevice = state.saveOfflineCopy,
+      onSaveOnDeviceChange = onSaveOfflineCopyChange,
+    )
   }
   MOTButton(onClick = onConfirm, modifier = Modifier.fillMaxWidth()) {
     Text("Confirmar")
@@ -726,7 +768,6 @@ internal fun WalletConfirmDialog(
 ) {
   var dayExpanded by remember { mutableStateOf(false) }
   val selectedDay = planTripDays.find { it.id == planDayId }
-  val timeText = remember(planTime) { planTime?.let { PlanPlacementLogic.formatTime(it) }.orEmpty() }
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -738,8 +779,10 @@ internal fun WalletConfirmDialog(
         parsedScheduleLabel(entry)?.let { Text("Cuándo: $it") }
         entry.qrPayload?.let { Text("Código QR guardado para uso sin conexión.") }
         entry.notes?.let { Text("Notas: $it") }
-        if (entry.pdfUri != null || attachmentFileName != null) {
-          Text("Adjunto: se guardará en el dispositivo para uso sin conexión.")
+        when {
+          entry.pdfUri != null -> Text("Adjunto: copia en el teléfono, disponible sin conexión.")
+          entry.linkUrl != null -> Text("Adjunto: enlace a la nube. Requiere conexión para abrir.")
+          attachmentFileName != null -> Text("Adjunto: $attachmentFileName")
         }
         HorizontalDivider(modifier = Modifier.padding(vertical = MOTSpacing.componentSm))
         Text("Plan del viaje", style = MaterialTheme.typography.titleSmall)
@@ -792,15 +835,10 @@ internal fun WalletConfirmDialog(
                 }
               }
             }
-            OutlinedTextField(
-              value = timeText,
-              onValueChange = { raw ->
-                onPlanTimeChange(PlanPlacementLogic.parseTime(raw))
-              },
-              label = { Text("Hora (opcional)") },
-              placeholder = { Text("20:00") },
+            MotTimeField(
+              time = planTime,
+              onTimeChange = onPlanTimeChange,
               modifier = Modifier.fillMaxWidth(),
-              singleLine = true,
             )
           }
         } else {
@@ -874,6 +912,7 @@ private fun WalletFormImportReviewPreview() {
         onTitleChange = {},
         onTypeChange = {},
         onShowTypeCorrection = {},
+        onSaveOfflineCopyChange = {},
         onConfirm = {},
         onCancel = {},
       )
@@ -893,6 +932,7 @@ private fun WalletFormImportReviewHotelPreview() {
         onTitleChange = {},
         onTypeChange = {},
         onShowTypeCorrection = {},
+        onSaveOfflineCopyChange = {},
         onConfirm = {},
         onCancel = {},
       )
@@ -912,6 +952,7 @@ private fun WalletConfirmDialogPreview() {
         onTitleChange = {},
         onTypeChange = {},
         onShowTypeCorrection = {},
+        onSaveOfflineCopyChange = {},
         onConfirm = {},
         onCancel = {},
       )
@@ -940,8 +981,11 @@ private fun WalletParseFailPreview() {
         onTripSelected = {},
         onTitleChange = {},
         onTypeChange = {},
+        onDateChange = {},
+        onTimeChange = {},
         onNotesChange = {},
         onShowNotes = {},
+        onSaveOfflineCopyChange = {},
         onConfirm = {},
         onCancel = {},
       )
@@ -962,8 +1006,11 @@ private fun WalletFormManualPreview() {
         onTripSelected = {},
         onTitleChange = {},
         onTypeChange = {},
+        onDateChange = {},
+        onTimeChange = {},
         onNotesChange = {},
         onShowNotes = {},
+        onSaveOfflineCopyChange = {},
         onConfirm = {},
         onCancel = {},
       )
@@ -983,6 +1030,7 @@ private fun WalletDiscardDialogPreview() {
         onTitleChange = {},
         onTypeChange = {},
         onShowTypeCorrection = {},
+        onSaveOfflineCopyChange = {},
         onConfirm = {},
         onCancel = {},
       )

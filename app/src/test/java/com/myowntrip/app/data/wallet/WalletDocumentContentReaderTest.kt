@@ -24,7 +24,7 @@ class WalletDocumentContentReaderTest {
     val pdf = locateSamplePdf("hotel-casa-bonay-reserva.pdf")
     val text = WalletDocumentContentReader.extractPdfRoughText(pdf)
     assertTrue("Texto extraído: $text", text.contains("Hotel Casa Bonay"))
-    assertTrue(text.contains("14 jun 2026"))
+    assertTrue(text.contains("4 jul 2026"))
     assertTrue(text.contains("Check-in"))
 
     val parsed = WalletDocumentParser.parse(
@@ -34,7 +34,7 @@ class WalletDocumentContentReaderTest {
     )
     assertEquals(EntryType.HOTEL, parsed.type)
     assertEquals("Casa Bonay Barcelona", parsed.title)
-    assertEquals(LocalDate.of(2026, 6, 14), parsed.date)
+    assertEquals(LocalDate.of(2026, 7, 4), parsed.date)
     assertEquals(LocalTime.of(15, 0), parsed.time)
   }
 

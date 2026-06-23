@@ -59,6 +59,10 @@ class CreateTripViewModel @Inject constructor(
   fun onEndDateChange(value: LocalDate) =
     _uiState.update { it.copy(endDate = value, dateError = null) }
 
+  fun onDateRangeChange(start: LocalDate, end: LocalDate) {
+    _uiState.update { it.copy(startDate = start, endDate = end, dateError = null) }
+  }
+
   fun save(onSuccess: (String) -> Unit) {
     if (_uiState.value.isSaving || !validate()) return
     viewModelScope.launch {

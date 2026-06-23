@@ -67,7 +67,7 @@ fun TripPlanTab(
 
   val blocksByDay = planBlocks.groupBy { it.dayId }
   val linkedWalletIds = planBlocks.mapNotNull { it.walletEntryId }.toSet()
-  val unplacedEntries = walletEntries.filter { it.id !in linkedWalletIds }
+  val unplacedEntries = walletEntries.filter { !it.isArchived && it.id !in linkedWalletIds }
 
   LazyColumn(
     modifier = modifier.fillMaxSize(),

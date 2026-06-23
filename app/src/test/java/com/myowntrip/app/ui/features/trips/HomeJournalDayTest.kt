@@ -12,20 +12,20 @@ class HomeJournalDayTest {
     id = "t1",
     name = "Barcelona",
     destination = "Barcelona",
-    startDate = LocalDate.of(2026, 6, 20),
-    endDate = LocalDate.of(2026, 6, 22),
+    startDate = LocalDate.of(2026, 7, 4),
+    endDate = LocalDate.of(2026, 7, 6),
     createdAt = 0L,
   )
 
   private val days = listOf(
-    Day("d1", "t1", LocalDate.of(2026, 6, 20), 1),
-    Day("d2", "t1", LocalDate.of(2026, 6, 21), 2),
-    Day("d3", "t1", LocalDate.of(2026, 6, 22), 3),
+    Day("d1", "t1", LocalDate.of(2026, 7, 4), 1),
+    Day("d2", "t1", LocalDate.of(2026, 7, 5), 2),
+    Day("d3", "t1", LocalDate.of(2026, 7, 6), 3),
   )
 
   @Test
   fun `prefiere el día de hoy si cae en el viaje`() {
-    val result = resolveDefaultJournalDay(trip, days, LocalDate.of(2026, 6, 21))
+    val result = resolveDefaultJournalDay(trip, days, LocalDate.of(2026, 7, 5))
     assertEquals("d2", result?.id)
   }
 

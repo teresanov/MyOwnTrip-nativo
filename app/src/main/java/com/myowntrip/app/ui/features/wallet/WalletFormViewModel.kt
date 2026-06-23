@@ -12,6 +12,8 @@ import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.domain.plan.PlanPlacementLogic
+import com.myowntrip.app.domain.wallet.canChooseCloudStorage
+import com.myowntrip.app.domain.wallet.defaultSaveOfflineCopy
 import com.myowntrip.app.platform.media.JournalMediaStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -61,6 +63,8 @@ data class WalletFormUiState(
   val planTripDays: List<Day> = emptyList(),
   val planCanPlace: Boolean = false,
   val planSummary: String? = null,
+  val saveOfflineCopy: Boolean = true,
+  val canChooseStorage: Boolean = false,
 ) {
   val isImportFlow: Boolean
     get() = !manualEntryMode && (pickAttachmentOnStart || isImport || attachmentUri != null)
@@ -149,11 +153,13 @@ class WalletFormViewModel @Inject constructor(
       )
       _uiState.update { state ->
         val manual = state.manualEntryMode
+        val resolvedType = if (state.title.isBlank()) parsed.type else state.type
+        val canChoose = uri.canChooseCloudStorage()
         state.copy(
           isImport = !manual && !parsed.parseFailed,
           isParsing = false,
           parseFailed = !manual && parsed.parseFailed,
-          type = if (state.title.isBlank()) parsed.type else state.type,
+          type = resolvedType,
           title = state.title.ifBlank { parsed.title },
           date = state.date ?: parsed.date,
           time = state.time ?: parsed.time,
@@ -162,6 +168,8 @@ class WalletFormViewModel @Inject constructor(
           showTypeCorrection = false,
           titleError = null,
           qrPayload = parsed.qrPayload ?: state.qrPayload,
+          canChooseStorage = canChoose,
+          saveOfflineCopy = if (canChoose) resolvedType.defaultSaveOfflineCopy() else true,
         )
       }
     }
@@ -248,7 +256,12 @@ class WalletFormViewModel @Inject constructor(
   }
 
   fun onTripSelected(tripId: String) = _uiState.update { it.copy(tripId = tripId) }
-  fun onTypeChange(type: EntryType) = _uiState.update { it.copy(type = type) }
+  fun onTypeChange(type: EntryType) = _uiState.update { state ->
+    state.copy(
+      type = type,
+      saveOfflineCopy = if (state.canChooseStorage) type.defaultSaveOfflineCopy() else state.saveOfflineCopy,
+    )
+  }
   fun onTitleChange(value: String) = _uiState.update { it.copy(title = value, titleError = null) }
   fun onDateChange(value: LocalDate?) {
     _uiState.update { state ->
@@ -313,6 +326,9 @@ class WalletFormViewModel @Inject constructor(
   fun setShowTypeCorrection(show: Boolean) = _uiState.update { it.copy(showTypeCorrection = show) }
   fun setShowNotesField(show: Boolean) = _uiState.update { it.copy(showNotesField = show) }
 
+  fun onSaveOfflineCopyChange(enabled: Boolean) =
+    _uiState.update { it.copy(saveOfflineCopy = enabled) }
+
   fun requestConfirm() {
     val state = _uiState.value
     if (state.tripId.isBlank()) {
@@ -328,11 +344,12 @@ class WalletFormViewModel @Inject constructor(
       return
     }
     viewModelScope.launch {
-      val storedUri = state.attachmentUri?.let { uri ->
-        walletRepository.copyAttachmentToTripStorage(
+      val storage = state.attachmentUri?.let { uri ->
+        walletRepository.persistWalletDocument(
           tripId = state.tripId,
           sourceUri = uri,
           fileName = state.attachmentFileName ?: "attachment",
+          saveOfflineCopy = state.saveOfflineCopy || !state.canChooseStorage,
         )
       }
       val entry = walletRepository.buildEntry(
@@ -341,14 +358,14 @@ class WalletFormViewModel @Inject constructor(
         title = state.title.trim(),
         date = state.date,
         time = state.time,
-        fileUri = storedUri,
-        linkUrl = null,
+        fileUri = storage?.pdfUri,
+        linkUrl = storage?.linkUrl,
         notes = state.notes.ifBlank { null },
         qrPayload = state.qrPayload,
       )
       val days = tripRepository.getDaysForTrip(state.tripId)
       _uiState.update {
-        it.copy(showConfirm = true, pendingEntry = entry, storedFileUri = storedUri)
+        it.copy(showConfirm = true, pendingEntry = entry, storedFileUri = storage?.pdfUri)
           .withPlanPlacement(entry, days)
       }
     }

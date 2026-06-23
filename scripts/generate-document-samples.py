@@ -25,6 +25,22 @@ EXPENSES_OUT = ROOT / "docs" / "samples" / "expenses"
 WALLET_OUT.mkdir(parents=True, exist_ok=True)
 EXPENSES_OUT.mkdir(parents=True, exist_ok=True)
 
+# Viaje demo «Barcelona fin de semana» — alineado con preview Home / Wallet.
+# Referencia «hoy»: 23 jun 2026 → viaje vie 4 – dom 6 jul (ver TRIP_* abajo).
+TRIP_ISO_START = "2026-07-04"      # vuelo, hotel check-in, coche pick-up
+TRIP_ISO_MID = "2026-07-05"        # Sagrada, teatro, tickets gastos
+TRIP_ISO_END = "2026-07-06"        # AVE vuelta, Prado, check-out hotel
+TRIP_ISO_CAR_RETURN = "2026-07-07" # devolución coche
+
+TRIP_ES_START = "4 jul 2026"
+TRIP_ES_MID = "5 jul 2026"
+TRIP_ES_END = "6 jul 2026"
+TRIP_ES_CAR_RETURN = "7 jul 2026"
+
+TRIP_SLASH_START = "04/07/2026"
+TRIP_SLASH_MID = "05/07/2026"
+TRIP_SLASH_END = "06/07/2026"
+
 INK = colors.HexColor("#1A1C1E")
 MUTED = colors.HexColor("#49454F")
 ACCENT = colors.HexColor("#825513")
@@ -75,7 +91,7 @@ def write_boarding_pass(path: Path) -> None:
         "IB 3254",
         "Madrid - Barcelona",
         "Flight departure",
-        "2026-06-14",
+        TRIP_ISO_START,
         "Departure 09:15",
         "Gate B12",
         "Seat 14A",
@@ -181,8 +197,8 @@ def write_hotel(path: Path) -> None:
     stay_y -= 22
     col1 = margin + 14
     col2 = margin + content_w / 2
-    stay_y = _draw_label_value(c, col1, stay_y, "Check-in", "14 jun 2026 desde las 15:00")
-    _draw_label_value(c, col2, stay_y + 34, "Check-out", "16 jun 2026 hasta las 11:00")
+    stay_y = _draw_label_value(c, col1, stay_y, "Check-in", f"{TRIP_ES_START} desde las 15:00")
+    _draw_label_value(c, col2, stay_y + 34, "Check-out", f"{TRIP_ES_END} hasta las 11:00")
     stay_y = _draw_label_value(c, col1, stay_y, "Habitación", "Superior Double — cama doble")
     _draw_label_value(c, col2, stay_y + 34, "Noches", "2 noches · 2 adultos")
     y -= 122
@@ -234,7 +250,7 @@ def write_theater_ticket(path: Path) -> None:
 
     info_y = ticket_y + ticket_h - 100
     fields = [
-        ("Fecha", "15 jun 2026"),
+        ("Fecha", TRIP_ES_MID),
         ("Hora", "20:00"),
         ("Sector", "Platea"),
         ("Fila / Asiento", "12 / 18"),
@@ -249,7 +265,7 @@ def write_theater_ticket(path: Path) -> None:
         c.drawString(margin + 16, info_y - 14, value)
         info_y -= 36
 
-    qr = qr_image("TEATRO-REAL|FIGARO|2026-06-15|20:00|PLATEA-12-18", box_size=4)
+    qr = qr_image(f"TEATRO-REAL|FIGARO|{TRIP_ISO_MID}|20:00|PLATEA-12-18", box_size=4)
     c.drawImage(qr, margin + ticket_w - 110, ticket_y + 18, width=92, height=92, mask="auto")
 
     c.setFillColor(INK)
@@ -354,13 +370,13 @@ def write_museum_ticket(path: Path) -> None:
 
     col1 = margin + 14
     col2 = margin + content_w / 2
-    box_y = _draw_label_value(c, col1, box_y, "Fecha visita", "16 jun 2026")
+    box_y = _draw_label_value(c, col1, box_y, "Fecha visita", TRIP_ES_END)
     _draw_label_value(c, col2, box_y + 34, "Franja horaria", "10:30")
     box_y = _draw_label_value(c, col1, box_y, "Titular", "María García López")
     _draw_label_value(c, col2, box_y + 34, "N.º entrada", "PRD-2026-9182734")
     y -= 216
 
-    qr = qr_image("PRADO|GEN|2026-06-16|1030|9182734")
+    qr = qr_image(f"PRADO|GEN|{TRIP_ISO_END}|1030|9182734")
     c.drawImage(qr, margin + 14, y - 130, width=110, height=110, mask="auto")
     c.setFont("Helvetica", 10)
     c.setFillColor(MUTED)
@@ -406,13 +422,13 @@ def write_sagrada_familia_ticket(path: Path) -> None:
     c.setFillColor(MUTED)
     c.drawString(margin + 14, inner, "Carrer de Mallorca, 401 · Barcelona")
     inner -= 30
-    inner = _draw_label_value(c, margin + 14, inner, "Fecha", "15 jun 2026")
+    inner = _draw_label_value(c, margin + 14, inner, "Fecha", TRIP_ES_MID)
     inner = _draw_label_value(c, margin + 14, inner, "Hora", "11:00")
     inner = _draw_label_value(c, margin + 14, inner, "Torre", "Natividad · ascensor incluido")
     _draw_label_value(c, margin + 14, inner, "Localizador", "SF-BCN-7721045")
     y -= 190
 
-    qr = qr_image("SAGRADA|NAT|2026-06-15|1100|7721045")
+    qr = qr_image(f"SAGRADA|NAT|{TRIP_ISO_MID}|1100|7721045")
     c.drawImage(qr, width - margin - 120, y - 115, width=100, height=100, mask="auto")
     c.setFont("Helvetica", 9)
     c.setFillColor(MUTED)
@@ -456,7 +472,7 @@ def write_ave_ticket(path: Path) -> None:
     inner_y -= 18
     c.setFont("Helvetica-Bold", 14)
     c.setFillColor(INK)
-    c.drawString(margin + 16, inner_y, "16/06/2026 · 18:30")
+    c.drawString(margin + 16, inner_y, f"{TRIP_SLASH_END} · 18:30")
     inner_y -= 28
     c.setFont("Helvetica-Bold", 20)
     c.drawString(margin + 16, inner_y, "Barcelona-Sants")
@@ -477,7 +493,7 @@ def write_ave_ticket(path: Path) -> None:
     c.drawString(margin + 14, y - 22, "Localizador: RENFE-AV-03142-88421")
     c.drawString(margin + 14, y - 38, "RENFE AVE 03142 Madrid - Barcelona · pickup tarjeta o QR")
 
-    qr = qr_image("RENFE|AVE03142|MAD|BCN|2026-06-16|1830|12C")
+    qr = qr_image(f"RENFE|AVE03142|MAD|BCN|{TRIP_ISO_END}|1830|12C")
     c.drawImage(qr, width - margin - 95, y - 62, width=78, height=78, mask="auto")
 
     _footer_sample(c, width, margin)
@@ -516,8 +532,8 @@ def write_car_rental(path: Path) -> None:
     inner -= 28
     col1 = margin + 14
     col2 = margin + content_w / 2
-    inner = _draw_label_value(c, col1, inner, "Pick-up", "14 jun 2026 · 10:00")
-    _draw_label_value(c, col2, inner + 34, "Devolución", "17 jun 2026 · 10:00")
+    inner = _draw_label_value(c, col1, inner, "Pick-up", f"{TRIP_ES_START} · 10:00")
+    _draw_label_value(c, col2, inner + 34, "Devolución", f"{TRIP_ES_CAR_RETURN} · 10:00")
     inner = _draw_label_value(c, col1, inner, "Oficina recogida", "Aeropuerto Madrid-Barajas T4")
     _draw_label_value(c, col2, inner + 34, "N.º reserva", "EC-7842910")
     inner = _draw_label_value(c, col1, inner, "Conductor", "María García López")
@@ -620,7 +636,7 @@ def write_restaurant_receipt(path: Path) -> None:
         font_sm,
         [
             ("Mesa: 7", "Camarero: 03", False),
-            ("15/06/2026", "14:32", False),
+            (TRIP_SLASH_MID, "14:32", False),
         ],
         28,
         y,
@@ -690,7 +706,7 @@ def write_supermarket_receipt(path: Path) -> None:
         draw,
         font_sm,
         font_sm,
-        [("15/06/2026", "19:45", False), ("Op: 042", "Caja 03", False)],
+        [("21/06/2026", "19:45", False), ("Op: 042", "Caja 03", False)],
         24,
         y,
         width - 48,
@@ -758,7 +774,7 @@ def write_cafe_receipt(path: Path) -> None:
         draw,
         font_sm,
         font_sm,
-        [("15/06/2026", "09:18", False), ("Ticket: 8847", "", False)],
+        [("21/06/2026", "09:18", False), ("Ticket: 8847", "", False)],
         26,
         y,
         width - 52,
@@ -790,7 +806,7 @@ WALLET_SAMPLES = [
     ("teatro-real-las-bodas-de-figaro.pdf", write_theater_ticket),
     ("concierto-mad-cool-arctic-monkeys.pdf", write_concert_ticket),
     ("museo-prado-entrada-general.pdf", write_museum_ticket),
-    ("entrada-sagrada-familia-15jun.pdf", write_sagrada_familia_ticket),
+    ("entrada-sagrada-familia-5jul.pdf", write_sagrada_familia_ticket),
     ("renfe-ave-03142-madrid-barcelona.pdf", write_ave_ticket),
     ("europcar-alquiler-coche-madrid.pdf", write_car_rental),
 ]

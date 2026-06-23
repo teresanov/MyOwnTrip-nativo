@@ -160,7 +160,7 @@ async function createTripHero(url) {
       'Countdown text': 'Sale en 3 días',
       'Show countdown': true,
       'Title text': 'Barcelona fin de semana',
-      'Meta text': '20 jun 2026 – 22 jun 2026 · 3 días',
+      'Meta text': '4 jul 2026 – 6 jul 2026 · 3 días',
     });
     const eyebrow = inst.findOne((n) => /eyebrow/i.test(n.name) && n.type === 'INSTANCE');
     if (eyebrow) {

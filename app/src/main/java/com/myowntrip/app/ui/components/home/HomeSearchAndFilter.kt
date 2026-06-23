@@ -340,6 +340,11 @@ internal fun HomeFilterMenuPanelContent(
         selected = filterPhase == TripFilterPhase.Past,
         onClick = { onFilterPhaseChange(TripFilterPhase.Past) },
       )
+      HomeFilterMenuItemRow(
+        label = "Archivados",
+        selected = filterPhase == TripFilterPhase.Archived,
+        onClick = { onFilterPhaseChange(TripFilterPhase.Archived) },
+      )
     }
     HomeFilterMenuList {
       HomeFilterMenuSectionLabel("Ordenar")

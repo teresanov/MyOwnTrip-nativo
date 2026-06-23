@@ -15,6 +15,7 @@ import com.myowntrip.app.ui.features.journal.JournalDetailScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantDetailScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantFormScreen
 import com.myowntrip.app.ui.features.trips.CreateTripScreen
+import com.myowntrip.app.ui.features.trips.EditTripScreen
 import com.myowntrip.app.ui.features.trips.TripDetailScreen
 import com.myowntrip.app.ui.features.trips.HomeFlowReviewScreen
 import com.myowntrip.app.ui.features.trips.TripListScreen
@@ -75,6 +76,18 @@ fun AppNavGraph(
       )
     }
     composable(
+      route = Routes.TRIP_EDIT,
+      arguments = listOf(navArgument("tripId") { type = NavType.StringType }),
+    ) {
+      EditTripScreen(
+        onBack = { navController.popBackStack() },
+        onSaved = { navController.popBackStack() },
+        onDeleted = {
+          navController.popBackStack(Routes.TRIP_LIST, inclusive = false)
+        },
+      )
+    }
+    composable(
       route = Routes.TRIP_DETAIL,
       arguments = listOf(
         navArgument("tripId") { type = NavType.StringType },
@@ -88,6 +101,7 @@ fun AppNavGraph(
       TripDetailScreen(
         tripId = tripId,
         onBack = { navController.popBackStack() },
+        onEditTrip = { navController.navigate(Routes.tripEdit(tripId)) },
         onAddWallet = { navController.navigate(Routes.walletAdd(tripId)) },
         onImportWallet = { navController.navigate(Routes.walletAdd(tripId, pickAttachment = true)) },
         onAddJournal = { dayId ->
