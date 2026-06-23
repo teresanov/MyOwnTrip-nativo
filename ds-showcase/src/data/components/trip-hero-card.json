@@ -38,10 +38,10 @@
     "ElevatedCard / OutlinedCard",
     "scrim",
     "tertiaryFixedDim + onTertiaryContainer (Eyebrow label)",
-    "tertiaryFixed (countdown)",
-    "inverseOnSurface (título y meta sobre scrim)",
+    "tertiaryFixedDim (countdown)",
+    "onPrimary (título y meta sobre scrim)",
     "secondaryContainer (Button tonal)",
-    "headlineMedium / titleMedium / bodyMedium",
+    "headlineSmall-emphasized / titleMedium / bodyMedium",
     "shapes.medium (12dp)"
   ],
   "dos": [

@@ -25,15 +25,14 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.features.trips.HomeTripPhase
 import com.myowntrip.app.ui.features.trips.homePhase
 import com.myowntrip.app.ui.theme.MOTCorner
 import com.myowntrip.app.ui.theme.MOTSpacing
-import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import com.myowntrip.app.ui.theme.rememberMOTButtonShape
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -65,10 +64,7 @@ fun TripHeroCard(
     tripName = trip.name,
     meta = meta,
   )
-  val portadaShape = RoundedCornerShape(
-    topStart = MOTCorner.Medium,
-    topEnd = MOTCorner.Medium,
-  )
+  val portadaShape = RoundedCornerShape(MOTCorner.Medium)
 
   ElevatedCard(modifier = modifier.fillMaxWidth()) {
     Column(verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm)) {
@@ -114,15 +110,15 @@ fun TripHeroCard(
             Text(
               text = countdown,
               style = MaterialTheme.typography.titleMedium,
-              color = MaterialTheme.colorScheme.tertiaryFixed,
+              color = MaterialTheme.colorScheme.tertiaryFixedDim,
               maxLines = 1,
               overflow = TextOverflow.Ellipsis,
             )
           }
           Text(
             text = trip.name,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.inverseOnSurface,
+            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(top = if (countdown != null) 4.dp else 0.dp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -130,7 +126,7 @@ fun TripHeroCard(
           Text(
             text = meta,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = 0.88f),
+            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(top = MOTSpacing.componentXs),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -226,24 +222,4 @@ fun tripMetaLabel(trip: Trip): String {
   val days = ChronoUnit.DAYS.between(trip.startDate, trip.endDate) + 1
   val duration = if (days == 1L) "1 día" else "$days días"
   return "${trip.startDate.format(DateFormatter)} – ${trip.endDate.format(DateFormatter)} · $duration"
-}
-
-@Preview
-@Composable
-private fun TripHeroCardPreview() {
-  MyOwnTripTheme {
-    TripHeroCard(
-      trip = Trip(
-        id = "1",
-        name = "Barcelona fin de semana",
-        destination = "Barcelona",
-        startDate = LocalDate.of(2026, 6, 20),
-        endDate = LocalDate.of(2026, 6, 22),
-        createdAt = 0L,
-      ),
-      today = LocalDate.of(2026, 6, 17),
-      onClick = {},
-      modifier = Modifier.padding(MOTSpacing.screenHorizontal),
-    )
-  }
 }

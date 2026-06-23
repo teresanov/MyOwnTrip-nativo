@@ -7,6 +7,9 @@ import com.myowntrip.app.data.cover.DestinationCoverNormalizer
 /**
  * Portadas empaquetadas **solo para @Preview y revisión Figma** — no usar en runtime.
  * En producción: [com.myowntrip.app.domain.cover.DestinationCoverRepository] + caché local.
+ *
+ * Cada JPEG debe ser **solo la foto** (image fill), nunca un raster del card con textos.
+ * Si el preview muestra letras duplicadas, el asset incluye copy horneado desde Figma.
  */
 object PreviewCityCovers {
 

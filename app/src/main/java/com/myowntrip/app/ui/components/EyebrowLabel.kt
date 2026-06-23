@@ -48,8 +48,8 @@ fun EyebrowLabel(
       style = textStyle,
       color = labelColor,
       modifier = Modifier.padding(
-        horizontal = 16.dp,
-        vertical = if (size == EyebrowLabelSize.Medium) 6.dp else 4.dp,
+        horizontal = if (size == EyebrowLabelSize.Medium) 8.dp else 16.dp,
+        vertical = 4.dp,
       ),
       maxLines = 1,
       overflow = TextOverflow.Ellipsis,

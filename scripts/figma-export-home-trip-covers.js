@@ -3,6 +3,7 @@
  * Guardar en app/src/main/res/drawable-nodpi/home_trip_lisboa.jpg · home_trip_tokio.jpg
  *
  * Nodos cap 3 (`228:8161`):
+ *   Barcelona — exportar solo el image fill del Background (280dp), no el TripHeroCard entero
  *   Lisboa — `228:8174` (Horizontal card)
  *   Tokio  — `228:8175` (Horizontal card)
  *
