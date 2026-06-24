@@ -21,8 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.myowntrip.app.BuildConfig
 import com.myowntrip.app.domain.model.Trip
+import com.myowntrip.app.util.DevTools
 import com.myowntrip.app.ui.components.home.ClearAllDataDialog
 import com.myowntrip.app.ui.components.home.DeleteTripDialog
 import com.myowntrip.app.ui.components.home.HomeEmptyState
@@ -85,7 +85,7 @@ fun TripListScreen(
   var tripPendingDelete by remember { mutableStateOf<Trip?>(null) }
   val snackbarHostState = remember { SnackbarHostState() }
   val scope = rememberCoroutineScope()
-  val onClearAllData: (() -> Unit)? = if (BuildConfig.DEBUG) {
+  val onClearAllData: (() -> Unit)? = if (DevTools.allowClearAllUserData) {
     { showClearConfirm = true }
   } else {
     null

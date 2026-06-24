@@ -1,0 +1,60 @@
+{
+  "id": "swipeable-list-row",
+  "name": "Swipeable list row",
+  "status": "in-review",
+  "priority": "P1",
+  "figma": null,
+  "purpose": "Fila de lista con acciones laterales tipo Gmail: deslizar para archivar o eliminar, con menú ⋮ equivalente por tap. Patrón Compose compartido en Home («Más viajes») y Wallet (lista plana). No usar en el hero destacado ni en carruseles.",
+  "anatomy": [
+    "SwipeToDismissBox — umbral ~45% del ancho; no confirma dismiss (acción inmediata + fila vuelve a reposo)",
+    "Background start — secondaryContainer + icono Archivar o Restaurar",
+    "Background end — errorContainer + icono Eliminar",
+    "Content — card/fila existente (TripListCard, WalletDocumentRow) + MOTIconButton ⋮",
+    "DropdownMenu — Archivar/Restaurar + Eliminar (error)"
+  ],
+  "variants": [
+    {
+      "id": "active",
+      "label": "Lista activa",
+      "usage": "Swipe derecha → Archivar; swipe izquierda → Eliminar (con diálogo de confirmación)."
+    },
+    {
+      "id": "archived",
+      "label": "Lista archivados",
+      "usage": "Swipe derecha → Restaurar; swipe izquierda → Eliminar."
+    }
+  ],
+  "properties": [],
+  "tokens": [
+    "secondaryContainer / onSecondaryContainer",
+    "errorContainer / onErrorContainer",
+    "error (texto e icono en menú Eliminar)",
+    "SwipeToDismissBox (Material 3)"
+  ],
+  "dos": [
+    "Siempre ofrecer la misma acción por menú ⋮ que por swipe (política android-compose-ux).",
+    "Registrar customActions de TalkBack: «Archivar viaje» / «Restaurar viaje» y «Eliminar viaje» (o equivalente documento).",
+    "Snackbar con Deshacer tras archivar cuando el producto lo permita.",
+    "Eliminar siempre con diálogo de confirmación — el swipe solo abre el diálogo."
+  ],
+  "donts": [
+    "No envolver el viaje destacado (TripHeroCard) ni filas del carrusel Wallet «Próximos».",
+    "No usar swipe como única vía para eliminar sin alternativa por tap.",
+    "No colores primitivos en fondos de swipe — solo roles M3 del colorScheme.",
+    "No crear component set en Figma para este patrón; documentar en showcase + referencia Compose."
+  ],
+  "a11y": [
+    "customActions en semantics de la fila (TalkBack: acciones personalizadas).",
+    "Iconos de fondo con contentDescription («Archivar», «Eliminar», «Restaurar»).",
+    "Menú ⋮: contentDescription «Acciones del viaje» / «Acciones del documento».",
+    "Eliminar en menú: icono + texto error — nunca solo color.",
+    "Ver checklist manual: docs/ux/talkback-checklist-swipe.md"
+  ],
+  "compose": "// Home — lista «Más viajes»\nSwipeableTripListRow(\n    trip = trip,\n    today = today,\n    showArchivedActions = filterPhase == Archived,\n    onClick = { onTripClick(trip.id) },\n    onArchive = { onArchiveTrip(trip.id) },\n    onUnarchive = { onUnarchiveTrip(trip.id) },\n    onDeleteRequest = { requestDelete(trip.id) },\n)\n\n// Wallet — lista plana\nSwipeableWalletDocumentRow(\n    entry = entry,\n    showArchivedActions = showArchived,\n    onClick = { onEntryClick(entry.id) },\n    onArchive = { onArchive(entry.id) },\n    onUnarchive = { onUnarchive(entry.id) },\n    onDeleteRequest = { requestDelete(entry) },\n)",
+  "changelog": [
+    {
+      "date": "2026-06-18",
+      "note": "Ficha inicial del patrón swipe archivar/eliminar (Home + Wallet)."
+    }
+  ]
+}

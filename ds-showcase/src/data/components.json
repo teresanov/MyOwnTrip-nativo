@@ -63,6 +63,14 @@
       "priority": "P1",
       "href": "components/eyebrow-label.html",
       "summary": "Etiqueta informativa no interactiva; fase/contexto sobre media o surface."
+    },
+    {
+      "id": "swipeable-list-row",
+      "name": "Swipeable list row",
+      "status": "in-review",
+      "priority": "P1",
+      "href": "components/swipeable-list-row.html",
+      "summary": "Swipe archivar/eliminar + menú ⋮ en Home y Wallet; alternativa TalkBack."
     }
   ]
 }
