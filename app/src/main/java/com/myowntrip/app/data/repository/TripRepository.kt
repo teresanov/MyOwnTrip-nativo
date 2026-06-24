@@ -49,6 +49,11 @@ class TripRepository @Inject constructor(
 
   suspend fun hasTrips(): Boolean = tripDao.count() > 0
 
+  suspend fun getTrips(): List<Trip> = tripDao.getAll().map { it.toDomain() }
+
+  suspend fun findTripByName(name: String): Trip? =
+    getTrips().find { it.name == name }
+
   suspend fun createTrip(
     name: String,
     destination: String,

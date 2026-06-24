@@ -56,6 +56,16 @@ fun rememberTripListDevWipe(
         DevWipeEmptyStateAction(onClick = requestWipe)
       },
       filterMenuFooter = { dismissMenu ->
+        DevSeedPastTripsMenuSection(
+          onClick = {
+            dismissMenu()
+            viewModel.seedPastDemoTrips { message ->
+              scope.launch {
+                snackbarHostState.showSnackbar(message)
+              }
+            }
+          },
+        )
         DevWipeFilterMenuSection(
           onClick = {
             dismissMenu()
@@ -76,6 +86,18 @@ private fun DevWipeEmptyStateAction(onClick: () -> Unit) {
       .padding(horizontal = MOTSpacing.screenHorizontal),
   ) {
     Text("Borrar todos los datos", color = MaterialTheme.colorScheme.error)
+  }
+}
+
+@Composable
+private fun DevSeedPastTripsMenuSection(onClick: () -> Unit) {
+  HomeFilterMenuList {
+    HomeFilterMenuSectionLabel("Demo")
+    HomeFilterMenuItemRow(
+      label = "Cargar viajes pasados de demo",
+      selected = false,
+      onClick = onClick,
+    )
   }
 }
 

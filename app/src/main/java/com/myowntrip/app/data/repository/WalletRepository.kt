@@ -144,43 +144,59 @@ class WalletRepository @Inject constructor(
     qrPayload = qrPayload,
   )
 
+  suspend fun importDebugWalletAsset(
+    tripId: String,
+    assetFileName: String,
+    dateOverride: LocalDate? = null,
+    timeOverride: LocalTime? = null,
+    titleOverride: String? = null,
+    placeOnPlan: Boolean = true,
+    planDayId: String? = null,
+    planTimeOverride: LocalTime? = null,
+  ): WalletEntry {
+    val assetPath = "samples/wallet/$assetFileName"
+    val storedUri = copyAssetToTripStorage(tripId, assetPath, assetFileName)
+    val file = resolveFileFromSource(storedUri)
+    val uri = file?.let { Uri.fromFile(it) }
+    val mimeType = when (assetFileName.substringAfterLast('.').lowercase()) {
+      "pdf" -> "application/pdf"
+      "jpg", "jpeg" -> "image/jpeg"
+      "png" -> "image/png"
+      else -> null
+    }
+    val parsed = parseDocument(uri, mimeType, assetFileName)
+    val entry = buildEntry(
+      tripId = tripId,
+      type = parsed.type,
+      title = titleOverride ?: parsed.title,
+      date = dateOverride ?: parsed.date,
+      time = timeOverride ?: parsed.time,
+      fileUri = storedUri,
+      linkUrl = null,
+      notes = parsed.notes,
+      qrPayload = parsed.qrPayload,
+    )
+    saveEntry(entry)
+    if (placeOnPlan) {
+      val days = tripRepository.getDaysForTrip(tripId)
+      planPlacementService.apply(
+        entry = entry,
+        days = days,
+        enabled = true,
+        dayIdOverride = planDayId,
+        timeOverride = planTimeOverride ?: timeOverride,
+      )
+    }
+    return entry
+  }
+
   suspend fun importDebugWalletSamples(tripId: String): Int {
     val assetDir = "samples/wallet"
     val fileNames = context.assets.list(assetDir)?.filter { !it.startsWith('.') }.orEmpty()
     if (fileNames.isEmpty()) return 0
     var imported = 0
     for (fileName in fileNames.sorted()) {
-      val assetPath = "$assetDir/$fileName"
-      val storedUri = copyAssetToTripStorage(tripId, assetPath, fileName)
-      val file = resolveFileFromSource(storedUri)
-      val uri = file?.let { Uri.fromFile(it) }
-      val mimeType = when (fileName.substringAfterLast('.').lowercase()) {
-        "pdf" -> "application/pdf"
-        "jpg", "jpeg" -> "image/jpeg"
-        "png" -> "image/png"
-        else -> null
-      }
-      val parsed = parseDocument(uri, mimeType, fileName)
-      val entry = buildEntry(
-        tripId = tripId,
-        type = parsed.type,
-        title = parsed.title,
-        date = parsed.date,
-        time = parsed.time,
-        fileUri = storedUri,
-        linkUrl = null,
-        notes = parsed.notes,
-        qrPayload = parsed.qrPayload,
-      )
-      saveEntry(entry)
-      val days = tripRepository.getDaysForTrip(tripId)
-      planPlacementService.apply(
-        entry = entry,
-        days = days,
-        enabled = true,
-        dayIdOverride = null,
-        timeOverride = null,
-      )
+      importDebugWalletAsset(tripId, fileName)
       imported++
     }
     return imported

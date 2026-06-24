@@ -2,6 +2,8 @@ package com.myowntrip.app.ui.features.trips
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.myowntrip.app.BuildConfig
+import com.myowntrip.app.data.demo.PastTripsDemoLoader
 import com.myowntrip.app.data.repository.AppDataRepository
 import com.myowntrip.app.data.repository.TripRepository
 import com.myowntrip.app.domain.cover.DestinationCoverRepository
@@ -34,6 +36,7 @@ class TripListViewModel @Inject constructor(
   private val tripRepository: TripRepository,
   private val appDataRepository: AppDataRepository,
   private val destinationCoverRepository: DestinationCoverRepository,
+  private val pastTripsDemoLoader: PastTripsDemoLoader,
 ) : ViewModel() {
   private val controls = MutableStateFlow(
     TripListUiState(),
@@ -47,6 +50,11 @@ class TripListViewModel @Inject constructor(
   }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TripListUiState())
 
   init {
+    if (BuildConfig.DEBUG) {
+      viewModelScope.launch {
+        pastTripsDemoLoader.seedIfAbsent()
+      }
+    }
     viewModelScope.launch {
       uiState
         .map { it.trips }
@@ -116,6 +124,14 @@ class TripListViewModel @Inject constructor(
   fun deleteTrip(tripId: String) {
     viewModelScope.launch {
       tripRepository.deleteTrip(tripId)
+    }
+  }
+
+  fun seedPastDemoTrips(onResult: (String) -> Unit) {
+    if (!BuildConfig.DEBUG) return
+    viewModelScope.launch {
+      val result = pastTripsDemoLoader.seed(force = false)
+      onResult(result.message)
     }
   }
 }
