@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.myowntrip.app.BuildConfig
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.components.home.ClearAllDataDialog
 import com.myowntrip.app.ui.components.home.DeleteTripDialog
@@ -84,6 +85,11 @@ fun TripListScreen(
   var tripPendingDelete by remember { mutableStateOf<Trip?>(null) }
   val snackbarHostState = remember { SnackbarHostState() }
   val scope = rememberCoroutineScope()
+  val onClearAllData: (() -> Unit)? = if (BuildConfig.DEBUG) {
+    { showClearConfirm = true }
+  } else {
+    null
+  }
 
   val openFabSheet: (HomeFabAddMode) -> Unit = { mode ->
     speedDialExpanded = false
@@ -168,7 +174,7 @@ fun TripListScreen(
       if (!hasAnyTrips && uiState.filterPhase != TripFilterPhase.Archived) {
         HomeEmptyState(
           onCreateTrip = onCreateTrip,
-          onClearAllData = { showClearConfirm = true },
+          onClearAllData = onClearAllData,
           modifier = Modifier.fillMaxSize(),
         )
       } else {
@@ -200,7 +206,7 @@ fun TripListScreen(
           onArchiveTrip = archiveTrip,
           onUnarchiveTrip = viewModel::unarchiveTrip,
           onDeleteTripRequest = requestDelete,
-          onClearAllData = { showClearConfirm = true },
+          onClearAllData = onClearAllData,
           onCreateTrip = onCreateTrip,
           filterMenuPresentation = filterPresentation,
           modifier = Modifier.fillMaxSize(),
