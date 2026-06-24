@@ -77,7 +77,7 @@ fun LazyListScope.homeTripsListItems(
   onArchiveTrip: (String) -> Unit = {},
   onUnarchiveTrip: (String) -> Unit = {},
   onDeleteTripRequest: (String) -> Unit = {},
-  onClearAllData: (() -> Unit)? = null,
+  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   onCreateTrip: (() -> Unit)? = null,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
 ) {
@@ -116,7 +116,7 @@ fun LazyListScope.homeTripsListItems(
       sortOrder = state.sortOrder,
       onSortOrderChange = onSortOrderChange,
       filterMenuPresentation = filterMenuPresentation,
-      onClearAllData = onClearAllData,
+      filterMenuFooter = filterMenuFooter,
       modifier = horizontal,
     )
   }
@@ -201,7 +201,7 @@ fun HomeTripsScreen(
   onArchiveTrip: (String) -> Unit = {},
   onUnarchiveTrip: (String) -> Unit = {},
   onDeleteTripRequest: (String) -> Unit = {},
-  onClearAllData: (() -> Unit)? = null,
+  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   onCreateTrip: (() -> Unit)? = null,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
   modifier: Modifier = Modifier,
@@ -227,7 +227,7 @@ fun HomeTripsScreen(
         onUnarchiveTrip = onUnarchiveTrip,
         onDeleteTripRequest = onDeleteTripRequest,
         filterMenuPresentation = filterMenuPresentation,
-        onClearAllData = onClearAllData,
+        filterMenuFooter = filterMenuFooter,
         onCreateTrip = onCreateTrip,
       )
     }
@@ -238,12 +238,7 @@ fun HomeTripsScreen(
       sortOrder = state.sortOrder,
       onSortOrderChange = onSortOrderChange,
       onDismiss = { onFilterMenuExpandedChange(false) },
-      onClearAllData = onClearAllData?.let { clear ->
-        {
-          onFilterMenuExpandedChange(false)
-          clear()
-        }
-      },
+      filterMenuFooter = filterMenuFooter,
     )
   }
 }

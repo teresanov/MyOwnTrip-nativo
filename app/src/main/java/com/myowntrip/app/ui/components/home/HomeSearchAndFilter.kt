@@ -73,7 +73,7 @@ fun HomeSearchBar(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
-  onClearAllData: (() -> Unit)? = null,
+  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
 ) {
@@ -115,12 +115,7 @@ fun HomeSearchBar(
         onFilterPhaseChange = onFilterPhaseChange,
         sortOrder = sortOrder,
         onSortOrderChange = onSortOrderChange,
-        onClearAllData = onClearAllData?.let { clear ->
-          {
-            onFilterMenuExpandedChange(false)
-            clear()
-          }
-        },
+        filterMenuFooter = filterMenuFooter,
         modifier = Modifier.align(Alignment.TopEnd),
       )
     }
@@ -216,7 +211,7 @@ fun HomeFilterDropdownMenu(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
-  onClearAllData: (() -> Unit)? = null,
+  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
 ) {
   DropdownMenu(
@@ -232,7 +227,8 @@ fun HomeFilterDropdownMenu(
       onFilterPhaseChange = onFilterPhaseChange,
       sortOrder = sortOrder,
       onSortOrderChange = onSortOrderChange,
-      onClearAllData = onClearAllData,
+      dismissMenu = onDismissRequest,
+      filterMenuFooter = filterMenuFooter,
       modifier = Modifier.width(HomeFilterMenuSpec.Width),
     )
   }
@@ -245,7 +241,8 @@ fun HomeFilterMenuPanel(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
-  onClearAllData: (() -> Unit)? = null,
+  dismissMenu: () -> Unit = {},
+  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
 ) {
   Surface(
@@ -262,7 +259,8 @@ fun HomeFilterMenuPanel(
       onFilterPhaseChange = onFilterPhaseChange,
       sortOrder = sortOrder,
       onSortOrderChange = onSortOrderChange,
-      onClearAllData = onClearAllData,
+      dismissMenu = dismissMenu,
+      filterMenuFooter = filterMenuFooter,
     )
   }
 }
@@ -275,7 +273,7 @@ fun HomeFilterMenuOverlay(
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
   onDismiss: () -> Unit,
-  onClearAllData: (() -> Unit)? = null,
+  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
   overlayTop: androidx.compose.ui.unit.Dp = HomeFilterMenuSpec.OverlayTop,
 ) {
@@ -297,7 +295,8 @@ fun HomeFilterMenuOverlay(
       onFilterPhaseChange = onFilterPhaseChange,
       sortOrder = sortOrder,
       onSortOrderChange = onSortOrderChange,
-      onClearAllData = onClearAllData,
+      dismissMenu = onDismiss,
+      filterMenuFooter = filterMenuFooter,
       modifier = Modifier
         .align(Alignment.TopCenter)
         .padding(top = overlayTop)
@@ -312,7 +311,8 @@ internal fun HomeFilterMenuPanelContent(
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
-  onClearAllData: (() -> Unit)? = null,
+  dismissMenu: () -> Unit,
+  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
 ) {
   Column(
@@ -365,22 +365,12 @@ internal fun HomeFilterMenuPanelContent(
         onClick = { onSortOrderChange(TripSortOrder.DestinationAz) },
       )
     }
-    if (onClearAllData != null) {
-      HomeFilterMenuList {
-        HomeFilterMenuSectionLabel("Datos")
-        HomeFilterMenuItemRow(
-          label = "Borrar todos los datos",
-          selected = false,
-          onClick = onClearAllData,
-          destructive = true,
-        )
-      }
-    }
+    filterMenuFooter(dismissMenu)
   }
 }
 
 @Composable
-private fun HomeFilterMenuList(content: @Composable () -> Unit) {
+internal fun HomeFilterMenuList(content: @Composable () -> Unit) {
   Column(
     modifier = Modifier
       .fillMaxWidth()
@@ -391,7 +381,7 @@ private fun HomeFilterMenuList(content: @Composable () -> Unit) {
 }
 
 @Composable
-private fun HomeFilterMenuSectionLabel(text: String) {
+internal fun HomeFilterMenuSectionLabel(text: String) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -409,7 +399,7 @@ private fun HomeFilterMenuSectionLabel(text: String) {
 }
 
 @Composable
-private fun HomeFilterMenuItemRow(
+internal fun HomeFilterMenuItemRow(
   label: String,
   selected: Boolean,
   onClick: () -> Unit,

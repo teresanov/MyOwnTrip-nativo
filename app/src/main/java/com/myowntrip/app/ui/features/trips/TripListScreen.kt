@@ -22,8 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.Trip
-import com.myowntrip.app.util.DevTools
-import com.myowntrip.app.ui.components.home.ClearAllDataDialog
 import com.myowntrip.app.ui.components.home.DeleteTripDialog
 import com.myowntrip.app.ui.components.home.HomeEmptyState
 import com.myowntrip.app.ui.components.home.HomeFabAddMode
@@ -81,15 +79,10 @@ fun TripListScreen(
   }
   var speedDialExpanded by remember { mutableStateOf(false) }
   var fabAddSheet by remember { mutableStateOf<HomeFabAddMode?>(null) }
-  var showClearConfirm by remember { mutableStateOf(false) }
   var tripPendingDelete by remember { mutableStateOf<Trip?>(null) }
   val snackbarHostState = remember { SnackbarHostState() }
   val scope = rememberCoroutineScope()
-  val onClearAllData: (() -> Unit)? = if (DevTools.allowClearAllUserData) {
-    { showClearConfirm = true }
-  } else {
-    null
-  }
+  val devWipe = rememberTripListDevWipe(viewModel, snackbarHostState, scope)
 
   val openFabSheet: (HomeFabAddMode) -> Unit = { mode ->
     speedDialExpanded = false
@@ -174,7 +167,7 @@ fun TripListScreen(
       if (!hasAnyTrips && uiState.filterPhase != TripFilterPhase.Archived) {
         HomeEmptyState(
           onCreateTrip = onCreateTrip,
-          onClearAllData = onClearAllData,
+          footerSlot = devWipe.emptyStateFooter,
           modifier = Modifier.fillMaxSize(),
         )
       } else {
@@ -206,7 +199,7 @@ fun TripListScreen(
           onArchiveTrip = archiveTrip,
           onUnarchiveTrip = viewModel::unarchiveTrip,
           onDeleteTripRequest = requestDelete,
-          onClearAllData = onClearAllData,
+          filterMenuFooter = devWipe.filterMenuFooter,
           onCreateTrip = onCreateTrip,
           filterMenuPresentation = filterPresentation,
           modifier = Modifier.fillMaxSize(),
@@ -222,20 +215,6 @@ fun TripListScreen(
           .padding(bottom = MOTSpacing.screenContentBottomWithFab),
       )
     }
-  }
-
-  if (showClearConfirm) {
-    ClearAllDataDialog(
-      onDismiss = { showClearConfirm = false },
-      onConfirm = {
-        showClearConfirm = false
-        viewModel.clearAllUserData {
-          scope.launch {
-            snackbarHostState.showSnackbar("Datos borrados. Crea tu primer viaje cuando quieras.")
-          }
-        }
-      },
-    )
   }
 
   tripPendingDelete?.let { trip ->

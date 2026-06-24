@@ -27,7 +27,6 @@ import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.homePhase
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTSpacing
-import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.LocalDate
 import java.time.LocalTime
@@ -123,7 +122,7 @@ fun HomeOnlyPastHero(
 @Composable
 fun HomeEmptyState(
   onCreateTrip: () -> Unit,
-  onClearAllData: (() -> Unit)? = null,
+  footerSlot: @Composable () -> Unit = {},
   userFirstName: String? = null,
   modifier: Modifier = Modifier,
 ) {
@@ -149,17 +148,8 @@ fun HomeEmptyState(
       Spacer(Modifier.width(MOTSpacing.componentSm))
       Text("Crear mi primer viaje")
     }
-    onClearAllData?.let { onClear ->
-      MOTTextButton(
-        onClick = onClear,
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = MOTSpacing.screenHorizontal)
-          .padding(bottom = MOTSpacing.screenContentBottom),
-      ) {
-        Text("Borrar todos los datos", color = MaterialTheme.colorScheme.error)
-      }
-    } ?: Spacer(Modifier.padding(bottom = MOTSpacing.screenContentBottom))
+    footerSlot()
+    Spacer(Modifier.padding(bottom = MOTSpacing.screenContentBottom))
   }
 }
 

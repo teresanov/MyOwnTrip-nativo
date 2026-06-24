@@ -34,13 +34,9 @@ android {
 
         buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
         buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
-        buildConfigField("Boolean", "ENABLE_DEV_WIPE", "false")
     }
 
     buildTypes {
-        debug {
-            buildConfigField("Boolean", "ENABLE_DEV_WIPE", "true")
-        }
         release {
             isMinifyEnabled = false
             proguardFiles(
