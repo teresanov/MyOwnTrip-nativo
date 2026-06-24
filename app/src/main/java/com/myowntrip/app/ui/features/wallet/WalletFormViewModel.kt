@@ -12,6 +12,7 @@ import com.myowntrip.app.domain.model.EntryType
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.domain.plan.PlanPlacementLogic
+import com.myowntrip.app.domain.wallet.WalletDuplicateDetector
 import com.myowntrip.app.domain.wallet.canChooseCloudStorage
 import com.myowntrip.app.domain.wallet.defaultSaveOfflineCopy
 import com.myowntrip.app.platform.media.JournalMediaStorage
@@ -65,6 +66,8 @@ data class WalletFormUiState(
   val planSummary: String? = null,
   val saveOfflineCopy: Boolean = true,
   val canChooseStorage: Boolean = false,
+  val showDuplicateDialog: Boolean = false,
+  val duplicateExistingEntry: WalletEntry? = null,
 ) {
   val isImportFlow: Boolean
     get() = !manualEntryMode && (pickAttachmentOnStart || isImport || attachmentUri != null)
@@ -74,7 +77,7 @@ data class WalletFormUiState(
 
   /** Borrador en curso: importación, adjunto o campos editados sin guardar. */
   val hasDraft: Boolean
-    get() = showConfirm || isParsing || attachmentUri != null ||
+    get() = showConfirm || showDuplicateDialog || isParsing || attachmentUri != null ||
       title.isNotBlank() || notes.isNotBlank()
 }
 
@@ -364,10 +367,64 @@ class WalletFormViewModel @Inject constructor(
         qrPayload = state.qrPayload,
       )
       val days = tripRepository.getDaysForTrip(state.tripId)
-      _uiState.update {
-        it.copy(showConfirm = true, pendingEntry = entry, storedFileUri = storage?.pdfUri)
-          .withPlanPlacement(entry, days)
+      val existingEntries = walletRepository.getEntriesForTrip(state.tripId)
+      val duplicate = WalletDuplicateDetector.findDuplicate(
+        pending = entry,
+        existingEntries = existingEntries,
+        attachmentFileName = state.attachmentFileName,
+      )
+      _uiState.update { current ->
+        val withPlan = current.copy(
+          pendingEntry = entry,
+          storedFileUri = storage?.pdfUri,
+        ).withPlanPlacement(entry, days)
+        if (duplicate != null) {
+          withPlan.copy(
+            showDuplicateDialog = true,
+            duplicateExistingEntry = duplicate.existing,
+          )
+        } else {
+          withPlan.copy(showConfirm = true)
+        }
       }
+    }
+  }
+
+  fun dismissDuplicateDialog() {
+    val storedUri = _uiState.value.storedFileUri
+    walletRepository.deleteStoredFile(storedUri)
+    _uiState.update {
+      it.copy(
+        showDuplicateDialog = false,
+        duplicateExistingEntry = null,
+        pendingEntry = null,
+        storedFileUri = null,
+      )
+    }
+  }
+
+  fun allowDuplicateSave() {
+    _uiState.update {
+      it.copy(
+        showDuplicateDialog = false,
+        duplicateExistingEntry = null,
+        showConfirm = true,
+      )
+    }
+  }
+
+  fun replaceDuplicateAndConfirm() {
+    val state = _uiState.value
+    val existing = state.duplicateExistingEntry ?: return
+    val pending = state.pendingEntry ?: return
+    val replaced = pending.copy(id = existing.id)
+    _uiState.update {
+      it.copy(
+        showDuplicateDialog = false,
+        duplicateExistingEntry = null,
+        showConfirm = true,
+        pendingEntry = replaced,
+      )
     }
   }
 
@@ -375,6 +432,10 @@ class WalletFormViewModel @Inject constructor(
     val state = _uiState.value
     val entry = state.pendingEntry ?: return
     viewModelScope.launch {
+      val existing = walletRepository.getEntryById(entry.id)
+      if (existing != null && existing.pdfUri != null && existing.pdfUri != entry.pdfUri) {
+        walletRepository.deleteStoredFile(existing.pdfUri)
+      }
       walletRepository.saveEntry(entry)
       if (state.planAddToPlan && state.planCanPlace) {
         planPlacementService.apply(

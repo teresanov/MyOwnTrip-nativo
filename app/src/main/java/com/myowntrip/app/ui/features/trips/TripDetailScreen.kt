@@ -188,6 +188,20 @@ fun TripDetailScreen(
               }
             }
           }
+          val unarchiveEntry: (String) -> Unit = { entryId ->
+            val title = state.walletEntries.find { it.id == entryId }?.title
+            viewModel.unarchiveWalletEntry(entryId)
+            scope.launch {
+              val result = snackbarHostState.showSnackbar(
+                message = if (title != null) "«$title» restaurado" else "Documento restaurado",
+                actionLabel = "Deshacer",
+                duration = SnackbarDuration.Short,
+              )
+              if (result == SnackbarResult.ActionPerformed) {
+                viewModel.archiveWalletEntry(entryId) {}
+              }
+            }
+          }
           WalletScreen(
             trip = state.trip,
             entries = state.walletEntries,
@@ -198,7 +212,7 @@ fun TripDetailScreen(
             onLoadDebugSamples = viewModel::loadDebugWalletSamples,
             onEntryClick = onWalletEntryClick,
             onArchiveEntry = archiveEntry,
-            onUnarchiveEntry = viewModel::unarchiveWalletEntry,
+            onUnarchiveEntry = unarchiveEntry,
             onDeleteEntry = { entryId ->
               viewModel.deleteWalletEntry(entryId)
               scope.launch {

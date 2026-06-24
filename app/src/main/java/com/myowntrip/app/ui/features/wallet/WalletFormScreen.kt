@@ -134,11 +134,14 @@ fun WalletFormScreen(
 
   val requestExit: () -> Unit = {
     when {
+      state.showDuplicateDialog -> viewModel.dismissDuplicateDialog()
       state.showConfirm -> viewModel.dismissConfirm()
       state.hasDraft -> showDiscard = true
       else -> onBack()
     }
   }
+
+  BackHandler(enabled = state.showDuplicateDialog || state.showConfirm || state.hasDraft) { requestExit() }
 
   val documentPicker = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.OpenDocument(),
@@ -175,8 +178,6 @@ fun WalletFormScreen(
       launchDocumentPicker(true)
     }
   }
-
-  BackHandler(enabled = state.showConfirm || state.hasDraft) { requestExit() }
 
   val awaitingSystemPicker = state.pickAttachmentOnStart &&
     state.attachmentUri == null &&
@@ -288,6 +289,15 @@ fun WalletFormScreen(
         viewModel.abandonDraft()
         onBack()
       },
+    )
+  }
+
+  if (state.showDuplicateDialog && state.duplicateExistingEntry != null) {
+    WalletDuplicateDialog(
+      existingTitle = state.duplicateExistingEntry!!.title,
+      onDismiss = viewModel::dismissDuplicateDialog,
+      onDuplicate = viewModel::allowDuplicateSave,
+      onReplace = viewModel::replaceDuplicateAndConfirm,
     )
   }
 

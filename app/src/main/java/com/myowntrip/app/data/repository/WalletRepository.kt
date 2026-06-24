@@ -40,6 +40,12 @@ class WalletRepository @Inject constructor(
   fun observeById(entryId: String): Flow<WalletEntry?> =
     walletEntryDao.observeById(entryId).map { it?.toDomain() }
 
+  suspend fun getEntriesForTrip(tripId: String): List<WalletEntry> =
+    walletEntryDao.getByTrip(tripId).map { it.toDomain() }
+
+  suspend fun getEntryById(entryId: String): WalletEntry? =
+    walletEntryDao.getById(entryId)?.toDomain()
+
   suspend fun saveEntry(entry: WalletEntry) {
     walletEntryDao.insert(entry.toEntity())
   }
