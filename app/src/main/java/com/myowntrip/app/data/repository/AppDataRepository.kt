@@ -6,6 +6,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Singleton
 class AppDataRepository @Inject constructor(
@@ -13,8 +15,12 @@ class AppDataRepository @Inject constructor(
   private val database: AppDatabase,
 ) {
   suspend fun clearAllUserData() {
-    database.clearAllTables()
-    clearLocalFiles()
+    withContext(Dispatchers.IO) {
+      database.runInTransaction {
+        database.clearAllTables()
+      }
+      clearLocalFiles()
+    }
   }
 
   private fun clearLocalFiles() {

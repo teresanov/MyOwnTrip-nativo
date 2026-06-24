@@ -6,8 +6,10 @@
    See https://developer.android.com/about/versions/12/backup-restore
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <exclude domain="database" path="myowntrip.db" />
+    <exclude domain="database" path="myowntrip.db-wal" />
+    <exclude domain="database" path="myowntrip.db-shm" />
+    <exclude domain="file" path="trips/" />
+    <exclude domain="file" path="journal/" />
+    <exclude domain="file" path="destination-covers/" />
 </full-backup-content>
