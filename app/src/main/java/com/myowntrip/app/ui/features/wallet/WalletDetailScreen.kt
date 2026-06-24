@@ -26,10 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.domain.plan.WalletPlanPlacementInfo
 import com.myowntrip.app.domain.wallet.isAvailableOffline
 import com.myowntrip.app.domain.wallet.isCloudOnly
 import com.myowntrip.app.domain.wallet.offlineAvailability
 import com.myowntrip.app.ui.components.DocumentAttachmentCard
+import com.myowntrip.app.ui.features.plan.PlanPlacementSourceChip
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -44,13 +46,16 @@ fun WalletDetailScreen(
   onBack: () -> Unit,
   onDeleted: () -> Unit,
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
+  onOpenPlanDay: (tripId: String, dayId: String) -> Unit = { _, _ -> },
   viewModel: WalletDetailViewModel = hiltViewModel(),
 ) {
   val entry by viewModel.entry.collectAsStateWithLifecycle()
+  val planPlacement by viewModel.planPlacement.collectAsStateWithLifecycle()
   var showDeleteConfirm by remember { mutableStateOf(false) }
 
   WalletDetailScaffold(
     entry = entry,
+    planPlacement = planPlacement,
     showDeleteConfirm = showDeleteConfirm,
     onBack = onBack,
     onRequestDelete = { showDeleteConfirm = true },
@@ -60,6 +65,7 @@ fun WalletDetailScreen(
       viewModel.deleteEntry(onDeleted)
     },
     onViewDocument = onViewDocument,
+    onOpenPlanDay = onOpenPlanDay,
   )
 }
 
@@ -67,12 +73,14 @@ fun WalletDetailScreen(
 @Composable
 internal fun WalletDetailScaffold(
   entry: WalletEntry?,
+  planPlacement: WalletPlanPlacementInfo?,
   showDeleteConfirm: Boolean,
   onBack: () -> Unit,
   onRequestDelete: () -> Unit,
   onDismissDelete: () -> Unit,
   onConfirmDelete: () -> Unit,
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
+  onOpenPlanDay: (tripId: String, dayId: String) -> Unit = { _, _ -> },
   modifier: Modifier = Modifier,
 ) {
   Scaffold(
@@ -108,7 +116,12 @@ internal fun WalletDetailScaffold(
         ),
     ) {
       if (entry != null) {
-        WalletDetailContent(entry = entry, onViewDocument = onViewDocument)
+        WalletDetailContent(
+          entry = entry,
+          planPlacement = planPlacement,
+          onViewDocument = onViewDocument,
+          onOpenPlanDay = onOpenPlanDay,
+        )
       } else {
         Text("Cargando…")
       }
@@ -127,7 +140,9 @@ internal fun WalletDetailScaffold(
 @Composable
 internal fun WalletDetailContent(
   entry: WalletEntry,
+  planPlacement: WalletPlanPlacementInfo? = null,
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
+  onOpenPlanDay: (tripId: String, dayId: String) -> Unit = { _, _ -> },
 ) {
   val offline = remember(entry.id, entry.pdfUri, entry.qrPayload, entry.linkUrl) { entry.offlineAvailability() }
   Text(
@@ -150,6 +165,13 @@ internal fun WalletDetailContent(
   }
   entry.time?.let {
     Text("Hora: $it", style = MaterialTheme.typography.bodyMedium)
+  }
+  planPlacement?.let { placement ->
+    PlanPlacementSourceChip(
+      label = placement.detailChipLabel,
+      modifier = Modifier.padding(top = 8.dp),
+      onClick = { onOpenPlanDay(placement.tripId, placement.dayId) },
+    )
   }
   entry.notes?.let {
     Text(it, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(top = 12.dp))
@@ -187,6 +209,7 @@ fun WalletDetailPreview() {
   MyOwnTripTheme {
     WalletDetailScaffold(
       entry = previewDetailEntry,
+      planPlacement = null,
       showDeleteConfirm = false,
       onBack = {},
       onRequestDelete = {},
@@ -202,6 +225,7 @@ fun WalletDeleteDialogPreview() {
   MyOwnTripTheme {
     WalletDetailScaffold(
       entry = previewDetailEntry,
+      planPlacement = null,
       showDeleteConfirm = true,
       onBack = {},
       onRequestDelete = {},

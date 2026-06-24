@@ -215,6 +215,7 @@ fun WalletFlowReviewScreen(
       WalletFlowCap("Cap 10 · Detalle documento") {
         WalletDetailScaffold(
           entry = previewDetailEntry,
+          planPlacement = null,
           showDeleteConfirm = false,
           onBack = {},
           onRequestDelete = {},
@@ -230,6 +231,7 @@ fun WalletFlowReviewScreen(
         Box(modifier = Modifier.fillMaxSize()) {
           WalletDetailScaffold(
             entry = previewDetailEntry,
+            planPlacement = null,
             showDeleteConfirm = true,
             onBack = {},
             onRequestDelete = {},

@@ -4,6 +4,7 @@ import com.myowntrip.app.data.local.dao.ItineraryBlockDao
 import com.myowntrip.app.data.local.toDomain
 import com.myowntrip.app.data.local.toEntity
 import com.myowntrip.app.domain.model.ItineraryBlock
+import com.myowntrip.app.domain.plan.PlanPlacementLogic
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.UUID
@@ -53,5 +54,27 @@ class ItineraryRepository @Inject constructor(
     itineraryBlockDao.insertAll(
       blocks.mapIndexed { index, block -> block.copy(sortOrder = index).toEntity() },
     )
+  }
+
+  suspend fun moveBlockToDay(
+    block: ItineraryBlock,
+    targetDayId: String,
+    timeLabel: String?,
+  ) {
+    val normalizedTime = timeLabel?.trim()?.ifBlank { null }
+    val updated = block.copy(
+      dayId = targetDayId,
+      timeLabel = normalizedTime ?: block.timeLabel,
+    )
+
+    if (block.dayId != targetDayId) {
+      val oldDayBlocks = getBlocksForDay(block.dayId)
+        .filter { it.id != block.id }
+        .mapIndexed { index, item -> item.copy(sortOrder = index) }
+      saveOrder(oldDayBlocks)
+    }
+
+    val targetBlocks = getBlocksForDay(targetDayId).filter { it.id != block.id }
+    saveOrder(PlanPlacementLogic.insertSorted(targetBlocks, updated))
   }
 }

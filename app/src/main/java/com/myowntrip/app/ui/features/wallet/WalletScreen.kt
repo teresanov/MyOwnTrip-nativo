@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,13 +54,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.BuildConfig
+import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.EntryType
+import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.domain.plan.PlanPlacementDriftLogic
+import com.myowntrip.app.domain.plan.WalletPlanPlacementInfo
 import com.myowntrip.app.domain.wallet.accessibilityLabel
 import com.myowntrip.app.domain.wallet.isAvailableOffline
 import com.myowntrip.app.domain.wallet.isCloudOnly
 import com.myowntrip.app.domain.wallet.offlineAvailability
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import com.myowntrip.app.ui.theme.LocalExtendedColors
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
@@ -77,6 +91,8 @@ private val TimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 fun WalletScreen(
   trip: Trip?,
   entries: List<WalletEntry>,
+  days: List<Day> = emptyList(),
+  planBlocks: List<ItineraryBlock> = emptyList(),
   filterPhase: WalletDocumentFilterPhase = WalletDocumentFilterPhase.Active,
   onFilterPhaseChange: (WalletDocumentFilterPhase) -> Unit = {},
   onAddEntry: () -> Unit,
@@ -87,6 +103,7 @@ fun WalletScreen(
   onUnarchiveEntry: (String) -> Unit = {},
   onDeleteEntry: ((String) -> Unit)? = null,
   embeddedInTrip: Boolean = false,
+  isPastTrip: Boolean = false,
   modifier: Modifier = Modifier,
 ) {
   var entryPendingDelete by remember { mutableStateOf<WalletEntry?>(null) }
@@ -104,7 +121,7 @@ fun WalletScreen(
 
   val activeCount = remember(entries) { entries.count { !it.isArchived } }
 
-  if (activeCount == 0 && entries.isEmpty()) {
+  if (!isPastTrip && activeCount == 0 && entries.isEmpty()) {
     WalletEmptyState(
       onAddEntry = onAddEntry,
       onImportEntry = onImportEntry,
@@ -114,12 +131,34 @@ fun WalletScreen(
     return
   }
 
-  val visibleEntries = remember(entries, filterPhase) {
-    applyWalletDocumentFilters(entries, filterPhase)
-      .sortedByDescending { it.date ?: LocalDate.MIN }
+  if (isPastTrip && entries.isEmpty()) {
+    WalletEmptyState(
+      onAddEntry = onAddEntry,
+      onImportEntry = onImportEntry,
+      onLoadDebugSamples = onLoadDebugSamples,
+      modifier = modifier.fillMaxSize(),
+    )
+    return
+  }
+
+  val visibleEntries = remember(entries, filterPhase, isPastTrip) {
+    if (isPastTrip) {
+      sortPastTripWalletByType(entries)
+    } else {
+      applyWalletDocumentFilters(entries, filterPhase)
+        .sortedByDescending { it.date ?: LocalDate.MIN }
+    }
   }
   val highlights = remember(entries) { walletHighlights(entries) }
-  val showHighlights = filterPhase == WalletDocumentFilterPhase.Active && highlights.isNotEmpty()
+  val showHighlights = !isPastTrip &&
+    filterPhase == WalletDocumentFilterPhase.Active &&
+    highlights.isNotEmpty()
+  val planPlacementByEntryId = remember(entries, planBlocks, days) {
+    entries.mapNotNull { entry ->
+      PlanPlacementDriftLogic.resolveWalletPlanPlacement(entry, planBlocks, days)
+        ?.let { entry.id to it }
+    }.toMap()
+  }
 
   LazyColumn(
     modifier = modifier.fillMaxSize(),
@@ -129,8 +168,9 @@ fun WalletScreen(
     item {
       WalletHeader(
         trip = trip,
-        entryCount = activeCount,
+        entryCount = if (isPastTrip) entries.size else activeCount,
         showTitle = !embeddedInTrip,
+        pastTripMode = isPastTrip,
         modifier = Modifier.padding(
           horizontal = MOTSpacing.screenHorizontal,
           vertical = MOTSpacing.componentSm,
@@ -138,23 +178,25 @@ fun WalletScreen(
       )
     }
 
-    item {
-      WalletQuickActions(
-        onAddEntry = onAddEntry,
-        onImportEntry = onImportEntry,
-        modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-      )
-    }
+    if (!isPastTrip) {
+      item {
+        WalletQuickActions(
+          onAddEntry = onAddEntry,
+          onImportEntry = onImportEntry,
+          modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
+        )
+      }
 
-    item {
-      WalletDocumentFilterChips(
-        filterPhase = filterPhase,
-        onFilterPhaseChange = onFilterPhaseChange,
-        modifier = Modifier.padding(
-          horizontal = MOTSpacing.screenHorizontal,
-          vertical = MOTSpacing.componentXs,
-        ),
-      )
+      item {
+        WalletDocumentFilterChips(
+          filterPhase = filterPhase,
+          onFilterPhaseChange = onFilterPhaseChange,
+          modifier = Modifier.padding(
+            horizontal = MOTSpacing.screenHorizontal,
+            vertical = MOTSpacing.componentXs,
+          ),
+        )
+      }
     }
 
     if (showHighlights) {
@@ -169,7 +211,7 @@ fun WalletScreen(
 
     item {
       Text(
-        text = walletListSectionTitle(filterPhase),
+        text = if (isPastTrip) "Documentos del viaje" else walletListSectionTitle(filterPhase),
         style = MaterialTheme.typography.titleMedium,
         modifier = Modifier.padding(
           horizontal = MOTSpacing.screenHorizontal,
@@ -181,7 +223,11 @@ fun WalletScreen(
     if (visibleEntries.isEmpty()) {
       item {
         Text(
-          text = walletEmptyFilterMessage(filterPhase),
+          text = if (isPastTrip) {
+            "No hay documentos guardados en este viaje."
+          } else {
+            walletEmptyFilterMessage(filterPhase)
+          },
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
           modifier = Modifier.padding(
@@ -192,15 +238,30 @@ fun WalletScreen(
       }
     } else {
       items(visibleEntries, key = { it.id }) { entry ->
-        SwipeableWalletDocumentRow(
-          entry = entry,
-          showArchivedActions = entry.isArchived,
-          onClick = { onEntryClick(entry.id) },
-          onArchive = { onArchiveEntry(entry.id) },
-          onUnarchive = { onUnarchiveEntry(entry.id) },
-          onDeleteRequest = { entryPendingDelete = entry },
-          showDivider = entry != visibleEntries.last(),
-        )
+        if (isPastTrip) {
+          WalletDocumentRow(
+            entry = entry,
+            planPlacement = planPlacementByEntryId[entry.id],
+            onClick = { onEntryClick(entry.id) },
+          )
+          if (entry != visibleEntries.last()) {
+            HorizontalDivider(
+              modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
+              color = MaterialTheme.colorScheme.outlineVariant,
+            )
+          }
+        } else {
+          SwipeableWalletDocumentRow(
+            entry = entry,
+            planPlacement = planPlacementByEntryId[entry.id],
+            showArchivedActions = entry.isArchived,
+            onClick = { onEntryClick(entry.id) },
+            onArchive = { onArchiveEntry(entry.id) },
+            onUnarchive = { onUnarchiveEntry(entry.id) },
+            onDeleteRequest = { entryPendingDelete = entry },
+            showDivider = entry != visibleEntries.last(),
+          )
+        }
       }
     }
   }
@@ -253,6 +314,7 @@ private fun WalletHeader(
   trip: Trip?,
   entryCount: Int,
   showTitle: Boolean = true,
+  pastTripMode: Boolean = false,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
@@ -262,6 +324,14 @@ private fun WalletHeader(
         style = MaterialTheme.typography.headlineLarge,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
+      )
+    }
+    if (pastTripMode) {
+      Text(
+        text = "Billetes, reservas y documentos de este viaje",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(top = if (showTitle) MOTSpacing.componentSm else 0.dp),
       )
     }
     trip?.let {
@@ -452,15 +522,42 @@ internal fun WalletDocumentRow(
   entry: WalletEntry,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
+  planPlacement: WalletPlanPlacementInfo? = null,
+  trailingActions: @Composable (() -> Unit)? = null,
 ) {
   val label = entryTypeLabel(entry.type)
   val offline = remember(entry.id, entry.pdfUri, entry.qrPayload, entry.linkUrl) { entry.offlineAvailability() }
+  val showOffline = offline.isAvailableOffline() || offline.isCloudOnly()
+  val hasPlanDrift = planPlacement != null
+  val dimOffline = offline.isAvailableOffline() && !hasPlanDrift
+  val warning = LocalExtendedColors.current.warning
+  val baseSupporting = buildString {
+    append(label)
+    entryScheduleLabel(entry).takeIf { it != "Sin fecha" }?.let { append(" · $it") }
+  }
+
   ListItem(
     modifier = modifier
+      .alpha(if (dimOffline) 0.72f else 1f)
+      .then(
+        if (hasPlanDrift) {
+          Modifier.drawBehind {
+            drawRect(
+              color = warning,
+              topLeft = Offset.Zero,
+              size = Size(WalletPlanDriftBorderWidth.toPx(), size.height),
+            )
+          }
+        } else {
+          Modifier
+        },
+      )
       .clickable(onClick = onClick)
       .semantics {
         contentDescription = buildString {
           append("$label, ${entry.title}")
+          entryScheduleLabel(entry).takeIf { it != "Sin fecha" }?.let { append(", $it") }
+          planPlacement?.accessibilityDriftPhrase?.let { append(", $it") }
           offline.accessibilityLabel()?.let { append(", $it") }
         }
       },
@@ -473,30 +570,47 @@ internal fun WalletDocumentRow(
       )
     },
     supportingContent = {
-      Text(
-        text = buildString {
-          append(label)
-          entryScheduleLabel(entry).takeIf { it != "Sin fecha" }?.let { append(" · $it") }
-        },
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-      )
+      if (planPlacement != null) {
+        Text(
+          text = buildAnnotatedString {
+            withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
+              append(baseSupporting)
+            }
+            withStyle(SpanStyle(color = warning)) {
+              append(planPlacement.listDriftSuffix)
+            }
+          },
+          style = MaterialTheme.typography.bodyMedium,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis,
+        )
+      } else {
+        Text(
+          text = baseSupporting,
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis,
+        )
+      }
     },
     leadingContent = {
-      EntryTypeIcon(
-        type = entry.type,
-        modifier = Modifier
-          .size(40.dp)
-          .clip(CircleShape)
-          .background(MaterialTheme.colorScheme.surfaceContainer)
-          .padding(8.dp),
+      WalletPlanDriftLeadingIcon(
+        icon = entryTypeIcon(entry.type),
+        showDriftDot = hasPlanDrift,
       )
     },
-    trailingContent = if (offline.isAvailableOffline() || offline.isCloudOnly()) {
+    trailingContent = if (showOffline || trailingActions != null) {
       {
-        WalletOfflineIndicator(availability = offline, compact = true)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+          if (showOffline) {
+            WalletOfflineIndicator(availability = offline, compact = true)
+          }
+          if (showOffline && trailingActions != null) {
+            Spacer(Modifier.width(4.dp))
+          }
+          trailingActions?.invoke()
+        }
       }
     } else {
       null

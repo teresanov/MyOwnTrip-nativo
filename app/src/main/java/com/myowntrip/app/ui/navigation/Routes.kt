@@ -12,8 +12,8 @@ object Routes {
   const val WALLET_IMPORT = "wallet_import?pickAttachment={pickAttachment}"
   const val WALLET_DETAIL = "wallet_detail/{entryId}"
   const val EXPENSE_ADD = "expense_add/{tripId}?dayId={dayId}"
-  const val DAY_HUB = "day_hub/{tripId}/{dayId}"
-  const val DAY_DETAIL = "day_detail/{tripId}/{dayId}"
+  const val DAY_HUB = "day_hub/{tripId}/{dayId}?tab={tab}"
+  const val DAY_DETAIL = "day_detail/{tripId}/{dayId}?tab={tab}"
   const val JOURNAL_ADD = "journal_add/{dayId}?tripId={tripId}"
   const val JOURNAL_EDIT = "journal_edit/{noteId}?tripId={tripId}"
   const val JOURNAL_DETAIL = "journal_detail/{noteId}"
@@ -32,8 +32,10 @@ object Routes {
   fun walletDetail(entryId: String) = "wallet_detail/$entryId"
   fun expenseAdd(tripId: String, dayId: String? = null) =
     if (dayId.isNullOrBlank()) "expense_add/$tripId" else "expense_add/$tripId?dayId=$dayId"
-  fun dayHub(tripId: String, dayId: String) = "day_hub/$tripId/$dayId"
-  fun dayDetail(tripId: String, dayId: String) = "day_detail/$tripId/$dayId"
+  fun dayHub(tripId: String, dayId: String, tab: String = "plan") =
+    "day_hub/$tripId/$dayId?tab=$tab"
+  fun dayDetail(tripId: String, dayId: String, tab: String = "plan") =
+    "day_detail/$tripId/$dayId?tab=$tab"
   fun journalAdd(dayId: String, tripId: String? = null) =
     if (tripId.isNullOrBlank()) {
       "journal_add/$dayId"

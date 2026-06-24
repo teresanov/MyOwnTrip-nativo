@@ -74,6 +74,7 @@ fun TripDetailScreen(
   onAddRestaurant: () -> Unit,
   onWalletEntryClick: (String) -> Unit,
   onDayClick: (String) -> Unit,
+  onDayMemoriesClick: (String) -> Unit = onDayClick,
   onJournalNoteClick: (String) -> Unit,
   onRestaurantClick: (String) -> Unit,
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
@@ -124,19 +125,21 @@ fun TripDetailScreen(
     },
     floatingActionButton = {
       when (tabIndex) {
-        1 -> FloatingActionButton(
-          onClick = {
-            val dayId = state.days.firstOrNull()?.id
-            if (dayId != null) {
-              onDayClick(dayId)
-            } else {
-              scope.launch {
-                snackbarHostState.showSnackbar("Este viaje aún no tiene días")
+        1 -> if (!state.isPastTrip) {
+          FloatingActionButton(
+            onClick = {
+              val dayId = state.days.firstOrNull()?.id
+              if (dayId != null) {
+                onDayClick(dayId)
+              } else {
+                scope.launch {
+                  snackbarHostState.showSnackbar("Este viaje aún no tiene días")
+                }
               }
-            }
-          },
-          modifier = Modifier.semantics { contentDescription = "Planificar día" },
-        ) { Icon(Icons.Default.Add, contentDescription = null) }
+            },
+            modifier = Modifier.semantics { contentDescription = "Añadir actividad al día" },
+          ) { Icon(Icons.Default.Add, contentDescription = null) }
+        }
         2 -> FloatingActionButton(
           onClick = addJournalForToday,
           modifier = Modifier.semantics { contentDescription = "Añadir recuerdo" },
@@ -205,6 +208,8 @@ fun TripDetailScreen(
           WalletScreen(
             trip = state.trip,
             entries = state.walletEntries,
+            planBlocks = state.planBlocks,
+            days = state.days,
             filterPhase = state.walletFilterPhase,
             onFilterPhaseChange = viewModel::onWalletFilterPhaseChange,
             onAddEntry = onAddWallet,
@@ -220,13 +225,17 @@ fun TripDetailScreen(
               }
             },
             embeddedInTrip = true,
+            isPastTrip = state.isPastTrip,
           )
         }
         1 -> TripPlanTab(
           days = state.days,
           planBlocks = state.planBlocks,
           walletEntries = state.walletEntries,
+          isPastTrip = state.isPastTrip,
           onDayClick = onDayClick,
+          onDayMemoriesClick = onDayMemoriesClick,
+          onViewWalletDocuments = { tabIndex = 0 },
           onLinkWallet = viewModel::showWalletLinkForBlock,
           onWalletEntryClick = onWalletEntryClick,
         )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ConfirmationNumber
+import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Link
@@ -18,6 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -36,35 +39,81 @@ fun PlanActivityCard(
   onWalletEntryClick: (String) -> Unit,
   modifier: Modifier = Modifier,
   embeddedInDay: Boolean = false,
+  readOnly: Boolean = false,
+  showTimeInCard: Boolean = true,
   showReorder: Boolean = false,
+  canMoveUp: Boolean = true,
+  canMoveDown: Boolean = true,
+  showDragHandle: Boolean = false,
+  dragHandleModifier: Modifier = Modifier,
   onMoveUp: () -> Unit = {},
   onMoveDown: () -> Unit = {},
 ) {
   val content: @Composable () -> Unit = {
-    Column(modifier = Modifier.padding(if (embeddedInDay) 0.dp else MOTSpacing.layoutMd)) {
+    Column(
+      modifier = Modifier
+        .padding(if (embeddedInDay) 0.dp else MOTSpacing.layoutMd)
+        .then(
+          if (showReorder && !readOnly) {
+            Modifier.semantics {
+              customActions = listOf(
+                CustomAccessibilityAction("Mover actividad arriba") {
+                  onMoveUp()
+                  true
+                },
+                CustomAccessibilityAction("Mover actividad abajo") {
+                  onMoveDown()
+                  true
+                },
+              )
+            }
+          } else {
+            Modifier
+          },
+        ),
+    ) {
       Row(verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.weight(1f)) {
-          block.timeLabel?.let {
-            Text(
-              it,
-              style = MaterialTheme.typography.labelMedium,
-              color = MaterialTheme.colorScheme.tertiary,
-            )
+          if (showTimeInCard) {
+            block.timeLabel?.let {
+              Text(
+                it,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.tertiary,
+              )
+            }
           }
           Text(block.title, style = MaterialTheme.typography.titleSmall)
         }
-        if (showReorder) {
+        if (showDragHandle && !readOnly) {
           MOTIconButton(
-            onClick = onMoveUp,
-            modifier = Modifier.semantics { contentDescription = "Subir actividad" },
+            onClick = {},
+            modifier = dragHandleModifier.semantics {
+              contentDescription = "Arrastrar para reordenar"
+            },
           ) {
-            Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)
+            Icon(
+              imageVector = Icons.Default.DragHandle,
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
           }
-          MOTIconButton(
-            onClick = onMoveDown,
-            modifier = Modifier.semantics { contentDescription = "Bajar actividad" },
-          ) {
-            Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+        } else if (showReorder && !readOnly) {
+          if (canMoveUp) {
+            MOTIconButton(
+              onClick = onMoveUp,
+              modifier = Modifier.semantics { contentDescription = "Subir actividad" },
+            ) {
+              Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)
+            }
+          }
+          if (canMoveDown) {
+            MOTIconButton(
+              onClick = onMoveDown,
+              modifier = Modifier.semantics { contentDescription = "Bajar actividad" },
+            ) {
+              Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+            }
           }
         }
       }
@@ -98,18 +147,20 @@ fun PlanActivityCard(
           )
         }
       }
-      MOTTextButton(
-        onClick = onLinkWallet,
-        modifier = Modifier.padding(top = MOTSpacing.componentXs),
-      ) {
-        Icon(Icons.Default.Link, contentDescription = null)
-        Text(
-          if (linkedWalletEntry != null) {
-            "Cambiar documento de Wallet"
-          } else {
-            "Vincular documento de Wallet"
-          },
-        )
+      if (!readOnly) {
+        MOTTextButton(
+          onClick = onLinkWallet,
+          modifier = Modifier.padding(top = MOTSpacing.componentXs),
+        ) {
+          Icon(Icons.Default.Link, contentDescription = null)
+          Text(
+            if (linkedWalletEntry != null) {
+              "Cambiar documento de Wallet"
+            } else {
+              "Vincular documento de Wallet"
+            },
+          )
+        }
       }
     }
   }

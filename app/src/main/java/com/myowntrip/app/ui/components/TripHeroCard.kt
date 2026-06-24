@@ -172,7 +172,7 @@ fun TripListCard(
   MotHorizontalCard(
     title = trip.name,
     subtitle = trip.destination,
-    supportingText = null,
+    supportingText = tripMetaLabel(trip),
     onClick = onClick,
     modifier = modifier,
     stateDescription = phaseStateDescription(phase),

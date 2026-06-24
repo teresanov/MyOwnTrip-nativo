@@ -209,6 +209,29 @@ Estructura del design-file: **secuencial por módulo** (`figma-app-flows.mdc`). 
 
 Decisiones de diseño: **Day hub** con sub-tabs Plan \| Diario; **Restaurantes** en tab del viaje.
 
+### Plan ↔ Wallet · drift de colocación (jun 2026)
+
+**Problema:** el documento en Wallet puede tener una hora/fecha distinta a la realidad; el viajero corrige **solo el plan**.
+
+| Superficie | Comportamiento |
+|------------|----------------|
+| **Plan (tab viaje)** | Lista por día; CTA «Reordenar día» → Day Hub cuadrante |
+| **Day Hub · Plan** | Cuadrante horario; drag solo actividades **sin** Wallet; vinculadas → sheet «Corregir horario» (toque, long press o menú ⋮) |
+| **Wallet · lista** | Borde + dot `warning` si drift; supporting con sufijo; offline atenuado salvo drift |
+| **Wallet · detalle** | Chip warning «Actualizada en el plan · …» + enlace al día |
+
+Documentación: `docs/sessions/2026-06-17-day-hub-plan-drift.md`
+
+### Viaje pasado (fase `Past`)
+
+Cuando `Trip.homePhase(today) == Past`:
+
+| Área | Comportamiento |
+|------|----------------|
+| **Wallet** | Lista única con todos los documentos (archivados incluidos), orden por tipo; sin chips, carrusel «Próximos» ni swipe. |
+| **Plan** | Modo consulta: copy «Así quedó tu plan»; sin FAB, sin «Sin colocar», sin vincular Wallet. CTAs «Ver recuerdos del día» → Day hub tab Diario; «Ver documentos» → tab Wallet. |
+| **Day hub** | Plan del día solo lectura (sin drag ni FAB); apertura desde Plan con `?tab=journal` por defecto para recuerdos. |
+
 ---
 
 *Última actualización: junio 2026 — geolocalización y capacidades nativas Android elevadas a Must; alineado con research Notion y `references/requirements.md`.*

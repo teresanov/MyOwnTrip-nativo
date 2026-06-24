@@ -32,6 +32,7 @@ import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.domain.plan.WalletPlanPlacementInfo
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 
@@ -49,6 +50,7 @@ fun SwipeableWalletDocumentRow(
   onUnarchive: () -> Unit,
   onDeleteRequest: () -> Unit,
   modifier: Modifier = Modifier,
+  planPlacement: WalletPlanPlacementInfo? = null,
   showDivider: Boolean = true,
 ) {
   var menuExpanded by remember { mutableStateOf(false) }
@@ -124,66 +126,62 @@ fun SwipeableWalletDocumentRow(
       }
     },
     content = {
-      Box {
-        WalletDocumentRow(
-          entry = entry,
-          onClick = onClick,
-        )
-        MOTIconButton(
-          onClick = { menuExpanded = true },
-          modifier = Modifier
-            .align(Alignment.TopEnd)
-            .padding(top = 4.dp, end = 4.dp),
-        ) {
-          Icon(
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = "Acciones del documento",
-            modifier = Modifier.size(22.dp),
-          )
-        }
-        DropdownMenu(
-          expanded = menuExpanded,
-          onDismissRequest = { menuExpanded = false },
-        ) {
-          if (showArchivedActions) {
-            DropdownMenuItem(
-              text = { Text("Restaurar") },
-              leadingIcon = {
-                Icon(Icons.Outlined.Unarchive, contentDescription = null)
-              },
-              onClick = {
-                menuExpanded = false
-                onUnarchive()
-              },
+      WalletDocumentRow(
+        entry = entry,
+        planPlacement = planPlacement,
+        onClick = onClick,
+        trailingActions = {
+          MOTIconButton(onClick = { menuExpanded = true }) {
+            Icon(
+              imageVector = Icons.Default.MoreVert,
+              contentDescription = "Acciones del documento",
+              modifier = Modifier.size(22.dp),
             )
-          } else {
+          }
+          DropdownMenu(
+            expanded = menuExpanded,
+            onDismissRequest = { menuExpanded = false },
+          ) {
+            if (showArchivedActions) {
+              DropdownMenuItem(
+                text = { Text("Restaurar") },
+                leadingIcon = {
+                  Icon(Icons.Outlined.Unarchive, contentDescription = null)
+                },
+                onClick = {
+                  menuExpanded = false
+                  onUnarchive()
+                },
+              )
+            } else {
+              DropdownMenuItem(
+                text = { Text("Archivar") },
+                leadingIcon = {
+                  Icon(Icons.Outlined.Archive, contentDescription = null)
+                },
+                onClick = {
+                  menuExpanded = false
+                  onArchive()
+                },
+              )
+            }
             DropdownMenuItem(
-              text = { Text("Archivar") },
+              text = { Text("Eliminar", color = MaterialTheme.colorScheme.error) },
               leadingIcon = {
-                Icon(Icons.Outlined.Archive, contentDescription = null)
+                Icon(
+                  Icons.Default.Delete,
+                  contentDescription = null,
+                  tint = MaterialTheme.colorScheme.error,
+                )
               },
               onClick = {
                 menuExpanded = false
-                onArchive()
+                onDeleteRequest()
               },
             )
           }
-          DropdownMenuItem(
-            text = { Text("Eliminar", color = MaterialTheme.colorScheme.error) },
-            leadingIcon = {
-              Icon(
-                Icons.Default.Delete,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.error,
-              )
-            },
-            onClick = {
-              menuExpanded = false
-              onDeleteRequest()
-            },
-          )
-        }
-      }
+        },
+      )
     },
   )
   if (showDivider) {

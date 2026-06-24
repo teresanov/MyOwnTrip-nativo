@@ -111,6 +111,9 @@ fun AppNavGraph(
         onAddRestaurant = { navController.navigate(Routes.restaurantAdd(tripId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
         onDayClick = { dayId -> navController.navigate(Routes.dayHub(tripId, dayId)) },
+        onDayMemoriesClick = { dayId ->
+          navController.navigate(Routes.dayHub(tripId, dayId, tab = "journal"))
+        },
         onJournalNoteClick = { noteId ->
           navController.navigate(Routes.journalDetail(noteId))
         },
@@ -171,6 +174,9 @@ fun AppNavGraph(
         onViewDocument = { source, title ->
           navController.navigate(Routes.documentViewer(source, title))
         },
+        onOpenPlanDay = { tripId, dayId ->
+          navController.navigate(Routes.dayHub(tripId, dayId))
+        },
       )
     }
     composable(
@@ -215,6 +221,10 @@ fun AppNavGraph(
       arguments = listOf(
         navArgument("tripId") { type = NavType.StringType },
         navArgument("dayId") { type = NavType.StringType },
+        navArgument("tab") {
+          type = NavType.StringType
+          defaultValue = "plan"
+        },
       ),
     ) {
       val tripId = it.arguments?.getString("tripId")!!
@@ -225,6 +235,11 @@ fun AppNavGraph(
         onNoteClick = { noteId -> navController.navigate(Routes.journalDetail(noteId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
         onAddWalletDocument = { navController.navigate(Routes.walletAdd(tripId)) },
+        onNavigateToDay = { targetTripId, targetDayId ->
+          navController.navigate(Routes.dayHub(targetTripId, targetDayId)) {
+            popUpTo(Routes.dayHub(tripId, dayId)) { inclusive = true }
+          }
+        },
       )
     }
     composable(
@@ -232,6 +247,10 @@ fun AppNavGraph(
       arguments = listOf(
         navArgument("tripId") { type = NavType.StringType },
         navArgument("dayId") { type = NavType.StringType },
+        navArgument("tab") {
+          type = NavType.StringType
+          defaultValue = "plan"
+        },
       ),
     ) {
       val tripId = it.arguments?.getString("tripId")!!
@@ -242,6 +261,11 @@ fun AppNavGraph(
         onNoteClick = { noteId -> navController.navigate(Routes.journalDetail(noteId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
         onAddWalletDocument = { navController.navigate(Routes.walletAdd(tripId)) },
+        onNavigateToDay = { targetTripId, targetDayId ->
+          navController.navigate(Routes.dayHub(targetTripId, targetDayId)) {
+            popUpTo(Routes.dayDetail(tripId, dayId)) { inclusive = true }
+          }
+        },
       )
     }
     composable(

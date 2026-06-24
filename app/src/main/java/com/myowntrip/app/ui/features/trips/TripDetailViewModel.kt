@@ -40,6 +40,7 @@ data class TripDetailUiState(
   val walletLinkBlockId: String? = null,
   val pendingWalletEntryId: String? = null,
   val walletFilterPhase: WalletDocumentFilterPhase = WalletDocumentFilterPhase.Active,
+  val isPastTrip: Boolean = false,
 )
 
 enum class TripDetailTab(val routeValue: String, val index: Int) {
@@ -59,8 +60,8 @@ enum class TripDetailTab(val routeValue: String, val index: Int) {
 @HiltViewModel
 class TripDetailViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  tripRepository: TripRepository,
-  walletRepository: WalletRepository,
+  private val tripRepository: TripRepository,
+  private val walletRepository: WalletRepository,
   journalRepository: JournalRepository,
   expenseRepository: ExpenseRepository,
   restaurantRepository: RestaurantRepository,
@@ -68,8 +69,6 @@ class TripDetailViewModel @Inject constructor(
 ) : ViewModel() {
   private val tripId: String = checkNotNull(savedStateHandle["tripId"])
   val initialTab: TripDetailTab = TripDetailTab.fromRoute(savedStateHandle["tab"])
-  private val walletRepository: WalletRepository = walletRepository
-  private val tripRepository: TripRepository = tripRepository
 
   private val walletLinkDialog = MutableStateFlow(WalletLinkDialogState())
   private val walletFilterPhase = MutableStateFlow(WalletDocumentFilterPhase.Active)
@@ -91,6 +90,7 @@ class TripDetailViewModel @Inject constructor(
     walletLinkDialog,
     walletFilterPhase,
   ) { partial, e, r, linkDialog, filterPhase ->
+    val isPastTrip = partial.trip?.homePhase(LocalDate.now()) == HomeTripPhase.Past
     TripDetailUiState(
       trip = partial.trip,
       days = partial.days,
@@ -99,10 +99,11 @@ class TripDetailViewModel @Inject constructor(
       journalSections = buildJournalSections(partial.days, partial.journalNotes),
       expenses = e,
       restaurants = r,
-      showWalletLinkDialog = linkDialog.show,
+      showWalletLinkDialog = linkDialog.show && !isPastTrip,
       walletLinkBlockId = linkDialog.blockId,
       pendingWalletEntryId = linkDialog.pendingEntryId,
       walletFilterPhase = filterPhase,
+      isPastTrip = isPastTrip,
     )
   }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TripDetailUiState())
 
@@ -146,6 +147,7 @@ class TripDetailViewModel @Inject constructor(
   }
 
   fun showWalletLinkForBlock(blockId: String) {
+    if (uiState.value.isPastTrip) return
     val current = uiState.value.planBlocks.find { it.id == blockId }?.walletEntryId
     walletLinkDialog.update {
       WalletLinkDialogState(show = true, blockId = blockId, pendingEntryId = current)
@@ -169,9 +171,6 @@ class TripDetailViewModel @Inject constructor(
       dismissWalletLinkDialog()
     }
   }
-
-  fun walletEntryFor(id: String?): WalletEntry? =
-    id?.let { entryId -> uiState.value.walletEntries.find { it.id == entryId } }
 
   private data class PlanPartial(
     val trip: Trip?,

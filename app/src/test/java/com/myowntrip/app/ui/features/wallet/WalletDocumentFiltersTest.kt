@@ -57,4 +57,10 @@ class WalletDocumentFiltersTest {
     val result = walletHighlights(entries)
     assertEquals(listOf("1", "3"), result.map { it.id })
   }
+
+  @Test
+  fun `past trip sort orders by type then date desc`() {
+    val result = sortPastTripWalletByType(entries)
+    assertEquals(listOf("1", "2", "3"), result.map { it.id })
+  }
 }

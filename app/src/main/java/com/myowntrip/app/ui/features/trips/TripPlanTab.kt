@@ -43,6 +43,9 @@ fun TripPlanTab(
   onLinkWallet: (String) -> Unit,
   onWalletEntryClick: (String) -> Unit,
   modifier: Modifier = Modifier,
+  isPastTrip: Boolean = false,
+  onDayMemoriesClick: (String) -> Unit = onDayClick,
+  onViewWalletDocuments: () -> Unit = {},
 ) {
   if (days.isEmpty()) {
     Column(
@@ -78,24 +81,40 @@ fun TripPlanTab(
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
   ) {
     item {
-      Text(
-        text = "Actividades por día con sus documentos de Wallet.",
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(bottom = MOTSpacing.componentXs),
-      )
+      Column(verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs)) {
+        Text(
+          text = if (isPastTrip) "Así quedó tu plan" else "Plan del viaje",
+          style = MaterialTheme.typography.titleMedium,
+        )
+        Text(
+          text = if (isPastTrip) {
+            "Día a día — lo que tenías previsto"
+          } else {
+            "Actividades por día. Toca «Reordenar día» para abrir el cuadrante horario."
+          },
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        if (isPastTrip) {
+          MOTTextButton(onClick = onViewWalletDocuments) {
+            Text("Ver documentos")
+          }
+        }
+      }
     }
     items(days, key = { it.id }) { day ->
       PlanDaySection(
         day = day,
         blocks = PlanPlacementLogic.sortBlocksForDisplay(blocksByDay[day.id].orEmpty()),
         walletEntries = walletEntries,
+        isPastTrip = isPastTrip,
         onDayClick = { onDayClick(day.id) },
+        onDayMemoriesClick = { onDayMemoriesClick(day.id) },
         onLinkWallet = onLinkWallet,
         onWalletEntryClick = onWalletEntryClick,
       )
     }
-    if (unplacedEntries.isNotEmpty()) {
+    if (!isPastTrip && unplacedEntries.isNotEmpty()) {
       item {
         UnplacedWalletSection(
           entries = unplacedEntries,
@@ -112,8 +131,10 @@ private fun PlanDaySection(
   blocks: List<ItineraryBlock>,
   walletEntries: List<WalletEntry>,
   onDayClick: () -> Unit,
+  onDayMemoriesClick: () -> Unit,
   onLinkWallet: (String) -> Unit,
   onWalletEntryClick: (String) -> Unit,
+  isPastTrip: Boolean = false,
 ) {
   val dateLabel = day.date.format(SpanishDayDateFormatter).replaceFirstChar {
     if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
@@ -141,7 +162,7 @@ private fun PlanDaySection(
 
       if (blocks.isEmpty()) {
         Text(
-          text = "Sin actividades en este día.",
+          text = if (isPastTrip) "Sin actividades registradas en este día." else "Sin actividades en este día.",
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
           modifier = Modifier.padding(top = MOTSpacing.layoutMd),
@@ -159,6 +180,7 @@ private fun PlanDaySection(
             PlanActivityCard(
               block = block,
               linkedWalletEntry = linked,
+              readOnly = isPastTrip,
               onLinkWallet = { onLinkWallet(block.id) },
               onWalletEntryClick = onWalletEntryClick,
               embeddedInDay = true,
@@ -167,11 +189,20 @@ private fun PlanDaySection(
         }
       }
 
-      MOTTextButton(
-        onClick = onDayClick,
-        modifier = Modifier.padding(top = MOTSpacing.componentSm),
-      ) {
-        Text(if (blocks.isEmpty()) "Añadir actividades" else "Gestionar día")
+      if (isPastTrip) {
+        MOTTextButton(
+          onClick = onDayMemoriesClick,
+          modifier = Modifier.padding(top = MOTSpacing.componentSm),
+        ) {
+          Text("Ver recuerdos del día")
+        }
+      } else {
+        MOTTextButton(
+          onClick = onDayClick,
+          modifier = Modifier.padding(top = MOTSpacing.componentSm),
+        ) {
+          Text(if (blocks.isEmpty()) "Añadir actividades" else "Reordenar día")
+        }
       }
     }
   }

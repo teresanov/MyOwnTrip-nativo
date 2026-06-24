@@ -1,12 +1,12 @@
 package com.myowntrip.app.ui.features.dayhub
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -15,11 +15,15 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -30,11 +34,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.myowntrip.app.domain.model.ItineraryBlock
-import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.ui.features.journal.JournalNoteCard
 import com.myowntrip.app.ui.features.plan.AddPlanActivitySheet
-import com.myowntrip.app.ui.features.plan.PlanActivityCard
+import com.myowntrip.app.ui.features.plan.DayPlanSchedule
+import com.myowntrip.app.ui.features.plan.MoveBlockDayDialog
+import com.myowntrip.app.ui.features.plan.UpdateDocumentPlanSheet
 import com.myowntrip.app.ui.theme.MOTIconButton
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -50,13 +54,34 @@ fun DayHubScreen(
   onNoteClick: (String) -> Unit,
   onWalletEntryClick: (String) -> Unit,
   onAddWalletDocument: () -> Unit,
+  onNavigateToDay: (tripId: String, dayId: String) -> Unit = { _, _ -> },
   viewModel: DayHubViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
-  var tabIndex by remember { mutableIntStateOf(0) }
+  var tabIndex by remember(viewModel.initialTab) {
+    mutableIntStateOf(viewModel.initialTab.index)
+  }
   val tabs = listOf("Plan", "Diario")
+  val isPastTrip = state.isPastTrip
+  val snackbarHostState = remember { SnackbarHostState() }
+
+  LaunchedEffect(viewModel) {
+    viewModel.events.collect { event ->
+      when (event) {
+        is DayHubEvent.Snackbar -> {
+          snackbarHostState.showSnackbar(
+            message = event.message,
+            actionLabel = event.actionLabel,
+            duration = SnackbarDuration.Short,
+          )
+        }
+        is DayHubEvent.NavigateToDay -> onNavigateToDay(event.tripId, event.dayId)
+      }
+    }
+  }
 
   Scaffold(
+    snackbarHost = { SnackbarHost(snackbarHostState) },
     topBar = {
       TopAppBar(
         title = {
@@ -75,12 +100,13 @@ fun DayHubScreen(
       )
     },
     floatingActionButton = {
-      when (tabIndex) {
-        0 -> FloatingActionButton(
+      when {
+        isPastTrip && tabIndex == 0 -> Unit
+        tabIndex == 0 -> FloatingActionButton(
           onClick = { viewModel.showAddBlock() },
           modifier = Modifier.semantics { contentDescription = "Añadir actividad" },
         ) { Icon(Icons.Default.Add, contentDescription = null) }
-        1 -> FloatingActionButton(
+        else -> FloatingActionButton(
           onClick = onAddNote,
           modifier = Modifier.semantics { contentDescription = "Añadir recuerdo" },
         ) { Icon(Icons.Default.Add, contentDescription = null) }
@@ -98,13 +124,17 @@ fun DayHubScreen(
         }
       }
       when (tabIndex) {
-        0 -> PlanTab(
+        0 -> DayPlanSchedule(
+          day = state.day,
           blocks = state.blocks,
           walletEntries = state.walletEntries,
-          onMoveUp = viewModel::moveBlockUp,
-          onMoveDown = viewModel::moveBlockDown,
+          tripDays = state.tripDays,
+          readOnly = isPastTrip,
+          onTimeChange = viewModel::updateBlockTime,
           onLinkWallet = viewModel::showWalletPickerForBlock,
           onWalletEntryClick = onWalletEntryClick,
+          onMoveToDay = viewModel::showMoveDayDialog,
+          onRequestUpdatePlan = viewModel::showUpdatePlanSheet,
         )
         1 -> JournalTab(
           notes = state.notes,
@@ -141,51 +171,33 @@ fun DayHubScreen(
       },
     )
   }
-}
 
-@Composable
-private fun PlanTab(
-  blocks: List<ItineraryBlock>,
-  walletEntries: List<WalletEntry>,
-  onMoveUp: (Int) -> Unit,
-  onMoveDown: (Int) -> Unit,
-  onLinkWallet: (String) -> Unit,
-  onWalletEntryClick: (String) -> Unit,
-) {
-  if (blocks.isEmpty()) {
-    Column(
-      modifier = Modifier.fillMaxSize().padding(24.dp),
-      verticalArrangement = Arrangement.Center,
-    ) {
-      Text(
-        "Planifica este día: añade actividades y vincula entradas o billetes de Wallet.",
-        style = MaterialTheme.typography.bodyLarge,
-      )
-      Text(
-        "Usa las flechas para reordenar sin arrastrar.",
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(top = 8.dp),
-      )
-    }
-  } else {
-    LazyColumn(
-      modifier = Modifier.fillMaxSize(),
-      contentPadding = PaddingValues(16.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-      itemsIndexed(blocks, key = { _, block -> block.id }) { index, block ->
-        val linked = block.walletEntryId?.let { id ->
-          walletEntries.find { it.id == id }
-        }
-        PlanActivityCard(
-          block = block,
-          linkedWalletEntry = linked,
-          showReorder = true,
-          onMoveUp = { onMoveUp(index) },
-          onMoveDown = { onMoveDown(index) },
-          onLinkWallet = { onLinkWallet(block.id) },
-          onWalletEntryClick = onWalletEntryClick,
+  state.moveDayBlockId?.let { blockId ->
+    if (state.showMoveDayDialog) {
+      val block = state.blocks.find { it.id == blockId }
+      val linkedWallet = viewModel.walletEntryFor(block?.walletEntryId)
+      if (block != null && linkedWallet != null) {
+        UpdateDocumentPlanSheet(
+          blockTitle = block.title,
+          linkedWallet = linkedWallet,
+          tripDays = state.tripDays,
+          selectedDayId = state.moveDaySelectedDayId,
+          time = state.moveDayTime,
+          onDaySelected = viewModel::onMoveDaySelected,
+          onTimeChange = viewModel::onMoveDayTimeChange,
+          onDismiss = viewModel::dismissMoveDayDialog,
+          onConfirm = viewModel::confirmMoveDay,
+        )
+      } else if (block != null) {
+        MoveBlockDayDialog(
+          blockTitle = block.title,
+          tripDays = state.tripDays,
+          selectedDayId = state.moveDaySelectedDayId,
+          time = state.moveDayTime,
+          onDaySelected = viewModel::onMoveDaySelected,
+          onTimeChange = viewModel::onMoveDayTimeChange,
+          onDismiss = viewModel::dismissMoveDayDialog,
+          onConfirm = viewModel::confirmMoveDay,
         )
       }
     }
@@ -221,10 +233,10 @@ private fun JournalTab(
         )
       }
     } else {
-      items(notes.size, key = { notes[it].id }) { index ->
+      items(notes, key = { it.id }) { note ->
         JournalNoteCard(
-          note = notes[index],
-          onClick = { onNoteClick(notes[index].id) },
+          note = note,
+          onClick = { onNoteClick(note.id) },
         )
       }
     }
