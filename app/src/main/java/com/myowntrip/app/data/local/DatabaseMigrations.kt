@@ -175,3 +175,19 @@ val MIGRATION_11_12 = object : Migration(11, 12) {
     db.execSQL("ALTER TABLE journal_notes ADD COLUMN textStyle TEXT NOT NULL DEFAULT 'HAND'")
   }
 }
+
+val MIGRATION_12_13 = object : Migration(12, 13) {
+  override fun migrate(db: SupportSQLiteDatabase) {
+    // "Sitios": el antiguo restaurante se generaliza. Las filas existentes SON
+    // restaurantes → category 'RESTAURANTE'. El resto de campos (mapa/contacto) se
+    // rellenan al compartir desde Google Maps; en filas a mano quedan NULL.
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN category TEXT NOT NULL DEFAULT 'RESTAURANTE'")
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN latitude REAL")
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN longitude REAL")
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN placeId TEXT")
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN phone TEXT")
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN website TEXT")
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN googleMapsUri TEXT")
+    db.execSQL("ALTER TABLE restaurants ADD COLUMN rating REAL")
+  }
+}

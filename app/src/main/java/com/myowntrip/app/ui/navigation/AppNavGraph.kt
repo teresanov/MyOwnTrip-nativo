@@ -13,6 +13,7 @@ import com.myowntrip.app.ui.features.expenses.ExpenseFormScreen
 import com.myowntrip.app.ui.features.journal.JournalAddScreen
 import com.myowntrip.app.ui.features.journal.JournalDetailScreen
 import com.myowntrip.app.ui.features.journal.spread.SketchCanvasScreen
+import com.myowntrip.app.ui.features.places.PlacesMapScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantDetailScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantFormScreen
 import com.myowntrip.app.ui.features.trips.CreateTripScreen
@@ -121,6 +122,7 @@ fun AppNavGraph(
         onRestaurantClick = { restaurantId ->
           navController.navigate(Routes.restaurantDetail(restaurantId))
         },
+        onOpenPlacesMap = { navController.navigate(Routes.placesMap(tripId)) },
         onViewDocument = { source, title ->
           navController.navigate(Routes.documentViewer(source, title))
         },
@@ -341,7 +343,16 @@ fun AppNavGraph(
       route = Routes.RESTAURANT_DETAIL,
       arguments = listOf(navArgument("restaurantId") { type = NavType.StringType }),
     ) {
-      RestaurantDetailScreen(onBack = { navController.popBackStack() })
+      RestaurantDetailScreen(
+        onBack = { navController.popBackStack() },
+        onDeleted = { navController.popBackStack() },
+      )
+    }
+    composable(
+      route = Routes.PLACES_MAP,
+      arguments = listOf(navArgument("tripId") { type = NavType.StringType }),
+    ) {
+      PlacesMapScreen(onBack = { navController.popBackStack() })
     }
   }
 }

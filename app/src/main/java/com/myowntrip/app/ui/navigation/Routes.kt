@@ -20,6 +20,7 @@ object Routes {
   const val JOURNAL_DETAIL = "journal_detail/{noteId}"
   const val RESTAURANT_ADD = "restaurant_add/{tripId}"
   const val RESTAURANT_DETAIL = "restaurant_detail/{restaurantId}"
+  const val PLACES_MAP = "places_map/{tripId}"
   const val DOCUMENT_VIEWER = "document_viewer?source={source}&title={title}"
 
   fun tripDetail(tripId: String, tab: String = "wallet") = "trip_detail/$tripId?tab=$tab"
@@ -53,6 +54,7 @@ object Routes {
   fun journalSketch(dayId: String) = "journal_sketch/$dayId"
   fun restaurantAdd(tripId: String) = "restaurant_add/$tripId"
   fun restaurantDetail(restaurantId: String) = "restaurant_detail/$restaurantId"
+  fun placesMap(tripId: String) = "places_map/$tripId"
   fun documentViewer(source: String, title: String? = null): String {
     val encodedSource = android.net.Uri.encode(source)
     val encodedTitle = android.net.Uri.encode(title.orEmpty())

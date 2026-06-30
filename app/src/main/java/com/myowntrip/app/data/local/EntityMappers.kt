@@ -199,6 +199,14 @@ fun RestaurantEntity.toDomain() = Restaurant(
   address = address,
   status = status,
   notes = notes,
+  category = category,
+  latitude = latitude,
+  longitude = longitude,
+  placeId = placeId,
+  phone = phone,
+  website = website,
+  googleMapsUri = googleMapsUri,
+  rating = rating,
 )
 
 fun Restaurant.toEntity() = RestaurantEntity(
@@ -209,4 +217,12 @@ fun Restaurant.toEntity() = RestaurantEntity(
   address = address,
   status = status,
   notes = notes,
+  category = category,
+  latitude = latitude,
+  longitude = longitude,
+  placeId = placeId,
+  phone = phone,
+  website = website,
+  googleMapsUri = googleMapsUri,
+  rating = rating,
 )

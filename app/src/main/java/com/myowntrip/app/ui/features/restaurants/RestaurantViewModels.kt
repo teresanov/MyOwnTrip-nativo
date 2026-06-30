@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.myowntrip.app.data.repository.RestaurantRepository
+import com.myowntrip.app.domain.model.PlaceCategory
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.RestaurantStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ data class RestaurantFormUiState(
   val name: String = "",
   val address: String = "",
   val notes: String = "",
+  val category: PlaceCategory = PlaceCategory.OTRO,
   val nameError: String? = null,
 )
 
@@ -37,11 +39,12 @@ class RestaurantFormViewModel @Inject constructor(
   fun onNameChange(value: String) = _uiState.update { it.copy(name = value, nameError = null) }
   fun onAddressChange(value: String) = _uiState.update { it.copy(address = value) }
   fun onNotesChange(value: String) = _uiState.update { it.copy(notes = value) }
+  fun onCategoryChange(value: PlaceCategory) = _uiState.update { it.copy(category = value) }
 
   fun save(onSuccess: () -> Unit) {
     val state = _uiState.value
     if (state.name.isBlank()) {
-      _uiState.update { it.copy(nameError = "Required") }
+      _uiState.update { it.copy(nameError = "El nombre es obligatorio") }
       return
     }
     viewModelScope.launch {
@@ -51,6 +54,7 @@ class RestaurantFormViewModel @Inject constructor(
         address = state.address.ifBlank { null },
         dayId = null,
         notes = state.notes.ifBlank { null },
+        category = state.category,
       )
       onSuccess()
     }
@@ -70,6 +74,13 @@ class RestaurantDetailViewModel @Inject constructor(
   fun updateStatus(status: RestaurantStatus) {
     viewModelScope.launch {
       restaurantRepository.updateStatus(restaurantId, status)
+    }
+  }
+
+  fun delete(onDeleted: () -> Unit) {
+    viewModelScope.launch {
+      restaurantRepository.deleteRestaurant(restaurantId)
+      onDeleted()
     }
   }
 }

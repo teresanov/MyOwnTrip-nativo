@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -57,6 +58,7 @@ import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
 import com.myowntrip.app.ui.features.journal.spread.JournalCaptureFabMenu
 import com.myowntrip.app.ui.features.journal.spread.JournalCaptureHost
 import com.myowntrip.app.ui.features.journal.spread.SpreadCaptureViewModel
+import com.myowntrip.app.ui.features.restaurants.categoryLabel
 import com.myowntrip.app.ui.features.restaurants.statusLabel
 import com.myowntrip.app.ui.features.dayhub.WalletLinkDialog
 import com.myowntrip.app.ui.features.wallet.WalletScreen
@@ -85,6 +87,7 @@ fun TripDetailScreen(
   onDayMemoriesClick: (String) -> Unit = onDayClick,
   onJournalNoteClick: (String) -> Unit,
   onRestaurantClick: (String) -> Unit,
+  onOpenPlacesMap: () -> Unit = {},
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
   viewModel: TripDetailViewModel = hiltViewModel(),
 ) {
@@ -258,7 +261,11 @@ fun TripDetailScreen(
           },
         )
         3 -> ExpensesTab(expenses = state.expenses, onViewDocument = onViewDocument)
-        4 -> RestaurantsTab(restaurants = state.restaurants, onRestaurantClick = onRestaurantClick)
+        4 -> RestaurantsTab(
+          restaurants = state.restaurants,
+          onRestaurantClick = onRestaurantClick,
+          onOpenMap = onOpenPlacesMap,
+        )
       }
     }
 
@@ -371,6 +378,7 @@ private fun ExpensesTab(
 private fun RestaurantsTab(
   restaurants: List<Restaurant>,
   onRestaurantClick: (String) -> Unit,
+  onOpenMap: () -> Unit,
 ) {
   if (restaurants.isEmpty()) {
     BoxText("Aún no hay sitios guardados.")
@@ -379,6 +387,16 @@ private fun RestaurantsTab(
       contentPadding = PaddingValues(16.dp),
       verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+      if (restaurants.any { it.hasLocation }) {
+        item {
+          OutlinedButton(
+            onClick = onOpenMap,
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            Text("Ver en el mapa")
+          }
+        }
+      }
       items(restaurants, key = { it.id }) { restaurant ->
         Card(
           modifier = Modifier
@@ -386,11 +404,16 @@ private fun RestaurantsTab(
             .clickable { onRestaurantClick(restaurant.id) },
         ) {
           Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+              categoryLabel(restaurant.category),
+              style = MaterialTheme.typography.labelSmall,
+              color = MaterialTheme.colorScheme.tertiary,
+            )
             Text(restaurant.name, style = MaterialTheme.typography.titleSmall)
             Text(
               statusLabel(restaurant.status),
               style = MaterialTheme.typography.bodySmall,
-              color = MaterialTheme.colorScheme.tertiary,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
           }
         }

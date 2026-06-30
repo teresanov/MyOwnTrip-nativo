@@ -116,6 +116,8 @@ dependencies {
 
     implementation(libs.zxing.core)
 
+    implementation(libs.osmdroid.android)
+
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     testImplementation(libs.junit4)

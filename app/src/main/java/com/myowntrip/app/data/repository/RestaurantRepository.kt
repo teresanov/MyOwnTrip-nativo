@@ -3,6 +3,7 @@ package com.myowntrip.app.data.repository
 import com.myowntrip.app.data.local.dao.RestaurantDao
 import com.myowntrip.app.data.local.toDomain
 import com.myowntrip.app.data.local.toEntity
+import com.myowntrip.app.domain.model.PlaceCategory
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.RestaurantStatus
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +28,14 @@ class RestaurantRepository @Inject constructor(
     address: String?,
     dayId: String?,
     notes: String?,
+    category: PlaceCategory = PlaceCategory.OTRO,
+    latitude: Double? = null,
+    longitude: Double? = null,
+    placeId: String? = null,
+    phone: String? = null,
+    website: String? = null,
+    googleMapsUri: String? = null,
+    rating: Double? = null,
   ) {
     restaurantDao.insert(
       Restaurant(
@@ -37,11 +46,23 @@ class RestaurantRepository @Inject constructor(
         address = address?.trim(),
         status = RestaurantStatus.WITHOUT_RESERVATION,
         notes = notes?.trim(),
+        category = category,
+        latitude = latitude,
+        longitude = longitude,
+        placeId = placeId,
+        phone = phone,
+        website = website,
+        googleMapsUri = googleMapsUri,
+        rating = rating,
       ).toEntity(),
     )
   }
 
   suspend fun updateStatus(restaurantId: String, status: RestaurantStatus) {
     restaurantDao.updateStatus(restaurantId, status)
+  }
+
+  suspend fun deleteRestaurant(restaurantId: String) {
+    restaurantDao.deleteById(restaurantId)
   }
 }

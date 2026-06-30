@@ -31,7 +31,7 @@ import com.myowntrip.app.data.local.entity.WalletEntryEntity
     ItineraryBlockEntity::class,
     RestaurantEntity::class,
   ],
-  version = 12,
+  version = 13,
   exportSchema = true,
 )
 @TypeConverters(Converters::class)
