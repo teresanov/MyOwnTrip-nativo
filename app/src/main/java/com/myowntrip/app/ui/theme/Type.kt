@@ -24,6 +24,15 @@ val InterFamily = FontFamily(
   Font(R.font.inter, FontWeight.SemiBold),
 )
 
+/**
+ * "Pluma" del Diario: tipografía manuscrita, scopeada SOLO a notas a mano del álbum
+ * (≥16sp), nunca en UI funcional. TODO: bundlear Shantell Sans en res/font/ y
+ * apuntar aquí; de momento usa Fraunces itálica como sustituta (único punto de cambio).
+ */
+val HandFamily = FontFamily(
+  Font(R.font.fraunces_italic, FontWeight.Medium, FontStyle.Italic),
+)
+
 val AppTypography = Typography(
   displayLarge = TextStyle(
     fontFamily = FrauncesFamily,

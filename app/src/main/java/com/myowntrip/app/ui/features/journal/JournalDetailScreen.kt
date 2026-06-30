@@ -154,11 +154,39 @@ private fun JournalDetailContent(
         )
       }
     }
-    item {
-      Text(
-        text = note.text,
-        style = MaterialTheme.typography.bodyLarge,
-      )
+    note.sketchUri?.let { path ->
+      item {
+        AsyncImage(
+          model = File(path),
+          contentDescription = "Boceto del recuerdo",
+          contentScale = ContentScale.Fit,
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(240.dp)
+            .clip(RoundedCornerShape(12.dp)),
+        )
+      }
+    }
+    note.stickerUri?.let { path ->
+      item {
+        AsyncImage(
+          model = File(path),
+          contentDescription = "Sticker del recuerdo",
+          contentScale = ContentScale.Fit,
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp)
+            .clip(RoundedCornerShape(12.dp)),
+        )
+      }
+    }
+    if (note.text.isNotBlank()) {
+      item {
+        Text(
+          text = note.text,
+          style = MaterialTheme.typography.bodyLarge,
+        )
+      }
     }
     note.audioUri?.let { path ->
       item {

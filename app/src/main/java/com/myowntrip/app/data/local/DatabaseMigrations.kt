@@ -104,3 +104,74 @@ val MIGRATION_8_9 = object : Migration(8, 9) {
     db.execSQL("ALTER TABLE wallet_entries ADD COLUMN archivedAt INTEGER")
   }
 }
+
+val MIGRATION_9_10 = object : Migration(9, 10) {
+  override fun migrate(db: SupportSQLiteDatabase) {
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN pieceType TEXT NOT NULL DEFAULT 'TEXT'")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN sketchUri TEXT")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN stickerUri TEXT")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN planBlockId TEXT")
+    db.execSQL("CREATE INDEX IF NOT EXISTS index_journal_notes_planBlockId ON journal_notes(planBlockId)")
+    db.execSQL(
+      """
+      UPDATE journal_notes SET pieceType = 'PHOTO'
+      WHERE photoUri IS NOT NULL AND audioUri IS NULL AND sketchUri IS NULL AND stickerUri IS NULL
+      """.trimIndent(),
+    )
+    db.execSQL(
+      """
+      UPDATE journal_notes SET pieceType = 'AUDIO'
+      WHERE audioUri IS NOT NULL AND photoUri IS NULL AND sketchUri IS NULL AND stickerUri IS NULL
+      """.trimIndent(),
+    )
+  }
+}
+
+val MIGRATION_10_11 = object : Migration(10, 11) {
+  override fun migrate(db: SupportSQLiteDatabase) {
+    // Hojas del álbum (días = capítulos, varias hojas por día).
+    db.execSQL(
+      """
+      CREATE TABLE IF NOT EXISTS journal_pages (
+        id TEXT NOT NULL PRIMARY KEY,
+        tripId TEXT NOT NULL,
+        dayId TEXT NOT NULL,
+        pageIndex INTEGER NOT NULL,
+        paperStyle TEXT,
+        FOREIGN KEY(dayId) REFERENCES days(id) ON DELETE CASCADE
+      )
+      """.trimIndent(),
+    )
+    db.execSQL("CREATE INDEX IF NOT EXISTS index_journal_pages_dayId ON journal_pages(dayId)")
+    db.execSQL("CREATE INDEX IF NOT EXISTS index_journal_pages_tripId ON journal_pages(tripId)")
+
+    // Pieza en el lienzo lógico de su hoja (pageId sin FK a nivel DB, solo índice).
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN pageId TEXT")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN canvasX REAL")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN canvasY REAL")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN rotation REAL NOT NULL DEFAULT 0")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN scale REAL NOT NULL DEFAULT 1")
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN zIndex INTEGER NOT NULL DEFAULT 0")
+    db.execSQL("CREATE INDEX IF NOT EXISTS index_journal_notes_pageId ON journal_notes(pageId)")
+
+    // Backfill no destructivo: una hoja por defecto (pageIndex 0) por cada día con notas,
+    // y reasignar esas notas a su hoja. canvasX/canvasY quedan NULL → auto-flow al abrir.
+    db.execSQL(
+      """
+      INSERT INTO journal_pages (id, tripId, dayId, pageIndex, paperStyle)
+      SELECT 'page-' || d.id, d.tripId, d.id, 0, NULL
+      FROM days d
+      WHERE EXISTS (SELECT 1 FROM journal_notes n WHERE n.dayId = d.id)
+      """.trimIndent(),
+    )
+    db.execSQL("UPDATE journal_notes SET pageId = 'page-' || dayId WHERE pageId IS NULL")
+  }
+}
+
+val MIGRATION_11_12 = object : Migration(11, 12) {
+  override fun migrate(db: SupportSQLiteDatabase) {
+    // Estilo de las piezas de texto: mano (pluma) vs máquina (post-it). Las notas
+    // existentes se quedan como "a mano", coherente con el tono del diario hasta ahora.
+    db.execSQL("ALTER TABLE journal_notes ADD COLUMN textStyle TEXT NOT NULL DEFAULT 'HAND'")
+  }
+}

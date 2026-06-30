@@ -173,8 +173,14 @@ class JournalAddViewModel @Inject constructor(
   }
 
   fun saveNote(hasLocationPermission: Boolean, onSuccess: () -> Unit) {
-    if (_uiState.value.text.isBlank()) {
-      _uiState.update { it.copy(textError = "Escribe algo") }
+    val state = _uiState.value
+    val hasContent = state.text.isNotBlank() ||
+      state.photoPath != null ||
+      state.audioPath != null ||
+      loadedNote?.sketchUri != null ||
+      loadedNote?.stickerUri != null
+    if (!hasContent) {
+      _uiState.update { it.copy(textError = "Añade texto o un adjunto") }
       return
     }
     if (_uiState.value.isRecording) {

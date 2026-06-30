@@ -16,6 +16,7 @@ object Routes {
   const val DAY_DETAIL = "day_detail/{tripId}/{dayId}?tab={tab}"
   const val JOURNAL_ADD = "journal_add/{dayId}?tripId={tripId}"
   const val JOURNAL_EDIT = "journal_edit/{noteId}?tripId={tripId}"
+  const val JOURNAL_SKETCH = "journal_sketch/{dayId}"
   const val JOURNAL_DETAIL = "journal_detail/{noteId}"
   const val RESTAURANT_ADD = "restaurant_add/{tripId}"
   const val RESTAURANT_DETAIL = "restaurant_detail/{restaurantId}"
@@ -49,6 +50,7 @@ object Routes {
       "journal_edit/$noteId?tripId=$tripId"
     }
   fun journalDetail(noteId: String) = "journal_detail/$noteId"
+  fun journalSketch(dayId: String) = "journal_sketch/$dayId"
   fun restaurantAdd(tripId: String) = "restaurant_add/$tripId"
   fun restaurantDetail(restaurantId: String) = "restaurant_detail/$restaurantId"
   fun documentViewer(source: String, title: String? = null): String {

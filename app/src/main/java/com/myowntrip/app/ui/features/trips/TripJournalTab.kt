@@ -1,149 +1,84 @@
 package com.myowntrip.app.ui.features.trips
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.JournalNote
-import com.myowntrip.app.ui.features.journal.JournalNoteCard
-import com.myowntrip.app.ui.theme.MOTSpacing
-import com.myowntrip.app.ui.theme.MyOwnTripTheme
+import com.myowntrip.app.domain.model.JournalPage
+import com.myowntrip.app.domain.model.JournalPieceType
+import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
+import com.myowntrip.app.ui.features.journal.spread.JournalSpreadPreviewFrame
+import com.myowntrip.app.ui.features.journal.spread.JournalSpreadPreviewTheme
+import com.myowntrip.app.ui.features.journal.spread.OnPersistTransform
+import com.myowntrip.app.ui.features.journal.spread.ScrapbookAlbum
+import com.myowntrip.app.ui.features.journal.spread.buildAlbumPages
 import java.time.LocalDate
 
+/**
+ * Pestaña Diario del viaje: el álbum completo en una pasada continua. Editable salvo en
+ * viajes pasados (arrastrar piezas, nueva hoja, capturar desde el Speed Dial). La pieza
+ * nueva cae en la hoja/día que se esté viendo.
+ */
 @Composable
 fun TripJournalTab(
-  sections: List<JournalDaySection>,
-  onDayClick: (String) -> Unit,
+  days: List<Day>,
+  pages: List<JournalPage>,
+  notes: List<JournalNote>,
   onNoteClick: (String) -> Unit,
   modifier: Modifier = Modifier,
+  readOnly: Boolean = true,
+  onPersistTransform: OnPersistTransform = { _, _, _, _, _, _ -> },
+  onAddSheet: (dayId: String) -> Unit = {},
+  onActivePageChange: (AlbumPageUi) -> Unit = {},
 ) {
-  if (sections.isEmpty()) {
-    Column(
-      modifier = modifier
-        .fillMaxSize()
-        .padding(horizontal = MOTSpacing.screenHorizontal, vertical = MOTSpacing.layoutLg),
-      verticalArrangement = Arrangement.Center,
-    ) {
-      Text(
-        text = "Aún no hay recuerdos en este viaje",
-        style = MaterialTheme.typography.bodyLarge,
-      )
-      Text(
-        text = "Las notas y fotos que añadas aparecerán aquí, agrupadas por día.",
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(top = MOTSpacing.componentSm),
-      )
-    }
-    return
+  val albumPages = remember(days, pages, notes) {
+    buildAlbumPages(days = days, pages = pages, notes = notes)
   }
-
-  LazyColumn(
+  ScrapbookAlbum(
+    pages = albumPages,
     modifier = modifier.fillMaxSize(),
-    contentPadding = PaddingValues(
-      horizontal = MOTSpacing.screenHorizontal,
-      vertical = MOTSpacing.layoutMd,
-    ),
-    verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
-  ) {
-    sections.forEach { section ->
-      item(key = "header-${section.day.id}") {
-        DaySectionHeader(
-          day = section.day,
-          onClick = { onDayClick(section.day.id) },
-        )
-      }
-      items(section.notes, key = { it.id }) { note ->
-        JournalNoteCard(
-          note = note,
-          onClick = { onNoteClick(note.id) },
-        )
-      }
-    }
-  }
+    readOnly = readOnly,
+    onPersistTransform = onPersistTransform,
+    onPieceClick = onNoteClick,
+    onAddSheet = onAddSheet,
+    onActivePageChange = onActivePageChange,
+  )
 }
 
-@Composable
-private fun DaySectionHeader(
-  day: Day,
-  onClick: () -> Unit,
-) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .semantics { contentDescription = "Día ${day.dayNumber}, abrir día" }
-      .clickable(onClick = onClick)
-      .padding(vertical = MOTSpacing.componentSm),
-  ) {
-    Text(
-      text = "Día ${day.dayNumber}",
-      style = MaterialTheme.typography.titleSmall,
-      color = MaterialTheme.colorScheme.primary,
-    )
-    Text(
-      text = day.date.toString(),
-      style = MaterialTheme.typography.bodySmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
-  }
-}
-
-@Preview(showBackground = true, widthDp = 360, heightDp = 640)
+@Preview(name = "Diario viaje · álbum", showBackground = true, widthDp = 360, heightDp = 720)
 @Composable
 private fun TripJournalTabPreview() {
-  val day = Day(
-    id = "day-1",
-    tripId = "trip-1",
-    date = LocalDate.of(2026, 6, 12),
-    dayNumber = 2,
-    title = null,
-  )
+  val day = Day("d1", "t1", LocalDate.of(2026, 6, 12), 2, "Madrid")
+  val pages = listOf(JournalPage("p1", "t1", "d1", 0, null))
   val notes = listOf(
     JournalNote(
-      id = "n1",
-      dayId = day.id,
-      text = "Café en la plaza antes del museo.",
-      createdAt = System.currentTimeMillis(),
+      id = "n1", dayId = "d1", text = "Café en la plaza antes del museo.",
+      pieceType = JournalPieceType.TEXT, createdAt = 1_750_000_000_000,
+      pageId = "p1", canvasX = 16f, canvasY = 24f,
     ),
     JournalNote(
-      id = "n2",
-      dayId = day.id,
-      text = "Atardecer desde el mirador.",
-      photoUri = null,
-      createdAt = System.currentTimeMillis() - 3_600_000,
+      id = "n2", dayId = "d1", text = "Atardecer desde el mirador.",
+      pieceType = JournalPieceType.PHOTO, createdAt = 1_750_000_100_000,
+      pageId = "p1", canvasX = 150f, canvasY = 200f, rotation = 4f,
     ),
   )
-  MyOwnTripTheme {
-    TripJournalTab(
-      sections = listOf(JournalDaySection(day, notes)),
-      onDayClick = {},
-      onNoteClick = {},
-    )
+  JournalSpreadPreviewTheme {
+    JournalSpreadPreviewFrame(height = 720.dp) {
+      TripJournalTab(days = listOf(day), pages = pages, notes = notes, onNoteClick = {})
+    }
   }
 }
 
-@Preview(showBackground = true, widthDp = 360, heightDp = 400)
+@Preview(name = "Diario viaje · vacío", showBackground = true, widthDp = 360, heightDp = 400)
 @Composable
 private fun TripJournalTabEmptyPreview() {
-  MyOwnTripTheme {
-    TripJournalTab(
-      sections = emptyList(),
-      onDayClick = {},
-      onNoteClick = {},
-    )
+  JournalSpreadPreviewTheme {
+    JournalSpreadPreviewFrame(height = 400.dp) {
+      TripJournalTab(days = emptyList(), pages = emptyList(), notes = emptyList(), onNoteClick = {})
+    }
   }
 }

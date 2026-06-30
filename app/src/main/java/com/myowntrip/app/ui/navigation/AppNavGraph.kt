@@ -12,6 +12,7 @@ import com.myowntrip.app.ui.features.documents.DocumentViewerScreen
 import com.myowntrip.app.ui.features.expenses.ExpenseFormScreen
 import com.myowntrip.app.ui.features.journal.JournalAddScreen
 import com.myowntrip.app.ui.features.journal.JournalDetailScreen
+import com.myowntrip.app.ui.features.journal.spread.SketchCanvasScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantDetailScreen
 import com.myowntrip.app.ui.features.restaurants.RestaurantFormScreen
 import com.myowntrip.app.ui.features.trips.CreateTripScreen
@@ -104,8 +105,8 @@ fun AppNavGraph(
         onEditTrip = { navController.navigate(Routes.tripEdit(tripId)) },
         onAddWallet = { navController.navigate(Routes.walletAdd(tripId)) },
         onImportWallet = { navController.navigate(Routes.walletAdd(tripId, pickAttachment = true)) },
-        onAddJournal = { dayId ->
-          navController.navigate(Routes.journalAdd(dayId, tripId))
+        onOpenJournalSketch = { dayId ->
+          navController.navigate(Routes.journalSketch(dayId))
         },
         onAddExpense = { navController.navigate(Routes.expenseAdd(tripId)) },
         onAddRestaurant = { navController.navigate(Routes.restaurantAdd(tripId)) },
@@ -231,8 +232,8 @@ fun AppNavGraph(
       val dayId = it.arguments?.getString("dayId")!!
       DayHubScreen(
         onBack = { navController.popBackStack() },
-        onAddNote = { navController.navigate(Routes.journalAdd(dayId)) },
         onNoteClick = { noteId -> navController.navigate(Routes.journalDetail(noteId)) },
+        onOpenSketch = { navController.navigate(Routes.journalSketch(dayId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
         onAddWalletDocument = { navController.navigate(Routes.walletAdd(tripId)) },
         onNavigateToDay = { targetTripId, targetDayId ->
@@ -257,8 +258,8 @@ fun AppNavGraph(
       val dayId = it.arguments?.getString("dayId")!!
       DayHubScreen(
         onBack = { navController.popBackStack() },
-        onAddNote = { navController.navigate(Routes.journalAdd(dayId)) },
         onNoteClick = { noteId -> navController.navigate(Routes.journalDetail(noteId)) },
+        onOpenSketch = { navController.navigate(Routes.journalSketch(dayId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
         onAddWalletDocument = { navController.navigate(Routes.walletAdd(tripId)) },
         onNavigateToDay = { targetTripId, targetDayId ->
@@ -266,6 +267,15 @@ fun AppNavGraph(
             popUpTo(Routes.dayDetail(tripId, dayId)) { inclusive = true }
           }
         },
+      )
+    }
+    composable(
+      route = Routes.JOURNAL_SKETCH,
+      arguments = listOf(navArgument("dayId") { type = NavType.StringType }),
+    ) {
+      SketchCanvasScreen(
+        onBack = { navController.popBackStack() },
+        onSaved = { navController.popBackStack() },
       )
     }
     composable(

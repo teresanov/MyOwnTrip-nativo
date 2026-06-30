@@ -11,10 +11,14 @@ import com.myowntrip.app.data.local.MIGRATION_5_6
 import com.myowntrip.app.data.local.MIGRATION_6_7
 import com.myowntrip.app.data.local.MIGRATION_7_8
 import com.myowntrip.app.data.local.MIGRATION_8_9
+import com.myowntrip.app.data.local.MIGRATION_9_10
+import com.myowntrip.app.data.local.MIGRATION_10_11
+import com.myowntrip.app.data.local.MIGRATION_11_12
 import com.myowntrip.app.data.local.dao.DayDao
 import com.myowntrip.app.data.local.dao.ExpenseDao
 import com.myowntrip.app.data.local.dao.ItineraryBlockDao
 import com.myowntrip.app.data.local.dao.JournalNoteDao
+import com.myowntrip.app.data.local.dao.JournalPageDao
 import com.myowntrip.app.data.local.dao.RestaurantDao
 import com.myowntrip.app.data.local.dao.TripDao
 import com.myowntrip.app.data.local.dao.WalletEntryDao
@@ -32,7 +36,19 @@ object DatabaseModule {
   @Singleton
   fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
     Room.databaseBuilder(context, AppDatabase::class.java, "myowntrip.db")
-      .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9)
+      .addMigrations(
+        MIGRATION_1_2,
+        MIGRATION_2_3,
+        MIGRATION_3_4,
+        MIGRATION_4_5,
+        MIGRATION_5_6,
+        MIGRATION_6_7,
+        MIGRATION_7_8,
+        MIGRATION_8_9,
+        MIGRATION_9_10,
+        MIGRATION_10_11,
+        MIGRATION_11_12,
+      )
       .build()
 
   @Provides fun provideTripDao(db: AppDatabase): TripDao = db.tripDao()
@@ -40,6 +56,7 @@ object DatabaseModule {
   @Provides fun provideWalletDao(db: AppDatabase): WalletEntryDao = db.walletEntryDao()
   @Provides fun provideExpenseDao(db: AppDatabase): ExpenseDao = db.expenseDao()
   @Provides fun provideJournalDao(db: AppDatabase): JournalNoteDao = db.journalNoteDao()
+  @Provides fun provideJournalPageDao(db: AppDatabase): JournalPageDao = db.journalPageDao()
   @Provides fun provideItineraryBlockDao(db: AppDatabase): ItineraryBlockDao = db.itineraryBlockDao()
   @Provides fun provideRestaurantDao(db: AppDatabase): RestaurantDao = db.restaurantDao()
 }

@@ -4,13 +4,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.myowntrip.app.data.repository.ItineraryRepository
+import com.myowntrip.app.data.repository.JournalPageRepository
 import com.myowntrip.app.data.repository.JournalRepository
 import com.myowntrip.app.data.repository.TripRepository
 import com.myowntrip.app.data.repository.WalletRepository
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.JournalNote
+import com.myowntrip.app.domain.model.JournalPage
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
+import com.myowntrip.app.ui.features.journal.spread.CaptureTarget
 import com.myowntrip.app.domain.plan.DayPlanScheduleLogic
 import com.myowntrip.app.domain.plan.PlanPlacementDriftLogic
 import com.myowntrip.app.domain.plan.PlanPlacementLogic
@@ -55,6 +59,7 @@ data class DayHubUiState(
   val tripDays: List<Day> = emptyList(),
   val blocks: List<ItineraryBlock> = emptyList(),
   val notes: List<JournalNote> = emptyList(),
+  val journalPages: List<JournalPage> = emptyList(),
   val walletEntries: List<WalletEntry> = emptyList(),
   val isPastTrip: Boolean = false,
   val showAddBlock: Boolean = false,
@@ -75,7 +80,8 @@ class DayHubViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   tripRepository: TripRepository,
   private val itineraryRepository: ItineraryRepository,
-  journalRepository: JournalRepository,
+  private val journalRepository: JournalRepository,
+  private val journalPageRepository: JournalPageRepository,
   walletRepository: WalletRepository,
 ) : ViewModel() {
   private val dayId: String = checkNotNull(savedStateHandle["dayId"])
@@ -91,6 +97,19 @@ class DayHubViewModel @Inject constructor(
   val events: SharedFlow<DayHubEvent> = _events.asSharedFlow()
 
   init {
+    // Reconciliador: cualquier pieza del día sin hoja asignada (capturas nuevas o
+    // bocetos) se pega a la hoja por defecto del día. Garantiza que no haya piezas
+    // huérfanas sea cual sea la vía de captura.
+    viewModelScope.launch {
+      journalRepository.observeByDay(dayId).collect { notes ->
+        val orphans = notes.filter { it.pageId == null }
+        if (orphans.isNotEmpty()) {
+          val page = journalPageRepository.ensureDefaultPage(dayId, tripId)
+          orphans.forEach { journalRepository.updateNote(it.copy(pageId = page.id)) }
+        }
+      }
+    }
+
     viewModelScope.launch {
       combine(
         combine(
@@ -98,8 +117,9 @@ class DayHubViewModel @Inject constructor(
           tripRepository.observeDays(tripId),
           itineraryRepository.observeByDay(dayId),
           journalRepository.observeByDay(dayId),
-        ) { day, tripDays, blocks, notes ->
-          Quad(day, tripDays, blocks, notes)
+          journalPageRepository.observeByDay(dayId),
+        ) { day, tripDays, blocks, notes, pages ->
+          DayData(day, tripDays, blocks, notes, pages)
         },
         combine(
           walletRepository.observeByTrip(tripId),
@@ -107,10 +127,11 @@ class DayHubViewModel @Inject constructor(
           dialogState,
         ) { walletEntries, trip, dialog -> Triple(walletEntries, trip, dialog) },
       ) { dayData, meta ->
-        val day = dayData.first
-        val tripDays = dayData.second
-        val blocks = dayData.third
-        val notes = dayData.fourth
+        val day = dayData.day
+        val tripDays = dayData.tripDays
+        val blocks = dayData.blocks
+        val notes = dayData.notes
+        val pages = dayData.pages
         val (walletEntries, trip, dialog) = meta
         val isPastTrip = trip?.homePhase(LocalDate.now()) == HomeTripPhase.Past
         DayHubUiState(
@@ -119,6 +140,7 @@ class DayHubViewModel @Inject constructor(
           tripDays = tripDays,
           blocks = blocks,
           notes = notes,
+          journalPages = pages,
           walletEntries = walletEntries,
           isPastTrip = isPastTrip,
           showAddBlock = dialog.showAddBlock && !isPastTrip,
@@ -402,10 +424,44 @@ class DayHubViewModel @Inject constructor(
     val moveDayTime: String = "",
   )
 
-  private data class Quad<A, B, C, D>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D,
+  fun persistPieceTransform(
+    noteId: String,
+    canvasX: Float,
+    canvasY: Float,
+    rotation: Float,
+    scale: Float,
+    zIndex: Int,
+  ) {
+    if (_uiState.value.isPastTrip) return
+    viewModelScope.launch {
+      journalRepository.updateNoteTransform(noteId, canvasX, canvasY, rotation, scale, zIndex)
+    }
+  }
+
+  fun addJournalSheet() {
+    if (_uiState.value.isPastTrip) return
+    viewModelScope.launch {
+      journalPageRepository.addPage(dayId = dayId, tripId = tripId)
+    }
+  }
+
+  /**
+   * Resuelve el día + la hoja donde debe caer una pieza nueva: la hoja activa del álbum
+   * si ya está persistida; si es virtual (día sin hojas todavía), crea/usa la hoja por
+   * defecto del día.
+   */
+  suspend fun resolveCaptureTarget(active: AlbumPageUi?): CaptureTarget =
+    if (active != null && active.isPersisted) {
+      CaptureTarget(active.day.id, active.pageId)
+    } else {
+      CaptureTarget(dayId, journalPageRepository.ensureDefaultPage(dayId, tripId).id)
+    }
+
+  private data class DayData(
+    val day: Day?,
+    val tripDays: List<Day>,
+    val blocks: List<ItineraryBlock>,
+    val notes: List<JournalNote>,
+    val pages: List<JournalPage>,
   )
 }

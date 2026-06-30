@@ -4,6 +4,7 @@ import com.myowntrip.app.data.local.entity.DayEntity
 import com.myowntrip.app.data.local.entity.ExpenseEntity
 import com.myowntrip.app.data.local.entity.ItineraryBlockEntity
 import com.myowntrip.app.data.local.entity.JournalNoteEntity
+import com.myowntrip.app.data.local.entity.JournalPageEntity
 import com.myowntrip.app.data.local.entity.RestaurantEntity
 import com.myowntrip.app.data.local.entity.TripEntity
 import com.myowntrip.app.data.local.entity.WalletEntryEntity
@@ -11,6 +12,9 @@ import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Expense
 import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.JournalNote
+import com.myowntrip.app.domain.model.JournalPage
+import com.myowntrip.app.domain.model.JournalPieceType
+import com.myowntrip.app.domain.model.JournalTextStyle
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
@@ -107,23 +111,67 @@ fun JournalNoteEntity.toDomain() = JournalNote(
   id = id,
   dayId = dayId,
   text = text,
+  pieceType = pieceType.toJournalPieceType(),
   photoUri = photoUri,
   audioUri = audioUri,
+  sketchUri = sketchUri,
+  stickerUri = stickerUri,
+  planBlockId = planBlockId,
   latitude = latitude,
   longitude = longitude,
   createdAt = createdAt,
+  textStyle = textStyle.toJournalTextStyle(),
+  pageId = pageId,
+  canvasX = canvasX,
+  canvasY = canvasY,
+  rotation = rotation,
+  scale = scale,
+  zIndex = zIndex,
 )
 
 fun JournalNote.toEntity() = JournalNoteEntity(
   id = id,
   dayId = dayId,
   text = text,
+  pieceType = pieceType.name,
   photoUri = photoUri,
   audioUri = audioUri,
+  sketchUri = sketchUri,
+  stickerUri = stickerUri,
+  planBlockId = planBlockId,
   latitude = latitude,
   longitude = longitude,
   createdAt = createdAt,
+  textStyle = textStyle.name,
+  pageId = pageId,
+  canvasX = canvasX,
+  canvasY = canvasY,
+  rotation = rotation,
+  scale = scale,
+  zIndex = zIndex,
 )
+
+fun JournalPageEntity.toDomain() = JournalPage(
+  id = id,
+  tripId = tripId,
+  dayId = dayId,
+  pageIndex = pageIndex,
+  paperStyle = paperStyle,
+)
+
+fun JournalPage.toEntity() = JournalPageEntity(
+  id = id,
+  tripId = tripId,
+  dayId = dayId,
+  pageIndex = pageIndex,
+  paperStyle = paperStyle,
+)
+
+private fun String.toJournalPieceType(): JournalPieceType =
+  runCatching { JournalPieceType.valueOf(this) }.getOrDefault(JournalPieceType.TEXT)
+
+private fun String.toJournalTextStyle(): JournalTextStyle =
+  runCatching { JournalTextStyle.valueOf(this) }.getOrDefault(JournalTextStyle.HAND)
 
 fun ItineraryBlockEntity.toDomain() = ItineraryBlock(
   id = id,

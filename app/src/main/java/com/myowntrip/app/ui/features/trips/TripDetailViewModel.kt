@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.myowntrip.app.data.repository.ExpenseRepository
 import com.myowntrip.app.data.repository.ItineraryRepository
+import com.myowntrip.app.data.repository.JournalPageRepository
 import com.myowntrip.app.data.repository.JournalRepository
 import com.myowntrip.app.data.repository.RestaurantRepository
 import com.myowntrip.app.data.repository.TripRepository
@@ -13,9 +14,12 @@ import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Expense
 import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.JournalNote
+import com.myowntrip.app.domain.model.JournalPage
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.domain.model.WalletEntry
+import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
+import com.myowntrip.app.ui.features.journal.spread.CaptureTarget
 import com.myowntrip.app.ui.features.wallet.WalletDocumentFilterPhase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -33,7 +37,8 @@ data class TripDetailUiState(
   val days: List<Day> = emptyList(),
   val walletEntries: List<WalletEntry> = emptyList(),
   val planBlocks: List<ItineraryBlock> = emptyList(),
-  val journalSections: List<JournalDaySection> = emptyList(),
+  val journalNotes: List<JournalNote> = emptyList(),
+  val journalPages: List<JournalPage> = emptyList(),
   val expenses: List<Expense> = emptyList(),
   val restaurants: List<Restaurant> = emptyList(),
   val showWalletLinkDialog: Boolean = false,
@@ -62,7 +67,8 @@ class TripDetailViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val tripRepository: TripRepository,
   private val walletRepository: WalletRepository,
-  journalRepository: JournalRepository,
+  private val journalRepository: JournalRepository,
+  private val journalPageRepository: JournalPageRepository,
   expenseRepository: ExpenseRepository,
   restaurantRepository: RestaurantRepository,
   private val itineraryRepository: ItineraryRepository,
@@ -78,12 +84,14 @@ class TripDetailViewModel @Inject constructor(
   private val wallet = walletRepository.observeByTrip(tripId)
   private val planBlocks = itineraryRepository.observeByTrip(tripId)
   private val journalNotes = journalRepository.observeByTrip(tripId)
+  private val journalPages = journalPageRepository.observeByTrip(tripId)
+  private val journalData = combine(journalNotes, journalPages) { notes, pages -> notes to pages }
   private val expenses = expenseRepository.observeByTrip(tripId)
   private val restaurants = restaurantRepository.observeByTrip(tripId)
 
   val uiState: StateFlow<TripDetailUiState> = combine(
-    combine(trip, days, wallet, planBlocks, journalNotes) { t, d, w, blocks, notes ->
-      PlanPartial(t, d, w, blocks, notes)
+    combine(trip, days, wallet, planBlocks, journalData) { t, d, w, blocks, journal ->
+      PlanPartial(t, d, w, blocks, journal.first, journal.second)
     },
     expenses,
     restaurants,
@@ -96,7 +104,8 @@ class TripDetailViewModel @Inject constructor(
       days = partial.days,
       walletEntries = partial.walletEntries,
       planBlocks = partial.planBlocks,
-      journalSections = buildJournalSections(partial.days, partial.journalNotes),
+      journalNotes = partial.journalNotes,
+      journalPages = partial.journalPages,
       expenses = e,
       restaurants = r,
       showWalletLinkDialog = linkDialog.show && !isPastTrip,
@@ -106,6 +115,61 @@ class TripDetailViewModel @Inject constructor(
       isPastTrip = isPastTrip,
     )
   }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TripDetailUiState())
+
+  init {
+    // Reconciliador a nivel viaje: cualquier pieza sin hoja asignada (capturas o bocetos)
+    // se pega a la hoja por defecto de su día. Evita piezas huérfanas sea cual sea la vía.
+    viewModelScope.launch {
+      journalRepository.observeByTrip(tripId).collect { notes ->
+        val orphans = notes.filter { it.pageId == null }
+        if (orphans.isNotEmpty()) {
+          orphans.groupBy { it.dayId }.forEach { (dId, group) ->
+            val page = journalPageRepository.ensureDefaultPage(dId, tripId)
+            group.forEach { journalRepository.updateNote(it.copy(pageId = page.id)) }
+          }
+        }
+      }
+    }
+  }
+
+  /** Persiste posición/rotación/escala/zIndex de una pieza arrastrada en el álbum. */
+  fun persistPieceTransform(
+    noteId: String,
+    canvasX: Float,
+    canvasY: Float,
+    rotation: Float,
+    scale: Float,
+    zIndex: Int,
+  ) {
+    if (uiState.value.isPastTrip) return
+    viewModelScope.launch {
+      journalRepository.updateNoteTransform(noteId, canvasX, canvasY, rotation, scale, zIndex)
+    }
+  }
+
+  /** Crea una hoja nueva al final del día indicado (el de la hoja activa del álbum). */
+  fun addJournalSheet(dayId: String) {
+    if (uiState.value.isPastTrip) return
+    viewModelScope.launch {
+      journalPageRepository.addPage(dayId = dayId, tripId = tripId)
+    }
+  }
+
+  /**
+   * Día + hoja donde cae una pieza nueva: la hoja activa del álbum si está persistida;
+   * si es virtual (día sin hojas todavía), crea/usa la hoja por defecto de ese día. Sin
+   * hoja activa, recurre al día de diario por defecto del viaje.
+   */
+  suspend fun resolveCaptureTarget(active: AlbumPageUi?): CaptureTarget {
+    if (active != null && active.isPersisted) {
+      return CaptureTarget(active.day.id, active.pageId)
+    }
+    val dayId = active?.day?.id
+      ?: checkNotNull(tripRepository.defaultJournalDayId(tripId, LocalDate.now())) {
+        "El viaje no tiene días para el diario"
+      }
+    return CaptureTarget(dayId, journalPageRepository.ensureDefaultPage(dayId, tripId).id)
+  }
 
   fun onWalletFilterPhaseChange(phase: WalletDocumentFilterPhase) {
     walletFilterPhase.value = phase
@@ -178,6 +242,7 @@ class TripDetailViewModel @Inject constructor(
     val walletEntries: List<WalletEntry>,
     val planBlocks: List<ItineraryBlock>,
     val journalNotes: List<JournalNote>,
+    val journalPages: List<JournalPage>,
   )
 
   private data class WalletLinkDialogState(

@@ -31,6 +31,25 @@ interface JournalNoteDao {
   @Query("SELECT * FROM journal_notes WHERE id = :id")
   suspend fun getById(id: String): JournalNoteEntity?
 
+  @Query("SELECT * FROM journal_notes WHERE pageId = :pageId ORDER BY zIndex ASC, createdAt ASC")
+  fun observeByPage(pageId: String): Flow<List<JournalNoteEntity>>
+
+  @Query(
+    """
+    UPDATE journal_notes
+    SET canvasX = :canvasX, canvasY = :canvasY, rotation = :rotation, scale = :scale, zIndex = :zIndex
+    WHERE id = :id
+    """,
+  )
+  suspend fun updateTransform(
+    id: String,
+    canvasX: Float?,
+    canvasY: Float?,
+    rotation: Float,
+    scale: Float,
+    zIndex: Int,
+  )
+
   @Query("DELETE FROM journal_notes WHERE id = :id")
   suspend fun deleteById(id: String)
 }

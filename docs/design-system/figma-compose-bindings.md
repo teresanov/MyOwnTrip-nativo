@@ -96,17 +96,32 @@ Flow review: `WalletFlowReviewPreview` (12 caps apilados, ref. Figma).
 [ ] m3Canonical + android-compose-ux
 ```
 
+## Diario · Spread `05 · Día · Spread`
+
+Spec: [`journal-spread-design-spec.md`](journal-spread-design-spec.md)
+
+| Cap / frame | Preview Compose | Ruta |
+|-------------|-----------------|------|
+| Spread vacío | `DaySpreadEmptyPreview` | `day_hub/{tripId}/{dayId}?tab=journal` |
+| Spread con piezas | `DaySpreadPreview` | ↑ |
+| Sheet captura | `AddToSpreadSheetPreview` | Day Hub FAB |
+| Lienzo boceto | `SketchCanvasScreenPreview` | `journal_sketch/{dayId}` |
+| Índice viaje | `TripJournalTabPreview` | `trip_detail/{tripId}?tab=journal` |
+
+Composables: `DaySpread`, `SpreadPiece`, `AddToSpreadSheet`, `SpreadCaptionSheet`, `SketchCanvasScreen`, `TripJournalTab` (portadas de día).
+
 ## Archivos runtime
 
 ```
 app/src/main/java/com/myowntrip/app/ui/components/
   MotCardStyle.kt
   EyebrowLabel.kt
-  StackedCard.kt          # MotStackedCard, HomeEmptyStackedCard
-  HorizontalCard.kt       # MotHorizontalCard
-  TripCoverImage.kt
-  TripHeroCard.kt         # TripHeroCard, TripListCard, tripMetaLabel
-  home/
-    HomeHero.kt           # HomePageHero, HomeHeroHeader, HomeEmptyState
-    HomeSearchAndFilter.kt
+  ...
+app/src/main/java/com/myowntrip/app/ui/features/journal/spread/
+  DaySpread.kt
+  SpreadPiece.kt
+  AddToSpreadSheet.kt
+  SpreadCaptureSheets.kt
+  SpreadCaptureViewModel.kt
+  SketchCanvasScreen.kt
 ```

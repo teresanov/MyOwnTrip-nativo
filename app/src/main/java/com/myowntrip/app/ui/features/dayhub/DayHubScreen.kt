@@ -1,19 +1,16 @@
 package com.myowntrip.app.ui.features.dayhub
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -26,15 +23,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.myowntrip.app.ui.features.journal.JournalNoteCard
+import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
+import com.myowntrip.app.ui.features.journal.spread.JournalCaptureFabMenu
+import com.myowntrip.app.ui.features.journal.spread.JournalCaptureHost
+import com.myowntrip.app.ui.features.journal.spread.ScrapbookAlbum
+import com.myowntrip.app.ui.features.journal.spread.SpreadCaptureViewModel
+import com.myowntrip.app.ui.features.journal.spread.buildAlbumPages
 import com.myowntrip.app.ui.features.plan.AddPlanActivitySheet
 import com.myowntrip.app.ui.features.plan.DayPlanSchedule
 import com.myowntrip.app.ui.features.plan.MoveBlockDayDialog
@@ -50,20 +54,25 @@ private val SpanishDayTitleFormatter =
 @Composable
 fun DayHubScreen(
   onBack: () -> Unit,
-  onAddNote: () -> Unit,
   onNoteClick: (String) -> Unit,
+  onOpenSketch: () -> Unit,
   onWalletEntryClick: (String) -> Unit,
   onAddWalletDocument: () -> Unit,
   onNavigateToDay: (tripId: String, dayId: String) -> Unit = { _, _ -> },
   viewModel: DayHubViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
-  var tabIndex by remember(viewModel.initialTab) {
+  val captureViewModel: SpreadCaptureViewModel = hiltViewModel()
+  var tabIndex by rememberSaveable {
     mutableIntStateOf(viewModel.initialTab.index)
   }
+  var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
+  var activeAlbumPage by remember { mutableStateOf<AlbumPageUi?>(null) }
   val tabs = listOf("Plan", "Diario")
   val isPastTrip = state.isPastTrip
   val snackbarHostState = remember { SnackbarHostState() }
+
+  BackHandler(fabMenuExpanded) { fabMenuExpanded = false }
 
   LaunchedEffect(viewModel) {
     viewModel.events.collect { event ->
@@ -79,6 +88,13 @@ fun DayHubScreen(
       }
     }
   }
+
+  JournalCaptureHost(
+    onPieceSaved = { fabMenuExpanded = false },
+    activePage = activeAlbumPage,
+    resolveTarget = viewModel::resolveCaptureTarget,
+    captureViewModel = captureViewModel,
+  )
 
   Scaffold(
     snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -100,46 +116,66 @@ fun DayHubScreen(
       )
     },
     floatingActionButton = {
-      when {
-        isPastTrip && tabIndex == 0 -> Unit
-        tabIndex == 0 -> FloatingActionButton(
+      if (!isPastTrip && tabIndex == 0) {
+        FloatingActionButton(
           onClick = { viewModel.showAddBlock() },
           modifier = Modifier.semantics { contentDescription = "Añadir actividad" },
-        ) { Icon(Icons.Default.Add, contentDescription = null) }
-        else -> FloatingActionButton(
-          onClick = onAddNote,
-          modifier = Modifier.semantics { contentDescription = "Añadir recuerdo" },
         ) { Icon(Icons.Default.Add, contentDescription = null) }
       }
     },
   ) { padding ->
-    Column(modifier = Modifier.padding(padding).fillMaxSize()) {
-      TabRow(selectedTabIndex = tabIndex) {
-        tabs.forEachIndexed { index, title ->
-          Tab(
-            selected = tabIndex == index,
-            onClick = { tabIndex = index },
-            text = { Text(title) },
+    Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+      Column(modifier = Modifier.fillMaxSize()) {
+        TabRow(selectedTabIndex = tabIndex) {
+          tabs.forEachIndexed { index, title ->
+            Tab(
+              selected = tabIndex == index,
+              onClick = { tabIndex = index },
+              text = { Text(title) },
+            )
+          }
+        }
+        when (tabIndex) {
+          0 -> DayPlanSchedule(
+            day = state.day,
+            blocks = state.blocks,
+            walletEntries = state.walletEntries,
+            tripDays = state.tripDays,
+            readOnly = isPastTrip,
+            onTimeChange = viewModel::updateBlockTime,
+            onLinkWallet = viewModel::showWalletPickerForBlock,
+            onWalletEntryClick = onWalletEntryClick,
+            onMoveToDay = viewModel::showMoveDayDialog,
+            onRequestUpdatePlan = viewModel::showUpdatePlanSheet,
           )
+          1 -> {
+            val albumPages = remember(state.day, state.journalPages, state.notes) {
+              state.day?.let { day ->
+                buildAlbumPages(days = listOf(day), pages = state.journalPages, notes = state.notes)
+              } ?: emptyList()
+            }
+            ScrapbookAlbum(
+              pages = albumPages,
+              readOnly = isPastTrip,
+              onPersistTransform = viewModel::persistPieceTransform,
+              onPieceClick = onNoteClick,
+              onAddSheet = { viewModel.addJournalSheet() },
+              onActivePageChange = { activeAlbumPage = it },
+            )
+          }
         }
       }
-      when (tabIndex) {
-        0 -> DayPlanSchedule(
-          day = state.day,
-          blocks = state.blocks,
-          walletEntries = state.walletEntries,
-          tripDays = state.tripDays,
-          readOnly = isPastTrip,
-          onTimeChange = viewModel::updateBlockTime,
-          onLinkWallet = viewModel::showWalletPickerForBlock,
-          onWalletEntryClick = onWalletEntryClick,
-          onMoveToDay = viewModel::showMoveDayDialog,
-          onRequestUpdatePlan = viewModel::showUpdatePlanSheet,
-        )
-        1 -> JournalTab(
-          notes = state.notes,
-          dayDate = state.day?.date?.toString(),
-          onNoteClick = onNoteClick,
+
+      if (!isPastTrip && tabIndex == 1) {
+        JournalCaptureFabMenu(
+          expanded = fabMenuExpanded,
+          onExpandedChange = { fabMenuExpanded = it },
+          onPhoto = { fabMenuExpanded = false; captureViewModel.startPhotoCapture() },
+          onText = { fabMenuExpanded = false; captureViewModel.startWriteCapture() },
+          onAudio = { fabMenuExpanded = false; captureViewModel.startAudioCapture() },
+          onSticker = { fabMenuExpanded = false; captureViewModel.startStickerCapture() },
+          onSketch = { fabMenuExpanded = false; onOpenSketch() },
+          modifier = Modifier.align(Alignment.BottomEnd),
         )
       }
     }
@@ -198,45 +234,6 @@ fun DayHubScreen(
           onTimeChange = viewModel::onMoveDayTimeChange,
           onDismiss = viewModel::dismissMoveDayDialog,
           onConfirm = viewModel::confirmMoveDay,
-        )
-      }
-    }
-  }
-}
-
-@Composable
-private fun JournalTab(
-  notes: List<com.myowntrip.app.domain.model.JournalNote>,
-  dayDate: String?,
-  onNoteClick: (String) -> Unit,
-) {
-  LazyColumn(
-    modifier = Modifier.fillMaxSize(),
-    contentPadding = PaddingValues(16.dp),
-    verticalArrangement = Arrangement.spacedBy(8.dp),
-  ) {
-    item {
-      dayDate?.let {
-        Text(
-          it,
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-      }
-    }
-    if (notes.isEmpty()) {
-      item {
-        Text(
-          "Aún no hay recuerdos para este día. Usa + para añadir una nota, foto o audio.",
-          style = MaterialTheme.typography.bodyMedium,
-          modifier = Modifier.padding(vertical = 8.dp),
-        )
-      }
-    } else {
-      items(notes, key = { it.id }) { note ->
-        JournalNoteCard(
-          note = note,
-          onClick = { onNoteClick(note.id) },
         )
       }
     }

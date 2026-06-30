@@ -1,7 +1,9 @@
 package com.myowntrip.app.ui.features.trips
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +36,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -48,6 +53,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.domain.model.Expense
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.ui.features.expenses.expenseCategoryLabel
+import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
+import com.myowntrip.app.ui.features.journal.spread.JournalCaptureFabMenu
+import com.myowntrip.app.ui.features.journal.spread.JournalCaptureHost
+import com.myowntrip.app.ui.features.journal.spread.SpreadCaptureViewModel
 import com.myowntrip.app.ui.features.restaurants.statusLabel
 import com.myowntrip.app.ui.features.dayhub.WalletLinkDialog
 import com.myowntrip.app.ui.features.wallet.WalletScreen
@@ -55,7 +64,6 @@ import com.myowntrip.app.ui.features.wallet.previewWalletEntries
 import com.myowntrip.app.ui.features.wallet.previewWalletTrip
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
-import java.time.LocalDate
 import java.util.Locale
 import kotlinx.coroutines.launch
 
@@ -69,7 +77,7 @@ fun TripDetailScreen(
   onEditTrip: () -> Unit,
   onAddWallet: () -> Unit,
   onImportWallet: () -> Unit,
-  onAddJournal: (dayId: String) -> Unit,
+  onOpenJournalSketch: (dayId: String) -> Unit = {},
   onAddExpense: () -> Unit,
   onAddRestaurant: () -> Unit,
   onWalletEntryClick: (String) -> Unit,
@@ -81,24 +89,24 @@ fun TripDetailScreen(
   viewModel: TripDetailViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
-  var tabIndex by remember(viewModel.initialTab) {
+  val captureViewModel: SpreadCaptureViewModel = hiltViewModel()
+  var tabIndex by rememberSaveable {
     mutableIntStateOf(viewModel.initialTab.index)
   }
+  var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
+  var activeAlbumPage by remember { mutableStateOf<AlbumPageUi?>(null) }
   val snackbarHostState = remember { SnackbarHostState() }
   val scope = rememberCoroutineScope()
-  val today = remember { LocalDate.now() }
+  val journalTabIndex = TripDetailTab.Journal.index
 
-  val addJournalForToday: () -> Unit = {
-    viewModel.resolveDefaultJournalDayId(today) { dayId ->
-      if (dayId != null) {
-        onAddJournal(dayId)
-      } else {
-        scope.launch {
-          snackbarHostState.showSnackbar("No hay días en este viaje todavía")
-        }
-      }
-    }
-  }
+  BackHandler(fabMenuExpanded) { fabMenuExpanded = false }
+
+  JournalCaptureHost(
+    onPieceSaved = { fabMenuExpanded = false },
+    activePage = activeAlbumPage,
+    resolveTarget = viewModel::resolveCaptureTarget,
+    captureViewModel = captureViewModel,
+  )
 
   Scaffold(
     snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -140,10 +148,6 @@ fun TripDetailScreen(
             modifier = Modifier.semantics { contentDescription = "Añadir actividad al día" },
           ) { Icon(Icons.Default.Add, contentDescription = null) }
         }
-        2 -> FloatingActionButton(
-          onClick = addJournalForToday,
-          modifier = Modifier.semantics { contentDescription = "Añadir recuerdo" },
-        ) { Icon(Icons.Default.Add, contentDescription = null) }
         3 -> FloatingActionButton(
           onClick = onAddExpense,
           modifier = Modifier.semantics { contentDescription = "Añadir gasto" },
@@ -156,7 +160,8 @@ fun TripDetailScreen(
       }
     },
   ) { padding ->
-    Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+    Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()) {
       ScrollableTabRow(
         selectedTabIndex = tabIndex,
         edgePadding = 0.dp,
@@ -240,12 +245,37 @@ fun TripDetailScreen(
           onWalletEntryClick = onWalletEntryClick,
         )
         2 -> TripJournalTab(
-          sections = state.journalSections,
-          onDayClick = onDayClick,
+          days = state.days,
+          pages = state.journalPages,
+          notes = state.journalNotes,
           onNoteClick = onJournalNoteClick,
+          readOnly = state.isPastTrip,
+          onPersistTransform = viewModel::persistPieceTransform,
+          onAddSheet = { dayId -> viewModel.addJournalSheet(dayId) },
+          onActivePageChange = { page ->
+            activeAlbumPage = page
+            captureViewModel.setActiveDay(page.day.id)
+          },
         )
         3 -> ExpensesTab(expenses = state.expenses, onViewDocument = onViewDocument)
         4 -> RestaurantsTab(restaurants = state.restaurants, onRestaurantClick = onRestaurantClick)
+      }
+    }
+
+      if (!state.isPastTrip && tabIndex == journalTabIndex) {
+        JournalCaptureFabMenu(
+          expanded = fabMenuExpanded,
+          onExpandedChange = { fabMenuExpanded = it },
+          onPhoto = { fabMenuExpanded = false; captureViewModel.startPhotoCapture() },
+          onText = { fabMenuExpanded = false; captureViewModel.startWriteCapture() },
+          onAudio = { fabMenuExpanded = false; captureViewModel.startAudioCapture() },
+          onSticker = { fabMenuExpanded = false; captureViewModel.startStickerCapture() },
+          onSketch = {
+            fabMenuExpanded = false
+            activeAlbumPage?.day?.id?.let(onOpenJournalSketch)
+          },
+          modifier = Modifier.align(Alignment.BottomEnd),
+        )
       }
     }
   }

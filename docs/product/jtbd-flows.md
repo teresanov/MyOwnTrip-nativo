@@ -135,10 +135,11 @@ Documento de trabajo para implementación: **happy path**, **edge cases** y **cr
 
 ### Happy path
 
-1. Usuario abre **día** del viaje → **diario**.
-2. Añade nota de texto; opcional foto (cámara), audio (micrófono) y **geolocalización al guardar** (Must — degradación si permiso denegado).
-3. Ve galería o línea temporal del día.
-4. Persistencia local inmediata; media en almacenamiento accesible offline donde aplique.
+1. Usuario abre **Day hub** → tab **Diario** (spread del día).
+2. FAB → sheet **Añadir a la página**: foto, voz, escribir, boceto, bookmark de evento o sticker.
+3. Piezas aparecen en composición editorial (no lista homogénea); geo al guardar si hay permiso.
+4. Tab Diario del viaje muestra **portadas de día**; tap abre spread en `?tab=journal`.
+5. Persistencia local inmediata; bocetos/stickers en `journal/sketches/` y `journal/stickers/`.
 
 ### Edge cases prioritarios
 
@@ -201,8 +202,9 @@ Estructura del design-file: **secuencial por módulo** (`figma-app-flows.mdc`). 
 | `04 · Wallet` | `wallet_add/{tripId}` | WalletFormScreen | 1 |
 | `04 · Wallet` | `wallet_import` | WalletFormScreen / ImportActivity | 1 |
 | `04 · Wallet` | `wallet_detail/{entryId}` | WalletDetailScreen | 1 |
-| `05 · Día` | `day_hub/{tripId}/{dayId}` | DayHubScreen (Plan \| Journal) | 3, 5 |
-| `05 · Día` | `journal_add/{dayId}` | JournalAddScreen | 5 |
+| `05 · Día` | `day_hub/{tripId}/{dayId}` | DayHubScreen (Plan \| Diario spread) | 3, 5 |
+| `05 · Día` | `journal_sketch/{dayId}` | SketchCanvasScreen | 5 |
+| `05 · Día` | `journal_add/{dayId}` | JournalAddScreen (edición) | 5 |
 | `06 · Gastos` | `expense_add/{tripId}?dayId=` | ExpenseFormScreen | 6 |
 | `07 · Restaurantes` | `restaurant_add/{tripId}` | RestaurantFormScreen | 4 |
 | `07 · Restaurantes` | `restaurant_detail/{id}` | RestaurantDetailScreen | 4 |
