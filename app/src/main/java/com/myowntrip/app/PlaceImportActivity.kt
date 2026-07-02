@@ -2,6 +2,7 @@ package com.myowntrip.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -40,7 +41,13 @@ class PlaceImportActivity : ComponentActivity() {
           }
           PlaceImportScreen(
             onBack = { finish() },
-            onSaved = { finish() },
+            onSaved = {
+              // taskAffinity="" en el manifest hace que esta actividad viva en su propia
+              // tarea aislada: al terminar, no reaparece ninguna pantalla vieja de la app
+              // por debajo. El toast confirma el guardado aunque no se vea la lista.
+              Toast.makeText(this, "Sitio guardado", Toast.LENGTH_SHORT).show()
+              finish()
+            },
             viewModel = viewModel,
           )
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.myowntrip.app.data.repository.RestaurantRepository
+import com.myowntrip.app.data.share.LastActiveTripStore
 import com.myowntrip.app.domain.model.PlaceCategory
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.RestaurantStatus
@@ -30,6 +31,7 @@ data class RestaurantFormUiState(
 class RestaurantFormViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val restaurantRepository: RestaurantRepository,
+  private val lastActiveTripStore: LastActiveTripStore,
 ) : ViewModel() {
   private val tripId: String = checkNotNull(savedStateHandle["tripId"])
 
@@ -40,6 +42,10 @@ class RestaurantFormViewModel @Inject constructor(
   fun onAddressChange(value: String) = _uiState.update { it.copy(address = value) }
   fun onNotesChange(value: String) = _uiState.update { it.copy(notes = value) }
   fun onCategoryChange(value: PlaceCategory) = _uiState.update { it.copy(category = value) }
+
+  /** Se llama justo antes de salir a Google Maps a buscar, para que al volver por
+   * "Compartir" la importación sepa a qué viaje pertenecía sin tener que adivinar. */
+  fun rememberActiveTripForMapsSearch() = lastActiveTripStore.rememberActiveTrip(tripId)
 
   fun save(onSuccess: () -> Unit) {
     val state = _uiState.value

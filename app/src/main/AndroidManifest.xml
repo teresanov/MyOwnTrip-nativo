@@ -51,6 +51,7 @@
             android:name=".PlaceImportActivity"
             android:exported="true"
             android:label="@string/place_import_title"
+            android:taskAffinity=""
             android:theme="@style/Theme.MyOwnTrip">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

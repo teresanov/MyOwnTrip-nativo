@@ -22,8 +22,10 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -55,6 +57,7 @@ fun RestaurantFormScreen(
   viewModel: RestaurantFormViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
   Scaffold(
     topBar = {
@@ -76,6 +79,32 @@ fun RestaurantFormScreen(
         .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+      OutlinedButton(
+        onClick = {
+          viewModel.rememberActiveTripForMapsSearch()
+          openGoogleMapsSearch(context)
+          // Este formulario se abandona: el guardado real ocurre al volver por "Compartir".
+          // Lo cerramos ya, así al volver a MOT se ve la lista de Sitios, no este form vacío.
+          onBack()
+        },
+        modifier = Modifier.fillMaxWidth(),
+      ) {
+        Icon(
+          Icons.Default.LocationOn,
+          contentDescription = null,
+          modifier = Modifier.size(18.dp),
+        )
+        Text("  Buscar en Google Maps")
+      }
+      Text(
+        "Encuéntralo allí y compártelo con MyOwnTrip — se rellena solo.",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+
+      HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+      Text("O añádelo a mano", style = MaterialTheme.typography.labelLarge)
+
       OutlinedTextField(
         value = state.name,
         onValueChange = viewModel::onNameChange,
@@ -238,6 +267,23 @@ fun statusLabel(status: RestaurantStatus): String = when (status) {
   RestaurantStatus.WITHOUT_RESERVATION -> "Por ir"
   RestaurantStatus.RESERVED -> "Reservado"
   RestaurantStatus.VISITED -> "Visitado"
+}
+
+/**
+ * Abre la app de Google Maps para que el usuario busque libremente (entrada al flujo de
+ * "Compartir desde Maps" hacia MyOwnTrip). Si no está instalada, cae al navegador.
+ */
+private fun openGoogleMapsSearch(context: Context) {
+  val launchIntent = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.maps")
+  try {
+    if (launchIntent != null) {
+      context.startActivity(launchIntent)
+    } else {
+      context.startActivity(Intent(Intent.ACTION_VIEW, "https://maps.google.com".toUri()))
+    }
+  } catch (e: ActivityNotFoundException) {
+    Toast.makeText(context, "No se pudo abrir Google Maps", Toast.LENGTH_SHORT).show()
+  }
 }
 
 /**

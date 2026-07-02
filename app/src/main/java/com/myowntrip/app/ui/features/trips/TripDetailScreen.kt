@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Receipt
@@ -22,7 +25,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -58,6 +60,7 @@ import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
 import com.myowntrip.app.ui.features.journal.spread.JournalCaptureFabMenu
 import com.myowntrip.app.ui.features.journal.spread.JournalCaptureHost
 import com.myowntrip.app.ui.features.journal.spread.SpreadCaptureViewModel
+import com.myowntrip.app.ui.features.places.PlacesMiniMap
 import com.myowntrip.app.ui.features.restaurants.categoryLabel
 import com.myowntrip.app.ui.features.restaurants.statusLabel
 import com.myowntrip.app.ui.features.dayhub.WalletLinkDialog
@@ -381,7 +384,7 @@ private fun RestaurantsTab(
   onOpenMap: () -> Unit,
 ) {
   if (restaurants.isEmpty()) {
-    BoxText("Aún no hay sitios guardados.")
+    EmptyPlacesState()
   } else {
     LazyColumn(
       contentPadding = PaddingValues(16.dp),
@@ -389,11 +392,24 @@ private fun RestaurantsTab(
     ) {
       if (restaurants.any { it.hasLocation }) {
         item {
-          OutlinedButton(
-            onClick = onOpenMap,
-            modifier = Modifier.fillMaxWidth(),
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(160.dp)
+              .clip(RoundedCornerShape(12.dp)),
           ) {
-            Text("Ver en el mapa")
+            PlacesMiniMap(
+              places = restaurants,
+              interactive = false,
+              modifier = Modifier.fillMaxSize(),
+            )
+            // Overlay transparente: el AndroidView de abajo se queda con el touch,
+            // así que el tap para abrir el mapa completo lo captura este Box de encima.
+            Box(
+              modifier = Modifier
+                .matchParentSize()
+                .clickable(onClick = onOpenMap),
+            )
           }
         }
       }
@@ -429,6 +445,22 @@ private fun BoxText(message: String) {
     verticalArrangement = Arrangement.Center,
   ) {
     Text(message, style = MaterialTheme.typography.bodyLarge)
+  }
+}
+
+@Composable
+private fun EmptyPlacesState() {
+  Column(
+    modifier = Modifier.fillMaxSize().padding(24.dp),
+    verticalArrangement = Arrangement.Center,
+  ) {
+    Text("Aún no hay sitios guardados.", style = MaterialTheme.typography.bodyLarge)
+    Text(
+      "Añádelos a mano, o compártelos aquí desde Google Maps.",
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      modifier = Modifier.padding(top = 4.dp),
+    )
   }
 }
 
