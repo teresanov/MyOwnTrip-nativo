@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.myowntrip.app.domain.model.Expense
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.domain.plan.WalletPlanPlacementInfo
 import com.myowntrip.app.domain.wallet.isAvailableOffline
@@ -34,11 +35,16 @@ import com.myowntrip.app.ui.components.DocumentAttachmentCard
 import com.myowntrip.app.ui.features.plan.PlanPlacementSourceChip
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
+import com.myowntrip.app.ui.theme.MOTTextButton
+import com.myowntrip.app.ui.theme.MOTTonalButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 private val SpanishDateFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale("es", "ES"))
+
+private fun formatWalletAmount(amount: Double): String =
+  String.format(Locale("es", "ES"), "%,.2f", amount)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,11 +57,15 @@ fun WalletDetailScreen(
 ) {
   val entry by viewModel.entry.collectAsStateWithLifecycle()
   val planPlacement by viewModel.planPlacement.collectAsStateWithLifecycle()
+  val linkedExpense by viewModel.linkedExpense.collectAsStateWithLifecycle()
   var showDeleteConfirm by remember { mutableStateOf(false) }
 
   WalletDetailScaffold(
     entry = entry,
     planPlacement = planPlacement,
+    linkedExpense = linkedExpense,
+    onRegisterExpense = viewModel::registerAsExpense,
+    onUnregisterExpense = viewModel::unregisterExpense,
     showDeleteConfirm = showDeleteConfirm,
     onBack = onBack,
     onRequestDelete = { showDeleteConfirm = true },
@@ -74,6 +84,9 @@ fun WalletDetailScreen(
 internal fun WalletDetailScaffold(
   entry: WalletEntry?,
   planPlacement: WalletPlanPlacementInfo?,
+  linkedExpense: Expense? = null,
+  onRegisterExpense: () -> Unit = {},
+  onUnregisterExpense: () -> Unit = {},
   showDeleteConfirm: Boolean,
   onBack: () -> Unit,
   onRequestDelete: () -> Unit,
@@ -119,6 +132,9 @@ internal fun WalletDetailScaffold(
         WalletDetailContent(
           entry = entry,
           planPlacement = planPlacement,
+          linkedExpense = linkedExpense,
+          onRegisterExpense = onRegisterExpense,
+          onUnregisterExpense = onUnregisterExpense,
           onViewDocument = onViewDocument,
           onOpenPlanDay = onOpenPlanDay,
         )
@@ -141,6 +157,9 @@ internal fun WalletDetailScaffold(
 internal fun WalletDetailContent(
   entry: WalletEntry,
   planPlacement: WalletPlanPlacementInfo? = null,
+  linkedExpense: Expense? = null,
+  onRegisterExpense: () -> Unit = {},
+  onUnregisterExpense: () -> Unit = {},
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
   onOpenPlanDay: (tripId: String, dayId: String) -> Unit = { _, _ -> },
 ) {
@@ -175,6 +194,27 @@ internal fun WalletDetailContent(
   }
   entry.notes?.let {
     Text(it, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(top = 12.dp))
+  }
+  entry.amount?.let { amount ->
+    Text(
+      "Precio: ${formatWalletAmount(amount)} ${entry.currency ?: "EUR"}",
+      style = MaterialTheme.typography.bodyLarge,
+      modifier = Modifier.padding(top = 12.dp),
+    )
+    if (linkedExpense == null) {
+      MOTTonalButton(
+        onClick = onRegisterExpense,
+        modifier = Modifier.padding(top = 8.dp),
+      ) { Text("Registrar como gasto") }
+    } else {
+      Text(
+        "Registrado en gastos",
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.tertiary,
+        modifier = Modifier.padding(top = 8.dp),
+      )
+      MOTTextButton(onClick = onUnregisterExpense) { Text("Quitar de gastos") }
+    }
   }
   entry.qrPayload?.let { payload ->
     WalletQrCard(

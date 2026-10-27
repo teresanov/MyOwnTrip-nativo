@@ -110,6 +110,7 @@ fun AppNavGraph(
           navController.navigate(Routes.journalSketch(dayId))
         },
         onAddExpense = { navController.navigate(Routes.expenseAdd(tripId)) },
+        onExpenseClick = { expenseId -> navController.navigate(Routes.expenseEdit(expenseId)) },
         onAddRestaurant = { navController.navigate(Routes.restaurantAdd(tripId)) },
         onWalletEntryClick = { entryId -> navController.navigate(Routes.walletDetail(entryId)) },
         onDayClick = { dayId -> navController.navigate(Routes.dayHub(tripId, dayId)) },
@@ -196,6 +197,19 @@ fun AppNavGraph(
       ExpenseFormScreen(
         onBack = { navController.popBackStack() },
         onSaved = { navController.popBackStack() },
+        onViewDocument = { source, title ->
+          navController.navigate(Routes.documentViewer(source, title))
+        },
+      )
+    }
+    composable(
+      route = Routes.EXPENSE_EDIT,
+      arguments = listOf(navArgument("expenseId") { type = NavType.StringType }),
+    ) {
+      ExpenseFormScreen(
+        onBack = { navController.popBackStack() },
+        onSaved = { navController.popBackStack() },
+        onDeleted = { navController.popBackStack() },
         onViewDocument = { source, title ->
           navController.navigate(Routes.documentViewer(source, title))
         },

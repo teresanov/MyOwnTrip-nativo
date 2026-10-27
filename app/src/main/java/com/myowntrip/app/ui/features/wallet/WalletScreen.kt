@@ -36,7 +36,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +52,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.BuildConfig
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.EntryType
@@ -77,7 +77,6 @@ import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
-import com.myowntrip.app.ui.theme.rememberMOTButtonShape
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -396,10 +395,9 @@ private fun WalletQuickActions(
       Spacer(Modifier.width(8.dp))
       Text("Añadir")
     }
-    OutlinedButton(
+    MOTOutlinedButton(
       onClick = onImportEntry,
       modifier = Modifier.weight(1f),
-      shape = rememberMOTButtonShape(),
     ) {
       Icon(Icons.Default.Upload, contentDescription = null, modifier = Modifier.size(18.dp))
       Spacer(Modifier.width(8.dp))

@@ -26,7 +26,6 @@ import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
@@ -43,6 +42,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.TripSortOrder
 import com.myowntrip.app.ui.theme.MOTSpacing
@@ -178,7 +178,7 @@ private fun HomeSearchBarRow(
       },
     )
     if (query.isNotEmpty()) {
-      IconButton(
+      MOTIconButton(
         onClick = { onQueryChange("") },
         modifier = Modifier.semantics { contentDescription = "Borrar búsqueda" },
       ) {
@@ -189,7 +189,7 @@ private fun HomeSearchBarRow(
         )
       }
     }
-    IconButton(
+    MOTIconButton(
       onClick = { onFilterMenuExpandedChange(true) },
       modifier = Modifier.semantics { contentDescription = "Filtros y ordenación" },
     ) {

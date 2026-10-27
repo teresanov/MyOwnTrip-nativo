@@ -25,11 +25,9 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.myowntrip.app.ui.theme.MOTTextButton
+import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.domain.model.PlaceCategory
 import com.myowntrip.app.domain.model.Restaurant
 import com.myowntrip.app.domain.model.RestaurantStatus
@@ -79,7 +79,7 @@ fun RestaurantFormScreen(
         .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-      OutlinedButton(
+      MOTOutlinedButton(
         onClick = {
           viewModel.rememberActiveTripForMapsSearch()
           openGoogleMapsSearch(context)
@@ -164,13 +164,13 @@ fun RestaurantDetailScreen(
       title = { Text("Borrar sitio") },
       text = { Text("¿Seguro que quieres borrar “${restaurant?.name.orEmpty()}”? No se puede deshacer.") },
       confirmButton = {
-        TextButton(onClick = {
+        MOTTextButton(onClick = {
           showDeleteDialog = false
           viewModel.delete(onDeleted)
         }) { Text("Borrar") }
       },
       dismissButton = {
-        TextButton(onClick = { showDeleteDialog = false }) { Text("Cancelar") }
+        MOTTextButton(onClick = { showDeleteDialog = false }) { Text("Cancelar") }
       },
     )
   }

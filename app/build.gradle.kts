@@ -67,6 +67,8 @@ ksp {
 }
 
 dependencies {
+    implementation(project(":designsystem"))
+
     implementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
@@ -117,6 +119,8 @@ dependencies {
     implementation(libs.zxing.core)
 
     implementation(libs.osmdroid.android)
+
+    implementation(libs.mlkit.text.recognition)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

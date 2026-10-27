@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -84,6 +85,7 @@ fun TripDetailScreen(
   onImportWallet: () -> Unit,
   onOpenJournalSketch: (dayId: String) -> Unit = {},
   onAddExpense: () -> Unit,
+  onExpenseClick: (String) -> Unit = {},
   onAddRestaurant: () -> Unit,
   onWalletEntryClick: (String) -> Unit,
   onDayClick: (String) -> Unit,
@@ -255,7 +257,7 @@ fun TripDetailScreen(
           pages = state.journalPages,
           notes = state.journalNotes,
           onNoteClick = onJournalNoteClick,
-          readOnly = state.isPastTrip,
+          readOnly = false,
           onPersistTransform = viewModel::persistPieceTransform,
           onAddSheet = { dayId -> viewModel.addJournalSheet(dayId) },
           onActivePageChange = { page ->
@@ -263,7 +265,10 @@ fun TripDetailScreen(
             captureViewModel.setActiveDay(page.day.id)
           },
         )
-        3 -> ExpensesTab(expenses = state.expenses, onViewDocument = onViewDocument)
+        3 -> ExpensesTab(
+          expenses = state.expenses,
+          onExpenseClick = onExpenseClick,
+        )
         4 -> RestaurantsTab(
           restaurants = state.restaurants,
           onRestaurantClick = onRestaurantClick,
@@ -272,7 +277,8 @@ fun TripDetailScreen(
       }
     }
 
-      if (!state.isPastTrip && tabIndex == journalTabIndex) {
+      // El Diario se edita también en viajes pasados: el álbum se completa al volver a casa.
+      if (tabIndex == journalTabIndex) {
         JournalCaptureFabMenu(
           expanded = fabMenuExpanded,
           onExpandedChange = { fabMenuExpanded = it },
@@ -308,71 +314,94 @@ fun TripDetailScreen(
 @Composable
 private fun ExpensesTab(
   expenses: List<Expense>,
-  onViewDocument: (source: String, title: String?) -> Unit,
+  onExpenseClick: (String) -> Unit,
 ) {
   if (expenses.isEmpty()) {
     BoxText("Aún no hay gastos.")
   } else {
-    val total = expenses.sumOf { it.amount }
+    // Un total por moneda: sumar importes de monedas distintas daría una cifra sin sentido.
+    val totalsByCurrency = expenses
+      .groupBy { it.currency }
+      .mapValues { (_, group) -> group.sumOf { it.amount } }
+      .toList()
+      .sortedByDescending { (_, amount) -> amount }
     LazyColumn(
       contentPadding = PaddingValues(16.dp),
       verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
       item {
-        Text(
-          "Total: ${String.format(Locale.getDefault(), "%.2f", total)} ${expenses.firstOrNull()?.currency ?: "EUR"}",
-          style = MaterialTheme.typography.titleMedium,
-          modifier = Modifier.padding(bottom = 8.dp),
-        )
-      }
-      items(expenses, key = { it.id }) { expense ->
-        val receiptPath = expense.receiptUri
-        Card(
-          modifier = Modifier
-            .fillMaxWidth()
-            .then(
-              if (receiptPath != null) {
-                Modifier.clickable {
-                  onViewDocument(
-                    receiptPath,
-                    expense.concept.ifBlank { "Ticket" },
-                  )
-                }
-              } else {
-                Modifier
-              },
-            ),
-        ) {
-          Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-              modifier = Modifier.fillMaxWidth(),
-              horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-              Text(expense.concept, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-              if (receiptPath != null) {
-                Icon(
-                  Icons.Default.Receipt,
-                  contentDescription = "Ver ticket",
-                  modifier = Modifier.size(20.dp),
-                  tint = MaterialTheme.colorScheme.tertiary,
-                )
-              }
-            }
+        Column(modifier = Modifier.padding(bottom = 8.dp)) {
+          totalsByCurrency.forEach { (currency, amount) ->
             Text(
-              "${expense.amount} ${expense.currency} · ${expenseCategoryLabel(expense.category)}",
-              style = MaterialTheme.typography.bodyMedium,
+              "Total: ${String.format(Locale.getDefault(), "%.2f", amount)} $currency",
+              style = MaterialTheme.typography.titleMedium,
             )
-            if (receiptPath != null) {
-              Text(
-                "Toca para ver el ticket",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.padding(top = 4.dp),
-              )
-            }
           }
         }
       }
+      // Reservas (pagadas antes de salir, vienen de Wallet) vs gastos sobre el terreno.
+      val bookings = expenses.filter { it.walletEntryId != null }
+      val onTrip = expenses.filter { it.walletEntryId == null }
+      if (bookings.isNotEmpty()) {
+        item { ExpenseSectionHeader("Reservas") }
+        items(bookings, key = { it.id }) { expense ->
+          ExpenseCard(expense = expense, onClick = { onExpenseClick(expense.id) })
+        }
+        if (onTrip.isNotEmpty()) {
+          item { ExpenseSectionHeader("En viaje") }
+        }
+      }
+      items(onTrip, key = { it.id }) { expense ->
+        ExpenseCard(expense = expense, onClick = { onExpenseClick(expense.id) })
+      }
+    }
+  }
+}
+
+@Composable
+private fun ExpenseSectionHeader(title: String) {
+  Text(
+    title,
+    style = MaterialTheme.typography.labelLarge,
+    color = MaterialTheme.colorScheme.tertiary,
+    modifier = Modifier.padding(top = 4.dp),
+  )
+}
+
+@Composable
+private fun ExpenseCard(expense: Expense, onClick: () -> Unit) {
+  Card(
+    modifier = Modifier
+      .fillMaxWidth()
+      .clickable(onClick = onClick),
+  ) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        Text(expense.concept, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+        if (expense.walletEntryId != null) {
+          Icon(
+            Icons.Default.AccountBalanceWallet,
+            contentDescription = "Viene de una reserva de Wallet",
+            modifier = Modifier.size(20.dp),
+            tint = MaterialTheme.colorScheme.tertiary,
+          )
+        }
+        if (expense.receiptUri != null) {
+          Icon(
+            Icons.Default.Receipt,
+            contentDescription = "Tiene ticket adjunto",
+            modifier = Modifier.size(20.dp),
+            tint = MaterialTheme.colorScheme.tertiary,
+          )
+        }
+      }
+      Text(
+        "${expense.amount} ${expense.currency} · ${expenseCategoryLabel(expense.category)}",
+        style = MaterialTheme.typography.bodyMedium,
+      )
     }
   }
 }

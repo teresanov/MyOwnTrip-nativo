@@ -11,6 +11,7 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -37,7 +38,7 @@ fun MOTButton(
 ) {
   Button(
     onClick = onClick,
-    modifier = modifier,
+    modifier = modifier.motButtonPressSquish(interactionSource),
     enabled = enabled,
     interactionSource = interactionSource,
     elevation = elevation,
@@ -60,13 +61,33 @@ fun MOTTonalButton(
 ) {
   FilledTonalButton(
     onClick = onClick,
-    modifier = modifier,
+    modifier = modifier.motButtonPressSquish(interactionSource),
     enabled = enabled,
     interactionSource = interactionSource,
     elevation = elevation,
     shape = rememberMOTButtonShape(interactionSource),
     colors = ButtonDefaults.filledTonalButtonColors(),
     contentPadding = contentPadding,
+    content = content,
+  )
+}
+
+@Composable
+fun MOTOutlinedButton(
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  enabled: Boolean = true,
+  interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+  colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
+  content: @Composable RowScope.() -> Unit,
+) {
+  OutlinedButton(
+    onClick = onClick,
+    modifier = modifier.motButtonPressSquish(interactionSource),
+    enabled = enabled,
+    interactionSource = interactionSource,
+    shape = rememberMOTButtonShape(interactionSource),
+    colors = colors,
     content = content,
   )
 }
@@ -82,7 +103,7 @@ fun MOTTextButton(
 ) {
   TextButton(
     onClick = onClick,
-    modifier = modifier,
+    modifier = modifier.motButtonPressSquish(interactionSource),
     enabled = enabled,
     interactionSource = interactionSource,
     shape = rememberMOTButtonShape(interactionSource),
@@ -102,7 +123,7 @@ fun MOTIconButton(
 ) {
   IconButton(
     onClick = onClick,
-    modifier = modifier,
+    modifier = modifier.motButtonPressSquish(interactionSource),
     enabled = enabled,
     interactionSource = interactionSource,
     shape = rememberMOTButtonShape(interactionSource),

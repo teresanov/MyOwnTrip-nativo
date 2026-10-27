@@ -156,7 +156,7 @@ fun DayHubScreen(
             }
             ScrapbookAlbum(
               pages = albumPages,
-              readOnly = isPastTrip,
+              readOnly = false,
               onPersistTransform = viewModel::persistPieceTransform,
               onPieceClick = onNoteClick,
               onAddSheet = { viewModel.addJournalSheet() },
@@ -166,7 +166,8 @@ fun DayHubScreen(
         }
       }
 
-      if (!isPastTrip && tabIndex == 1) {
+      // El Diario se edita también en viajes pasados: el álbum se completa al volver a casa.
+      if (tabIndex == 1) {
         JournalCaptureFabMenu(
           expanded = fabMenuExpanded,
           onExpandedChange = { fabMenuExpanded = it },

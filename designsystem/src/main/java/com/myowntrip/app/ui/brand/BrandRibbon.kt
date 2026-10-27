@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.myowntrip.app.R
+import com.myowntrip.designsystem.R
 
 /**
  * Glifo atómico: cinta marcapáginas ocre con muesca en V.

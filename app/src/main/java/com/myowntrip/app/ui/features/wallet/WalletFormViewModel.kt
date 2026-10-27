@@ -40,6 +40,8 @@ data class WalletFormUiState(
   val date: LocalDate? = null,
   val time: LocalTime? = null,
   val notes: String = "",
+  val amountText: String = "",
+  val currency: String = "EUR",
   val attachmentUri: Uri? = null,
   val attachmentFileName: String? = null,
   val storedFileUri: String? = null,
@@ -78,7 +80,10 @@ data class WalletFormUiState(
   /** Borrador en curso: importación, adjunto o campos editados sin guardar. */
   val hasDraft: Boolean
     get() = showConfirm || showDuplicateDialog || isParsing || attachmentUri != null ||
-      title.isNotBlank() || notes.isNotBlank()
+      title.isNotBlank() || notes.isNotBlank() || amountText.isNotBlank()
+
+  val parsedAmount: Double?
+    get() = amountText.trim().replace(',', '.').toDoubleOrNull()?.takeIf { it > 0.0 }
 }
 
 @HiltViewModel
@@ -297,6 +302,8 @@ class WalletFormViewModel @Inject constructor(
       linkUrl = null,
       notes = notes.ifBlank { null },
       qrPayload = qrPayload,
+      amount = parsedAmount,
+      currency = if (parsedAmount != null) currency else null,
     )
 
   private fun WalletFormUiState.withPlanPlacement(
@@ -325,6 +332,11 @@ class WalletFormViewModel @Inject constructor(
     )
   }
   fun onNotesChange(value: String) = _uiState.update { it.copy(notes = value) }
+
+  fun onAmountChange(value: String) = _uiState.update { it.copy(amountText = value) }
+
+  fun onCurrencyChange(value: String) =
+    _uiState.update { it.copy(currency = value.uppercase().take(3)) }
 
   fun setShowTypeCorrection(show: Boolean) = _uiState.update { it.copy(showTypeCorrection = show) }
   fun setShowNotesField(show: Boolean) = _uiState.update { it.copy(showNotesField = show) }
@@ -365,6 +377,8 @@ class WalletFormViewModel @Inject constructor(
         linkUrl = storage?.linkUrl,
         notes = state.notes.ifBlank { null },
         qrPayload = state.qrPayload,
+        amount = state.parsedAmount,
+        currency = if (state.parsedAmount != null) state.currency else null,
       )
       val days = tripRepository.getDaysForTrip(state.tripId)
       val existingEntries = walletRepository.getEntriesForTrip(state.tripId)

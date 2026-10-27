@@ -33,4 +33,5 @@ data class ExpenseEntity(
   val currency: String,
   val category: ExpenseCategory,
   val receiptUri: String?,
+  val walletEntryId: String?,
 )

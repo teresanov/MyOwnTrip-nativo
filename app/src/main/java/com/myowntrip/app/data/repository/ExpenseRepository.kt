@@ -21,6 +21,20 @@ class ExpenseRepository @Inject constructor(
   fun observeByDay(dayId: String): Flow<List<Expense>> =
     expenseDao.observeByDay(dayId).map { list -> list.map { it.toDomain() } }
 
+  fun observeByWalletEntry(walletEntryId: String): Flow<Expense?> =
+    expenseDao.observeByWalletEntry(walletEntryId).map { it?.toDomain() }
+
+  suspend fun getExpense(expenseId: String): Expense? =
+    expenseDao.getById(expenseId)?.toDomain()
+
+  suspend fun updateExpense(expense: Expense) {
+    expenseDao.update(expense.toEntity())
+  }
+
+  suspend fun deleteExpense(expenseId: String) {
+    expenseDao.deleteById(expenseId)
+  }
+
   suspend fun addExpense(
     tripId: String,
     dayId: String?,
@@ -29,6 +43,7 @@ class ExpenseRepository @Inject constructor(
     concept: String = "",
     category: ExpenseCategory = ExpenseCategory.OTHER,
     receiptUri: String? = null,
+    walletEntryId: String? = null,
   ) {
     expenseDao.insert(
       Expense(
@@ -40,6 +55,7 @@ class ExpenseRepository @Inject constructor(
         currency = currency,
         category = category,
         receiptUri = receiptUri,
+        walletEntryId = walletEntryId,
       ).toEntity(),
     )
   }

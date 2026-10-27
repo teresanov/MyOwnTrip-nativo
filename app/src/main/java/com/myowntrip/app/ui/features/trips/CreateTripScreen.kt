@@ -26,7 +26,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.ui.components.DestinationCoverPreview
 import com.myowntrip.app.ui.components.date.MotDateRangeField
 import com.myowntrip.app.ui.theme.MOTButton
@@ -50,7 +50,6 @@ import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
-import com.myowntrip.app.ui.theme.rememberMOTButtonShape
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -259,10 +258,9 @@ private fun CreateTripDocumentsSection(
       modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(MOTSpacing.gutterGrid),
     ) {
-      OutlinedButton(
+      MOTOutlinedButton(
         onClick = onImport,
         modifier = Modifier.weight(1f),
-        shape = rememberMOTButtonShape(),
         enabled = enabled,
       ) {
         Icon(Icons.Default.Upload, contentDescription = null, modifier = Modifier.size(18.dp))

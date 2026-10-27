@@ -16,7 +16,6 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
@@ -35,6 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.annotation.DrawableRes
 import coil3.compose.AsyncImage
+import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.R
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -131,7 +131,7 @@ fun MotStackedCard(
         }
       }
       if (onDismiss != null) {
-        IconButton(
+        MOTIconButton(
           onClick = onDismiss,
           modifier = Modifier
             .align(Alignment.TopEnd)

@@ -68,6 +68,8 @@ fun WalletEntryEntity.toDomain() = WalletEntry(
   linkUrl = linkUrl,
   notes = notes,
   qrPayload = qrPayload,
+  amount = amount,
+  currency = currency,
   archivedAt = archivedAt,
 )
 
@@ -82,6 +84,8 @@ fun WalletEntry.toEntity() = WalletEntryEntity(
   linkUrl = linkUrl,
   notes = notes,
   qrPayload = qrPayload,
+  amount = amount,
+  currency = currency,
   archivedAt = archivedAt,
 )
 
@@ -94,6 +98,7 @@ fun ExpenseEntity.toDomain() = Expense(
   currency = currency,
   category = category,
   receiptUri = receiptUri,
+  walletEntryId = walletEntryId,
 )
 
 fun Expense.toEntity() = ExpenseEntity(
@@ -105,6 +110,7 @@ fun Expense.toEntity() = ExpenseEntity(
   currency = currency,
   category = category,
   receiptUri = receiptUri,
+  walletEntryId = walletEntryId,
 )
 
 fun JournalNoteEntity.toDomain() = JournalNote(

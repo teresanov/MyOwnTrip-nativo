@@ -131,6 +131,8 @@ class WalletRepository @Inject constructor(
     linkUrl: String?,
     notes: String?,
     qrPayload: String? = null,
+    amount: Double? = null,
+    currency: String? = null,
   ): WalletEntry = WalletEntry(
     id = UUID.randomUUID().toString(),
     tripId = tripId,
@@ -142,6 +144,8 @@ class WalletRepository @Inject constructor(
     linkUrl = linkUrl,
     notes = notes,
     qrPayload = qrPayload,
+    amount = amount,
+    currency = currency,
   )
 
   suspend fun importDebugWalletAsset(

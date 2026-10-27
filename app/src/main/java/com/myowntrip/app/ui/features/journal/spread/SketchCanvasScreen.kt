@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -312,17 +311,17 @@ private fun SketchToolbar(
 
         Spacer(Modifier.weight(1f))
 
-        IconButton(
+        MOTIconButton(
           onClick = onUndo,
           enabled = canUndo,
           modifier = Modifier.semantics { contentDescription = "Deshacer" },
         ) { Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = null) }
-        IconButton(
+        MOTIconButton(
           onClick = onRedo,
           enabled = canRedo,
           modifier = Modifier.semantics { contentDescription = "Rehacer" },
         ) { Icon(Icons.AutoMirrored.Filled.Redo, contentDescription = null) }
-        IconButton(
+        MOTIconButton(
           onClick = onClear,
           enabled = canUndo,
           modifier = Modifier.semantics { contentDescription = "Borrar todo" },

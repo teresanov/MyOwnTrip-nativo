@@ -46,6 +46,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -238,6 +240,8 @@ fun WalletFormScreen(
           onDateChange = { dirty = true; viewModel.onDateChange(it) },
           onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
           onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
+          onAmountChange = { dirty = true; viewModel.onAmountChange(it) },
+          onCurrencyChange = { dirty = true; viewModel.onCurrencyChange(it) },
           onShowNotes = { viewModel.setShowNotesField(true) },
           onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
           onConfirm = { viewModel.requestConfirm() },
@@ -271,6 +275,8 @@ fun WalletFormScreen(
           onDateChange = { dirty = true; viewModel.onDateChange(it) },
           onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
           onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
+          onAmountChange = { dirty = true; viewModel.onAmountChange(it) },
+          onCurrencyChange = { dirty = true; viewModel.onCurrencyChange(it) },
           onShowNotes = { viewModel.setShowNotesField(true) },
           onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
           onConfirm = { viewModel.requestConfirm() },
@@ -431,6 +437,8 @@ internal fun WalletParseFailStep(
   onDateChange: (java.time.LocalDate?) -> Unit,
   onTimeChange: (java.time.LocalTime?) -> Unit,
   onNotesChange: (String) -> Unit,
+  onAmountChange: (String) -> Unit = {},
+  onCurrencyChange: (String) -> Unit = {},
   onShowNotes: () -> Unit,
   onSaveOfflineCopyChange: (Boolean) -> Unit,
   onConfirm: () -> Unit,
@@ -454,6 +462,8 @@ internal fun WalletParseFailStep(
     onDateChange = onDateChange,
     onTimeChange = onTimeChange,
     onNotesChange = onNotesChange,
+    onAmountChange = onAmountChange,
+    onCurrencyChange = onCurrencyChange,
     onShowNotes = onShowNotes,
     onSaveOfflineCopyChange = onSaveOfflineCopyChange,
     onConfirm = onConfirm,
@@ -571,6 +581,8 @@ internal fun WalletManualAddStep(
   onDateChange: (java.time.LocalDate?) -> Unit,
   onTimeChange: (java.time.LocalTime?) -> Unit,
   onNotesChange: (String) -> Unit,
+  onAmountChange: (String) -> Unit = {},
+  onCurrencyChange: (String) -> Unit = {},
   onShowNotes: () -> Unit,
   onSaveOfflineCopyChange: (Boolean) -> Unit,
   onConfirm: () -> Unit,
@@ -691,6 +703,23 @@ internal fun WalletManualAddStep(
   }
   state.qrPayload?.let { payload ->
     WalletQrCard(payload = payload, compact = true, entryType = state.type)
+  }
+  Row(horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm)) {
+    OutlinedTextField(
+      value = state.amountText,
+      onValueChange = onAmountChange,
+      label = { Text("Precio (opcional)") },
+      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+      singleLine = true,
+      modifier = Modifier.weight(1f),
+    )
+    OutlinedTextField(
+      value = state.currency,
+      onValueChange = onCurrencyChange,
+      label = { Text("Moneda") },
+      singleLine = true,
+      modifier = Modifier.width(96.dp),
+    )
   }
   if (state.showNotesField) {
     OutlinedTextField(

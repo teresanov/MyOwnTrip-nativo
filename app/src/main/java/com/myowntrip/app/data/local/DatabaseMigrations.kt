@@ -191,3 +191,13 @@ val MIGRATION_12_13 = object : Migration(12, 13) {
     db.execSQL("ALTER TABLE restaurants ADD COLUMN rating REAL")
   }
 }
+
+val MIGRATION_13_14 = object : Migration(13, 14) {
+  override fun migrate(db: SupportSQLiteDatabase) {
+    // Precio opcional en reservas de Wallet, y enlace reserva→gasto. Sin FK a propósito:
+    // borrar la reserva no debe borrar el registro del dinero gastado.
+    db.execSQL("ALTER TABLE wallet_entries ADD COLUMN amount REAL")
+    db.execSQL("ALTER TABLE wallet_entries ADD COLUMN currency TEXT")
+    db.execSQL("ALTER TABLE expenses ADD COLUMN walletEntryId TEXT")
+  }
+}

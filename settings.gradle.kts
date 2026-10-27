@@ -32,3 +32,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "MyOwnTrip Nativo"
 include(":app")
+include(":designsystem")
+include(":catalog")

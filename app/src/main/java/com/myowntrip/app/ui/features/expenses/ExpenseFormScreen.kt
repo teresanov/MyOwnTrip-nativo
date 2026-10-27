@@ -12,13 +12,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -32,7 +38,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -42,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.domain.model.ExpenseCategory
 import com.myowntrip.app.ui.features.journal.JournalPermission
 import com.myowntrip.app.ui.features.journal.TakePhotoScreen
@@ -56,11 +66,13 @@ import java.io.File
 fun ExpenseFormScreen(
   onBack: () -> Unit,
   onSaved: () -> Unit,
+  onDeleted: () -> Unit = onBack,
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
   viewModel: ExpenseFormViewModel = hiltViewModel(),
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
+  var showDeleteDialog by remember { mutableStateOf(false) }
 
   val requestCamera = rememberJournalPermissionRequest(
     permission = JournalPermission.Camera,
@@ -90,13 +102,44 @@ fun ExpenseFormScreen(
     return
   }
 
+  if (showDeleteDialog) {
+    AlertDialog(
+      onDismissRequest = { showDeleteDialog = false },
+      title = { Text("Borrar gasto") },
+      text = { Text("¿Seguro que quieres borrar este gasto? No se puede deshacer.") },
+      confirmButton = {
+        MOTTextButton(onClick = {
+          showDeleteDialog = false
+          viewModel.delete(onDeleted)
+        }) { Text("Borrar") }
+      },
+      dismissButton = {
+        MOTTextButton(onClick = { showDeleteDialog = false }) { Text("Cancelar") }
+      },
+    )
+  }
+
+  if (state.isLoading) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+      CircularProgressIndicator()
+    }
+    return
+  }
+
   Scaffold(
     topBar = {
       TopAppBar(
-        title = { Text("Añadir gasto") },
+        title = { Text(if (state.isEditMode) "Editar gasto" else "Añadir gasto") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+          }
+        },
+        actions = {
+          if (state.isEditMode) {
+            MOTIconButton(onClick = { showDeleteDialog = true }) {
+              Icon(Icons.Default.Delete, contentDescription = "Borrar gasto")
+            }
           }
         },
       )
@@ -121,11 +164,49 @@ fun ExpenseFormScreen(
         value = state.amountText,
         onValueChange = viewModel::onAmountChange,
         label = { Text("Importe") },
-        supportingText = { Text("EUR") },
+        supportingText = { Text(state.currency.ifBlank { "···" }) },
         isError = state.amountError != null,
         modifier = Modifier.fillMaxWidth(),
       )
       state.amountError?.let { error ->
+        Text(
+          text = error,
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.error,
+        )
+      }
+      Text(
+        text = "Moneda",
+        style = MaterialTheme.typography.labelLarge,
+      )
+      FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+        verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+      ) {
+        CommonCurrencies.forEach { code ->
+          FilterChip(
+            selected = state.currency == code,
+            onClick = { viewModel.onCurrencyChange(code) },
+            label = { Text(code) },
+          )
+        }
+        FilterChip(
+          selected = state.currency !in CommonCurrencies,
+          onClick = { viewModel.onCurrencyChange("") },
+          label = { Text("Otra") },
+        )
+      }
+      if (state.currency !in CommonCurrencies) {
+        OutlinedTextField(
+          value = state.currency,
+          onValueChange = viewModel::onCurrencyChange,
+          label = { Text("Código de moneda") },
+          placeholder = { Text("Ej. MAD") },
+          isError = state.currencyError != null,
+          modifier = Modifier.fillMaxWidth(),
+        )
+      }
+      state.currencyError?.let { error ->
         Text(
           text = error,
           style = MaterialTheme.typography.bodySmall,
@@ -199,6 +280,19 @@ fun ExpenseFormScreen(
           style = MaterialTheme.typography.labelSmall,
           color = MaterialTheme.colorScheme.tertiary,
         )
+        if (state.isScanningReceipt) {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+          ) {
+            CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
+            Text(
+              text = "Leyendo el ticket…",
+              style = MaterialTheme.typography.labelSmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
+        }
         FilterChip(
           selected = true,
           onClick = viewModel::removeReceipt,
@@ -210,7 +304,13 @@ fun ExpenseFormScreen(
         enabled = !state.isSaving,
         modifier = Modifier.fillMaxWidth(),
       ) {
-        Text(if (state.isSaving) "Guardando…" else "Guardar gasto")
+        Text(
+          when {
+            state.isSaving -> "Guardando…"
+            state.isEditMode -> "Guardar cambios"
+            else -> "Guardar gasto"
+          },
+        )
       }
     }
   }
