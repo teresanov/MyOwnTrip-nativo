@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -301,7 +301,7 @@ private fun WalletFlowCap(
 
 @Composable
 private fun flowDivider() {
-  HorizontalDivider(modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal))
+  MOTHorizontalDivider(inset = true)
 }
 
 @Preview(name = "Wallet flow · 12 caps (Figma 04)", showBackground = true, widthDp = 360, heightDp = 11000)

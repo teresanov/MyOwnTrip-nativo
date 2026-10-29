@@ -74,6 +74,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import com.myowntrip.app.ui.theme.LocalExtendedColors
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -244,10 +245,7 @@ fun WalletScreen(
             onClick = { onEntryClick(entry.id) },
           )
           if (entry != visibleEntries.last()) {
-            HorizontalDivider(
-              modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-              color = MaterialTheme.colorScheme.outlineVariant,
-            )
+            MOTHorizontalDivider(inset = true)
           }
         } else {
           SwipeableWalletDocumentRow(

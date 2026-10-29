@@ -98,7 +98,7 @@ fun SwipeableTripListRow(
             modifier = Modifier
               .fillMaxSize()
               .background(MaterialTheme.colorScheme.secondaryContainer)
-              .padding(horizontal = MOTSpacing.layoutMd),
+              .padding(horizontal = MOTSpacing.ListItem.horizontal),
             contentAlignment = Alignment.CenterStart,
           ) {
             Icon(
@@ -113,7 +113,7 @@ fun SwipeableTripListRow(
             modifier = Modifier
               .fillMaxSize()
               .background(MaterialTheme.colorScheme.errorContainer)
-              .padding(horizontal = MOTSpacing.layoutMd),
+              .padding(horizontal = MOTSpacing.ListItem.horizontal),
             contentAlignment = Alignment.CenterEnd,
           ) {
             Icon(

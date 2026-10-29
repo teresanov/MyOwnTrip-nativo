@@ -150,8 +150,8 @@ internal fun MotBoundedMonthCalendar(
         .fillMaxWidth()
         .heightIn(min = 220.dp, max = 280.dp)
         .padding(horizontal = MOTSpacing.layoutMd, vertical = MOTSpacing.componentSm),
-      horizontalArrangement = Arrangement.spacedBy(2.dp),
-      verticalArrangement = Arrangement.spacedBy(2.dp),
+      horizontalArrangement = Arrangement.spacedBy(MOTSpacing.DatePicker.dayGridGap),
+      verticalArrangement = Arrangement.spacedBy(MOTSpacing.DatePicker.dayGridGap),
       userScrollEnabled = false,
     ) {
       items(cells.size, key = { index -> cells[index]?.toString() ?: "pad-$index" }) { index ->

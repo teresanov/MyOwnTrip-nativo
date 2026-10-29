@@ -23,8 +23,11 @@ import androidx.compose.ui.unit.dp
  * FAB queda circular — usar [androidx.compose.material3.FloatingActionButton] sin morph.
  */
 
-/** State-layer XSmall — Figma Button `58651:12123` (12×6). */
-val MOTButtonXSmallContentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+/** State-layer XSmall — Figma Button `58651:12123` ↔ [MOTSpacing.ButtonXSmall]. */
+val MOTButtonXSmallContentPadding = PaddingValues(
+  horizontal = MOTSpacing.ButtonXSmall.horizontal,
+  vertical = MOTSpacing.ButtonXSmall.vertical,
+)
 
 @Composable
 fun MOTButton(

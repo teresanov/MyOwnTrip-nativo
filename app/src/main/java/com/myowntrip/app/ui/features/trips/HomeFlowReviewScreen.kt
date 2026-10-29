@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -27,6 +26,7 @@ import com.myowntrip.app.ui.components.home.HomeEmptyState
 import com.myowntrip.app.ui.components.home.HomeFilterMenuPresentation
 import com.myowntrip.app.ui.components.home.HomeTripsContentState
 import com.myowntrip.app.ui.components.home.HomeTripsScreen
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.LocalDate
@@ -72,7 +72,7 @@ fun HomeFlowReviewScreen(
         modifier = Modifier.fillMaxWidth(),
       )
 
-      HorizontalDivider(modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal))
+      MOTHorizontalDivider(inset = true)
 
       FlowCapLabel("Cap 1b · Home solo pasados (313:501)")
       HomeTripsScreen(
@@ -103,7 +103,7 @@ fun HomeFlowReviewScreen(
           .height(900.dp),
       )
 
-      HorizontalDivider(modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal))
+      MOTHorizontalDivider(inset = true)
 
       FlowCapLabel("Cap 2 · Home con viajes (205:1018)")
       HomeTripsScreen(
@@ -132,7 +132,7 @@ fun HomeFlowReviewScreen(
           .height(800.dp),
       )
 
-      HorizontalDivider(modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal))
+      MOTHorizontalDivider(inset = true)
 
       FlowCapLabel("Cap 3 · Búsqueda + menú filtros (228:8161)")
       HomeTripsScreen(

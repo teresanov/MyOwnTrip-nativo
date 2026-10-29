@@ -1,0 +1,22 @@
+---
+description: "Regla de trazado profundo para indexar relaciones DS en Compose."
+alwaysApply: false
+---
+
+# DS Codebase Index - Deep tracing
+
+Cuando se te pida indexar el DS:
+
+- No te quedes en inventario superficial. Sigue dependencias:
+  - composables canónicos -> quién los usa
+  - tokens semánticos -> dónde se consumen
+  - composición -> qué slots exigen subcomponentes canónicos
+
+Salida mínima:
+
+- `docs/design-system/index/components.index.json`
+- `.ai/relationships/component-usage.toon`
+
+Evitar:
+
+- suposiciones sin evidencia de código.

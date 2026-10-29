@@ -206,82 +206,92 @@ fun WalletFormScreen(
       )
     },
   ) { padding ->
-    Column(
-      modifier = Modifier
-        .padding(padding)
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
-        .padding(
-          start = MOTSpacing.screenHorizontal,
-          end = MOTSpacing.screenHorizontal,
-          top = MOTSpacing.screenHorizontal,
-          bottom = MOTSpacing.screenContentBottom,
-        ),
-      verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
-    ) {
-      when {
-        awaitingSystemPicker -> WalletAwaitingPickerStep(
-          onManualEntry = { viewModel.switchToManualEntry() },
-          onCancel = onBack,
-        )
-        state.isParsing -> WalletParsingStep(
-          onCancel = requestExit,
-        )
-        state.parseFailed && state.attachmentUri != null && !state.manualEntryMode -> WalletParseFailStep(
-          state = state,
-          tripExpanded = tripExpanded,
-          onTripExpandedChange = { tripExpanded = it },
-          onCreateTrip = onCreateTrip,
-          onPickFile = { launchDocumentPicker(false) },
-          onViewDocument = onViewDocument,
-          onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
-          onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
-          onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
-          onDateChange = { dirty = true; viewModel.onDateChange(it) },
-          onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
-          onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
-          onAmountChange = { dirty = true; viewModel.onAmountChange(it) },
-          onCurrencyChange = { dirty = true; viewModel.onCurrencyChange(it) },
-          onShowNotes = { viewModel.setShowNotesField(true) },
-          onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
-          onConfirm = { viewModel.requestConfirm() },
-          onCancel = requestExit,
-        )
-        state.isImportFlow -> WalletImportReviewStep(
-          state = state,
-          onPickFile = { launchDocumentPicker(false) },
-          onViewDocument = onViewDocument,
-          onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
-          onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
-          onShowTypeCorrection = viewModel::setShowTypeCorrection,
-          onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
-          onConfirm = { viewModel.requestConfirm() },
-          onCancel = requestExit,
-        )
-        else -> WalletManualAddStep(
-          state = state,
-          tripExpanded = tripExpanded,
-          onTripExpandedChange = { tripExpanded = it },
-          onCreateTrip = onCreateTrip,
-          onPickFile = { launchDocumentPicker(false) },
-          onTakePhoto = requestCamera,
-          onPickGallery = { pickGalleryImage.launch("image/*") },
-          onScanQr = requestQrCamera,
-          onViewDocument = onViewDocument,
-          onClearAttachment = { viewModel.clearAttachment() },
-          onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
-          onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
-          onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
-          onDateChange = { dirty = true; viewModel.onDateChange(it) },
-          onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
-          onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
-          onAmountChange = { dirty = true; viewModel.onAmountChange(it) },
-          onCurrencyChange = { dirty = true; viewModel.onCurrencyChange(it) },
-          onShowNotes = { viewModel.setShowNotesField(true) },
-          onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
-          onConfirm = { viewModel.requestConfirm() },
-          onCancel = requestExit,
-        )
+    val contentPadding = Modifier
+      .padding(padding)
+      .fillMaxSize()
+      .padding(
+        start = MOTSpacing.screenHorizontal,
+        end = MOTSpacing.screenHorizontal,
+        top = MOTSpacing.screenHorizontal,
+        bottom = MOTSpacing.screenContentBottom,
+      )
+    when {
+      // Review import: CTA anclado abajo (contenido scrollable encima).
+      state.isImportFlow &&
+        !awaitingSystemPicker &&
+        !state.isParsing &&
+        !(state.parseFailed && state.attachmentUri != null && !state.manualEntryMode) -> {
+        Column(modifier = contentPadding) {
+          WalletImportReviewStep(
+            state = state,
+            onPickFile = { launchDocumentPicker(false) },
+            onViewDocument = onViewDocument,
+            onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
+            onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
+            onShowTypeCorrection = viewModel::setShowTypeCorrection,
+            onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
+            onConfirm = { viewModel.requestConfirm() },
+            onCancel = requestExit,
+          )
+        }
+      }
+      else -> Column(
+        modifier = contentPadding.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
+      ) {
+        when {
+          awaitingSystemPicker -> WalletAwaitingPickerStep(
+            onManualEntry = { viewModel.switchToManualEntry() },
+            onCancel = onBack,
+          )
+          state.isParsing -> WalletParsingStep(
+            onCancel = requestExit,
+          )
+          state.parseFailed && state.attachmentUri != null && !state.manualEntryMode -> WalletParseFailStep(
+            state = state,
+            tripExpanded = tripExpanded,
+            onTripExpandedChange = { tripExpanded = it },
+            onCreateTrip = onCreateTrip,
+            onPickFile = { launchDocumentPicker(false) },
+            onViewDocument = onViewDocument,
+            onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
+            onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
+            onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
+            onDateChange = { dirty = true; viewModel.onDateChange(it) },
+            onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
+            onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
+            onAmountChange = { dirty = true; viewModel.onAmountChange(it) },
+            onCurrencyChange = { dirty = true; viewModel.onCurrencyChange(it) },
+            onShowNotes = { viewModel.setShowNotesField(true) },
+            onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
+            onConfirm = { viewModel.requestConfirm() },
+            onCancel = requestExit,
+          )
+          else -> WalletManualAddStep(
+            state = state,
+            tripExpanded = tripExpanded,
+            onTripExpandedChange = { tripExpanded = it },
+            onCreateTrip = onCreateTrip,
+            onPickFile = { launchDocumentPicker(false) },
+            onTakePhoto = requestCamera,
+            onPickGallery = { pickGalleryImage.launch("image/*") },
+            onScanQr = requestQrCamera,
+            onViewDocument = onViewDocument,
+            onClearAttachment = { viewModel.clearAttachment() },
+            onTripSelected = { dirty = true; viewModel.onTripSelected(it); tripExpanded = false },
+            onTitleChange = { dirty = true; viewModel.onTitleChange(it) },
+            onTypeChange = { dirty = true; viewModel.onTypeChange(it) },
+            onDateChange = { dirty = true; viewModel.onDateChange(it) },
+            onTimeChange = { dirty = true; viewModel.onTimeChange(it) },
+            onNotesChange = { dirty = true; viewModel.onNotesChange(it) },
+            onAmountChange = { dirty = true; viewModel.onAmountChange(it) },
+            onCurrencyChange = { dirty = true; viewModel.onCurrencyChange(it) },
+            onShowNotes = { viewModel.setShowNotesField(true) },
+            onSaveOfflineCopyChange = { dirty = true; viewModel.onSaveOfflineCopyChange(it) },
+            onConfirm = { viewModel.requestConfirm() },
+            onCancel = requestExit,
+          )
+        }
       }
     }
   }
@@ -484,88 +494,103 @@ internal fun WalletImportReviewStep(
   onConfirm: () -> Unit,
   onCancel: () -> Unit,
 ) {
-  WalletAttachmentPreview(
-    attachmentUri = state.attachmentUri,
-    fileName = state.attachmentFileName,
-    onChangeFile = onPickFile,
-    onViewDocument = onViewDocument,
-  )
-  Card(
-    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-  ) {
+  Column(modifier = Modifier.fillMaxSize()) {
     Column(
-      modifier = Modifier.padding(MOTSpacing.layoutMd),
-      verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+      modifier = Modifier
+        .weight(1f)
+        .fillMaxWidth()
+        .verticalScroll(rememberScrollState()),
+      verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
     ) {
-      Text("Detectado", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.tertiary)
-      Text(
-        text = entryTypeLabel(state.type),
-        style = MaterialTheme.typography.titleMedium,
+      WalletAttachmentPreview(
+        attachmentUri = state.attachmentUri,
+        fileName = state.attachmentFileName,
+        onChangeFile = onPickFile,
+        onViewDocument = onViewDocument,
       )
-      Text(
-        text = state.title,
-        style = MaterialTheme.typography.bodyLarge,
-      )
-      parsedScheduleLabel(state)?.let { schedule ->
-        Text(
-          text = schedule,
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-      }
-      state.notes.takeIf { it.isNotBlank() }?.let { notes ->
-        Text(
-          text = notes,
-          style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-      }
-      state.attachmentFileName?.let {
-        Text(
-          text = it,
-          style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-      }
-      state.qrPayload?.let { payload ->
-        WalletQrCard(payload = payload, compact = true, entryType = state.type)
-      }
-      if (!state.showTypeCorrection) {
-        MOTTextButton(onClick = { onShowTypeCorrection(true) }) {
-          Text("Cambiar tipo")
+      Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+      ) {
+        Column(
+          modifier = Modifier.padding(MOTSpacing.layoutMd),
+          verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+        ) {
+          Text("Detectado", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.tertiary)
+          Text(
+            text = entryTypeLabel(state.type),
+            style = MaterialTheme.typography.titleMedium,
+          )
+          Text(
+            text = state.title,
+            style = MaterialTheme.typography.bodyLarge,
+          )
+          parsedScheduleLabel(state)?.let { schedule ->
+            Text(
+              text = schedule,
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
+          state.notes.takeIf { it.isNotBlank() }?.let { notes ->
+            Text(
+              text = notes,
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
+          state.attachmentFileName?.let {
+            Text(
+              text = it,
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
+          state.qrPayload?.let { payload ->
+            WalletQrCard(payload = payload, compact = true, entryType = state.type)
+          }
+          if (!state.showTypeCorrection) {
+            MOTTextButton(onClick = { onShowTypeCorrection(true) }) {
+              Text("Cambiar tipo")
+            }
+          }
         }
       }
+      if (state.showTypeCorrection) {
+        EntryTypeChips(
+          selected = state.type,
+          onSelect = { onTypeChange(it); onShowTypeCorrection(false) },
+        )
+      }
+      OutlinedTextField(
+        value = state.title,
+        onValueChange = onTitleChange,
+        label = { Text("Título") },
+        isError = state.titleError != null,
+        supportingText = state.titleError?.let { { Text(it) } },
+        modifier = Modifier.fillMaxWidth(),
+      )
+      if (state.canChooseStorage) {
+        WalletOfflineStorageField(
+          saveOnDevice = state.saveOfflineCopy,
+          onSaveOnDeviceChange = onSaveOfflineCopyChange,
+        )
+      }
+    }
+    Column(
+      modifier = Modifier.fillMaxWidth(),
+      verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+    ) {
+      Text(
+        text = "Revisa y confirma. Nada se guarda hasta que pulses Confirmar.",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      MOTButton(onClick = onConfirm, modifier = Modifier.fillMaxWidth()) {
+        Text("Confirmar")
+      }
+      WalletFormCancelButton(label = "Cancelar", onClick = onCancel)
     }
   }
-  if (state.showTypeCorrection) {
-    EntryTypeChips(
-      selected = state.type,
-      onSelect = { onTypeChange(it); onShowTypeCorrection(false) },
-    )
-  }
-  OutlinedTextField(
-    value = state.title,
-    onValueChange = onTitleChange,
-    label = { Text("Título") },
-    isError = state.titleError != null,
-    supportingText = state.titleError?.let { { Text(it) } },
-    modifier = Modifier.fillMaxWidth(),
-  )
-  if (state.canChooseStorage) {
-    WalletOfflineStorageField(
-      saveOnDevice = state.saveOfflineCopy,
-      onSaveOnDeviceChange = onSaveOfflineCopyChange,
-    )
-  }
-  Text(
-    text = "Revisa y confirma. Nada se guarda hasta que pulses Confirmar.",
-    style = MaterialTheme.typography.bodySmall,
-    color = MaterialTheme.colorScheme.onSurfaceVariant,
-  )
-  MOTButton(onClick = onConfirm, modifier = Modifier.fillMaxWidth()) {
-    Text("Confirmar")
-  }
-  WalletFormCancelButton(label = "Cancelar", onClick = onCancel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -943,7 +968,7 @@ private fun WalletFormParsingPreview() {
 @Composable
 private fun WalletFormImportReviewPreview() {
   MyOwnTripTheme {
-    WalletFormPreviewScaffold(title = "Revisar importación") {
+    WalletFormPreviewScaffold(title = "Revisar importación", scrollable = false) {
       WalletImportReviewStep(
         state = previewFlightImportState,
         onPickFile = {},
@@ -963,7 +988,7 @@ private fun WalletFormImportReviewPreview() {
 @Composable
 private fun WalletFormImportReviewHotelPreview() {
   MyOwnTripTheme {
-    WalletFormPreviewScaffold(title = "Revisar importación") {
+    WalletFormPreviewScaffold(title = "Revisar importación", scrollable = false) {
       WalletImportReviewStep(
         state = previewHotelImportState,
         onPickFile = {},
@@ -983,7 +1008,7 @@ private fun WalletFormImportReviewHotelPreview() {
 @Composable
 private fun WalletConfirmDialogPreview() {
   MyOwnTripTheme {
-    WalletFormPreviewScaffold(title = "Revisar importación") {
+    WalletFormPreviewScaffold(title = "Revisar importación", scrollable = false) {
       WalletImportReviewStep(
         state = previewFlightImportState,
         onPickFile = {},

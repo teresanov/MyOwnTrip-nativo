@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,7 +33,6 @@ import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import java.time.LocalTime
 
-private val MotTimePickerShape = RoundedCornerShape(28.dp)
 private val MotTimePickerMinWidth = 280.dp
 
 /**
@@ -68,7 +66,7 @@ fun MotTimePickerDialog(
     properties = DialogProperties(usePlatformDefaultWidth = false),
   ) {
     Surface(
-      shape = MotTimePickerShape,
+      shape = MaterialTheme.shapes.extraLarge,
       color = MaterialTheme.colorScheme.surfaceContainerHigh,
       modifier = Modifier
         .widthIn(min = MotTimePickerMinWidth, max = maxDialogWidth)

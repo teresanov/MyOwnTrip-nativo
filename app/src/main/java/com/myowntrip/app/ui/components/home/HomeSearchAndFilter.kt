@@ -48,15 +48,12 @@ import com.myowntrip.app.ui.features.trips.TripSortOrder
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
-/** Medidas Figma `228:8306` · cap 3 Home. */
+/** Medidas Figma `228:8306` · cap 3 Home. Shape/gap → tema M3 / [MOTSpacing.Menu]. */
 object HomeFilterMenuSpec {
   val Width = 328.dp
   /** Desde el borde superior del body (debajo de status) en design-file. */
   val OverlayTop = 192.dp
-  val CornerRadius = 16.dp
-  val ListCornerRadius = 8.dp
   val ItemHeight = 44.dp
-  val ItemCorner = 12.dp
   val LeadingIconSize = 20.dp
   val Elevation = 3.dp
 }
@@ -220,7 +217,7 @@ fun HomeFilterDropdownMenu(
     modifier = modifier,
     containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
     shadowElevation = HomeFilterMenuSpec.Elevation,
-    shape = RoundedCornerShape(HomeFilterMenuSpec.CornerRadius),
+    shape = MaterialTheme.shapes.large,
   ) {
     HomeFilterMenuPanelContent(
       filterPhase = filterPhase,
@@ -248,8 +245,8 @@ fun HomeFilterMenuPanel(
   Surface(
     modifier = modifier
       .width(HomeFilterMenuSpec.Width)
-      .clip(RoundedCornerShape(HomeFilterMenuSpec.CornerRadius)),
-    shape = RoundedCornerShape(HomeFilterMenuSpec.CornerRadius),
+      .clip(MaterialTheme.shapes.large),
+    shape = MaterialTheme.shapes.large,
     color = MaterialTheme.colorScheme.surfaceContainerLow,
     shadowElevation = HomeFilterMenuSpec.Elevation,
     tonalElevation = 0.dp,
@@ -316,8 +313,8 @@ internal fun HomeFilterMenuPanelContent(
   modifier: Modifier = Modifier,
 ) {
   Column(
-    modifier = modifier.padding(vertical = 2.dp),
-    verticalArrangement = Arrangement.spacedBy(2.dp),
+    modifier = modifier.padding(vertical = MOTSpacing.Menu.groupGap),
+    verticalArrangement = Arrangement.spacedBy(MOTSpacing.Menu.groupGap),
   ) {
     HomeFilterMenuList {
       HomeFilterMenuSectionLabel("Mostrar")
@@ -374,7 +371,7 @@ internal fun HomeFilterMenuList(content: @Composable () -> Unit) {
   Column(
     modifier = Modifier
       .fillMaxWidth()
-      .clip(RoundedCornerShape(HomeFilterMenuSpec.ListCornerRadius)),
+      .clip(MaterialTheme.shapes.small),
   ) {
     content()
   }
@@ -385,9 +382,9 @@ internal fun HomeFilterMenuSectionLabel(text: String) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = 4.dp)
+      .padding(horizontal = MOTSpacing.componentXs)
       .heightIn(min = 32.dp)
-      .padding(start = 12.dp, end = 12.dp, top = 6.dp),
+      .padding(start = MOTSpacing.componentMd, end = MOTSpacing.componentMd, top = 6.dp),
     contentAlignment = Alignment.CenterStart,
   ) {
     Text(
@@ -406,12 +403,12 @@ internal fun HomeFilterMenuItemRow(
   destructive: Boolean = false,
 ) {
   val scheme = MaterialTheme.colorScheme
-  val itemShape = RoundedCornerShape(HomeFilterMenuSpec.ItemCorner)
+  val itemShape = MaterialTheme.shapes.medium
 
   Box(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = 4.dp, vertical = 2.dp),
+      .padding(horizontal = MOTSpacing.componentXs, vertical = MOTSpacing.Menu.groupGap),
   ) {
     Row(
       modifier = Modifier

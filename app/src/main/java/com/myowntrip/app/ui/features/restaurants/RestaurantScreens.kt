@@ -23,6 +23,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
+import com.myowntrip.app.ui.theme.MOTSpacing
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -102,7 +104,7 @@ fun RestaurantFormScreen(
         color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
 
-      HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+      MOTHorizontalDivider(modifier = Modifier.padding(vertical = MOTSpacing.componentXs))
       Text("O añádelo a mano", style = MaterialTheme.typography.labelLarge)
 
       OutlinedTextField(

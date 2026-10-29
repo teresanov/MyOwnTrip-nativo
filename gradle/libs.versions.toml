@@ -1,5 +1,5 @@
 [versions]
-agp = "9.2.1"
+agp = "9.5.0"
 kotlin = "2.2.10"
 
 coreKtx = "1.13.1"
@@ -11,7 +11,7 @@ composeBom = "2026.03.00"
 material3 = "1.5.0-alpha12"
 
 room = "2.7.1"
-ksp = "2.3.2"
+ksp = "2.3.6"
 
 hilt = "2.54"
 hiltNavigationCompose = "1.2.0"

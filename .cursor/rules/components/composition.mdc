@@ -1,0 +1,13 @@
+---
+description: "Reglas de composición canónica para componentes anidados."
+alwaysApply: false
+---
+
+# Componentes - Composición
+
+- Componentes complejos deben declarar slots.
+- Cada slot debe mapear a un subcomponente canónico (si aplica).
+- Prohibido clonar inline atoms (ej. botón ad-hoc dentro de Card).
+- En Figma: un patrón anidado nuevo se publica en el **DS** y las pantallas solo lo **instancian** (ver `.cursor/rules/figma-instances-only.mdc`).
+
+Fuente: `docs/design-system/knowledge/canonical-composition-policy.entry.json`

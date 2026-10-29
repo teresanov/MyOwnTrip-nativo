@@ -1,0 +1,27 @@
+---
+description: "Jerarquía atómica aplicada a Compose para DS canónico."
+alwaysApply: false
+---
+
+# Componentes - Jerarquía (Atomic + familias)
+
+## Dos ejes (no mezclar)
+
+- **`kind`** (atom | molecule | organism | layout | pattern): gobernanza técnica y reglas de dependencia.
+- **`family`** (actions | display | inputs | …): navegación humana del showcase y agrupación funcional.
+
+Taxonomía del showcase: `docs/design-system/index/showcase-taxonomy.json`.
+
+## kind — reglas
+
+- **Atoms**: Button, Text, Icon, Chip (primitivos de interacción).
+- **Molecules**: ListItem, SearchField, DateRow (combinan atoms).
+- **Organisms**: Card compleja, Sheets, toolbars (composición + slots).
+- **Patterns**: pantallas o patrones repetibles (no componentes base).
+
+Los atoms canónicos no deben depender de molecules/organisms.
+
+## family — reglas
+
+- Usar la familia que mejor describe **cómo busca el componente un humano** (p. ej. `MyOwnTripButton` → `actions`).
+- Patrones solo de MyOwnTrip → `family: product` + `showcaseGroup: product` + `kind: pattern`.

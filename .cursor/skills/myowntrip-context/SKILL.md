@@ -8,6 +8,19 @@ description: Contexto completo del proyecto MyOwnTrip. Úsala siempre que el usu
 App nativa Android de viajes. Proyecto personal + portfolio de UX/producto.
 Idioma de trabajo: **español**.
 
+## Este repo es el SoT
+
+Estás en **`MyOwnTrip_nativo`**: app + Compose + DS nativo + docs de paridad Figma.
+
+| Qué | Dónde |
+|-----|--------|
+| Features / pantallas | `app/.../ui/features/` |
+| Tema + MOT* | `designsystem/` + `app/.../ui/theme/` |
+| Docs DS / audits | `docs/design-system/` |
+| Rules / skills agente | `.cursor/` (este repo) |
+
+El workspace hermano `MyOwnTrip` es archivo legacy (Pencil/ARC viejo). **No** contrastar features ahí.
+
 Lee los archivos de referencia según lo que necesites:
 - `references/product.md` → qué es la app, **North Star (cuaderno del viaje)**, objetivos, decisiones de producto
 - `references/requirements.md` → funcionalidades por prioridad MoSCoW

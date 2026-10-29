@@ -1,0 +1,70 @@
+---
+description: 
+alwaysApply: true
+---
+
+# MyOwnTrip — Documentación DS en Figma
+
+Aplica cuando el usuario pida documentar tokens/rampas en Figma o trabajar con el DS visual.
+
+**Pipeline de componentes:** iterar en **Pencil** (`DS.pen`) antes de cerrar láminas en Figma; después **Notion** y **Showcase**. Ver `docs/design-system/governance/design-pipeline.md`.
+
+**Portero pantallas:** en design-file / flows, **solo instancias** de DS o Android UI / M3. Si falta un patrón complejo, crearlo en el DS con átomos anidados — nunca frames que imiten controles. Ver `.cursor/rules/figma-instances-only.mdc`.
+
+## Reglas obligatorias
+
+1. **Colección única de primitivos de color**
+- Usar siempre `Primitives · Color` como única colección fuente.
+- Evitar crear colecciones paralelas de primitivos (duplicados tipo `Primitives/Color ...`).
+- Si hay duplicados creados durante la sesión, consolidar y limpiar.
+
+2. **Rampas OKLCH completas**
+- Mantener y documentar rampas por steps (`50–900`, y `0` para neutral cuando aplique).
+- `secondary` debe ser una rampa diferenciada de `brand` (no casi idéntica en hue).
+- Primarias del DS: `neutral`, `brand`, `secondary`.
+
+3. **Semánticas enlazadas por alias**
+- Variables semánticas de color deben enlazar a primitivas (alias), no copiar hex sueltos.
+- Orden de trabajo: primero primitivas, después semánticas.
+
+4. **Documentación visual estilo cards**
+- En la página de tokens, pintar cards por step con:
+  - nombre del token (`family-step`)
+  - muestra `Text`
+  - valor HEX
+  - contraste WCAG contra blanco y negro
+  - nota APCA-like orientativa
+- Mantener layout limpio y agrupado en una sección de documentación.
+
+5. **Validación visual tras cambios**
+- Después de crear/modificar documentación, capturar screenshot de la página o nodo objetivo.
+- Verificar legibilidad, consistencia de spacing y que no haya solapes.
+
+6. **Tipografía del DS (obligatoria)**
+- En nuevos componentes o documentación, usar siempre `Roboto Flex`.
+- Todo nodo `TEXT` debe quedar enlazado a `text styles` del DS (`text/...`), evitando valores manuales.
+- No cerrar tarea si quedan textos sin style tokenizado (por ejemplo, labels/hints sin `textStyleId`).
+
+7. **Variantes y propiedades en inglés**
+- En Figma, los **nombres de variantes**, **estados** y **propiedades** del componente (y su reflejo en documentación) deben mantenerse **en inglés**, alineados con el diseño original (`Primary`, `Default`, `Show Left Icon`, etc.).
+- **Do & Don’t**: respetar la **plantilla actual** en el archivo (ajustes manuales del equipo); no renombrar variantes/props a español para “traducir” el componente.
+
+8. **Texto visible en láminas de documentación (instancias)**
+- El copy que identifica cada celda (p. ej. estilo, tamaño, énfasis o escenario de padding) debe ser **claro y descriptivo**, como en **Pencil** (`Filled`, `Extra small`, `Padding 16dp`, etc.), **siempre en inglés** alineado a los valores de variante.
+- Ese texto debe aplicarse **solo** mediante la **propiedad de componente TEXT** del set publicado (p. ej. botón: **`Label`** / clave `Label#…` en `componentPropertyDefinitions`), con `setProperties` en la **instancia** de la lámina de documentación — **no** añadir nodos `TEXT` sueltos encima del botón para “etiquetar” la variante.
+- **No** sustituir el texto maestro de cada **COMPONENT** del `COMPONENT_SET` por metadatos (`Filled · SM · Default`, etc.): el grid publicado debe leerse como botón real (p. ej. **«Button»** o copy neutro). Quién identifica la variante es el **nombre de variante** en Figma + la doc; mezclar ambos en el label del maestro confunde handoff y rompe contraste (Outlined/Text sobre canvas oscuro).
+- Convención útil para filas de matriz **solo en doc**: combinar ejes con ` · ` (p. ej. `Filled · Default`, `MD · Round`) cuando una sola palabra no basta para distinguir la fila.
+
+10. **Excepción controlada para `MyOwnTrip/Button` (paridad Pencil)**
+- Mientras se completa la migración para retirar Pencil, el **set publicado** `MyOwnTrip/Button` puede usar `Label` descriptivo por variante (p. ej. `Filled · MD · Round · Leading icon`) para mejorar lectura visual del grid, siempre en inglés.
+- Esta excepción aplica **solo** al componente Button y debe mantenerse alineada con los ejes reales del componente (`Style`, `Size`, `Emphasis`, `Shape`, icon toggles).
+- En cada variante del set de Button deben quedar **visibles por defecto** los iconos leading/trailing (aunque tengan BOOLEAN para ocultarlos), para comunicar la capacidad del componente en la librería.
+- El set de Button debe incluir explícitamente la forma **`Square`** además de `Round`; no cerrar la tarea con `Shape` incompleto.
+- Cuando finalice la migración y el equipo decida volver a label neutro en maestros, documentar la decisión en `docs/design-system/migrations/` y actualizar esta regla.
+
+9. **Referencias locales al documentar un componente**
+- Si existen los clones en `refs/`, contrastar estados y comportamiento con **`refs/compose-m3-expressive-catalog`** y, si hace falta, con **`refs/material-components-android`** (ver regla **`.cursor/rules/components/material-reference-refs.mdc`**). La apariencia y tokens siguen siendo las del archivo MyOwnTrip (semánticos, estilos de texto del DS).
+
+11. **Color de iconos (consumo semántico)**
+- En nodos de icono (`Slot_master` / vector `icon`), bindear **solo** `semantic/color/icon/*`; **nunca** `semantic/color/text/*` en el nodo del icono.
+- Para mapa completo por estilo/estado y gate de salida, aplicar siempre **`.cursor/rules/utilities/icon-color-consumption.mdc`** (fuente canónica).

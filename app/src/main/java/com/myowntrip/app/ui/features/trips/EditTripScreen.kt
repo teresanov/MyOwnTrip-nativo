@@ -16,7 +16,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -36,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.ui.components.date.MotDateRangeField
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -152,7 +152,7 @@ fun EditTripScreen(
         }
       }
 
-      HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+      MOTHorizontalDivider()
 
       Text(
         text = "Zona de peligro",

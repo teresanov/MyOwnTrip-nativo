@@ -1,59 +1,59 @@
 # Tipografía — MyOwnTrip Nativo
 
-ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).  
-Código: `app/.../ui/theme/Type.kt` → `Theme.kt`.
+**SoT Compose:** `designsystem/.../Type.kt` → `AppTypography`  
+**SoT Figma:** text styles locales en `zrGAL4v6` (publicado a librería)
 
-## Familias
+## Marca (no Roboto)
 
-| Familia | Roles M3 | Pesos | Uso |
-|---------|----------|-------|-----|
-| **Fraunces** | Display, Headline | 400, 500, 600 | Voz editorial; serif solo aquí |
-| **Inter** | Title, Body, Label | 400, 500, 600 | UI y texto funcional |
-| Roboto | — | — | **Solo fallback** del sistema |
+| Familia | Roles Compose |
+|---------|----------------|
+| **Fraunces** | `display*` · `headline*` |
+| **Inter** | `title*` · `body*` · `label*` |
 
-## Regla serif / sans
+No hay escala M3 “stock” (Roboto) en el DS. Se eliminó el 2026-10-29.
 
-- **Display + Headline** → Fraunces.
-- **Title, Body, Label** → Inter.
-- Prohibido Fraunces en labels de botón, campos, chips o navegación.
+## Mapa Compose ↔ Figma text style
 
-### Labels de botón (Figma · variables `Static/Button Label */*`)
+| Compose (`AppTypography`) | Figma style | Familia | Size / weight |
+|---------------------------|-------------|---------|---------------|
+| `displayLarge` | `M3/display/large` | Fraunces | 57 Regular |
+| `displayMedium` | `M3/display/medium` | Fraunces | 45 Regular |
+| `displaySmall` | `M3/display/small` | Fraunces | 36 Regular |
+| `headlineLarge` | `M3/headline/large` | Fraunces | 32 Regular |
+| `headlineMedium` | `M3/headline/medium` | Fraunces | 28 Regular |
+| `headlineSmall` | `M3/headline/small` | Fraunces | 24 Regular |
+| `titleLarge` | `M3/title/large` | Inter | 22 Semi Bold |
+| `titleMedium` | `M3/title/medium` | Inter | 16 Medium |
+| `titleSmall` | `M3/title/small` | Inter | 14 Medium |
+| `bodyLarge` | `M3/body/large` | Inter | 16 Regular |
+| `bodyMedium` | `M3/body/medium` | Inter | 14 Regular |
+| `bodySmall` | `M3/body/small` | Inter | 12 Regular |
+| `labelLarge` | `M3/label/large` | Inter | 14 Medium |
+| `labelMedium` | `M3/label/medium` | Inter | 12 Medium |
+| `labelSmall` | `M3/label/small` | Inter | 11 Medium |
 
-| Tamaño componente | Text style | Size | Fuente |
-|-------------------|------------|-----:|--------|
-| XSmall, Small | `M3 / label / large` | 14 | Inter (Plain) |
-| Medium | `M3 / label / button-medium` | 16 | Inter (Plain) |
-| Large, XLarge | `M3 / label / button-large` | 32 / 40 lh | Inter (Plain) |
+**15 estilos UI.** Sin variantes `-emphasized` ni `button-*` (Compose no las expone).
 
-Métricas Large = escala M3 por defecto en botones XL/L (32/40), pero rol **Label** y primitivo **Plain** — nunca Headline/Brand.
+## Variables (cadena de binds)
 
-## Entrega
-
-- Fuentes **bundled** en `app/src/main/res/font/`.
-- Definir `FontFamily` en `Type.kt` y mapear a `Typography` M3.
-- No depender de Google Fonts en runtime para la marca.
-
-## Refinamientos
-
-| Ajuste | Detalle |
-|--------|---------|
-| Pesos | Contenidos (400–600); sin Black/ExtraBold |
-| Line-height | Generoso en Body y Headline (legibilidad editorial) |
-| Display | Tracking ligeramente negativo |
-| Fraunces grande | `opsz` alto en tamaños Display |
-
-## Consumo en UI
-
-```kotlin
-MaterialTheme.typography.headlineMedium  // Fraunces
-MaterialTheme.typography.titleMedium     // Inter
-MaterialTheme.typography.bodyLarge       // Inter
+```
+Text style M3/{role}
+  → Typescale / Static/{Role}/{Font|Size|Weight|Line Height|Tracking}
+    → Font theme (Font/Brand=Fraunces, Font/Plain=Inter, Weight/*)
 ```
 
-- Escalado del sistema: respetar `fontScale`; sin alturas fijas en `dp` para texto (ver `docs/ux/android-compose-ux.md`).
+Cada uno de los 15 estilos tiene las **5 props** bindeadas a su rol Typescale (no literales).  
+`Static/Title Large/Weight` → `Font theme / Static/Weight/Bold` (**SemiBold**), alineado a Compose `titleLarge`.
 
-## Entrega en repo
+## Brand page (excepción)
 
-- Variable fonts en `app/src/main/res/font/` (`fraunces.ttf`, `fraunces_italic.ttf`, `inter.ttf`).
-- Mapeo M3 en `Type.kt` (`FrauncesFamily` + `InterFamily` → `AppTypography`).
-- Logo / wordmark: ver [`brand.md`](brand.md) — Fraunces bundled también para W4 y MOT.
+Estilos `Brand/*` (wordmark, meta de lámina) viven solo para documentación de marca. **No** usar en UI de producto / design-file de pantallas.
+
+## Limpieza 2026-10-29
+
+- Borrados 15 estilos **Roboto** duplicados del kit M3.
+- Borrados `-emphasized` y `label/button-*`.
+- Renombrados paths con espacios (`M3 / body / large` → `M3/body/large`).
+- Nodos del DS rebindeados a Fraunces/Inter antes del delete.
+
+**Publicar** la librería Figma tras este cambio para que el design-file actualice estilos remotos.

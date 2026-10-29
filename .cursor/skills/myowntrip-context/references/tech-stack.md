@@ -1,5 +1,10 @@
 # MyOwnTrip — Stack Técnico
 
+## Repositorio SoT
+
+Este proyecto (**`MyOwnTrip_nativo`**) es la app y el design system nativo.  
+`../MyOwnTrip` = archivo legacy; no usarlo como SoT de Compose ni de features.
+
 ## Plataforma
 Android nativo · Kotlin · API mínima: 26 (Android 8)
 

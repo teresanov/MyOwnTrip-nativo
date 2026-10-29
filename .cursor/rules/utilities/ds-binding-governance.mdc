@@ -1,0 +1,36 @@
+---
+description: Gobernanza exhaustiva de bindings de tokens en el DS
+alwaysApply: true
+---
+
+# DS Binding Governance
+
+## Regla universal (Figma y Pencil)
+
+**Todo valor bindable debe quedar enlazado** antes de cerrar la tarea:
+
+| Herramienta | Enlazar con | Prohibido en contrato de componente |
+|-------------|-------------|-------------------------------------|
+| **Figma** | Variable local del DS **o** **text style** / effect style publicado | Hex/rgba sueltos, tamaños de fuente manuales, `Roboto` sin style |
+| **Pencil** | Variable del archivo (`$semantic.*`, `$typography.*`, `$radius.*`, `$spacing.*`) | Literales de color, px de tipografía, opacidad numérica suelta si existe token |
+
+Si la propiedad admite binding y **no** existe token/estilo → **gap del sistema**: crearlo (o importar desde Figma) y enlazar; no dejar el literal “temporal” sin reportar.
+
+## Proceso
+
+- En tareas de Design System, el binding de variables es un gate de salida, no una limpieza opcional.
+- Antes de editar, auditar el subarbol objetivo con `batch_get` en `resolveVariables=false` y `resolveVariables=true`.
+- Clasificar cada literal restante en una de tres categorias: `bindable con token existente`, `documental/estructural`, o `requiere token nuevo`.
+- Si el token ya existe en Pencil o Figma, debe enlazarse de forma exhaustiva antes de cerrar la tarea.
+- No extrapolar limpieza por similitud visual: cada `shape`, `size`, `state` y `selected` del alcance debe verificarse explicitamente.
+- No marcar una tarea como cerrada usando solo muestras o screenshots; la evidencia minima es auditoria completa del subarbol y comprobacion `false/true`.
+- Distinguir siempre `componente` frente a `contenedor de documentacion`; los literales de documentacion solo son aceptables si se reportan como tales.
+- Si falta un token en Pencil pero existe en Figma, sincronizar/importar primero; si no existe en ningun origen, reportarlo como gap del sistema.
+- El reporte final debe indicar o bien `0 bindables pendientes`, o bien el listado exacto de pendientes con su categoria.
+- En iconos de producto, verificar namespace `semantic/color/icon/*` y mapa label→icono en botones (ver **`.cursor/rules/utilities/icon-color-consumption.mdc`**).
+
+## Ejemplos
+
+- Incorrecto: `fill:"#3d63d1ff"` cuando existe `$semantic.color.interactive.toggle.selected.false.hovered`.
+- Correcto: `fill:"$semantic.color.interactive.toggle.selected.false.hovered"` y validacion en `resolveVariables=true`.
+- A clasificar, no asumir: `cornerRadius:5` en un frame de documentacion que no forma parte del contrato del componente.

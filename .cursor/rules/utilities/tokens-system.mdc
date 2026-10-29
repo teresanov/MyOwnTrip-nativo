@@ -1,0 +1,19 @@
+---
+description: "Reglas del sistema de tokens (semánticos, alias, modos)."
+alwaysApply: true
+---
+
+# Tokens system
+
+- Consumir **semánticos** en UI (Compose).
+- Semánticos en Figma deben ser **alias** de primitivas.
+- Mantener paridad Light/Dark.
+
+Fuentes:
+
+- `docs/design-system/ds-governance.md`
+- `docs/design-system/governance/source-of-truth-matrix.md`
+- `.cursor/rules/utilities/icon-color-consumption.mdc`
+- `docs/design-system/knowledge/semantic-consumption-policy.entry.json`
+
+Compose UX en runtime (motion, TalkBack, edge-to-edge): `policy/android-compose-ux.md` — no sustituye consumo de tokens.

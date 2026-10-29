@@ -17,6 +17,8 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 |-----|-----------|
 | [color.md](color.md) | Gris-azul, workflow Figma→repo, roles M3, state layers |
 | [shape.md](shape.md) | Corner tokens, botones 0→20 morph, binding Figma |
+| [spacing.md](spacing.md) | **`MOTSpacing`** / `MOT · Spacing` (producto); legado Semantic · Layout |
+| [figma-compose-bindings.md](figma-compose-bindings.md) | Mapa sets Figma ↔ Compose (P0) |
 | [typography.md](typography.md) | Fraunces + Inter, mapeo a roles M3 |
 | [iconography.md](iconography.md) | Material Symbols Sharp + iconos propios |
 | [components.md](components.md) | M3 puro vs wrappers `MyOwnTrip*` |

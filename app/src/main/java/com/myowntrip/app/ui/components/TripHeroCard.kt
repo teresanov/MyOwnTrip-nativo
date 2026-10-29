@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.features.trips.HomeTripPhase
 import com.myowntrip.app.ui.features.trips.homePhase
-import com.myowntrip.app.ui.theme.MOTCorner
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTonalButton
 import com.myowntrip.app.ui.theme.MyOwnTripPreviewTheme
@@ -73,8 +71,6 @@ fun TripHeroCard(
     tripName = trip.name,
     meta = meta,
   )
-  val portadaShape = RoundedCornerShape(MOTCorner.Medium)
-
   Column(
     modifier = modifier.fillMaxWidth(),
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
@@ -83,7 +79,7 @@ fun TripHeroCard(
       modifier = Modifier
         .fillMaxWidth()
         .height(TripHeroPortadaHeight),
-      shape = portadaShape,
+      shape = MaterialTheme.shapes.medium,
       color = MaterialTheme.colorScheme.surfaceContainerLow,
       shadowElevation = 1.dp,
     ) {

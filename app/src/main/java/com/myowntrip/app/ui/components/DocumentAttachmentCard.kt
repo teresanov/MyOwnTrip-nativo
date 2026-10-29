@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.myowntrip.app.platform.documents.DocumentKind
 import com.myowntrip.app.platform.documents.fileNameFromSource
@@ -45,6 +44,7 @@ fun DocumentAttachmentCard(
       .fillMaxWidth()
       .clickable(onClick = onOpen)
       .semantics { contentDescription = "Ver documento adjunto" },
+    shape = MaterialTheme.shapes.medium,
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
   ) {
     Column(modifier = Modifier.padding(MOTSpacing.layoutMd)) {
@@ -56,7 +56,7 @@ fun DocumentAttachmentCard(
             contentScale = ContentScale.Crop,
             modifier = Modifier
               .fillMaxWidth()
-              .height(180.dp),
+              .height(MOTSpacing.DocumentAttachment.previewHeight),
           )
         }
         else -> {

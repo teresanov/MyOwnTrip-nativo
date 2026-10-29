@@ -1,0 +1,93 @@
+---
+description: Consumo semántico de color en iconos (Figma, Pencil, Compose) — namespace icon/*, contexto y botones.
+alwaysApply: true
+---
+
+# Icon color consumption
+
+Aplica al bindear color en **iconos de producto** (`Slot_master`, glyphs, `MyOwnTripIcon`) en Figma, Pencil y handoff a Compose.
+
+Fuentes canónicas:
+
+- `docs/design-system/policy/iconography.md`
+- `.cursor/rules/utilities/ds-binding-governance.mdc`
+
+## Regla de namespace (obligatoria)
+
+- En el **nodo del icono** (vector dentro del slot), enlazar **solo** tokens `semantic/color/icon/*`.
+- **Prohibido** bindear `semantic/color/text/*` directamente en un icono, aunque el valor visual coincida.
+- La relación con texto vive en la **definición del token** (alias en la colección semántica), no en el consumo del componente.
+
+Ejemplo de alias válido en colección:
+
+- `icon/inverse` → alias de `text/inverse`
+- `icon/default` → alias de `text/primary`
+- `icon/disabled` → alias de `text/disabled`
+- `icon/secondary` → alias de `text/secondary`
+
+## Slot_master
+
+- `✳️ MyOwnTrip/Icon/Slot_master` **no fija color** en el master.
+- El color se resuelve en el **contexto de consumo** (variante del botón, fila de lista, etc.) sobre el vector `icon` del placeholder instanciado.
+- Tamaño: solo `semantic/size/icon/sm` o `semantic/size/icon/md` (16dp / 24dp según set).
+
+## Botones (`Button`, `Toggle Button`)
+
+Los botones **no usan** `text/secondary`, `text/tertiary` ni `icon/secondary`.
+
+El color del icono **sigue el contexto del label** de la misma variante, con este mapa fijo:
+
+| Contexto del label (texto) | Token del icono |
+|----------------------------|-----------------|
+| `text/primary` | `icon/default` |
+| `text/inverse` | `icon/inverse` |
+| `text/disabled` | `icon/disabled` |
+| Contenido sobre contenedor secondary/tonal (Light y Dark con tint claro) | `icon/on-secondary` |
+| Standard pressed sobre contenedor primary oscuro | `icon/on-primary-pressed` (Light→`text/on-primary`, Dark→`text/on-primary-pressed`) |
+
+Casos típicos:
+
+- **Filled / Elevated** (enabled, hover, focus, press) → label `inverse` · icono `inverse`
+- **Secondary / Tonal** (enabled, hover, focus, press) → label `on-secondary` (igual en Light/Dark para contenedor tint claro) → icono `on-secondary` (`icon/on-secondary`: alias de `text/on-secondary`)
+- **Outline / Text** (enabled) → label `primary` · icono `default`
+- **Text** (hover / pressed con fill) → label `inverse` · icono `inverse`
+- **Toggle** unselected → `primary` / `default`; **selected** → `inverse` / `inverse`
+- **Disabled** (todos) → `disabled` / `disabled`
+
+Misma regla para **leading** y **trailing**. Misma regla en sets **16dp** y **24dp**.
+
+## Fuera de botones — `icon/secondary`
+
+`icon/secondary` existe para iconos de **apoyo**, al mismo nivel jerárquico que `text/secondary`:
+
+- Metadatos en cards (fecha, ubicación, hint)
+- Iconos decorativos en filas de lista (no acción principal)
+- Empty states o copy secundario
+- Iconos junto a labels que ya consumen `text/secondary`
+
+**No usar** en botones, CTAs ni iconos que deban leerse con énfasis de contenido principal.
+
+No crear `icon/tertiary` hasta que exista un consumidor real documentado.
+
+## Do / Don't
+
+### Do
+
+- Auditar label e icono **por variante** (`shape`, `size`, `state`, `selected`).
+- Verificar paridad **Light / Dark** tras cambios de binding.
+- Mantener `Show leading icon` / `Show trailing icon` en botones; el color no sustituye la visibilidad.
+
+### Don't
+
+- Bindear `text/secondary` en un Outline “porque es pequeño”.
+- Copiar hex del label al icono sin token semántico.
+- Asumir que “Secondary” (estilo de botón) implica `text/secondary` o `icon/secondary`.
+- Dejar `icon/default` (negro) en variantes cuyo label es `text/inverse`.
+
+## Gate de salida
+
+Antes de cerrar una tarea con iconos:
+
+1. `0` nodos de icono con binding a `text/*`.
+2. Cada variante de botón cumple el mapa label → icono de la tabla.
+3. Evidencia en auditoría del subárbol (`resolveVariables=true`), no solo screenshot muestral.

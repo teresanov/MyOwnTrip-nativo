@@ -7,7 +7,7 @@
 | **Archivo** | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432) · `zrGAL4v6MEMc9hzZemU432` |
 | **Backup (CS, no tocar)** | `uWmxOSQfjOxlEJ8k1yzOSX` |
 | **Política** | Figma = librería visual · docs = showcase — [ADR 003](../decisions/003-figma-library-showcase-docs.md) |
-| **Última revisión** | 2026-06-11 |
+| **Última revisión** | 2026-10-29 · Fase D evidencia Compose — [audit](audits/figma-phase-d-prune-2026-10-29.md) |
 
 **Leyenda:** **KEEP** · **CUT** · **LATER** (v1.1 o cuando una pantalla lo pida)
 
@@ -70,7 +70,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | **Buttons** | filled, tonal, outline, text, **elevated** — **Square** only; Icon button (4) Round+Square; FAB; **Toggle** (4) Round+Square; Segmented Round+Square |
 | **Cards** | Stacked, Horizontal + BB states — **Outlined + Elevated**; layout **Media & text** |
 | **Checkboxes** | Completos |
-| **Chips** | Filter, Assist, Suggestion, Input — **Outlined** |
+| **Chips** | Filter, Assist — **Outlined** (Suggestion/Input → LATER tras D) |
 | **Date & time pickers** | Fecha B+ + hora móvil (Keyboard, Dial vertical) — reserva manual |
 | **Dialogs** | Basic dialog |
 | **Lists** | List item `Density 0` + BB |
@@ -90,22 +90,26 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 
 | Área | Sets |
 |------|------|
-| **Buttons** | FAB menu + BB; Segmented button + BB; Icon button togglable (4) — **no** button groups |
-| **Chips** | Chip groups |
+| **Buttons** | FAB menu + BB; Icon button togglable (4) — **no** button groups |
 | **Dialogs** | Scrollable list dialog |
-| **Lists** | Accordion, List item Swipe + BB |
-| **Sliders** | Standard, Centered, Range — Horizontal, XSmall–Large — **hecho** (CUT Vertical/XLarge) |
+| **Lists** | List item Swipe + BB |
 
-### v1.1 — LATER (no podar del CS hasta que haga falta; no publicar aún)
+### v1.1 — LATER (no podar del archivo hasta que una pantalla Compose lo pida)
 
-| Item | Motivo |
-|------|--------|
-| Search full-screen / docked layout | Búsqueda expandida |
-| Side sheet + BB | Panel lateral |
-| Navigation drawer (patrón M3 actual) | Sin cambio de arquitectura nav |
-| Carousel móvil (Hero, Multi-aspect…) | Solo JTBD **galería de fotos** — no viajes/POIs/explorar |
-| Rich tooltip | Sobre Plain |
-| Recordatorios push / alertas hora | Fuera de picker UI |
+| Item | Motivo | Evidencia D (2026-10-29) |
+|------|--------|--------------------------|
+| Search full-screen / docked layout | Búsqueda expandida | 0 Compose |
+| Side sheet + BB | Panel lateral | 0 Compose |
+| Navigation drawer (patrón M3 actual) | Sin cambio de arquitectura nav | 0 Compose |
+| Carousel móvil (Hero, Multi-aspect…) | Solo JTBD **galería de fotos**; scrapbook usa `HorizontalPager` ≠ set Carousel | 0 set M3 |
+| Segmented button + BB | Toggles Mapa/Lista/Día | **0** Compose → demovido de Should |
+| Chip groups · Suggestion · Input chip | Filtros densos / tags | **0** Compose (Filter+Assist sí) |
+| Sliders Standard/Centered/Range | Controles valor | **0** Compose |
+| Extended FAB | CTA extendido | **0** Compose (FAB circular sí) |
+| List item Accordion | Expandible | **0** Compose |
+| Badges | Contadores | **0** Compose |
+| Rich tooltip | Sobre Plain | 0 Compose |
+| Recordatorios push / alertas hora | Fuera de picker UI | — |
 
 ### CUT — páginas y sets enteros
 
@@ -160,7 +164,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 
 ### App bars · `55141:14169`
 - **KEEP:** Top App bar (12 variantes útiles)
-- **CUT:** XR (6) · Bottom app bar
+- **CUT:** XR (6) · Bottom app bar — **set ya ausente**; frame doc con nota (por qué no está) · Fase D 2026-10-29 · boceto → Toolbars
 
 ### Badges · `55141:14167` — **KEEP** (2)
 
@@ -236,8 +240,9 @@ MVP: sin pantalla galería cerrada → **no diseñar con estos sets**; backup CS
 ### Checkboxes · `55141:14173` — **KEEP**
 
 ### Chips · `55141:14174`
-- **KEEP:** Filter, Assist, Suggestion, Input, Chip groups — Outlined
-- **CUT:** Elevated
+- **KEEP:** Filter, Assist — **Outlined** only
+- **LATER:** Suggestion, Input, Chip groups (0 Compose · Fase D)
+- **CUT:** Elevated — **hecho Fase D** (Filter −48 · Assist −24 · Suggestion −24 var.)
 
 ### Date & time pickers · `55141:14175`
 - **Sección `MVP · Date pickers`:** Input Range + Single · Modal (Day, Full-screen range, Year) + BB calendario

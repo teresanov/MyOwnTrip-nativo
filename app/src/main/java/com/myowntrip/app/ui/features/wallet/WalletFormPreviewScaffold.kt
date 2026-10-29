@@ -23,6 +23,8 @@ import com.myowntrip.app.ui.theme.MOTSpacing
 internal fun WalletFormPreviewScaffold(
   title: String,
   modifier: Modifier = Modifier,
+  /** false cuando el contenido ya ancla CTAs (p. ej. WalletImportReviewStep). */
+  scrollable: Boolean = true,
   content: @Composable () -> Unit,
 ) {
   Scaffold(
@@ -38,20 +40,26 @@ internal fun WalletFormPreviewScaffold(
       )
     },
   ) { padding ->
-    Column(
-      modifier = Modifier
-        .padding(padding)
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
-        .padding(
-          start = MOTSpacing.screenHorizontal,
-          end = MOTSpacing.screenHorizontal,
-          top = MOTSpacing.screenHorizontal,
-          bottom = MOTSpacing.screenContentBottom,
-        ),
-      verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
-    ) {
-      content()
+    val base = Modifier
+      .padding(padding)
+      .fillMaxSize()
+      .padding(
+        start = MOTSpacing.screenHorizontal,
+        end = MOTSpacing.screenHorizontal,
+        top = MOTSpacing.screenHorizontal,
+        bottom = MOTSpacing.screenContentBottom,
+      )
+    if (scrollable) {
+      Column(
+        modifier = base.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
+      ) {
+        content()
+      }
+    } else {
+      Column(modifier = base) {
+        content()
+      }
     }
   }
 }

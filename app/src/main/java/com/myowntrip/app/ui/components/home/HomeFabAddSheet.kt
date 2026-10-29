@@ -66,6 +66,7 @@ fun HomeFabAddSheet(
   ModalBottomSheet(
     onDismissRequest = onDismiss,
     sheetState = sheetState,
+    shape = MaterialTheme.shapes.extraLarge,
   ) {
     Column(
       modifier = Modifier

@@ -1,0 +1,32 @@
+---
+description: "Al crear o documentar componentes canónicos del DS: consultar los clones opcionales en refs/ (Material + Compose) y reflejar decisiones en la documentación."
+globs:
+  - "app/src/main/**/ui/components/**/*.kt"
+  - "docs/design-system/components/**"
+  - "docs/design-system/templates/**"
+alwaysApply: false
+---
+
+# Referencias locales Material / Compose (`refs/`)
+
+## Cuándo aplica
+
+Al **crear o modificar** un componente canónico en Compose, al redactar o actualizar **documentación markdown** del componente (`docs/design-system/components/`), o al usar las **plantillas** de doc del DS (`docs/design-system/templates/`).
+
+## Qué debe hacer la IA (orden)
+
+1. **Comprobar** si existen las carpetas `refs/compose-m3-expressive-catalog` y `refs/material-components-android` (clones locales; ver `refs/README.md`).
+2. **Consultar primero** `refs/compose-m3-expressive-catalog`: patrones y APIs **Jetpack Compose / Material 3** cercanas al componente (nombre de pantalla, archivo o carpeta del catálogo).
+3. **Complementar** con `refs/material-components-android` (`lib/...` del componente homólogo) para **comportamiento**, **estados**, **accesibilidad** y expectativas de producto Material; **traducir** a Compose, no portar código View tal cual.
+4. Si **falta** algún clone: decirlo en la respuesta y apoyarse en el contrato del DS, `androidx.compose.material3` y la documentación oficial de Material 3.
+
+## Documentación (mismo criterio)
+
+- Seguir las plantillas: `docs/design-system/templates/figma-component-doc.template.md` y `docs/design-system/templates/notion-component-page.template.md`.
+- Donde aporte trazabilidad, indicar **qué se revisó** en `refs/` (repositorio y ruta o nombre de ejemplo), y **qué decisión** tomó el DS (paridad, excepción, token semántico).
+- La documentación en Figma sigue además `figma-ds-documentation.mdc` (tipografía, variables, variantes en inglés).
+
+## Límites
+
+- **No** enlazar `refs/` como módulo Gradle de la app; no copiar pegotes sin criterio ni sustituir **tokens semánticos** del proyecto por valores del catálogo de ejemplo.
+- La fuente de verdad del aspecto de MyOwnTrip sigue siendo **Figma + tema Compose**; `refs/` es **referencia y contraste**, no sustituto del DS.

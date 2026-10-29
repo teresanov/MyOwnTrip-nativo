@@ -33,7 +33,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Tab
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -69,6 +68,8 @@ import com.myowntrip.app.ui.features.wallet.WalletScreen
 import com.myowntrip.app.ui.features.wallet.previewWalletEntries
 import com.myowntrip.app.ui.features.wallet.previewWalletTrip
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTSpacing
+import com.myowntrip.app.ui.theme.MOTTab
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.util.Locale
 import kotlinx.coroutines.launch
@@ -172,19 +173,13 @@ fun TripDetailScreen(
     Column(modifier = Modifier.fillMaxSize()) {
       ScrollableTabRow(
         selectedTabIndex = tabIndex,
-        edgePadding = 0.dp,
+        edgePadding = MOTSpacing.none,
       ) {
         tripDetailTabs.forEachIndexed { index, title ->
-          Tab(
+          MOTTab(
             selected = tabIndex == index,
             onClick = { tabIndex = index },
-            text = {
-              Text(
-                text = title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-              )
-            },
+            label = title,
           )
         }
       }
@@ -527,19 +522,13 @@ fun TripDetailWalletTabPreview() {
       Column(modifier = Modifier.padding(padding).fillMaxSize()) {
         ScrollableTabRow(
           selectedTabIndex = 0,
-          edgePadding = 0.dp,
+          edgePadding = MOTSpacing.none,
         ) {
           tripDetailTabs.forEachIndexed { index, title ->
-            Tab(
+            MOTTab(
               selected = index == 0,
               onClick = {},
-              text = {
-                Text(
-                  text = title,
-                  maxLines = 1,
-                  overflow = TextOverflow.Ellipsis,
-                )
-              },
+              label = title,
             )
           }
         }

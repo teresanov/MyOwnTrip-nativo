@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -55,7 +54,6 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 private val Spanish = Locale("es", "ES")
-private val YearItemShape = RoundedCornerShape(12.dp)
 private val DayShape = CircleShape
 
 private enum class MotDatePickerStep {
@@ -346,8 +344,8 @@ private fun MotDayPickerGrid(
       modifier = Modifier
         .fillMaxWidth()
         .heightIn(min = 220.dp, max = 280.dp),
-      horizontalArrangement = Arrangement.spacedBy(2.dp),
-      verticalArrangement = Arrangement.spacedBy(2.dp),
+      horizontalArrangement = Arrangement.spacedBy(MOTSpacing.DatePicker.dayGridGap),
+      verticalArrangement = Arrangement.spacedBy(MOTSpacing.DatePicker.dayGridGap),
     ) {
       items(cells.size) { index ->
         val day = cells[index]
@@ -431,7 +429,7 @@ private fun MotPickerCell(
   emphasized: Boolean = false,
 ) {
   val scheme = MaterialTheme.colorScheme
-  val shape = YearItemShape
+  val shape = MaterialTheme.shapes.medium
   val background = when {
     selected -> selectedContainerColor
     emphasized -> scheme.surfaceContainerHigh
@@ -461,7 +459,7 @@ private fun MotPickerCell(
   ) {
     Box(contentAlignment = Alignment.Center) {
       Row(
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
         verticalAlignment = Alignment.CenterVertically,
       ) {
         if (selected) {

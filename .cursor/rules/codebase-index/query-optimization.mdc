@@ -1,0 +1,17 @@
+---
+description: "Reglas para reducir exploración y aumentar determinismo usando índices."
+alwaysApply: false
+---
+
+# DS Codebase Index - Query optimization
+
+Si existe un índice, úsalo primero:
+
+- Para inventario: `docs/design-system/index/components.index.json`
+- Para gates y drift: `docs/design-system/index/reports/audits/*.ds-audit.json`
+- Para conocimiento: `docs/design-system/knowledge/manifest.json`
+
+Si falta información:
+
+- marca el campo como pendiente (no inventar),
+- y crea una entry de knowledge o un ticket de auditoría.

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,15 +16,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import java.time.LocalDate
 import java.time.YearMonth
-
-private val MotPickerShape = RoundedCornerShape(28.dp)
 
 /**
  * Selector de rango con calendario acotado (flechas mes a mes, sin scroll infinito).
@@ -60,7 +56,7 @@ fun MotDateRangePickerDialog(
     properties = DialogProperties(usePlatformDefaultWidth = false),
   ) {
     Surface(
-      shape = MotPickerShape,
+      shape = MaterialTheme.shapes.extraLarge,
       color = MaterialTheme.colorScheme.surfaceContainerHigh,
       modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
     ) {
@@ -133,7 +129,7 @@ fun MotDatePickerDialog(
     properties = DialogProperties(usePlatformDefaultWidth = false),
   ) {
     Surface(
-      shape = MotPickerShape,
+      shape = MaterialTheme.shapes.extraLarge,
       color = MaterialTheme.colorScheme.surfaceContainerHigh,
       modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
     ) {

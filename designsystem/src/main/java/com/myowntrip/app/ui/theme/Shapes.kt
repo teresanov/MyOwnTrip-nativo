@@ -19,27 +19,42 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/** Corner tokens alineados a Figma `M3` · Shape (ADR 004). */
-object MOTCorner {
-  val None = 0.dp
-  val Small = 8.dp
-  val Medium = 12.dp
-  val ButtonActive = 20.dp
-}
-
-/** Shapes de superficie — no aplicar a botones (usar [rememberMOTButtonShape]). */
+/**
+ * SoT de shape de superficie: roles M3 ([Shapes]) ↔ Figma colección Shape (`Corner/…`).
+ *
+ * Consumo en UI: `MaterialTheme.shapes.extraSmall|small|medium|large|extraLarge`.
+ * No hay un segundo objeto semántico paralelo (`MOTCorner`).
+ *
+ * | M3 / Compose | Figma | dp |
+ * |--------------|-------|---:|
+ * | `shapes.extraSmall` | `Corner/Extra-small` | 4 |
+ * | `shapes.small` | `Corner/Small` | 8 |
+ * | `shapes.medium` | `Corner/Medium` | 12 |
+ * | `shapes.large` | `Corner/Large` | 16 |
+ * | `shapes.extraLarge` | `Corner/Extra-large` | 28 |
+ *
+ * Botones: [rememberMOTButtonShape] (ADR 004) — fuera de la escala `shapes.*`.
+ */
 val MOTThemeShapes = Shapes(
-  extraSmall = RoundedCornerShape(MOTCorner.Small),
-  small = RoundedCornerShape(MOTCorner.Small),
-  medium = RoundedCornerShape(MOTCorner.Medium),
-  large = RoundedCornerShape(MOTCorner.Medium),
-  extraLarge = RoundedCornerShape(MOTCorner.ButtonActive),
+  extraSmall = RoundedCornerShape(4.dp),
+  small = RoundedCornerShape(8.dp),
+  medium = RoundedCornerShape(12.dp),
+  large = RoundedCornerShape(16.dp),
+  extraLarge = RoundedCornerShape(28.dp),
 )
+
+/** Radios del morph de botón (ADR 004). No forman parte de [MOTThemeShapes]. */
+private object MotButtonCornerDp {
+  val Rest = 0.dp
+  val Active = 20.dp
+}
 
 /**
  * Morph 0dp → 20dp en hover, focus y pressed — asimétrico (ADR 004 rev. squish + muelle):
  * entrada rápida (el botón reacciona al dedo) y liberación con muelle que rebasa y asienta.
  * Para selected en toggles, pasar [forceActive] = true.
+ *
+ * Figma: `Corner/None` ↔ `Corner/Large-increased`.
  */
 @Composable
 fun rememberMOTButtonShape(
@@ -53,7 +68,7 @@ fun rememberMOTButtonShape(
   val reduceMotion = LocalReduceMotion.current
 
   val corner by animateDpAsState(
-    targetValue = if (interactive) MOTCorner.ButtonActive else MOTCorner.None,
+    targetValue = if (interactive) MotButtonCornerDp.Active else MotButtonCornerDp.Rest,
     animationSpec = when {
       reduceMotion -> snap()
       interactive -> AppMotion.pressInSpec()

@@ -1,0 +1,17 @@
+---
+description: "Reglas para regenerar índices y reportes tras cambios DS."
+alwaysApply: false
+---
+
+# DS Codebase Index - Regeneration
+
+Tras cualquier cambio en componentes canónicos o tema:
+
+- Regenerar (o actualizar) `docs/design-system/index/components.index.json`.
+- Generar un reporte de auditoría si cambia algún gate, token consumido o composición.
+
+Los reportes deben ser:
+
+- compactos,
+- accionables,
+- con evidencia y referencias (knowledge, Material, WCAG).

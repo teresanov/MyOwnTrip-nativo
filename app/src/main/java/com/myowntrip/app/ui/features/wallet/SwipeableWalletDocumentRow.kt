@@ -13,7 +13,6 @@ import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
@@ -33,6 +32,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.domain.plan.WalletPlanPlacementInfo
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 
@@ -97,7 +97,7 @@ fun SwipeableWalletDocumentRow(
             modifier = Modifier
               .fillMaxSize()
               .background(MaterialTheme.colorScheme.secondaryContainer)
-              .padding(horizontal = MOTSpacing.layoutMd),
+              .padding(horizontal = MOTSpacing.ListItem.horizontal),
             contentAlignment = Alignment.CenterStart,
           ) {
             Icon(
@@ -112,7 +112,7 @@ fun SwipeableWalletDocumentRow(
             modifier = Modifier
               .fillMaxSize()
               .background(MaterialTheme.colorScheme.errorContainer)
-              .padding(horizontal = MOTSpacing.layoutMd),
+              .padding(horizontal = MOTSpacing.ListItem.horizontal),
             contentAlignment = Alignment.CenterEnd,
           ) {
             Icon(
@@ -185,9 +185,6 @@ fun SwipeableWalletDocumentRow(
     },
   )
   if (showDivider) {
-    HorizontalDivider(
-      modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-      color = MaterialTheme.colorScheme.outlineVariant,
-    )
+    MOTHorizontalDivider(inset = true)
   }
 }

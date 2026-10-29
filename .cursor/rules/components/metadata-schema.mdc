@@ -1,0 +1,38 @@
+---
+description: "Regla: todo componente canónico debe tener metadata/index para agentes."
+alwaysApply: false
+---
+
+# Componentes - Metadata schema
+
+Todo componente canónico debe estar representado en:
+
+- `docs/design-system/index/components.index.json`
+
+Y debe declarar:
+
+- metadata `core` agnóstica (props, variants, states, slots, composición, a11y, quality gates),
+- **`kind`**, **`family`**, **`showcaseGroup`** (y opcional **`showcaseOrder`**) para índice y showcase,
+- política de tokens (semantic-only en UI productiva),
+- `targets` opcionales por plataforma (por ejemplo `compose`, `react`, `pencil`),
+- orden de consumo (`consumptionOrder`) para definir prioridad entre targets,
+- reglas de composición (si es complejo).
+
+## Contrato recomendado (agnóstico)
+
+Usar un contrato que permita activar o desactivar consumidores sin romper el índice:
+
+- `metadata.core` (obligatorio)
+- `metadata.targets.compose` (opcional)
+- `metadata.targets.react` (opcional)
+- `metadata.targets.pencil` (opcional)
+- `metadata.consumptionOrder` (opcional; ejemplo: `["compose", "react"]`)
+
+Regla de compatibilidad:
+
+- Si un target no se usa, no se declara.
+- Ningún target debe contener datos críticos que no estén también en `core`.
+- Compose/React deben poder funcionar solo con `core` + su target específico.
+- **Pencil** (`DS.pen`) es la herramienta de iteración **Pencil-first** en el pipeline de componentes (`governance/design-pipeline.md`); el target `metadata.targets.pencil` en el índice es opcional pero recomendado al cerrar diseño.
+
+Al crear o documentar el componente, contrastar con **`refs/`** según **`.cursor/rules/components/material-reference-refs.mdc`**.

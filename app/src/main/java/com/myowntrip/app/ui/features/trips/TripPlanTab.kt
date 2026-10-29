@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +23,7 @@ import com.myowntrip.app.domain.plan.PlanPlacementLogic
 import com.myowntrip.app.domain.wallet.WalletDocumentParser
 import com.myowntrip.app.ui.features.plan.PlanActivityCard
 import com.myowntrip.app.ui.features.wallet.entryTypeLabel
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -174,7 +174,7 @@ private fun PlanDaySection(
         ) {
           blocks.forEachIndexed { index, block ->
             if (index > 0) {
-              HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+              MOTHorizontalDivider()
             }
             val linked = block.walletEntryId?.let { id -> walletEntries.find { it.id == id } }
             PlanActivityCard(
@@ -225,7 +225,7 @@ private fun UnplacedWalletSection(
         color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
       entries.forEach { entry ->
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+        MOTHorizontalDivider()
         Column(modifier = Modifier.padding(vertical = MOTSpacing.componentXs)) {
           Text(entry.title, style = MaterialTheme.typography.bodyMedium)
           Text(

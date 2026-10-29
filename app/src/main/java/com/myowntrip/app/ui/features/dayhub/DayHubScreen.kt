@@ -15,7 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -44,6 +43,7 @@ import com.myowntrip.app.ui.features.plan.DayPlanSchedule
 import com.myowntrip.app.ui.features.plan.MoveBlockDayDialog
 import com.myowntrip.app.ui.features.plan.UpdateDocumentPlanSheet
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTTab
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -128,10 +128,10 @@ fun DayHubScreen(
       Column(modifier = Modifier.fillMaxSize()) {
         TabRow(selectedTabIndex = tabIndex) {
           tabs.forEachIndexed { index, title ->
-            Tab(
+            MOTTab(
               selected = tabIndex == index,
               onClick = { tabIndex = index },
-              text = { Text(title) },
+              label = title,
             )
           }
         }

@@ -1,0 +1,60 @@
+---
+description: Portero Figma — realidad Compose/capturas; solo instancias DS; cero invención
+alwaysApply: true
+---
+
+# Figma — realidad primero (portero)
+
+Norma no negociable para cualquier UI en Figma (design-file, flows, caps).
+
+## Principio
+
+**Si te lo inventas, no es la realidad.**
+
+La fuente de verdad es, en este orden:
+
+1. **Compose en este repo** (`MyOwnTrip_nativo`: composables, previews, strings, tipografía, iconos).
+2. **Capturas reales** del dispositivo/emulador cuando existan.
+3. **DS / Android UI / M3** solo para *materializar* lo que Compose ya hace — nunca para sustituirlo por un control “parecido”.
+
+Prohibido: Segmented porque “queda bien”, Outlined TextField si Compose usa `BasicTextField`, labels/formas/CTAs que no estén en código, iconos genéricos (`stars`) si Compose pide `edit`/`keyboard`/`photo_camera` / o si Compose no lleva leading icon.
+
+Si no has leído el composable del flujo → **no construyas la pantalla**.
+
+## Instancias (cómo se construye)
+
+1. **Prohibido** frames/rects/texto sueltos que imiten controles.
+2. **Obligatorio** instancias del DS MyOwnTrip y/o Android UI / M3 enlazado.
+3. Si falta un patrón complejo → crearlo en el **DS** con átomos anidados → publicar → instanciar en design-file.
+4. Frames = solo layout (phone shell, auto-layout, doc). Nunca producto interactivo.
+
+## Orden de trabajo
+
+```text
+1) Abrir composable(s) + preview del flujo; listar controles reales línea a línea
+2) Contrastar con capturas si hay
+3) Matriz: control Compose → componente Figma (o gap DS)
+4) ¿Existe set? → instancia. ¿No? → crear en DS con átomos → publicar → instancia
+5) Screenshot + diff mental vs captura/Compose antes de cerrar
+```
+
+## Gate de salida
+
+1. Cada control visible trazable a una línea Compose (o gap DS explícito).
+2. `0` controles inventados / “aproximados” M3 genéricos.
+3. Todo control = `INSTANCE` (o hijo de instancia); sets complejos en el **DS**.
+4. Tipografía/iconos/copy = los del SoT (Fraunces/Inter, iconos nombrados, strings exactos).
+5. Bindings: `ds-binding-governance.mdc` + `icon-color-consumption.mdc`.
+
+## Don't
+
+- Inventar UI “de catálogo M3” sin mirar Compose.
+- Redibujar botones/chips/sheets con frames.
+- Dejar el set “para luego” y fingir la pantalla con frames.
+- Cerrar con “casi igual” si copy, control o tipo tipográfico no coinciden.
+
+## Relación
+
+- Pipeline: `docs/design-system/governance/design-pipeline.md`
+- Doc visual: `.cursor/rules/figma-ds-documentation.mdc`
+- Composición: `.cursor/rules/components/composition.mdc`

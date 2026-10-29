@@ -1,0 +1,12 @@
+---
+description: "Regla: verificación de metadata contra código y knowledge."
+alwaysApply: false
+---
+
+# Componentes - Metadata verification
+
+Antes de cerrar un cambio en un componente canónico:
+
+- Verificar que el índice refleja el código real (params/variants).
+- Verificar que gates se cumplan o queden reportados.
+- Verificar que knowledge contiene las referencias de Material/WCAG cuando aplica.

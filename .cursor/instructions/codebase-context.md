@@ -3,8 +3,10 @@
 ## Qué es
 App Android offline-first · libreta de viaje digital · **viajero urbano organizado**, estética editorial (papel cálido, tipografía protagonista).
 
-## Repo archivo DS
-El design system custom (Pencil, Figma viejo, ARC) está en **`../MyOwnTrip`**. No actualizar ni importar desde allí salvo consulta humana puntual.
+## SoT (este repo)
+**`MyOwnTrip_nativo`** = app + Compose + librería Figma nativa + docs/audits de paridad + **rules/skills de agente**.
+
+`../MyOwnTrip` = archivo legacy (Pencil / ARC custom). Solo consulta humana puntual; no contrastar pantallas ni componentes de producto allí.
 
 ## Stack
 - Compose + Material 3 nativo (Fraunces + Inter, MTB editorial)
@@ -14,12 +16,11 @@ El design system custom (Pencil, Figma viejo, ARC) está en **`../MyOwnTrip`**. 
 ## Design System
 - **Variables canónicas:** `docs/design-system/variables.json` (colección M3 · Light/Dark)
 - Índice: `docs/design-system/README.md`
-- Figma = librería · Showcase = docs componentes — ADR `003-figma-library-showcase-docs.md`
+- Figma librería: `zrGAL4v6` · design-file: `Vf2tNMXyKAlJSV53A1v4Is`
 - Showcase: `docs/design-system/showcase.md`
-- ADR marca: `docs/decisions/002-brand-editorial-m3.md`
-- Color: `docs/design-system/color.md` · Kotlin: `ui/theme/Color.kt`
-- Governance / quality gates: `docs/design-system/governance.md`
-- **Auditoría DS:** skill `.cursor/skills/myowntrip-ds-audit/` (M3 nativo; sin Pencil ni semánticos del repo archivo)
+- Color: `docs/design-system/color.md` · Spacing: `docs/design-system/spacing.md`
+- Audits paridad: `docs/design-system/audits/`
+- Skills DS: `myowntrip-ds-audit/`, `ds-index/`, `ds-audit/`, `ds-semantic-pipeline/`
 
 ## Documentación producto
 - JTBD: `docs/product/jtbd-flows.md`
@@ -27,15 +28,19 @@ El design system custom (Pencil, Figma viejo, ARC) está en **`../MyOwnTrip`**. 
 - Notion: [Proyecto](https://www.notion.so/3796a48d93c8819486cfe3a7fd3f624e) · [Design System](https://www.notion.so/3796a48d93c88168b7dcf9d7e81f9bfa)
 - Skills: `.cursor/skills/myowntrip-context/`, `myowntrip-ux-notion/`
 
-## Reglas
+## Reglas (agente)
 - `.cursor/rules/m3-native-ui.mdc` (always apply)
+- `.cursor/rules/figma-instances-only.mdc` (always apply — Compose SoT = este repo)
+- `.cursor/rules/figma-app-flows.mdc`
 - `.cursor/rules/myowntrip-development.mdc`
 - `.cursor/rules/android-compose-ux.mdc`
+- `.cursor/rules/utilities/*` (tokens, bindings, icon color)
+- `.cursor/rules/components/*` (composición, metadata)
 
 ## Código
 - `app/src/main/java/com/myowntrip/app/`
 - Features: `ui/features/{trips,wallet,expenses,journal}/`
-- Tema: `ui/theme/{Color,Type,Theme}.kt`
+- Tema / MOT*: `designsystem/` + `ui/theme/`
 
 ## MVP actual (v0.1.0)
 - JTBD 1: viajes + Wallet (manual + share target + confirmación H7)

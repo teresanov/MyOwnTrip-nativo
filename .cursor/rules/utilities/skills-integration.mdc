@@ -1,0 +1,17 @@
+---
+description: "Cómo se integran skills y reglas en ARC para el DS."
+alwaysApply: false
+---
+
+# Skills integration
+
+Flujo recomendado:
+
+1. `ds-index`: actualiza índice y relaciones.
+2. `ds-audit`: genera reporte con violaciones y referencias.
+3. `ds-semantic-pipeline`: sincroniza/valida Figma -> Compose (tokens).
+4. `ds-component-parser` / `ds-figma-sync`: cuando toque empujar componentes a Figma.
+
+Regla:
+
+Si existe reporte, **arreglar primero lo reportado** antes de añadir nueva complejidad.

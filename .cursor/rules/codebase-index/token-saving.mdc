@@ -1,0 +1,10 @@
+---
+description: "Reglas para ahorrar tokens en flujos ARC."
+alwaysApply: false
+---
+
+# DS Codebase Index - Token saving
+
+- Evitar exploración repetida: leer primero índices y knowledge.
+- Responder con deltas: qué cambió, qué gate falla, qué fix proponer.
+- Si el usuario pide auditoría, limitar scope por componente o ruta.
