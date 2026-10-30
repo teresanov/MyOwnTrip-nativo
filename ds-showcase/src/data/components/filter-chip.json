@@ -1,0 +1,67 @@
+{
+  "id": "filter-chip",
+  "name": "Filter chip",
+  "status": "ready",
+  "priority": "P0",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28270",
+  "purpose": "Los filter chips permiten elegir una opción dentro de un conjunto pequeño y cambiarla con un solo toque. En MyOwnTrip los usamos en filas horizontales con scroll —por ejemplo, Activos / Archivados / Todos en Wallet— y en formularios cuando hay pocas categorías. Implementamos el componente Material 3 `FilterChip` sin wrapper propio; en Home el filtro de viajes sigue el patrón Menu, no chips.",
+  "anatomy": [
+    "Container — Outlined pill, `Corner/Small` (8dp) ↔ `MaterialTheme.shapes.small`",
+    "Label — Inter `labelLarge`",
+    "Leading icon — opcional en set; Wallet caps = Label only",
+    "Selected — fill `secondaryContainer` + check; unselected — outline"
+  ],
+  "variants": [
+    {
+      "id": "outlined-unselected",
+      "label": "Outlined · Selected=False",
+      "usage": "Opciones no activas en la fila (p. ej. «Archivados»)."
+    },
+    {
+      "id": "outlined-selected",
+      "label": "Outlined · Selected=True",
+      "usage": "Filtro activo (p. ej. «Activos» en Wallet)."
+    }
+  ],
+  "properties": [
+    { "name": "Style", "type": "VARIANT", "example": "Outlined (Elevated CUT Fase D)" },
+    { "name": "Selected", "type": "VARIANT", "example": "True | False" },
+    { "name": "Label", "type": "TEXT", "example": "Activos" }
+  ],
+  "tokens": [
+    "secondaryContainer / onSecondaryContainer (selected)",
+    "outline / onSurface (unselected)",
+    "Corner/Small (8dp)",
+    "mot/padding/chip/horizontal-sm (8) · horizontal-lg (16)",
+    "mot/padding/chip/vertical (6)",
+    "mot/spacing/chip/gap (8) — gap entre chips en fila",
+    "MOTSpacing.componentSm — gap entre chips en Compose (Wallet)"
+  ],
+  "dos": [
+    "Agrupa los chips en una fila con scroll horizontal y separación `MOTSpacing.componentSm` entre elementos.",
+    "Mantén una sola opción seleccionada por eje de filtro (como Activos / Archivados / Todos).",
+    "Usa copy corto y claro en español; en Figma ajusta la propiedad Label de la instancia, no texto suelto encima.",
+    "Reserva AssistChip para los pocos flujos que ya lo tienen; no lo uses donde corresponde Eyebrow label."
+  ],
+  "donts": [
+    "No reintroduzcas la variante Elevated del set (fue eliminada en la Fase D de la librería).",
+    "No uses esquinas Extra-small en chips: ese radio pertenece al Text field.",
+    "No dibujes chips con frames sueltos en el design-file; instancia siempre el set publicado.",
+    "No sustituyas el menú de filtro de Home por FilterChip: el patrón acordado es Menu."
+  ],
+  "a11y": [
+    "Cada chip: rol toggleable; anunciar selected/unselected.",
+    "Alternativa sin scroll horizontal forzado: mismo filtro accesible vía Menu donde aplique.",
+    "Touch target ≥ 48dp vía padding M3."
+  ],
+  "compose": "Row(\n    modifier = Modifier.horizontalScroll(rememberScrollState()),\n    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),\n) {\n    FilterChip(\n        selected = filterPhase == WalletDocumentFilterPhase.Active,\n        onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Active) },\n        label = { Text(\"Activos\") },\n    )\n    // Archivados, Todos…\n}",
+  "productExamples": [
+    { "screen": "WalletScreen", "pattern": "WalletDocumentFilterChips — Activos / Archivados / Todos" },
+    { "screen": "ExpenseFormScreen", "pattern": "Categoría y método de pago" },
+    { "screen": "JournalAddScreen", "pattern": "Tipo de entrada" }
+  ],
+  "changelog": [
+    { "date": "2026-10-29", "note": "Fase B.3: Corner/Small + mot/padding/chip/*; Wallet 6 instancias; 0 LEGACY." },
+    { "date": "2026-10-30", "note": "Ficha showcase: playgrounds interactivos + copy legible (estilo Material)." }
+  ]
+}

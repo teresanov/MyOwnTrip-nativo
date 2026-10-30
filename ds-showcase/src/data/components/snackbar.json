@@ -1,0 +1,65 @@
+{
+  "id": "snackbar",
+  "name": "Snackbar",
+  "status": "ready",
+  "priority": "P0",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53977-33575",
+  "purpose": "Las snackbars confirman que una acción se completó o ofrecen una vía rápida para deshacerla, sin sacar al usuario de la pantalla. Aparecen en Day Hub, Diario, Gastos y Documentos cuando guardamos o revertimos cambios menores. En Compose van dentro de un `SnackbarHost` en el `Scaffold`, usando el componente `Snackbar` de Material 3.",
+  "anatomy": [
+    "Container — Inverse surface, `Corner/Extra-small` (4dp)",
+    "Message — `bodyMedium`, inverse on surface",
+    "Action — `labelLarge`, inverse primary (opcional)",
+    "Close — icon button inverse (variantes con Show close=True)"
+  ],
+  "variants": [
+    {
+      "id": "text-only",
+      "label": "Text only",
+      "usage": "Ack simple sin acción."
+    },
+    {
+      "id": "text-action",
+      "label": "Text + action",
+      "usage": "Deshacer o reintentar."
+    },
+    {
+      "id": "two-lines",
+      "label": "Two lines",
+      "usage": "Mensaje largo; gap `mot/spacing/snackbar/gap` (12)."
+    }
+  ],
+  "properties": [
+    { "name": "Show close", "type": "VARIANT", "example": "True | False" },
+    { "name": "Lines", "type": "VARIANT", "example": "One | Two" },
+    { "name": "Message", "type": "TEXT", "example": "Gasto guardado" },
+    { "name": "Action label", "type": "TEXT", "example": "Deshacer" }
+  ],
+  "tokens": [
+    "inverseSurface / inverseOnSurface / inversePrimary",
+    "Corner/Extra-small (4dp)",
+    "mot/padding/snackbar/horizontal (16)",
+    "mot/padding/snackbar/vertical (12)",
+    "mot/spacing/snackbar/gap (12)",
+    "mot/spacing/snackbar/gap-sm · gap-xs"
+  ],
+  "dos": [
+    "Un snackbar a la vez; duración corta M3.",
+    "Acción opcional con verbo claro (Deshacer, Ver).",
+    "Mismo inverse scheme Light/Dark vía colorScheme."
+  ],
+  "donts": [
+    "No usar snackbar para errores críticos — preferir dialog o inline error con icono.",
+    "No sustituir confirmaciones H7 Wallet.",
+    "No tokens snackbar/hover."
+  ],
+  "a11y": [
+    "`SnackbarHostState` anuncia mensaje; acción focusable.",
+    "No depender solo del color inverse para significado.",
+    "Alternativa por tap si el gesto de dismiss no es obvio."
+  ],
+  "compose": "val snackbarHostState = remember { SnackbarHostState() }\n// …\nScaffold(\n    snackbarHost = { SnackbarHost(snackbarHostState) },\n) { /* … */ }\n// scope.launch { snackbarHostState.showSnackbar(\"Gasto guardado\") }",
+  "changelog": [
+    { "date": "2026-10-29", "note": "Fase B.3: Inverse + Extra-small + mot/padding|spacing/snackbar/*; gap longer-action fix." },
+    { "date": "2026-10-30", "note": "Playground con acción Deshacer y auto-ocultado." }
+  ]
+}

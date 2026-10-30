@@ -6,6 +6,9 @@ on:
     paths:
       - "ds-showcase/**"
       - ".github/workflows/deploy-showcase.yml"
+  pull_request:
+    paths:
+      - "ds-showcase/**"
   workflow_dispatch:
 
 permissions:
@@ -31,6 +34,7 @@ jobs:
           npm ci
           npm run build
       - name: Deploy to gh-pages
+        if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

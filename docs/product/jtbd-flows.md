@@ -10,6 +10,8 @@ Documento de trabajo para implementación: **happy path**, **edge cases** y **cr
 
 **One-pager visual:** [MyOwnTrip · JTBD Presentation](https://www.figma.com/board/FgYSO9p8dZfKIjcRnJ8nKZ/MyOwnTrip-%C2%B7-JTBD-Presentation?node-id=0-1) (FigJam).
 
+**Mapa de la app (rutas ↔ design-file):** [MyOwnTrip_structure](https://www.figma.com/board/YxJIkp5I524S9wLxGxulK1/MyOwnTrip_structure?node-id=0-1) (FigJam).
+
 **Diagramas en Figma (mismo contenido, vista de flujo):** [08 · JTBD — Flujos](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=89-2) en *MyOwnTrip · Project Definition*.
 
 ---

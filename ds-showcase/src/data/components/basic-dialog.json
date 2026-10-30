@@ -1,0 +1,73 @@
+{
+  "id": "basic-dialog",
+  "name": "Basic dialog",
+  "status": "ready",
+  "priority": "P0",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=50723-10929",
+  "purpose": "Los diálogos básicos interrumpen la tarea para pedir confirmación o advertir de una pérdida de datos. Los usamos al guardar documentos en Wallet (hipótesis H7), al eliminar entradas, al descartar cambios o al salir de un formulario sin guardar. En Compose combinamos `AlertDialog` de Material 3 con `MOTTextButton` en las acciones.",
+  "anatomy": [
+    "Scrim — overlay semitransparente (layout design-file, no componente suelto inventado)",
+    "Container — `Corner/Extra-large` (28dp) ↔ `MaterialTheme.shapes.extraLarge`",
+    "Icon — opcional (`Icon=True`); error tint en eliminar/descartar",
+    "Headline — Fraunces/Inter headline small",
+    "Supporting text — body medium",
+    "Actions — fila `MOTTextButton` (Cancelar / confirmar); destructivo en `error`"
+  ],
+  "variants": [
+    {
+      "id": "icon-false",
+      "label": "Icon=False",
+      "usage": "Confirmación neutra — cap 7 Wallet «Confirmar guardado» (Figma resume copy; Compose puede incluir Switch plan)."
+    },
+    {
+      "id": "icon-true",
+      "label": "Icon=True",
+      "usage": "Riesgo o pérdida — caps 11 eliminar, 12 descartar (glyph error)."
+    }
+  ],
+  "properties": [
+    { "name": "Icon", "type": "VARIANT", "example": "True | False" },
+    { "name": "Headline", "type": "TEXT", "example": "¿Eliminar documento?" },
+    { "name": "Supporting text", "type": "TEXT", "example": "Esta acción no se puede deshacer." },
+    { "name": "Dismiss label", "type": "TEXT", "example": "Cancelar" },
+    { "name": "Confirm label", "type": "TEXT", "example": "Eliminar" }
+  ],
+  "tokens": [
+    "surfaceContainerHigh",
+    "onSurface / onSurfaceVariant",
+    "error (icon + confirm destructivo)",
+    "Corner/Extra-large (28dp)",
+    "mot/padding/dialog/container (24)",
+    "mot/spacing/dialog/title-body-gap (12)",
+    "mot/spacing/dialog/section-gap (16)",
+    "mot/spacing/dialog/actions-gap (8)"
+  ],
+  "dos": [
+    "Instancia `Basic dialog` en design-file; properties TEXT del set.",
+    "Icono + texto en errores; confirm destructivo con color `error` en label.",
+    "Wallet caps 7/11/12 alineados a `WalletConfirmDialog` / `WalletDeleteEntryDialog` / `WalletDiscardDialog`.",
+    "`BackHandler` + diálogo descartable solo con cambios sin guardar."
+  ],
+  "donts": [
+    "No BODY con TEXT suelto encima del dialog en Figma.",
+    "No mezclar `Corner/Medium` de cards — dialog = Extra-large.",
+    "No añadir Switch suelto en cap Figma si no existe en la variante del set.",
+    "No bloquear dismiss sin copy claro (Seguir editando / Cancelar)."
+  ],
+  "a11y": [
+    "Foco atrapado en dialog; dismiss con back donde aplique.",
+    "Headline leído antes que supporting text.",
+    "Botón destructivo anunciado con consecuencia en supporting text.",
+    "Icon decorativo: `contentDescription = null` si el título ya comunica el riesgo."
+  ],
+  "compose": "AlertDialog(\n    onDismissRequest = onDismiss,\n    icon = {\n        Icon(Icons.Default.Error, contentDescription = null,\n            tint = MaterialTheme.colorScheme.error)\n    },\n    title = { Text(\"¿Eliminar documento?\") },\n    text = { Text(\"Se borrará «$entryTitle»…\") },\n    confirmButton = {\n        MOTTextButton(onClick = onConfirmDelete) {\n            Text(\"Eliminar\", color = MaterialTheme.colorScheme.error)\n        }\n    },\n    dismissButton = {\n        MOTTextButton(onClick = onDismiss) { Text(\"Cancelar\") }\n    },\n)",
+  "walletCaps": [
+    { "cap": "7 · confirmar", "figma": "492:3332", "icon": false, "ctas": "Cancelar / Guardar" },
+    { "cap": "11 · eliminar", "figma": "492:3372", "icon": true, "ctas": "Cancelar / Eliminar" },
+    { "cap": "12 · descartar", "figma": "492:3414", "icon": true, "ctas": "Seguir editando / Descartar" }
+  ],
+  "changelog": [
+    { "date": "2026-10-29", "note": "Fase B.3: Extra-large + mot/padding|spacing/dialog/*; Wallet caps instanciados." },
+    { "date": "2026-10-30", "note": "Playground modal con Escape y scrim; copy ampliado." }
+  ]
+}

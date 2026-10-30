@@ -11,18 +11,34 @@
     {
       "id": "text-field",
       "name": "Text field",
-      "status": "draft",
+      "status": "ready",
       "priority": "P0",
-      "href": "components.html",
+      "href": "components/text-field.html",
       "summary": "OutlinedTextField en formularios viaje, wallet y gastos."
     },
     {
       "id": "filter-chip",
       "name": "Filter chip",
-      "status": "draft",
+      "status": "ready",
       "priority": "P0",
-      "href": "components.html",
-      "summary": "Categorías de gasto y filtros rápidos."
+      "href": "components/filter-chip.html",
+      "summary": "Filtros Wallet, gastos y journal; Home usa Menu."
+    },
+    {
+      "id": "basic-dialog",
+      "name": "Basic dialog",
+      "status": "ready",
+      "priority": "P0",
+      "href": "components/basic-dialog.html",
+      "summary": "AlertDialog — confirmar, eliminar, descartar (Wallet caps 7/11/12)."
+    },
+    {
+      "id": "snackbar",
+      "name": "Snackbar",
+      "status": "ready",
+      "priority": "P0",
+      "href": "components/snackbar.html",
+      "summary": "Feedback breve tras guardar o deshacer."
     },
     {
       "id": "icon-button",

@@ -148,7 +148,7 @@ Segmented button, Chip groups, Sliders, Carousel, Toolbars, Side sheet, Suggesti
 | Spacing producto | **`MOTSpacing`** + Figma **`MOT · Spacing`**; legado renombrado | **Hecho** Fase A 2026-10-29 |
 | Specs del repo **archivo** | No portar contrato `MyOwnTrip*` | vigente |
 | `figma-compose-bindings.md` | Tabla P0 + ADR 004 + MOTSpacing | **Hecho** Fase A |
-| Showcase JSON | Cubrir TextField, Chip, Dialog | pendiente |
+| Showcase JSON | Text field, Filter chip, Basic dialog, Snackbar | **Hecho** 2026-10-30 · [showcase-p0-json-2026-10-30.md](showcase-p0-json-2026-10-30.md) |
 | Borrar binds a LEGACY · Semantic Layout | Al tocar frames | pendiente (Fase B+) |
 
 ---
@@ -209,7 +209,7 @@ Pass en sets de bindings: weights (`mot/stroke/*`), Outline Variant en dividers 
 
 - **Compose nativo** = M3 + wrappers MOT + cards/eyebrow/home; color por `colorScheme`, botones por morph 0→20.  
 - **Figma** tiene el kit completo KEEP; productizados y documentados del todo solo una franja (cards Home, button, menu patrón).  
-- **B.3 P0 cerrado** (FilterChip → Dialog/Snackbar → App bar/FAB/Search/Menu). LEGACY · Semantic Layout: borrar binds al tocar frames. Showcase JSON TextField/Chip/Dialog aún pendiente.  
+- **B.3 P0 cerrado** (FilterChip → Dialog/Snackbar → App bar/FAB/Search/Menu). LEGACY · Semantic Layout: borrar binds al tocar frames. **Showcase JSON P0** (Text field, Filter chip, Dialog, Snackbar) publicado 2026-10-30.  
 - **No falta** reinventar `MyOwnTripButton` del archivo.
 
 ### Fase B.2 — Cards Home ✅ (2026-10-29)
@@ -236,4 +236,4 @@ Detalle: [figma-home-cards-phase-b-2026-10-29.md](figma-home-cards-phase-b-2026-
 
 **Confirm live (2026-10-29, continuación B.3 orden FilterChip→Dialog/Snackbar→App bar/FAB/Menu/Search):** Desktop Bridge — Filter **0** + Assistive **0** + Dialog **0** + Snackbar **0** + App bar **0** + FAB **0** (pads) + Menu **0** + Search bar **0** LEGACY contrato. Wallet Filter 6× INSTANCE + Dialog 7/11/12 INSTANCE · Home **0** FilterChip · **1** Menu · Search bar ×3. Search full-screen: residual previo **50** → live actual **0** binds LEGACY (sigue no-SoT Compose).
 
-**Siguiente (fuera B.3):** Showcase JSON TextField/Chip/Dialog · P1 residual si aparece en Xiaomi · no productizar Search full-screen.
+**Siguiente (fuera B.3):** Fichas P0 showcase (Text field, Filter chip, Dialog, Snackbar) en **Ready** + build Vite 2026-10-30 · P1 residual si aparece en Xiaomi · no productizar Search full-screen.

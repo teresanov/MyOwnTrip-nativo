@@ -1,0 +1,82 @@
+{
+  "id": "text-field",
+  "name": "Text field",
+  "status": "ready",
+  "priority": "P0",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52798-24373",
+  "purpose": "Los campos de texto recogen la información que el usuario escribe en formularios: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos siempre la variante Outlined de Material 3 (`OutlinedTextField`), enlazada al tema de la app sin wrapper MOT adicional.",
+  "anatomy": [
+    "Container — Outlined box, `Corner/Extra-small` (4dp) ↔ `MaterialTheme.shapes.extraSmall`",
+    "Label — Inter, `bodySmall` flotante",
+    "Input text — Inter, `bodyLarge`",
+    "Supporting text — error o hint bajo el campo (`bodySmall` + `error` si aplica)",
+    "Leading / trailing icon — opcional en set Figma; Compose los usa puntualmente (p. ej. búsqueda)"
+  ],
+  "variants": [
+    {
+      "id": "outlined-enabled",
+      "label": "Outlined · Enabled",
+      "usage": "Estado por defecto en pantallas de formulario."
+    },
+    {
+      "id": "outlined-focus",
+      "label": "Outlined · Focused",
+      "usage": "Borde y label en `primary`; state layer M3 en runtime."
+    },
+    {
+      "id": "outlined-error",
+      "label": "Outlined · Error",
+      "usage": "Validación inline: borde + supporting text + icono de error (nunca solo color)."
+    },
+    {
+      "id": "outlined-disabled",
+      "label": "Outlined · Disabled",
+      "usage": "Opacidad 38% contenido / 12% contenedor; p. ej. campos bloqueados tras guardar viaje."
+    }
+  ],
+  "properties": [
+    { "name": "Style", "type": "VARIANT", "example": "Outlined (único en producto)" },
+    { "name": "State", "type": "VARIANT", "example": "Enabled | Focused | Error | Disabled" },
+    { "name": "Label text", "type": "TEXT", "example": "Nombre del viaje" },
+    { "name": "Input text", "type": "TEXT", "example": "Barcelona 2026" },
+    { "name": "Supporting text", "type": "TEXT", "example": "El nombre es obligatorio" }
+  ],
+  "tokens": [
+    "outline / outlineVariant",
+    "primary (focus)",
+    "error / onErrorContainer",
+    "onSurface / onSurfaceVariant",
+    "Corner/Extra-small (4dp)",
+    "mot/padding/text-field/horizontal (16)",
+    "mot/padding/text-field/vertical (4)",
+    "mot/spacing/component-xs"
+  ],
+  "dos": [
+    "Declara un campo por dato y dale ancho completo en columnas de formulario (`Modifier.fillMaxWidth()`).",
+    "Comunica errores con `isError`, texto de apoyo y el icono que aporta Material cuando corresponda — nunca solo color.",
+    "Centraliza labels y mensajes en los strings de producto (CreateTrip, Wallet, Expenses).",
+    "Respeta `MaterialTheme.shapes.extraSmall` (4 dp), alineado a `Corner/Extra-small` en Figma."
+  ],
+  "donts": [
+    "No añadas TextField Filled en flujos nuevos salvo que documentes un gap explícito.",
+    "No inventes tokens por estado (`hover`, `pressed`) ni primitivos legacy en UI.",
+    "No uses Fraunces en label ni en el texto del input.",
+    "No simules campos con rectángulos sueltos en Figma: instancia el set Outlined."
+  ],
+  "a11y": [
+    "Label asociado al campo (TalkBack lee label + valor + error).",
+    "Supporting text de error en `liveRegion` cuando cambia tras submit.",
+    "Teclado: `ImeAction` coherente (Next / Done).",
+    "Contraste label/input ≥ 4.5:1 sobre surface."
+  ],
+  "compose": "OutlinedTextField(\n    value = state.name,\n    onValueChange = viewModel::onNameChange,\n    label = { Text(\"Nombre del viaje\") },\n    isError = state.nameError != null,\n    supportingText = state.nameError?.let { { Text(it) } },\n    modifier = Modifier.fillMaxWidth(),\n)",
+  "productExamples": [
+    { "screen": "CreateTripScreen", "fields": "Nombre del viaje, Destino" },
+    { "screen": "WalletFormScreen", "fields": "Título, notas, metadatos adjunto" },
+    { "screen": "ExpenseFormScreen", "fields": "Importe, concepto, categoría" }
+  ],
+  "changelog": [
+    { "date": "2026-10-29", "note": "Fase B.3: set Outlined → Corner/Extra-small + mot/padding/text-field/*; 0 LEGACY." },
+    { "date": "2026-10-30", "note": "Playground editable + toggle de error; copy orientado a diseño." }
+  ]
+}

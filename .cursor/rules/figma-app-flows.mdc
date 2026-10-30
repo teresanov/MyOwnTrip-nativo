@@ -38,7 +38,7 @@ Aplica al montar o editar pantallas en **[MyOwnTrip_design-file](https://www.fig
 
 | Página | Módulo | Rutas Compose principales |
 |--------|--------|---------------------------|
-| `00 · Mapa de la app` | Sitemap / índice de flujos | — |
+| `00 · Mapa de la app` | Sitemap / índice de flujos | — · [FigJam MyOwnTrip_structure](https://www.figma.com/board/YxJIkp5I524S9wLxGxulK1/MyOwnTrip_structure?node-id=0-1) (SoT mapa; design-file puede mantener índice ligero) |
 | `01 · Home` | Lista de viajes, búsqueda, filtros | `trip_list` |
 | `02 · Viajes — crear y editar` | Alta y edición de viaje | `trip_create`, `trip_edit/{tripId}` |
 | `03 · Detalle de viaje` | Hub del viaje (tabs) | `trip_detail/{tripId}` |

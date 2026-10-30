@@ -11,7 +11,7 @@ App Android offline-first · libreta de viaje digital · **viajero urbano organi
 ## Stack
 - Compose + Material 3 nativo (Fraunces + Inter, MTB editorial)
 - Room + Hilt + Navigation
-- Supabase preparado en Gradle; sync fuera del MVP
+- Supabase: sync post-MVP; dependencias retiradas de Gradle hasta que se implemente (ver historial git)
 
 ## Design System
 - **Variables canónicas:** `docs/design-system/variables.json` (colección M3 · Light/Dark)

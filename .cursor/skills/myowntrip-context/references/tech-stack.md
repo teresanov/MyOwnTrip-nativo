@@ -83,6 +83,7 @@ DS histórico archivado: [MyOwnTrip](https://github.com/teresanov/MyOwnTrip).
 
 | Archivo | Uso |
 |---------|-----|
+| [MyOwnTrip_structure](https://www.figma.com/board/YxJIkp5I524S9wLxGxulK1/MyOwnTrip_structure?node-id=0-1) | Mapa de la app · rutas Compose ↔ páginas design-file `01`–`08` (FigJam) |
 | [JTBD Presentation](https://www.figma.com/board/FgYSO9p8dZfKIjcRnJ8nKZ/MyOwnTrip-%C2%B7-JTBD-Presentation?node-id=0-1) | One-pager visual del proyecto (FigJam) |
 | [Project Definition](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=0-1) | 7 slides: Brief, Lifecycle, Requirements, Benchmark, Architecture, Data Model |
 | [08 · JTBD — Flujos](https://www.figma.com/design/YRVsgi3oHM5mFlDsOUdS9F/MyOwnTrip-%C2%B7-Project-Definition?node-id=89-2) | Diagramas de flujo (mismo archivo) |
