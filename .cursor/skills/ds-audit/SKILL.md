@@ -7,7 +7,7 @@ description: Audita el DS contra quality gates (tokens, a11y, Material usage, co
 
 Auditoría operativa del DS usando los artefactos del índice + knowledge base.
 
-Cierre de componente: validar gates del pipeline **Pencil → Figma → Notion → Showcase** (`docs/design-system/governance/design-pipeline.md`).
+Cierre de componente: validar gates del pipeline **Compose → Figma → Showcase → Notion** (`docs/design-system/governance/design-pipeline.md`). Compose es la fuente de verdad; Figma es espejo y el showcase documentación. Notion registra el trabajo, no documenta componentes.
 
 ## Inputs
 

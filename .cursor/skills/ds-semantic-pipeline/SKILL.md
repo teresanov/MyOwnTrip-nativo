@@ -7,13 +7,13 @@ description: Pipeline para sincronizar variables de Figma a Compose usando consu
 
 Usa este skill cuando el usuario pida sincronizar, auditar o escalar el sistema de tokens del DS entre Figma y Android Compose.
 
-**Contexto de pipeline:** cambios de **contrato/token global** siguen **Modo B (Figma-first)**; componentes nuevos siguen **Pencil → Figma → Notion → Showcase**. Ver `docs/design-system/governance/design-pipeline.md`.
+**Contexto de pipeline:** cambios de **contrato/token global** siguen **Modo B (Figma-first)**; componentes nuevos siguen **Compose → Figma → Showcase → Notion** (`governance/design-pipeline.md`). Compose es la fuente de verdad.
 
 ## Objetivo
 
 Mantener una cadena confiable:
 
-1. Primitivos en Figma (y proyección a Pencil)
+1. Primitivos en Figma
 2. Semanticos enlazados por alias
 3. Consumo en Compose solo desde semanticos
 

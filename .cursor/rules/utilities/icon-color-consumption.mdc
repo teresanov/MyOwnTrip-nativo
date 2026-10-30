@@ -1,11 +1,11 @@
 ---
-description: Consumo semántico de color en iconos (Figma, Pencil, Compose) — namespace icon/*, contexto y botones.
+description: Consumo semántico de color en iconos (Figma, Compose) — namespace icon/*, contexto y botones.
 alwaysApply: true
 ---
 
 # Icon color consumption
 
-Aplica al bindear color en **iconos de producto** (`Slot_master`, glyphs, `MyOwnTripIcon`) en Figma, Pencil y handoff a Compose.
+Aplica al bindear color en **iconos de producto** (`Slot_master`, glyphs, `MyOwnTripIcon`) en Figma y handoff a Compose.
 
 Fuentes canónicas:
 

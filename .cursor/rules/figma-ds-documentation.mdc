@@ -7,7 +7,7 @@ alwaysApply: true
 
 Aplica cuando el usuario pida documentar tokens/rampas en Figma o trabajar con el DS visual.
 
-**Pipeline de componentes:** iterar en **Pencil** (`DS.pen`) antes de cerrar láminas en Figma; después **Notion** y **Showcase**. Ver `docs/design-system/governance/design-pipeline.md`.
+**Pipeline de componentes:** **Compose → Figma → Showcase → Notion** (`docs/design-system/governance/design-pipeline.md`). Compose es la fuente de verdad; Figma es espejo (librería y láminas de documentación) y la ficha del componente vive en el showcase, no en Notion.
 
 **Portero pantallas:** en design-file / flows, **solo instancias** de DS o Android UI / M3. Si falta un patrón complejo, crearlo en el DS con átomos anidados — nunca frames que imiten controles. Ver `.cursor/rules/figma-instances-only.mdc`.
 
@@ -50,17 +50,17 @@ Aplica cuando el usuario pida documentar tokens/rampas en Figma o trabajar con e
 - **Do & Don’t**: respetar la **plantilla actual** en el archivo (ajustes manuales del equipo); no renombrar variantes/props a español para “traducir” el componente.
 
 8. **Texto visible en láminas de documentación (instancias)**
-- El copy que identifica cada celda (p. ej. estilo, tamaño, énfasis o escenario de padding) debe ser **claro y descriptivo**, como en **Pencil** (`Filled`, `Extra small`, `Padding 16dp`, etc.), **siempre en inglés** alineado a los valores de variante.
+- El copy que identifica cada celda (p. ej. estilo, tamaño, énfasis o escenario de padding) debe ser **claro y descriptivo**, como en las láminas de documentación (`Filled`, `Extra small`, `Padding 16dp`, etc.), **siempre en inglés** alineado a los valores de variante.
 - Ese texto debe aplicarse **solo** mediante la **propiedad de componente TEXT** del set publicado (p. ej. botón: **`Label`** / clave `Label#…` en `componentPropertyDefinitions`), con `setProperties` en la **instancia** de la lámina de documentación — **no** añadir nodos `TEXT` sueltos encima del botón para “etiquetar” la variante.
 - **No** sustituir el texto maestro de cada **COMPONENT** del `COMPONENT_SET` por metadatos (`Filled · SM · Default`, etc.): el grid publicado debe leerse como botón real (p. ej. **«Button»** o copy neutro). Quién identifica la variante es el **nombre de variante** en Figma + la doc; mezclar ambos en el label del maestro confunde handoff y rompe contraste (Outlined/Text sobre canvas oscuro).
 - Convención útil para filas de matriz **solo en doc**: combinar ejes con ` · ` (p. ej. `Filled · Default`, `MD · Round`) cuando una sola palabra no basta para distinguir la fila.
 
-10. **Excepción controlada para `MyOwnTrip/Button` (paridad Pencil)**
-- Mientras se completa la migración para retirar Pencil, el **set publicado** `MyOwnTrip/Button` puede usar `Label` descriptivo por variante (p. ej. `Filled · MD · Round · Leading icon`) para mejorar lectura visual del grid, siempre en inglés.
+10. **Excepción controlada para `MyOwnTrip/Button`**
+- Para leer mejor el grid publicado, el **set publicado** `MyOwnTrip/Button` puede usar `Label` descriptivo por variante (p. ej. `Filled · MD · Round · Leading icon`) para mejorar lectura visual del grid, siempre en inglés.
 - Esta excepción aplica **solo** al componente Button y debe mantenerse alineada con los ejes reales del componente (`Style`, `Size`, `Emphasis`, `Shape`, icon toggles).
 - En cada variante del set de Button deben quedar **visibles por defecto** los iconos leading/trailing (aunque tengan BOOLEAN para ocultarlos), para comunicar la capacidad del componente en la librería.
 - El set de Button debe incluir explícitamente la forma **`Square`** además de `Round`; no cerrar la tarea con `Shape` incompleto.
-- Cuando finalice la migración y el equipo decida volver a label neutro en maestros, documentar la decisión en `docs/design-system/migrations/` y actualizar esta regla.
+- Si el equipo decide volver a label neutro en maestros, documentar la decisión en `docs/design-system/migrations/` y actualizar esta regla.
 
 9. **Referencias locales al documentar un componente**
 - Si existen los clones en `refs/`, contrastar estados y comportamiento con **`refs/compose-m3-expressive-catalog`** y, si hace falta, con **`refs/material-components-android`** (ver regla **`.cursor/rules/components/material-reference-refs.mdc`**). La apariencia y tokens siguen siendo las del archivo MyOwnTrip (semánticos, estilos de texto del DS).

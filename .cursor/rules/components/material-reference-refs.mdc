@@ -22,7 +22,7 @@ Al **crear o modificar** un componente canónico en Compose, al redactar o actua
 
 ## Documentación (mismo criterio)
 
-- Seguir las plantillas: `docs/design-system/templates/figma-component-doc.template.md` y `docs/design-system/templates/notion-component-page.template.md`.
+- Seguir la plantilla `docs/design-system/templates/figma-component-doc.template.md` y documentar la ficha en el showcase (`ds-showcase/`). Notion no documenta componentes.
 - Donde aporte trazabilidad, indicar **qué se revisó** en `refs/` (repositorio y ruta o nombre de ejemplo), y **qué decisión** tomó el DS (paridad, excepción, token semántico).
 - La documentación en Figma sigue además `figma-ds-documentation.mdc` (tipografía, variables, variantes en inglés).
 
