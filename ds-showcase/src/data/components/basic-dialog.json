@@ -38,7 +38,7 @@
     "error (icon + confirm destructivo)",
     "Corner/Extra-large (28dp)",
     "mot/padding/dialog/container (24)",
-    "mot/spacing/dialog/title-body-gap (12)",
+    "mot/spacing/dialog/divider-gap (12)",
     "mot/spacing/dialog/section-gap (16)",
     "mot/spacing/dialog/actions-gap (8)"
   ],

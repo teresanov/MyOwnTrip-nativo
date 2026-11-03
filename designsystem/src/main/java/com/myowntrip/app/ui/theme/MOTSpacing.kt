@@ -139,7 +139,7 @@ object MOTSpacing {
     val vertical = 32.dp
   }
 
-  /** Chip. Figma: `mot/padding/chip/*` y `mot/spacing/chip/gap`. */
+  /** Chip. Figma: `mot/padding/chip/…` y `mot/spacing/chip/gap`. */
   object Chip {
     val horizontalSm = 8.dp
     val horizontalLg = 16.dp
@@ -147,12 +147,12 @@ object MOTSpacing {
     val gap = 8.dp
   }
 
-  /** Diálogo. Figma: `mot/padding/dialog/*` y `mot/spacing/dialog/*`. */
+  /** Diálogo. Figma: `mot/padding/dialog/…` y `mot/spacing/dialog/…`. */
   object Dialog {
     val container = 24.dp
-    val actionsGutter = 16.dp
     val sectionGap = 16.dp
-    val titleBodyGap = 12.dp
+    /** Hueco alrededor del divisor. Figma: `mot/spacing/dialog/divider-gap`. */
+    val dividerGap = 12.dp
     val actionsGap = 8.dp
   }
 
@@ -163,7 +163,7 @@ object MOTSpacing {
     val large = 30.dp
   }
 
-  /** Snackbar. Figma: `mot/padding/snackbar/*` y `mot/spacing/snackbar/*`. */
+  /** Snackbar. Figma: `mot/padding/snackbar/…` y `mot/spacing/snackbar/…`. */
   object Snackbar {
     val horizontal = 16.dp
     val vertical = 12.dp

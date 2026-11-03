@@ -44,7 +44,7 @@ Fuente código: `designsystem/.../MOTSpacing.kt`
 | *(Figma Segmented + BB segments)* | `mot/padding/segmented/{horizontal,vertical}` · `mot/spacing/segmented/gap` | 12 / 10 · 8 |
 | *(Figma Text field Outlined)* | `mot/padding/text-field/{horizontal,vertical}` · `mot/spacing/none` | 16 / 4 · 0 |
 | *(Figma Filter / Assistive chip)* | `mot/padding/chip/{horizontal-sm,horizontal-lg,vertical}` · `mot/spacing/chip/gap` | 8 / 16 / 6 · 8 |
-| *(Figma Basic dialog)* | `mot/padding/dialog/{container,actions-gutter}` · `mot/spacing/dialog/{section,title-body,actions}-gap` | 24 / 16 · 16 / 12 / 8 |
+| *(Figma Basic dialog)* | `mot/padding/dialog/container` · `mot/padding/button/xsmall-horizontal` (botones de acción) · `mot/spacing/dialog/{section,title-body,actions}-gap` | 24 · 12 (botones) · 16 / 12 / 8 |
 | *(Figma Snackbar)* | `mot/padding/snackbar/{horizontal,vertical}` · `mot/spacing/snackbar/gap{,-sm,-xs}` | 16 / 12 · 12 / 8 / 4 |
 | `MOTSpacing.Menu.groupGap` | `mot/spacing/menu/group-gap` | 2 |
 | `MOTSpacing.ListItem.horizontal|vertical|gap` | `mot/padding/list-item/{horizontal,vertical}` · `mot/spacing/list-item/gap` | 16 / 12 / 12 |

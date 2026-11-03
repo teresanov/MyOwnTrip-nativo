@@ -205,6 +205,8 @@ Los tres gaps son propios del kit y están reservados en Compose, sin consumidor
 
 Pendiente en este set: gap 1 de `Date` (`51954:18557`, `61307:1921`), sin enlazar; y paddingBottom 16 de `Date` y `Date return`, sin revisar.
 
+**Button - outline (`58650:10213`) ↔ `MOTOutlinedButton` (3 nov 2026):** contenedor transparente, borde `Schemes/Outline Variant` con trazo 1 px y etiqueta `Schemes/On Surface Variant` coinciden con `outlinedButtonColors()` y `outlinedButtonBorder()` de M3 (`1.5.0-alpha12`). El icono estaba enlazado a `Schemes/On Surface` (`54778:427`); en Compose hereda el color de la etiqueta. Corregido: 20 iconos de la variante (todos los estados) enlazados a `Schemes/On Surface Variant` (`54778:429`). Ancho: el componente no tiene ancho propio; lo define el contenedor (`fillMaxWidth` o `weight`), así que en Figma la instancia debe ir en `FILL` dentro del auto layout.
+
 **Pendiente de decisión:** átomos del kit (Icon button, Text field, Button…) que usa el set. Su revisión la estás haciendo tú; no he tocado Figma.
 
 **Pendiente, fuera de este cierre:**

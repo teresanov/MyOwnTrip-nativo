@@ -20,9 +20,11 @@ Botón morph: `rememberMOTButtonShape` / `Corner/Large-increased` — **fuera** 
 |--------|-----|
 | `semantic/spacing/none` | `mot/spacing/none` |
 | `stack/xl` | `mot/padding/dialog/container` (24) |
-| `gutter` | `mot/padding/dialog/actions-gutter` (16) |
+| `gutter` | ~~`mot/padding/dialog/actions-gutter` (16)~~ **Corregido 3 nov 2026:** token eliminado. Padding horizontal de botones de acción → `mot/padding/button/xsmall-horizontal` (12, como M3 `TextButton`). Padding superior del divisor → `mot/spacing/dialog/section-gap` (16). |
+
+**Botones de acción (3 nov 2026):** las 4 instancias (`50723:10946`, `10947`, `10962`, `10963`) apuntaban a `Button - text/Round/Small/Enabled` (`57994:2264`), un componente huérfano sin padre en el archivo. Cambiadas a `Button - text` `Type=Square, Size=Small, State=Enabled` (`57994:2254`), que es la forma que usa el código. Padding del `State-layer`: horizontal `mot/padding/button/xsmall-horizontal` (12), vertical `mot/padding/button/small-vertical` (8), igual que M3 `TextButton` (12 horizontal, 8 vertical). Esquina `Corner/None`.
 | `stack/lg` | `mot/spacing/dialog/section-gap` (16) |
-| `stack/md` | `mot/spacing/dialog/title-body-gap` (12) |
+| `stack/md` | ~~`mot/spacing/dialog/title-body-gap` (12)~~ **Renombrado 3 nov 2026** a `mot/spacing/dialog/divider-gap` (12): es el hueco del divisor, no entre título y texto. |
 | `stack/sm` | `mot/spacing/dialog/actions-gap` (8) |
 
 Rebinds: **183** · **legacyLeft: 0**.  
