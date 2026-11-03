@@ -137,7 +137,7 @@ Google / Samsung recomiendan acercar la navegación al pulgar y, en pantalla anc
 
 **Component set publicado:** `Layout grid · mobile` · node `60955:133047` en página Examples (sección `55343:13515`: guía `60954:132843` + contenedor de 6 frames) — sustituye `Examples/Layout grid` (M3 completo, eliminado 2026-06-09).
 
-**Example layouts** · sección `56554:638` — 7 pantallas demo en **3 filas** Compact: Phone base 360×800 · Z Fold plegado 344×880 · **landscape smoke 800×360** (status + app bar + cuerpo horizontal en columnas; sin Navigation Rail ni Device frame en Examples — ver `Utilities`/`Reference` si hace falta mock de dispositivo). Sin fila `-Web`.
+**Pantallas de ejemplo (eliminadas 3 nov 2026):** la sección `Example layout` (`56554:638`) y los `Examples/Home · landscape` y `Examples/Reviews · landscape` sueltos se borraron de la página `Examples`. No los usaba ninguna instancia de la app ni del archivo. Los breakpoints (set `Layout grid · mobile`, 6 variantes) son la especificación; las pantallas reales de la app se montan en Compose, no en Figma.
 
 ### Tabla canónica (diseño)
 

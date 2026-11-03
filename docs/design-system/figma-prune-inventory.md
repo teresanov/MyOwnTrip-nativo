@@ -146,7 +146,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 
 ### Examples · `55594:2480`
 - **CUT:** `-Web` (7, eliminados 2026-06-09) · `Examples/Layout grid` M3 (`56384:120`, 11 variantes tablet/desktop) — **reemplazado** por `Layout grid · mobile` (`60955:133047`, 6 variantes; sección `55343:13515`)
-- **KEEP:** `Example layout` (`56554:638`) — 7 pantallas × 3 filas Compact: **Phone base** 360×800 · **Z Fold plegado** 344×880 · **landscape smoke** 800×360 (reflow horizontal, sin recorte a media pantalla); instancias del kit M3
+- **CUT (3 nov 2026):** `Example layout` (`56554:638`) — 25 elementos, sin dependencias. Antes figuraba como KEEP; el breakpoint sigue en el set `Layout grid · mobile`
 - **KEEP:** `Layout grid · mobile` — 360×800 · 360×880 · 344×880 · 412×915 · 800×360 smoke · 673×841 LATER; guía `60954:132843`
 - **REVIEW:** Messaging, Reviews — mantener en Examples hasta decisión producto; no son target JTBD MVP
 - **Reference** (página consulta, no MVP): guía `61053:230239` · Flex Window `60955:132903` · Fold landscape A `61053:230253` (2 cols) · Fold landscape B `61053:230281` (mapa + nav/toolbar adaptativos)

@@ -223,6 +223,15 @@ Pendiente en este set: gap 1 de `Date` (`51954:18557`, `61307:1921`), sin enlaza
 - Vertical: en Figma estaba en `mot/padding/text-field/vertical` (4), que no coincide con el código. Como ese token lo usan los campos de hora con valor 4 (decisión anterior), no se cambia. Se crea `mot/padding/text-field/outlined-vertical` (16, alias de `spacing/16`) y se enlaza al `State-layer` y `Content` de las 60 variantes del set (252 nodos). Espejo: `MOTSpacing.TextField.outlinedVertical`.
 - `MotTimeField` y `MotDateField` usan el `OutlinedTextField` por defecto de M3, así que ya pintan 16 y el código no cambia.
 
+**Calendario del Modal date picker, `Type=Day` (3 nov 2026), hecho responsive:**
+- `Local Calendar grid`: padding horizontal 16 (`layout-md`, como `MOTSpacing.layoutMd`), vertical 8 (`component-sm`), espacio entre semanas 2 (`date-picker/day-grid-gap`, como `DatePicker.dayGridGap`).
+- Filas de semana: espacio entre días 2 (`day-grid-gap`) y cada día en `Fill`. Con 360 dp, cada día mide 45,1 dp, igual que la celda del código.
+- Pendiente: la fila `Week 6` sigue con ancho fijo (328). Figma no aceptó `Fill` en esa fila; las otras 6 sí.
+
+**Keyboard picker, fila `Actions` (3 nov 2026):** como en código (`MotTimePickerDialog`, `Row` con `start = componentSm`, `end = layoutMd` y `bottom = componentSm` de la columna), los 4 frames `Actions` del set (`52949:28077`, `52949:28079`, `52949:28064`, `52949:28066`) quedan con padding izquierdo 8 (`component-sm`), derecho 16 (`layout-md`) e inferior 8 (`component-sm`), enlazados a variable. Superior 0. El gap de 121 entre botones es auto layout (`SPACE_BETWEEN`), no se tokeniza.
+
+**Selector de hora (3 nov 2026):** modo teclado cerrado. El modo reloj (`Dial picker`, `52949:27916`, página `LATER · Time pickers`) queda fuera del MVP por decisión: no se audita ni se enlaza por ahora. Existe en Figma, pero no en la página de MVP.
+
 **Pendiente de decisión:** átomos del kit (Icon button, Text field, Button…) que usa el set. Su revisión la estás haciendo tú; no he tocado Figma.
 
 **Pendiente, fuera de este cierre:**
