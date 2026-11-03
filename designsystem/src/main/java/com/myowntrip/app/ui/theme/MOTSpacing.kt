@@ -88,6 +88,18 @@ object MOTSpacing {
   object TimeInput {
     val labelTop = 7.dp
     val fieldGap = 1.dp
+    val contentGap = 10.dp
+  }
+
+  /**
+   * Padding interno del icon button (State-layer). Figma: `mot/padding/icon-button/…`.
+   * Tamaño por defecto M3 (Small, 40 dp) no usa padding; wide queda en Figma para uso futuro.
+   */
+  object IconButton {
+    val zeroHorizontal = 0.dp
+    val zeroVertical = 0.dp
+    val wideHorizontal = 32.dp
+    val wideVertical = 16.dp
   }
 
   /**

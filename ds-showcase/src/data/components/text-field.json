@@ -4,6 +4,12 @@
   "status": "ready",
   "priority": "P0",
   "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52798-24373",
+  "origin": {
+    "type": "M3",
+    "m3Version": "1.5.0-alpha12",
+    "fixedValues": [],
+    "pending": "Valores internos del OutlinedTextField de M3 (padding interno, label) sin verificar contra la fuente. Figma tiene mot/padding/text-field/* (16 / 4) sin consumidor en Compose."
+  },
   "purpose": "Los campos de texto recogen la información que el usuario escribe en formularios: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos siempre la variante Outlined de Material 3 (`OutlinedTextField`), enlazada al tema de la app sin wrapper MOT adicional.",
   "anatomy": [
     "Container — Outlined box, `Corner/Extra-small` (4dp) ↔ `MaterialTheme.shapes.extraSmall`",

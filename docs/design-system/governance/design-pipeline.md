@@ -103,3 +103,16 @@ Un componente solo pasa a **Ready** cuando cumple todo:
 4. **Paridad y ficha:** para cada elemento, comprobar paridad, documentar en el showcase y registrar en Notion (paso 5 del flujo).
 
 **Salida:** cuando el inventario quede en cero pendientes, el sistema es bidireccional y se aplica solo el flujo normal de las secciones 1–6.
+
+---
+
+## 9. Componentes de Material 3 y valores fijos
+
+Un componente puede ser **propio** (nace en `designsystem/` o `ui/components/`) o **M3** (se usa la librería de Material 3 tal cual, con su versión fijada en `gradle/libs.versions.toml`).
+
+- **Qué se tokeniza:** todo lo que Compose recibe como parámetro o token (colores del tema, `MaterialTheme.shapes.*`, `MOTSpacing`, `contentPadding`). Figma es fuente de esos tokens.
+- **Qué queda fijo:** los valores privados de la librería de M3 (constantes internas). Desde Figma no se pueden cambiar sin cambiar el código de la librería o sustituir el componente.
+- **Cómo se documenta:** en la ficha del showcase (`ds-showcase/src/data/components/<id>.json`, bloque `origin`), con `type`, `m3Version`, `fixedValues` y `pending` (lo que aún no está verificado). En Figma, en la descripción del componente o set, con la misma información.
+- **Revisión:** en cada subida de versión de `material3`, se comparan de nuevo los valores fijos contra la fuente.
+
+Ejemplo: el campo de hora (`.Building Blocks/Input`, `Direct Input (keyboard) input`) es M3. Valores fijos: gap de 8 px (`TimeInputBottomPadding`), gap de 7 px (`SupportLabelTop`), alto 72 px y ancho 96 px del campo, verificados contra `material3-1.5.0-alpha12`.

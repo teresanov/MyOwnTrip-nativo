@@ -149,7 +149,20 @@ El resto del set `Direct Input (keyboard) input` no está revisado.
 | Trazo de foco del campo | `mot/stroke/emphasis` (2), decisión tuya. |
 | Verificación M3 | Fuente `material3-1.5.0-alpha12` (versión de `gradle/libs.versions.toml`): `TimeFieldContainerShape = CornerSmall`, alto 72 y ancho 96, `SupportLabelTop = 7`, `TimeInputBottomPadding = 8`, `TimeFieldFocusOutlineWidth = 2`. |
 
-**Pendiente:** gap 10 de `default` (`52949:28116`), sin origen en M3; gap 8 de `TimeInputBottomPadding`, sin decidir si tiene token propio; alto y ancho del campo (aplazados).
+**Gap 10 de `default` (`52949:28116`):** enlazado a `mot/spacing/time-input/content-gap` (10), con espejo `MOTSpacing.TimeInput.contentGap`. Sin origen en M3; token propio.
+
+**Gap 8 de `Direct Input` (raíz de `Selected=True` `52949:28122` y `Selected=False` `52949:28127`):** valor **interno de Material 3** (`TimeInputBottomPadding`, privado en la librería). No se puede consumir desde Compose, así que **no tiene variable**: se desenlazó y queda como valor fijo de 8 px, documentado aquí. Antes estaba enlazado a `component-sm` por valor, lo que era una coincidencia.
+
+Pendiente de poner en la descripción del componente en Figma (`52949:28121`): requiere el plugin *Figma Desktop Bridge* abierto; hoy no está conectado.
+
+**Pendiente:** alto y ancho del campo (aplazados).
+
+**Icon button · `Icon button - standard` (`58663:30358`), uso actual:**
+
+- Compose usa un único tamaño: `MOTIconButton` (`MOTButtons.kt`) envuelve el `IconButton` de M3 con su tamaño por defecto de 40 dp y la forma `rememberMOTButtonShape` (0 en reposo, 20 en hover, focus y pressed).
+- Variante equivalente en Figma: `Type=Square, Size=Small, Width=Default` (`Content` 40 × 40). Coincide con el tamaño y la forma del código.
+- Las demás variantes (otros Size, Width Wide/Narrow y Type=Round) se **mantienen en Figma** para uso futuro, sin emparejar con Compose hoy.
+- Enlaces verificados: radios del `Content` (0 y 20) y paddings del `State-layer` (0 y wide) enlazados a tokens; iconos y `Focus indicator` enlazados; único residual, trazo morado del marco de documentación del set.
 
 **Pendiente de decisión:** átomos del kit (Icon button, Text field, Button…) que usa el set. Su revisión la estás haciendo tú; no he tocado Figma.
 
