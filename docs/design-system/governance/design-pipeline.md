@@ -114,5 +114,6 @@ Un componente puede ser **propio** (nace en `designsystem/` o `ui/components/`) 
 - **Qué queda fijo:** los valores privados de la librería de M3 (constantes internas). Desde Figma no se pueden cambiar sin cambiar el código de la librería o sustituir el componente.
 - **Cómo se documenta:** en la ficha del showcase (`ds-showcase/src/data/components/<id>.json`, bloque `origin`), con `type`, `m3Version`, `fixedValues` y `pending` (lo que aún no está verificado). En Figma, en la descripción del componente o set, con la misma información.
 - **Revisión:** en cada subida de versión de `material3`, se comparan de nuevo los valores fijos contra la fuente.
+- **Showcase solo con lo usado:** la ficha recoge los tokens que el componente consume en código. Los tokens reservados (sin consumidor en Compose) viven en Figma y en `MOTSpacing` con la marca «Reservado» en su KDoc, y no aparecen en el showcase hasta que un composable los use.
 
 Ejemplo: el campo de hora (`.Building Blocks/Input`, `Direct Input (keyboard) input`) es M3. Valores fijos: gap de 8 px (`TimeInputBottomPadding`), gap de 7 px (`SupportLabelTop`), alto 72 px y ancho 96 px del campo, verificados contra `material3-1.5.0-alpha12`.

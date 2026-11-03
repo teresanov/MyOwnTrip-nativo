@@ -29,12 +29,19 @@ val MOTButtonXSmallContentPadding = PaddingValues(
   vertical = MOTSpacing.ButtonXSmall.vertical,
 )
 
+/** Size Small de la app — Figma `mot/padding/button/small-*` ↔ [MOTSpacing.ButtonSmall] (24 / 8). */
+val MOTButtonSmallContentPadding = PaddingValues(
+  horizontal = MOTSpacing.ButtonSmall.horizontal,
+  vertical = MOTSpacing.ButtonSmall.vertical,
+)
+
 @Composable
 fun MOTButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
   interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+  contentPadding: PaddingValues = MOTButtonSmallContentPadding,
   elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
   colors: ButtonColors = ButtonDefaults.buttonColors(),
   content: @Composable RowScope.() -> Unit,
@@ -47,6 +54,7 @@ fun MOTButton(
     elevation = elevation,
     shape = rememberMOTButtonShape(interactionSource),
     colors = colors,
+    contentPadding = contentPadding,
     content = content,
   )
 }
@@ -81,6 +89,7 @@ fun MOTOutlinedButton(
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
   interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+  contentPadding: PaddingValues = MOTButtonSmallContentPadding,
   colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
   content: @Composable RowScope.() -> Unit,
 ) {
@@ -91,6 +100,7 @@ fun MOTOutlinedButton(
     interactionSource = interactionSource,
     shape = rememberMOTButtonShape(interactionSource),
     colors = colors,
+    contentPadding = contentPadding,
     content = content,
   )
 }

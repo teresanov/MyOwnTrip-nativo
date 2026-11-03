@@ -41,6 +41,9 @@ object MOTSpacing {
    */
   object Menu {
     val groupGap = 2.dp
+    /** Figma: `mot/padding/menu/vertical` y `horizontal`. */
+    val vertical = 8.dp
+    val horizontal = 0.dp
   }
 
   /**
@@ -60,6 +63,31 @@ object MOTSpacing {
   object DatePicker {
     val cell = 10.dp
     val dayGridGap = 2.dp
+    /**
+     * Hueco entre bloques de la cabecera del set Input. Figma: `mot/spacing/date-picker/header-gap`.
+     * Reservado: sin consumidor en Compose hasta que exista la estructura cabecera + dos campos.
+     */
+    val headerGap = 36.dp
+    /**
+     * Padding superior del campo de fecha (set Input). Figma: `mot/padding/date-picker/field-top`.
+     * Reservado: sin consumidor en Compose (ver `headerGap`).
+     */
+    val fieldTop = 18.dp
+    /**
+     * Hueco de `Label and Date` en el set Modal. Figma: `mot/spacing/date-picker/label-gap`.
+     * Reservado: sin consumidor en Compose.
+     */
+    val labelGap = 36.dp
+    /**
+     * Hueco de `Local Selection Row` en el set Modal. Figma: `mot/spacing/date-picker/selection-row-gap`.
+     * Reservado: sin consumidor en Compose.
+     */
+    val selectionRowGap = 74.dp
+    /**
+     * Hueco del bloque `Frame 2608508` en el set Modal. Figma: `mot/spacing/date-picker/block-gap`.
+     * Reservado: sin consumidor en Compose.
+     */
+    val blockGap = 244.dp
   }
 
   /**
@@ -83,12 +111,73 @@ object MOTSpacing {
 
   /**
    * Campo de hora (M3 TimeInput) en el kit. Figma: `mot/spacing/time-input/…`.
-   * labelTop = `SupportLabelTop` de M3 (7); fieldGap = hueco interno del campo (1).
+   * fieldGap = hueco interno del campo (1). labelTop (7) sin uso hoy: reservado para un label bajo el campo.
    */
   object TimeInput {
+    /** Reservado: sin uso en Compose ni en el set `Input` de Figma. */
     val labelTop = 7.dp
     val fieldGap = 1.dp
     val contentGap = 10.dp
+    /** Hueco entre el campo de hora y la etiqueta "Time label" (Direct Input). */
+    val labelGap = 8.dp
+  }
+
+  /** Botón por tamaño. Figma: `mot/padding/button/{small,medium,large}-*`. Small lo usa `MOTButton` (`MOTButtonSmallContentPadding`). */
+  object ButtonSmall {
+    /** Figma = código: el padding por defecto de `MOTButton` (M3 `ContentPadding`) es 24 horizontal y 8 vertical. */
+    val horizontal = 24.dp
+    val vertical = 8.dp
+  }
+
+  object ButtonMedium {
+    val horizontal = 24.dp
+    val vertical = 16.dp
+  }
+
+  object ButtonLarge {
+    val horizontal = 48.dp
+    val vertical = 32.dp
+  }
+
+  /** Chip. Figma: `mot/padding/chip/*` y `mot/spacing/chip/gap`. */
+  object Chip {
+    val horizontalSm = 8.dp
+    val horizontalLg = 16.dp
+    val vertical = 6.dp
+    val gap = 8.dp
+  }
+
+  /** Diálogo. Figma: `mot/padding/dialog/*` y `mot/spacing/dialog/*`. */
+  object Dialog {
+    val container = 24.dp
+    val actionsGutter = 16.dp
+    val sectionGap = 16.dp
+    val titleBodyGap = 12.dp
+    val actionsGap = 8.dp
+  }
+
+  /** FAB por tamaño. Figma: `mot/padding/fab/{default,medium,large}`. */
+  object Fab {
+    val default = 16.dp
+    val medium = 26.dp
+    val large = 30.dp
+  }
+
+  /** Snackbar. Figma: `mot/padding/snackbar/*` y `mot/spacing/snackbar/*`. */
+  object Snackbar {
+    val horizontal = 16.dp
+    val vertical = 12.dp
+    val gap = 12.dp
+    val gapSm = 8.dp
+    val gapXs = 4.dp
+  }
+
+  /**
+   * Teclado del selector de hora (Keyboard picker). Figma: `mot/spacing/keyboard-picker/gap` (alias de `spacing/20`).
+   * Reservado: sin consumidor en Compose, que usa el `TimePicker` de M3.
+   */
+  object KeyboardPicker {
+    val gap = 20.dp
   }
 
   /**
@@ -100,6 +189,12 @@ object MOTSpacing {
     val zeroVertical = 0.dp
     val wideHorizontal = 32.dp
     val wideVertical = 16.dp
+    val tenHorizontal = 10.dp
+    val tenVertical = 10.dp
+    val lgHorizontal = 32.dp
+    val lgVertical = 32.dp
+    val mdHorizontal = 16.dp
+    val mdVertical = 16.dp
   }
 
   /**

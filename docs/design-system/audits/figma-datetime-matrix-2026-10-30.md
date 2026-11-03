@@ -144,14 +144,14 @@ El resto del set `Direct Input (keyboard) input` no está revisado.
 |----------|--------|
 | `Direct Input` · Input Field (ambas variantes) | Padding vertical → `mot/padding/text-field/vertical` (4), anulando la propuesta de 8. Gap interno (1) → `mot/spacing/time-input/field-gap`. |
 | `Direct Input` · raíz (ambas variantes) | Gap 7 → 8 (`component-sm`). |
-| `.Building Blocks/Input` (`52949:28114`) | Radios de `selected`, `default` y raíz de `Selected=False` → `Corner/Small`. Gap 7 → `mot/spacing/time-input/label-top`. |
+| `.Building Blocks/Input` (`52949:28114`) | Radios de `selected`, `default` y raíz de `Selected=False` → `Corner/Small`. Gap 7 desenlazado y puesto a 0 en `Selected=True` (`52949:28118`), `selected` (`52949:28119`) y `Selected=False` (`52949:28115`): el gap no separaba nada (un solo hijo visible). La variable `mot/spacing/time-input/label-top` (7, `MOTSpacing.TimeInput.labelTop`) se conserva para un futuro label bajo el campo. |
 | Tokens nuevos | `mot/spacing/time-input/label-top` (7) y `mot/spacing/time-input/field-gap` (1), con espejo en `MOTSpacing.TimeInput`. Espejo de `text-field` en `MOTSpacing.TextField` (16 / 4). |
 | Trazo de foco del campo | `mot/stroke/emphasis` (2), decisión tuya. |
 | Verificación M3 | Fuente `material3-1.5.0-alpha12` (versión de `gradle/libs.versions.toml`): `TimeFieldContainerShape = CornerSmall`, alto 72 y ancho 96, `SupportLabelTop = 7`, `TimeInputBottomPadding = 8`, `TimeFieldFocusOutlineWidth = 2`. |
 
 **Gap 10 de `default` (`52949:28116`):** enlazado a `mot/spacing/time-input/content-gap` (10), con espejo `MOTSpacing.TimeInput.contentGap`. Sin origen en M3; token propio.
 
-**Gap 8 de `Direct Input` (raíz de `Selected=True` `52949:28122` y `Selected=False` `52949:28127`):** valor **interno de Material 3** (`TimeInputBottomPadding`, privado en la librería). No se puede consumir desde Compose, así que **no tiene variable**: se desenlazó y queda como valor fijo de 8 px, documentado aquí. Antes estaba enlazado a `component-sm` por valor, lo que era una coincidencia.
+**Gap 8 de `Direct Input` (raíz de `Selected=True` `52949:28122` y `Selected=False` `52949:28127`, entre el Input Field y la etiqueta "Time label"):** token propio `mot/spacing/time-input/label-gap` (8, `VariableID:61322:8945`), espejo `MOTSpacing.TimeInput.labelGap`. No es `TimeInputBottomPadding` de M3 (padding inferior de la fila de campos, `TimePicker.kt` línea 1124), ni `SupportLabelTop` (7 dp, desplazamiento del texto de apoyo). Origen del valor: propio del kit, sin correspondencia en M3.
 
 Pendiente de poner en la descripción del componente en Figma (`52949:28121`): requiere el plugin *Figma Desktop Bridge* abierto; hoy no está conectado.
 
@@ -163,6 +163,47 @@ Pendiente de poner en la descripción del componente en Figma (`52949:28121`): r
 - Variante equivalente en Figma: `Type=Square, Size=Small, Width=Default` (`Content` 40 × 40). Coincide con el tamaño y la forma del código.
 - Las demás variantes (otros Size, Width Wide/Narrow y Type=Round) se **mantienen en Figma** para uso futuro, sin emparejar con Compose hoy.
 - Enlaces verificados: radios del `Content` (0 y 20) y paddings del `State-layer` (0 y wide) enlazados a tokens; iconos y `Focus indicator` enlazados; único residual, trazo morado del marco de documentación del set.
+
+**Set Input de fecha (`51954:18540`), cerrado en esta pasada:**
+
+| Valor | Nodos enlazados | Token | Espejo Compose |
+|-------|-----------------|-------|----------------|
+| Gap 36 de `Header` | `51954:18555`, `51954:18542`, `61307:1919`, `61307:1961` | `mot/spacing/date-picker/header-gap` (36, `VariableID:61322:8991`) | `MOTSpacing.DatePicker.headerGap` |
+| PaddingTop 18 de `Date` y `Date return` | `51954:18560`, `51954:18548`, `61307:1924`, `61307:1966` | `mot/padding/date-picker/field-top` (18, `VariableID:61322:8992`) | `MOTSpacing.DatePicker.fieldTop` |
+
+No están en M3 (`DatePicker`, `1.5.0-alpha12`): los 36 que aparecen son `SelectionYearContainerHeight` del modal, no este gap. Los tokens siguen la regla de valores que se repiten en el set.
+
+**Modal date picker (`51954:18136`), cerrado en esta pasada:**
+
+| Valor | Nodos enlazados | Token | Espejo Compose |
+|-------|-----------------|-------|----------------|
+| Gap 36 de `Label and Date` | `51954:18218`, `51954:18139` | `mot/spacing/date-picker/label-gap` (36, `VariableID:61322:9118`) | `MOTSpacing.DatePicker.labelGap` |
+| Gap 74 de `Local Selection Row` | `51954:18222`, `51954:18143` | `mot/spacing/date-picker/selection-row-gap` (74, `VariableID:61322:9119`) | `MOTSpacing.DatePicker.selectionRowGap` |
+| Gap 244 de `Frame 2608508` | `51954:18256` | `mot/spacing/date-picker/block-gap` (244, `VariableID:61322:9120`) | `MOTSpacing.DatePicker.blockGap` |
+| PaddingLeft 64 de `Labe, Date & Icon Button` | `51954:18259` | Sin token: valor **interno de M3** (`DateRangePickerTitlePadding`, `start = 64.dp`, privado en `DateRangePicker.kt`) | — |
+
+Los tres gaps son propios del kit y están reservados en Compose, sin consumidor, igual que `headerGap` y `fieldTop`. El 64 se documenta como valor fijo de M3.
+
+**Keyboard picker (`52949:28053`), radios enlazados en esta pasada:**
+- `Format=12 hour` (`52949:28054`) y `Format=24 hour` (`52949:28069`): radio 28 → `Corner/Extra-large` (`55064:15592`). Coincide con `shapes.extraLarge` de `MotTimePickerDialog`.
+- `.Building Blocks/Period Selector` (`52949:28063`): radio 8 → `Corner/Small` (`55064:15589`). Coincide con `TimeFieldContainerShape` / `PeriodSelectorContainerShape` de M3 (CornerSmall).
+- Cuatro `Content` de icon button (`I52949:28067`, `I52949:28068`, `I52949:28080`, `I52949:28081`): radio 100 → `Corner/Full` (`55064:15593`). Con el tamaño del contenedor, ambos valores dibujan un círculo.
+
+**Keyboard picker, pendiente de decidir:**
+- `itemSpacing` 20 en los dos `Format` → `mot/spacing/keyboard-picker/gap` (alias de `spacing/20`, `VariableID:61322:9129`), espejo `MOTSpacing.KeyboardPicker.gap`, reservado. El 20 existe como primitivo; faltaba el semántico `mot/spacing/*`.
+- `paddingBottom` 20 y `itemSpacing` 121 en `Actions` (`52949:28077`, `52949:28064`): el 20 coincide con `Title` de M3 (`padding(bottom = 20.dp)`, privado), pero el nodo es `Actions`, no el título. El 121 no aparece en M3.
+- Radio 10 de `Focus indicator` (instancia de librería): sin token; es la geometría del indicador de la librería.
+- Radio 16 de la raíz del set (`52949:28053`): contenedor de documentación, igual que el resto de sets.
+
+**Paridad de botones (3 nov 2026):** `mot/padding/button/small-vertical` pasa de 10 a 8 en Figma (alias de `spacing/8`), igual que el padding vertical de M3 `SmallButtonContentPadding` y `ButtonDefaults.ContentPadding`. Espejo `MOTSpacing.ButtonSmall.vertical` = 8. Medium (16) y Large (32) ya coinciden con M3. Pendiente: los horizontales de Medium y Large sin verificar.
+
+**Decisión (3 nov 2026, código manda):** `mot/padding/button/small-horizontal` pasa de 16 a 24 en Figma (alias de `spacing/24`), igual que el padding por defecto de `MOTButton` (M3 `ContentPadding`: 24 horizontal, 8 vertical). Por tanto, el tamaño Small de Figma es 24/8 y ya no coincide con M3 `SmallButtonContentPadding` (16/8). Espejo `MOTSpacing.ButtonSmall` = 24/8. No cambia el aspecto de la app.
+
+**Uso en app:** Small es el tamaño de `MOTButton`, que ahora lo recibe como `contentPadding` (`MOTButtonSmallContentPadding`). Verificado en fuente M3: el padding por defecto de `Button` es `BaselineButtonTokens.LeadingSpace` (24) y vertical 8, así que el aspecto no cambia. `MOTOutlinedButton` también lo recibe como `contentPadding` (por defecto `MOTButtonSmallContentPadding`). M3 usa el mismo `ButtonDefaults.ContentPadding` en `OutlinedButton`, así que el aspecto no cambia. `MOTTextButton` no se toca: M3 le asigna otro padding (12 horizontal).
+
+**Consumo en Compose: ninguno todavía.** `MOTSpacing.DatePicker.headerGap` y `fieldTop` están definidos como reservados. No se aplicaron a `MotDateRangeField`, porque ese composable es un único `OutlinedTextField` y no tiene la estructura de cabecera más dos campos del set Input; aplicarlos cambiaría la pantalla sin coincidir con Figma. Se consumirán cuando exista un composable con esa estructura.
+
+Pendiente en este set: gap 1 de `Date` (`51954:18557`, `61307:1921`), sin enlazar; y paddingBottom 16 de `Date` y `Date return`, sin revisar.
 
 **Pendiente de decisión:** átomos del kit (Icon button, Text field, Button…) que usa el set. Su revisión la estás haciendo tú; no he tocado Figma.
 
