@@ -26,7 +26,7 @@ import java.time.YearMonth
 /**
  * Selector de rango con calendario acotado (flechas mes a mes, sin scroll infinito).
  * Límites por defecto: hoy → +2 años · equivalente a [CalendarConstraints] + forward validator.
- * Figma: Input date picker · Range (`51954:18554`).
+ * Espejo Figma: `figma-date-product-contract-2026-11-03.md` · Patrón B (modal rango).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -208,7 +208,8 @@ private fun MotPickerDialogActions(
 }
 
 /**
- * Selector año → mes → día para flujos que requieran el modal custom del DS (`51954:18136` · Day).
+ * Wizard año → mes → día. **Sin consumidor en `app/` hoy** — no es lámina PRODUCT en Figma
+ * hasta que una pantalla lo use (`figma-date-product-contract-2026-11-03.md`).
  */
 @Composable
 fun MotTripDatePickerDialog(

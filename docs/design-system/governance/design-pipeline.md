@@ -15,7 +15,14 @@ Guía de qué se crea, en qué orden y dónde vive cada cosa. No describe herram
 - **El showcase es documentación** del componente, no una fuente: explica lo que existe en Compose y en Figma.
 - **Notion registra el trabajo**: decisiones, cambios e historial. No contiene especificaciones.
 
-El flujo es **bidireccional**. Un cambio puede empezar en Figma (exploración), pero no se da por cerrado hasta que está en Compose y la paridad se ha comprobado.
+### Sentido de «bidireccional» (acordado 2026-11-03)
+
+| Tipo | Flujo habitual (SoT) | Sentido inverso (Figma → Compose) |
+|------|----------------------|-----------------------------------|
+| **Tokens de color** (y forma/tipo en variables Figma) | Variables Figma → export → `Color.kt` / tema | Igual: cambias en Figma → **avisas** → paridad en código. Siempre bidireccional en tokens. |
+| **Componentes** | **Compose** (M3 del repo + lo tocado en Android Studio) → espejo en Figma. Variables bindables: si faltan en Figma, **se crean**; si existen, **se enlazan**. | Solo si el componente **ya está en Figma** como referencia del código y **decides cambiarlo en Figma** → **avisas explícitamente** («lo he cambiado, haz paridad en código») → entonces Compose se actualiza y se vuelve a cerrar paridad Figma ↔ código. **No** se interpreta un kit M3 importado sin aviso como mandato de producto. |
+
+Sin aviso, **no** hay paridad inversa: Figma sigue al código.
 
 ---
 
@@ -29,9 +36,9 @@ El flujo es **bidireccional**. Un cambio puede empezar en Figma (exploración), 
 | **4. Showcase** (documentación) | `ds-showcase/` | Ficha del componente: variantes, estados, accesibilidad, ejemplos, versión y cambios. | `src/data/components/<id>.json` + página |
 | **5. Notion** (registro) | Changelog DS / Diario del proyecto | Entrada con la decisión, el motivo y los enlaces a código, Figma y ficha. | Entrada fechada |
 
-**Tokens:** un cambio de color, forma o tipografía empieza en las variables de Figma, con variables semánticas por alias (nunca hex sueltos). Después se exporta a `variables.json` y a Compose. Sin paridad, el cambio no se cierra.
+**Tokens:** un cambio de color, forma o tipografía empieza en las variables de Figma, con variables semánticas por alias (nunca hex sueltos). Después se exporta a `variables.json` y a Compose. Si cambias tokens en Figma, **avisas** y se cierra paridad en Kotlin. Sin paridad, el cambio no se cierra.
 
-Si el cambio es de componente y nace en Figma, se traslada a Compose y luego se vuelve al paso 2 para cerrar la paridad.
+**Componente desde Figma hacia código:** solo tras tu aviso de cambio intencional en el set ya espejado; entonces se implementa en Compose (paso 1) y se revalida paridad (pasos 2–3).
 
 ---
 
@@ -117,3 +124,15 @@ Un componente puede ser **propio** (nace en `designsystem/` o `ui/components/`) 
 - **Showcase solo con lo usado:** la ficha recoge los tokens que el componente consume en código. Los tokens reservados (sin consumidor en Compose) viven en Figma y en `MOTSpacing` con la marca «Reservado» en su KDoc, y no aparecen en el showcase hasta que un composable los use.
 
 Ejemplo: el campo de hora (`.Building Blocks/Input`, `Direct Input (keyboard) input`) es M3. Valores fijos: gap de 8 px (`TimeInputBottomPadding`), gap de 7 px (`SupportLabelTop`), alto 72 px y ancho 96 px del campo, verificados contra `material3-1.5.0-alpha12`.
+
+---
+
+## 10. Date / time pickers — espejo desde Compose (2026-11-03)
+
+**Regla habitual:** el componente nace en **Compose** (M3 Gradle + `app/.../date/`). Figma reproduce **exactamente** lo consumido en pantallas. Variables: **crear** si faltan, **enlazar** si existen.
+
+**Bidireccional (componentes):** solo si cambias en Figma un set **PRODUCT** ya espejado del código y **avisas** — entonces paridad hacia Kotlin.
+
+El kit M3 importado (**Input / Modal / Keyboard picker**) que **no** coincide con el composable **no** manda por sí solo; se alinea al código o se archiva. Contrato: [figma-date-product-contract-2026-11-03.md](../audits/figma-date-product-contract-2026-11-03.md).
+
+**`MotTripDatePickerDialog`:** sin pantalla consumidora → no PRODUCT en Figma hasta uso en app.

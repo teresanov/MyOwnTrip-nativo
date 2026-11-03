@@ -1,5 +1,7 @@
 # P1 · Date / time — matriz y bindings (30 oct 2026)
 
+> **Producto (2026-11-03):** Compose manda. Este documento audita el **kit M3 importado**. El contrato de lo que debe verse en Figma es **[figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md)** — si el kit difiere, **se cambia Figma**, no la app.
+
 **Plan:** [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md) · P1 Date/time (parcial en fase C, pendiente matriz de estados y quirks de kit).  
 **Fuente de verdad (Compose):** `app/.../ui/components/date/` · `MotDatePickerDialogs.kt`, `MotDateFormFields.kt`, `MotCalendarPicker.kt`, `MotTripDatePickerDialog.kt`, `MotTimePickerDialog.kt`.  
 **Espejo (Figma):** `Modal date picker` `51954:18136` · `Input date picker` `51954:18540`, librería `zrGAL4v6`.  

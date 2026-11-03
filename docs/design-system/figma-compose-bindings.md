@@ -2,7 +2,7 @@
 title: Figma ↔ Compose bindings
 description: Mapa canónico entre component sets de la librería Figma, fichas showcase y composables de runtime
 status: active
-lastUpdated: 2026-10-30
+lastUpdated: 2026-11-03
 ---
 
 # Figma ↔ Compose — bindings
@@ -60,7 +60,12 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **App bar** | [58114:20565](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58114-20565) | Small / Small-centered (+ KEEP Medium/Large/Search) | `TopAppBar` / `CenterAlignedTopAppBar` | pads `mot/spacing/component-*`; audit [B.3](audits/figma-appbar-phase-b3-2026-10-29.md) |
 | **FAB** / Extended / menu | [57998:43426](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57998-43426) | Circular | `FloatingActionButton` (+ menu Home) | Sin morph 0→20 |
 | **Bottom sheet** | [51827:5859](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51827-5859) | Modal True/False | `ModalBottomSheet` (`shapes.extraLarge`) | pads contenido `MOTSpacing.screenHorizontal`; audit [C](audits/figma-bottomsheet-phase-c-2026-10-29.md) |
-| **Modal / Input date picker** | [51954:18136](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18136) / [51954:18540](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18540) | Day / Range… | `MotDate*Dialog` / `MotTripDatePickerDialog` | contenedor `shapes.extraLarge`; audit [C](audits/figma-datepicker-phase-c-2026-10-29.md) |
+| **Date · range field** | *(lámina PRODUCT · doc)* | Outlined + calendar icon | `MotDateRangeField` | [figma-date-product-contract-2026-11-03.md](audits/figma-date-product-contract-2026-11-03.md) · Crear/editar viaje |
+| **Date · range dialog** | *(lámina PRODUCT · doc)* | Calendar bounded month | `MotDateRangePickerDialog` | ↑ + `MotCalendarPicker.kt` |
+| **Date · single field** | *(lámina PRODUCT · doc)* | Outlined + calendar | `MotDateField` | Wallet |
+| **Date · single dialog** | *(lámina PRODUCT · doc)* | Calendar single month | `MotDatePickerDialog` | ↑ |
+| **Time · field + dialog** | *(lámina PRODUCT · doc)* | Outlined + TimeInput dialog 24h | `MotTimeField` / `MotTimePickerDialog` | Wallet · plan sheets |
+| ~~Modal / Input date picker~~ | [51954:18136](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18136) / [51954:18540](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18540) | **ARCHIVE · M3 kit** | — | No design-file; ver [disparity-remediation-plan-2026-11-03.md](audits/disparity-remediation-plan-2026-11-03.md) |
 | **List Item - Swipe** | [59106:13321](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=59106-13321) | Swipe states | `SwipeableTripListRow` / `SwipeableWalletDocumentRow` | `MOTSpacing.ListItem.*`; audit [C](audits/figma-list-swipe-phase-c-2026-10-29.md) · página **Lists** |
 | **Tabs** | [54563:40023](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=54563-40023) | Primary/Secondary + BB | `MOTTab` + `TabRow` / `ScrollableTabRow` | `MOTSpacing.Tab.*`; audit [C](audits/figma-tabs-phase-c-2026-10-29.md) · página **Tabs** |
 | **Dividers** | [51816:5860](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51816-5860) | Full-width / Inset / Middle-inset (+ V + subhead) | `MOTHorizontalDivider` | `outlineVariant` · inset=`screenHorizontal`; audit [C](audits/figma-dividers-phase-c-2026-10-29.md) |

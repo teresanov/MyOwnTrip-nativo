@@ -23,7 +23,8 @@ import java.time.LocalTime
 
 /**
  * Campo de formulario para rango de fechas. Abre [MotDateRangePickerDialog] al tocar.
- * Figma: Input date picker · Range (`51954:18554`).
+ * Espejo Figma (PRODUCT): un `Text field` Outlined + modal calendario acotado — ver
+ * `docs/design-system/audits/figma-date-product-contract-2026-11-03.md` (Compose manda).
  */
 @Composable
 fun MotDateRangeField(
@@ -135,7 +136,7 @@ fun MotDateField(
 
 /**
  * Campo de formulario para hora (24 h). Abre [MotTimePickerDialog] al tocar.
- * Figma: Keyboard picker (`52949:28069`).
+ * Espejo Figma: `figma-date-product-contract-2026-11-03.md` · Patrón C (`MotTimePickerDialog`).
  */
 @Composable
 fun MotTimeField(
