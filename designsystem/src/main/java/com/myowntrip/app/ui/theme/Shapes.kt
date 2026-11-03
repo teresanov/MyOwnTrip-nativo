@@ -77,7 +77,8 @@ fun rememberMOTButtonShape(
     label = "motButtonCorner",
   )
 
-  return RoundedCornerShape(corner)
+  // El muelle de liberación rebasa 0dp; Compose no admite radios negativos en RoundedCornerShape.
+  return RoundedCornerShape(corner.coerceAtLeast(0.dp))
 }
 
 /**

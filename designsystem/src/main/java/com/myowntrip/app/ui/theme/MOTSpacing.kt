@@ -204,5 +204,7 @@ object MOTSpacing {
   object TextField {
     val horizontal = 16.dp
     val vertical = 4.dp
+    /** Campo outlined (`OutlinedTextField`, M3): 16 arriba y abajo, con o sin etiqueta. Figma: `mot/padding/text-field/outlined-vertical`. */
+    val outlinedVertical = 16.dp
   }
 }

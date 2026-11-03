@@ -207,6 +207,22 @@ Pendiente en este set: gap 1 de `Date` (`51954:18557`, `61307:1921`), sin enlaza
 
 **Button - outline (`58650:10213`) ↔ `MOTOutlinedButton` (3 nov 2026):** contenedor transparente, borde `Schemes/Outline Variant` con trazo 1 px y etiqueta `Schemes/On Surface Variant` coinciden con `outlinedButtonColors()` y `outlinedButtonBorder()` de M3 (`1.5.0-alpha12`). El icono estaba enlazado a `Schemes/On Surface` (`54778:427`); en Compose hereda el color de la etiqueta. Corregido: 20 iconos de la variante (todos los estados) enlazados a `Schemes/On Surface Variant` (`54778:429`). Ancho: el componente no tiene ancho propio; lo define el contenedor (`fillMaxWidth` o `weight`), así que en Figma la instancia debe ir en `FILL` dentro del auto layout.
 
+**Tokens de reserva (3 nov 2026):** existen en Figma (aplicados a nodos) y en `MOTSpacing`, pero ningún composable de `app/` los lee. Cambiarlos en Figma no altera la app hasta que se conecten.
+- Campo de hora: `time-input/field-gap`, `time-input/label-gap`, `time-input/content-gap`. Sin nodo: `time-input/label-top`.
+- Fecha (Input y Modal): `date-picker/header-gap`, `date-picker/field-top`, `date-picker/label-gap`, `date-picker/selection-row-gap`, `date-picker/block-gap`.
+- Teclado de hora: `keyboard-picker/gap`.
+- Chip, diálogo, FAB, snackbar y menú: objetos en `MOTSpacing` sin consumidor (`Chip`, `Dialog`, `Fab`, `Snackbar`, `Menu.vertical/horizontal`, `IconButton` tamaños).
+
+**Paridad de botones (3 nov 2026):**
+- `MOTTonalButton` ↔ `Button - tonal` (`58651:11237`), XSmall: contenedor `Schemes/Secondary Container`, texto `Schemes/On Secondary Container`, padding 12/6 (`xsmall`), esquina `Corner/None`. Coincide con el código.
+- `MOTTextButton` ↔ `Button - text` (`58650:8094`): el código usa el `TextButtonContentPadding` de M3 (12 horizontal, 8 vertical; verificado en fuente). Figma tenía 24 horizontal en las variantes Small. Corregido: 5 `State-layer` de las variantes Small enlazados a `mot/padding/button/xsmall-horizontal` (12). Texto `Schemes/Primary`, esquina 0.
+
+**Campo de texto outlined (`Text field`, `52798:24373`) ↔ `OutlinedTextField` (3 nov 2026):**
+- M3 (`1.5.0-alpha12`, `OutlinedTextFieldDefaults.contentPadding`): 16 dp en los cuatro lados, con o sin etiqueta. (El 8 de `TextFieldWithLabelVerticalPadding` es del `TextField` relleno, no del outlined.)
+- Horizontal: `mot/padding/text-field/horizontal` (16). Coincide.
+- Vertical: en Figma estaba en `mot/padding/text-field/vertical` (4), que no coincide con el código. Como ese token lo usan los campos de hora con valor 4 (decisión anterior), no se cambia. Se crea `mot/padding/text-field/outlined-vertical` (16, alias de `spacing/16`) y se enlaza al `State-layer` y `Content` de las 60 variantes del set (252 nodos). Espejo: `MOTSpacing.TextField.outlinedVertical`.
+- `MotTimeField` y `MotDateField` usan el `OutlinedTextField` por defecto de M3, así que ya pintan 16 y el código no cambia.
+
 **Pendiente de decisión:** átomos del kit (Icon button, Text field, Button…) que usa el set. Su revisión la estás haciendo tú; no he tocado Figma.
 
 **Pendiente, fuera de este cierre:**
