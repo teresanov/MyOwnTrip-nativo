@@ -80,4 +80,22 @@ object MOTSpacing {
   object DocumentAttachment {
     val previewHeight = 180.dp
   }
+
+  /**
+   * Campo de hora (M3 TimeInput) en el kit. Figma: `mot/spacing/time-input/…`.
+   * labelTop = `SupportLabelTop` de M3 (7); fieldGap = hueco interno del campo (1).
+   */
+  object TimeInput {
+    val labelTop = 7.dp
+    val fieldGap = 1.dp
+  }
+
+  /**
+   * Padding interno del campo de texto (Outlined). Figma: `mot/padding/text-field/horizontal|vertical`.
+   * Compose: consumir desde el TextField de M3 cuando se personalice; el set Input usa estos valores.
+   */
+  object TextField {
+    val horizontal = 16.dp
+    val vertical = 4.dp
+  }
 }
