@@ -1,0 +1,1 @@
+await figma.clientStorage.setAsync("p5_4", "IHJldHVybiB7IHBhcnQ6ICdBJywgY2FwczogWyc0OTE6MTM5ODcnLCAnNDkxOjEzOTE1J10gfTs="); return { "p5": 4, len: 76 };

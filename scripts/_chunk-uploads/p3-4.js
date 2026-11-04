@@ -1,0 +1,1 @@
+await figma.clientStorage.setAsync("p3_4", "LCAyMCk7IHJvdy5hcHBlbmRDaGlsZChpY29uSW5zdCk7IHJvdy5hcHBlbmRDaGlsZChhd2FpdCBzdHlsZWRUZXh0KCdMYWJlbCcsIGxhYmVsLCBLRVlTLnRleHRMYWJlbE1lZGl1bSwgVEVSVElBUlkpKTsgcmV0dXJuIHJvdzsgfSBhc3luYyBmdW5jdGlvbiBjcmVhdGVEb2N1bWVudEF0"); return { "p3": 4, len: 216 };

@@ -1,0 +1,582 @@
+/**
+ * Wallet design-file — paridad caps vs Compose (datos reales, instancias DS).
+ * Ejecutar en Vf2tNMXyKAlJSV53A1v4Is (Desktop Bridge).
+ *
+ * Compose SoT:
+ * - cap 10 · WalletDetailPreview → previewDetailEntry
+ * - cap 10b · detalle hotel → previewWalletEntries[1] + previewHotelImportState
+ * - cap 10c · actividad drift (debug) → DebugPastTripsSeeder teatro
+ * - cap 2 · WalletScreenEmptyPreview
+ * - cap 13 · DocumentViewerScreen (PDF billete-barcelona.pdf)
+ */
+if (figma.fileKey !== 'Vf2tNMXyKAlJSV53A1v4Is') {
+  throw new Error('ABORT: abrir MyOwnTrip_design-file');
+}
+
+const KEYS = {
+  statusBar: '88d8181832a7a046843e790ed88470cda99cabba',
+  appBarSet: 'f57fabde1da94e3f942cc75ffd7a844d5bfb532e',
+  tabsSet: '5b3e05495acb68822b3e4776811613d852c9b9e6',
+  buttonFilledSet: '14e743023239aeab8e4b8dfe20de85ed8e5ba30a',
+  buttonOutlineSet: '299fa03b373d5ebc27a4306000649895cf8989b5',
+  iconArrowBack: '52d53666523506ac044165acdaf9318f4f0baa2f',
+  iconDelete: '2a48234db266f2b0c4a36c4f7ee933a0ea3c52d5',
+  iconAdd: '76fc3cf84b76e05f778f9ccdbf33ce12578bbf75',
+  iconUpload: 'ded19a17fde095004ce0c27e82402fdae15eb668',
+  iconQr: '9ce1f9e863b93e3dc9274da72717a635e0baeaa3',
+  docAttachmentFile: '62549a46c0729ce77dc750aaaf684dd4ab557d6c',
+  assistiveChipSet: 'e2ccfa0a0c7488ee60e95c0fc7b37e9424fc8cc4',
+  textHeadlineMedium: 'c1ee9af5e5ed49a3753709a82bd690a1864166ea',
+  textBodyLarge: '08b50f8837ae9bd312c7496d14d76af0ab631af7',
+  textBodyMedium: '8b638b84df298decb21e343aeab711861094ea7e',
+  textBodySmall: '51b733da29853f222623945f26fe4bb9c6892a63',
+  textLabelLarge: 'be251ea271cd60f11997737b47ac040f09c862ee',
+  textLabelMedium: 'e109920fc5c52a8fff4ed98f16182172c8749303',
+};
+
+const TERTIARY = { r: 0.51, g: 0.33, b: 0.08 };
+const ON_SURFACE_VARIANT = { r: 0.29, g: 0.27, b: 0.25 };
+
+const SCENARIOS = {
+  flightDetail: {
+    preview: 'WalletDetailPreview',
+    appBar: 'IB 3254 · Madrid → Barcelona',
+    typeLabel: 'Vuelo',
+    offline: { mode: 'local', label: 'Sin conexión' },
+    dateLine: 'Fecha: 4 jul 2026',
+    timeLine: 'Hora: 09:15',
+    notes: null,
+    planChip: null,
+    qr: { hint: 'Muéstralo en la puerta de embarque. Disponible sin conexión.', compact: true },
+    attachment: { fileName: 'billete-barcelona.pdf', hint: 'Toca para ver el documento' },
+  },
+  hotelDetail: {
+    preview: 'previewWalletEntries · HOTEL + previewHotelImportState',
+    appBar: 'Hotel Casa Bonay',
+    typeLabel: 'Hotel',
+    offline: { mode: 'local', label: 'Sin conexión' },
+    dateLine: 'Fecha: 4 jul 2026',
+    timeLine: null,
+    notes: 'Check-in 15:00',
+    planChip: null,
+    qr: null,
+    attachment: { fileName: 'hotel-casa-bonay-reserva.pdf', hint: 'Toca para ver el documento' },
+  },
+  teatroDetail: {
+    preview: 'DebugPastTripsSeeder · teatro-real-las-bodas-de-figaro.pdf',
+    appBar: 'Teatro Nacional D. Maria II',
+    typeLabel: 'Actividad',
+    offline: { mode: 'qr', label: 'QR sin conexión' },
+    dateLine: 'Fecha: 15 abr 2026',
+    timeLine: 'Hora: 20:00',
+    notes: null,
+    planChip: 'Actualizada en el plan · 19:15',
+    qr: { hint: 'Muéstralo en el acceso. Disponible sin conexión.', compact: true },
+    attachment: { fileName: 'teatro-real-las-bodas-de-figaro.pdf', hint: 'Toca para ver el documento' },
+  },
+};
+
+const iconCache = {};
+async function getIcon(key) {
+  if (!iconCache[key]) iconCache[key] = await figma.importComponentByKeyAsync(key);
+  return iconCache[key];
+}
+
+function setProps(inst, map) {
+  const props = {};
+  for (const key of Object.keys(inst.componentProperties)) {
+    for (const [prefix, value] of Object.entries(map)) {
+      if (key.startsWith(prefix)) props[key] = value;
+    }
+  }
+  if (Object.keys(props).length) inst.setProperties(props);
+}
+
+function appendFill(parent, node) {
+  parent.appendChild(node);
+  if ('layoutSizingHorizontal' in node) node.layoutSizingHorizontal = 'FILL';
+  return node;
+}
+
+async function applyTextStyle(node, styleKey) {
+  try {
+    const style = await figma.importStyleByKeyAsync(styleKey);
+    if (node.type === 'TEXT') await node.setTextStyleIdAsync(style.id);
+  } catch (_) {}
+}
+
+async function loadFonts() {
+  await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
+  await figma.loadFontAsync({ family: 'Inter', style: 'Medium' });
+  await figma.loadFontAsync({ family: 'Fraunces', style: 'Regular' });
+}
+
+async function styledText(name, characters, styleKey, { fill } = {}) {
+  await loadFonts();
+  const t = figma.createText();
+  t.name = name;
+  t.characters = characters;
+  t.textAutoResize = 'HEIGHT';
+  await applyTextStyle(t, styleKey);
+  if (fill) t.fills = [{ type: 'SOLID', color: fill }];
+  return t;
+}
+
+async function createAppBar(title, { showDelete = false } = {}) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.appBarSet);
+  const comp = set.children.find((c) => c.name === 'Configuration=Small, Elevation=Flat');
+  const inst = comp.createInstance();
+  inst.name = 'App bar';
+  setProps(inst, {
+    'Show 1st trailing action': showDelete,
+    'Show 2nd trailing action': false,
+    'Show 3rd trailing action': false,
+  });
+  const textContent = inst.findOne((n) => n.name === 'Text content');
+  if (textContent) {
+    setProps(textContent, { Headline: title, 'Show-supporting-text': false });
+  }
+  const leading = inst.findOne((n) => n.name === 'Leading icon');
+  const leadIcon = leading?.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
+  if (leadIcon) leadIcon.swapComponent(await getIcon(KEYS.iconArrowBack));
+  if (showDelete) {
+    const trail = inst.findOne((n) => n.name === 'Trailing action 1');
+    const trailIcon = trail?.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
+    if (trailIcon) trailIcon.swapComponent(await getIcon(KEYS.iconDelete));
+  }
+  return inst;
+}
+
+async function createTabs() {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.tabsSet);
+  const comp = set.children.find(
+    (c) => c.name === 'Type=Scrollable, Style=Primary, Configuration=Label only',
+  );
+  const inst = comp.createInstance();
+  inst.name = 'Tabs';
+  const labels = ['Wallet', 'Días', 'Gastos', 'Sitios'];
+  const tabs = inst.findAll((n) => /^Tab \d$/.test(n.name));
+  labels.forEach((label, i) => {
+    if (!tabs[i]) return;
+    setProps(tabs[i], {
+      'Label text': label,
+      Selected: i === 0 ? 'True' : 'False',
+      State: 'Enabled',
+    });
+  });
+  tabs.forEach((tab) => {
+    const num = parseInt(tab.name.replace('Tab ', ''), 10);
+    if (num > 4) tab.visible = false;
+  });
+  return inst;
+}
+
+async function createFilledButton(label, iconKey) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.buttonFilledSet);
+  const comp = set.children.find((c) => c.name === 'Type=Square, Size=Medium, State=Enabled');
+  const inst = comp.createInstance();
+  inst.layoutGrow = 1;
+  setProps(inst, { 'Label text': label, 'Show icon': true });
+  const iconNode = inst.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
+  if (iconNode) iconNode.swapComponent(await getIcon(iconKey));
+  return inst;
+}
+
+async function createOutlineButton(label, iconKey) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.buttonOutlineSet);
+  const comp = set.children.find((c) => c.name === 'Type=Square, Size=Medium, State=Enabled');
+  const inst = comp.createInstance();
+  inst.layoutGrow = 1;
+  setProps(inst, { 'Label text': label, 'Show icon': true });
+  const iconNode = inst.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
+  if (iconNode) iconNode.swapComponent(await getIcon(iconKey));
+  return inst;
+}
+
+function createQrSvgNode(size) {
+  const cells = 21;
+  const module = size / cells;
+  let rects = '';
+  for (let y = 0; y < cells; y++) {
+    for (let x = 0; x < cells; x++) {
+      const on =
+        (x < 7 && y < 7) ||
+        (x > 13 && y < 7) ||
+        (x < 7 && y > 13) ||
+        ((x + y) % 3 === 0 && x > 6 && x < 15 && y > 6 && y < 15) ||
+        (x % 2 === 0 && y % 2 === 1);
+      if (on) {
+        rects += `<rect x="${x * module}" y="${y * module}" width="${module}" height="${module}" fill="#1a1a1a"/>`;
+      }
+    }
+  }
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><rect width="100%" height="100%" fill="#ffffff"/>${rects}</svg>`;
+  const node = figma.createNodeFromSvg(svg);
+  node.name = 'QR bitmap';
+  node.resize(size, size);
+  return node;
+}
+
+async function createWalletQrCard({ hint, compact }) {
+  const size = compact ? 200 : 260;
+  const card = figma.createFrame();
+  card.name = 'Wallet QR card · gap DS';
+  card.layoutMode = 'VERTICAL';
+  card.primaryAxisSizingMode = 'AUTO';
+  card.counterAxisSizingMode = 'FIXED';
+  card.paddingLeft = 16;
+  card.paddingRight = 16;
+  card.paddingTop = 16;
+  card.paddingBottom = 16;
+  card.itemSpacing = 8;
+  card.cornerRadius = 12;
+  card.fills = [{ type: 'SOLID', color: { r: 0.98, g: 0.97, b: 0.95 } }];
+  card.strokes = [{ type: 'SOLID', color: { r: 0.75, g: 0.72, b: 0.68 } }];
+  card.strokeWeight = 1;
+
+  const label = await styledText('Label', 'Código QR', KEYS.textLabelLarge, { fill: TERTIARY });
+  card.appendChild(label);
+
+  const qrWrap = figma.createFrame();
+  qrWrap.name = 'QR image';
+  qrWrap.layoutMode = 'VERTICAL';
+  qrWrap.primaryAxisAlignItems = 'CENTER';
+  qrWrap.counterAxisAlignItems = 'CENTER';
+  qrWrap.resize(size, size);
+  qrWrap.fills = [];
+  qrWrap.appendChild(createQrSvgNode(size));
+  card.appendChild(qrWrap);
+
+  const hintNode = await styledText('Hint', hint, KEYS.textBodySmall, { fill: ON_SURFACE_VARIANT });
+  card.appendChild(hintNode);
+  return card;
+}
+
+async function createOfflineRow({ mode, label }) {
+  const row = figma.createFrame();
+  row.name = 'Offline indicator';
+  row.layoutMode = 'HORIZONTAL';
+  row.primaryAxisAlignItems = 'CENTER';
+  row.itemSpacing = 4;
+  row.fills = [];
+  const iconKey = mode === 'qr' ? KEYS.iconQr : KEYS.iconQr;
+  const iconMc = await getIcon(iconKey);
+  const iconInst = iconMc.createInstance();
+  iconInst.name = 'Icon';
+  iconInst.resize(20, 20);
+  row.appendChild(iconInst);
+  const text = await styledText('Label', label, KEYS.textLabelMedium, { fill: TERTIARY });
+  row.appendChild(text);
+  return row;
+}
+
+async function createPlanChip(label) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.assistiveChipSet);
+  const comp = set.children.find(
+    (c) =>
+      c.name === 'Style=Outlined, Configuration=Label only, State=Enabled',
+  );
+  const inst = comp.createInstance();
+  inst.name = 'PlanPlacementSourceChip · gap warning colors';
+  setProps(inst, { 'Label text': label });
+  return inst;
+}
+
+async function createDocumentAttachment({ fileName, hint }) {
+  const mc = await figma.importComponentByKeyAsync(KEYS.docAttachmentFile);
+  const inst = mc.createInstance();
+  inst.name = 'Document attachment';
+  setProps(inst, {
+    'File name': fileName,
+    'Hint text': hint,
+  });
+  return inst;
+}
+
+async function rebuildDetailPhone(phoneId, scenario) {
+  const phone = await figma.getNodeByIdAsync(phoneId);
+  if (!phone) throw new Error('phone missing ' + phoneId);
+  phone.layoutMode = 'VERTICAL';
+  phone.primaryAxisSizingMode = 'FIXED';
+  phone.counterAxisSizingMode = 'FIXED';
+  phone.resize(360, 800);
+  phone.itemSpacing = 0;
+  phone.fills = [{ type: 'SOLID', color: { r: 1, g: 0.985, b: 0.969 } }];
+  phone.clipsContent = true;
+  phone.children.forEach((c) => c.remove());
+
+  try {
+    const sb = (await figma.importComponentByKeyAsync(KEYS.statusBar)).createInstance();
+    sb.name = 'Status bar';
+    appendFill(phone, sb);
+  } catch (_) {}
+
+  appendFill(phone, await createAppBar(scenario.appBar, { showDelete: true }));
+
+  const body = figma.createFrame();
+  body.name = 'Body';
+  body.layoutMode = 'VERTICAL';
+  body.layoutGrow = 1;
+  body.primaryAxisSizingMode = 'FIXED';
+  body.counterAxisSizingMode = 'FIXED';
+  body.itemSpacing = 0;
+  body.fills = [];
+  appendFill(phone, body);
+
+  const scroll = figma.createFrame();
+  scroll.name = 'Scroll';
+  scroll.layoutMode = 'VERTICAL';
+  scroll.itemSpacing = 12;
+  scroll.fills = [];
+  scroll.clipsContent = true;
+  scroll.layoutGrow = 1;
+  scroll.primaryAxisSizingMode = 'AUTO';
+  scroll.paddingLeft = 16;
+  scroll.paddingRight = 16;
+  scroll.paddingTop = 16;
+  scroll.paddingBottom = 16;
+  appendFill(body, scroll);
+
+  appendFill(
+    scroll,
+    await styledText('Type', scenario.typeLabel, KEYS.textLabelLarge, { fill: TERTIARY }),
+  );
+  if (scenario.offline) {
+    appendFill(scroll, await createOfflineRow(scenario.offline));
+  }
+  if (scenario.dateLine) {
+    appendFill(scroll, await styledText('Fecha', scenario.dateLine, KEYS.textBodyMedium));
+  }
+  if (scenario.timeLine) {
+    appendFill(scroll, await styledText('Hora', scenario.timeLine, KEYS.textBodyMedium));
+  }
+  if (scenario.planChip) {
+    appendFill(scroll, await createPlanChip(scenario.planChip));
+  }
+  if (scenario.notes) {
+    appendFill(
+      scroll,
+      await styledText('Notes', scenario.notes, KEYS.textBodyLarge),
+    );
+  }
+  if (scenario.qr) {
+    appendFill(scroll, await createWalletQrCard(scenario.qr));
+  }
+  if (scenario.attachment) {
+    appendFill(scroll, await createDocumentAttachment(scenario.attachment));
+  }
+}
+
+async function rebuildEmptyPhone(phoneId) {
+  const phone = await figma.getNodeByIdAsync(phoneId);
+  if (!phone) throw new Error('phone missing ' + phoneId);
+  phone.layoutMode = 'VERTICAL';
+  phone.primaryAxisSizingMode = 'FIXED';
+  phone.counterAxisSizingMode = 'FIXED';
+  phone.resize(360, 800);
+  phone.itemSpacing = 0;
+  phone.fills = [{ type: 'SOLID', color: { r: 1, g: 0.985, b: 0.969 } }];
+  phone.clipsContent = true;
+  phone.children.forEach((c) => c.remove());
+
+  try {
+    const sb = (await figma.importComponentByKeyAsync(KEYS.statusBar)).createInstance();
+    sb.name = 'Status bar';
+    appendFill(phone, sb);
+  } catch (_) {}
+
+  const body = figma.createFrame();
+  body.name = 'Body';
+  body.layoutMode = 'VERTICAL';
+  body.layoutGrow = 1;
+  body.primaryAxisSizingMode = 'FIXED';
+  body.counterAxisSizingMode = 'FIXED';
+  body.primaryAxisAlignItems = 'CENTER';
+  body.counterAxisAlignItems = 'CENTER';
+  body.paddingLeft = 16;
+  body.paddingRight = 16;
+  body.paddingBottom = 24;
+  body.fills = [{ type: 'SOLID', color: { r: 1, g: 0.985, b: 0.969 } }];
+  appendFill(phone, body);
+
+  const stack = figma.createFrame();
+  stack.name = 'Empty state';
+  stack.layoutMode = 'VERTICAL';
+  stack.primaryAxisAlignItems = 'CENTER';
+  stack.counterAxisAlignItems = 'CENTER';
+  stack.itemSpacing = 16;
+  stack.fills = [];
+  stack.layoutGrow = 1;
+  appendFill(body, stack);
+
+  appendFill(
+    stack,
+    await styledText('Headline', 'Tu maleta digital', KEYS.textHeadlineMedium),
+  );
+  const sub = await styledText(
+    'Body',
+    'Centraliza vuelos, hoteles y PDFs del viaje. Todo disponible sin conexión cuando lo necesites.',
+    KEYS.textBodyLarge,
+    { fill: ON_SURFACE_VARIANT },
+  );
+  sub.textAlignHorizontal = 'CENTER';
+  appendFill(stack, sub);
+
+  const actions = figma.createFrame();
+  actions.name = 'WalletQuickActions';
+  actions.layoutMode = 'HORIZONTAL';
+  actions.itemSpacing = 16;
+  actions.fills = [];
+  actions.layoutSizingHorizontal = 'FILL';
+  appendFill(stack, actions);
+  appendFill(actions, await createFilledButton('Añadir', KEYS.iconAdd));
+  appendFill(actions, await createOutlineButton('Importar', KEYS.iconUpload));
+}
+
+async function rebuildPdfViewerPhone(phoneId) {
+  const fileName = 'billete-barcelona.pdf';
+  const phone = await figma.getNodeByIdAsync(phoneId);
+  if (!phone) throw new Error('phone missing ' + phoneId);
+  phone.layoutMode = 'VERTICAL';
+  phone.primaryAxisSizingMode = 'FIXED';
+  phone.counterAxisSizingMode = 'FIXED';
+  phone.resize(360, 800);
+  phone.itemSpacing = 0;
+  phone.fills = [{ type: 'SOLID', color: { r: 1, g: 0.985, b: 0.969 } }];
+  phone.clipsContent = true;
+  phone.children.forEach((c) => c.remove());
+
+  try {
+    const sb = (await figma.importComponentByKeyAsync(KEYS.statusBar)).createInstance();
+    sb.name = 'Status bar';
+    appendFill(phone, sb);
+  } catch (_) {}
+
+  appendFill(phone, await createAppBar(fileName, { showDelete: false }));
+
+  const body = figma.createFrame();
+  body.name = 'Body · PdfPagesViewer';
+  body.layoutMode = 'VERTICAL';
+  body.layoutGrow = 1;
+  body.primaryAxisSizingMode = 'FIXED';
+  body.counterAxisSizingMode = 'FIXED';
+  body.paddingLeft = 0;
+  body.paddingRight = 0;
+  body.paddingTop = 0;
+  body.paddingBottom = 0;
+  body.fills = [{ type: 'SOLID', color: { r: 0.95, g: 0.94, b: 0.92 } }];
+  appendFill(phone, body);
+
+  const page = figma.createFrame();
+  page.name = 'PDF page 1 · placeholder';
+  page.layoutGrow = 1;
+  page.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }];
+  page.strokes = [{ type: 'SOLID', color: { r: 0.85, g: 0.83, b: 0.8 } }];
+  page.strokeWeight = 1;
+  appendFill(body, page);
+
+  const caption = await styledText(
+    'Doc note',
+    'DocumentViewerScreen · PdfRenderer · content://preview/billete-barcelona.pdf',
+    KEYS.textLabelMedium,
+    { fill: ON_SURFACE_VARIANT },
+  );
+  caption.textAlignHorizontal = 'CENTER';
+  page.layoutMode = 'VERTICAL';
+  page.primaryAxisAlignItems = 'CENTER';
+  page.counterAxisAlignItems = 'CENTER';
+  page.paddingTop = 120;
+  appendFill(page, caption);
+}
+
+function ensureCap(screens, capName, captionText) {
+  let cap = screens.children.find((c) => c.name === capName);
+  if (!cap) {
+    cap = figma.createFrame();
+    cap.name = capName;
+    cap.layoutMode = 'VERTICAL';
+    cap.itemSpacing = 12;
+    cap.fills = [];
+    screens.appendChild(cap);
+  }
+  let caption = cap.findOne((n) => n.name === 'caption' && n.type === 'TEXT');
+  if (!caption) {
+    caption = figma.createText();
+    caption.name = 'caption';
+    cap.insertChild(0, caption);
+  }
+  caption.characters = captionText;
+  caption.textAutoResize = 'HEIGHT';
+  caption.layoutSizingHorizontal = 'FILL';
+  loadFonts().then(() => figma.loadFontAsync({ family: 'Inter', style: 'Regular' }));
+  caption.fontSize = 12;
+  caption.fills = [{ type: 'SOLID', color: { r: 0.4, g: 0.4, b: 0.4 } }];
+
+  let phone = cap.findOne((n) => n.name === 'phone');
+  if (!phone) {
+    phone = figma.createFrame();
+    phone.name = 'phone';
+    phone.resize(360, 800);
+    cap.appendChild(phone);
+  }
+  return cap;
+}
+
+await figma.loadAllPagesAsync();
+const page = figma.root.children.find((p) => p.id === '491:14473');
+if (!page) throw new Error('04 · Wallet page missing');
+await figma.setCurrentPageAsync(page);
+
+const flow = page.findOne((n) => n.name === 'Wallet · flujo de app');
+if (!flow) throw new Error('Wallet flow missing');
+const screens = flow.findOne((n) => n.name === 'Screens');
+if (!screens) throw new Error('Screens missing');
+
+await rebuildDetailPhone('491:13987', SCENARIOS.flightDetail);
+
+const cap10b = ensureCap(
+  screens,
+  'cap 10b — detalle hotel',
+  'cap 10b · detalle hotel\npreview: previewWalletEntries HOTEL + previewHotelImportState · hotel-casa-bonay-reserva.pdf',
+);
+const phone10b = cap10b.findOne((n) => n.name === 'phone');
+await rebuildDetailPhone(phone10b.id, SCENARIOS.hotelDetail);
+
+const cap10c = ensureCap(
+  screens,
+  'cap 10c — detalle actividad · drift',
+  'cap 10c · Teatro Nacional D. Maria II\npreview: DebugPastTripsSeeder · plan chip drift · teatro-real-las-bodas-de-figaro.pdf',
+);
+const phone10c = cap10c.findOne((n) => n.name === 'phone');
+await rebuildDetailPhone(phone10c.id, SCENARIOS.teatroDetail);
+
+await rebuildEmptyPhone('491:13915');
+
+const cap13 = ensureCap(
+  screens,
+  'cap 13 — visor PDF',
+  'cap 13 · visor PDF\npreview: DocumentViewerScreen · billete-barcelona.pdf · route: document viewer',
+);
+const phone13 = cap13.findOne((n) => n.name === 'phone');
+await rebuildPdfViewerPhone(phone13.id);
+
+const cap10 = screens.children.find((c) => c.name === 'cap 10 — detalle');
+if (cap10) {
+  let capCaption = cap10.findOne((n) => n.name === 'caption' && n.type === 'TEXT');
+  if (capCaption) {
+    capCaption.characters =
+      'cap 10 · detalle documento\npreview: WalletDetailPreview · previewDetailEntry · billete-barcelona.pdf + WalletQrCard';
+  }
+}
+
+figma.viewport.scrollAndZoomIntoView([cap10 || cap10b]);
+
+return {
+  status: 'wallet-flows-parity',
+  updated: ['491:13987', '491:13915', phone10b.id, phone10c.id, phone13.id],
+  gaps: [
+    'WalletQrCard — frame doc (sin COMPONENT DS)',
+    'PlanPlacementSourceChip — Assistive chip sin tokens warning',
+    'WalletOfflineIndicator — icon wifi_off no publicado en DS',
+  ],
+};

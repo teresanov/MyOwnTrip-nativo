@@ -62,9 +62,10 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **Bottom sheet** | [51827:5859](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51827-5859) | Modal True/False | `ModalBottomSheet` (`shapes.extraLarge`) | pads contenido `MOTSpacing.screenHorizontal`; audit [C](audits/figma-bottomsheet-phase-c-2026-10-29.md) |
 | **Date · range field** | [61340:8809](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61340-8809) | `MotDateRangeField` · 2× Outlined editable + calendar icon | `MotDateFormFields.kt` | Ref. Input Range Date return [51954:18560](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18540) |
 | **Date · range dialog** | [61348:28897](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-28897) · `Surface`=Days/Year/Month · kit ref. Year [51954:18216](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18216) | `MotBoundedMonthCalendar` en `MotDateRangePickerDialog` (no `DateRangePicker`) | `MotDatePickerDialogs.kt` · `MotCalendarPicker.kt` | Paridad 3 superficies Compose |
-| **Date · single field** | *(lámina PRODUCT · doc)* | Outlined + calendar | `MotDateField` | Wallet |
-| **Date · single dialog** | *(lámina PRODUCT · doc)* | Calendar single month | `MotDatePickerDialog` | ↑ |
-| **Time · field + dialog** | *(lámina PRODUCT · doc)* | Outlined + TimeInput dialog 24h | `MotTimeField` / `MotTimePickerDialog` | Wallet · plan sheets |
+| **Date · single field** | [61348:29097](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29097) | Outlined read-only + trailing calendar | `MotDateField` | Wallet |
+| **Date · single dialog** | [61348:29373](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29373) | Date picker M3 single | `MotDatePickerDialog` | ↑ |
+| **Time · field** | [61348:29337](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29337) | Outlined + trailing schedule | `MotTimeField` | Wallet · plan |
+| **Time · dialog** | [61348:29338](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29338) | TimeInput 24h + toggle + acciones | `MotTimePickerDialog` | ↑ |
 | ~~Modal / Input date picker~~ | [51954:18136](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18136) / [51954:18540](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18540) | **ARCHIVE · M3 kit** | — | No design-file; ver [disparity-remediation-plan-2026-11-03.md](audits/disparity-remediation-plan-2026-11-03.md) |
 | **List Item - Swipe** | [59106:13321](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=59106-13321) | Swipe states | `SwipeableTripListRow` / `SwipeableWalletDocumentRow` | `MOTSpacing.ListItem.*`; audit [C](audits/figma-list-swipe-phase-c-2026-10-29.md) · página **Lists** |
 | **Tabs** | [54563:40023](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=54563-40023) | Primary/Secondary + BB | `MOTTab` + `TabRow` / `ScrollableTabRow` | `MOTSpacing.Tab.*`; audit [C](audits/figma-tabs-phase-c-2026-10-29.md) · página **Tabs** |
@@ -100,26 +101,40 @@ Previews: `HomeEmptyStatePreview`, `TripListWithTripsPreview`, `TripListFilterMe
 
 Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spacing/*`.
 
-## Wallet · flujo de app `04 · Wallet` — [`266:75`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=266-75)
+## Wallet · flujo de app `04 · Wallet` — [`491:13870`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13870)
 
-Fuente Compose: `WalletFlowReviewScreen` · ruta dev `wallet_flow_review`.
+Fuente Compose: `WalletFlowReviewScreen` · ruta dev `wallet_flow_review`. **Portero:** datos de preview / seeder / strings reales en Compose; control inventado = gap DS, no frame suelto ([`figma-instances-only.mdc`](../../.cursor/rules/figma-instances-only.mdc)).
 
 | Cap | Node Figma | Preview Compose | Ruta |
 |-----|------------|-----------------|------|
-| cap 1 · con documentos | [266:78](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=266-78) | `TripDetailWalletTabPreview` | `trip_detail/{tripId}` tab Wallet |
-| cap 2 · vacío | — | `WalletScreenEmptyPreview` | `trip_detail/{tripId}` empty |
+| cap 1 · con documentos | [491:13876](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13876) | `TripDetailWalletTabPreview` | `trip_detail/{tripId}` tab Wallet |
+| cap 2 · vacío | [491:13915](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13915) | `WalletScreenEmptyPreview` | `trip_detail/{tripId}` empty |
 | cap 3 · esperando picker | — | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` |
 | cap 4 · analizando | — | `WalletFormParsingPreview` | `wallet_add` |
 | cap 5 · revisar vuelo | — | `WalletFormImportReviewPreview` | `wallet_add` |
 | cap 6 · revisar hotel | — | `WalletFormImportReviewHotelPreview` | `wallet_add` |
 | cap 7 · confirmar | `491:13962` · instancia Basic dialog `492:3332` | `WalletConfirmDialogPreview` | `wallet_add` dialog |
 | cap 8 · parse fail | — | `WalletParseFailPreview` | `wallet_add` EC-PARSE-FAIL |
-| cap 9 · manual | — | `WalletFormManualPreview` | `wallet_add?pickAttachment=false` |
-| cap 10 · detalle | — | `WalletDetailPreview` | `wallet_detail/{entryId}` |
+| cap 9 · manual | [491:13980](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13980) | `WalletFormManualPreview` | `wallet_add?pickAttachment=false` · **MotDateField** + **MotTimeField** |
+| cap 10 · detalle | [491:13987](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13987) | `WalletDetailPreview` · `previewDetailEntry` | `wallet_detail/{entryId}` · **Document attachment** + QR (gap **WalletQrCard** DS) |
+| cap 10b · detalle hotel | (script) | `previewWalletEntries` HOTEL + `previewHotelImportState` | `hotel-casa-bonay-reserva.pdf` |
+| cap 10c · actividad · drift | (script) | `DebugPastTripsSeeder` · Teatro Nacional D. Maria II | chip plan · `teatro-real-las-bodas-de-figaro.pdf` |
+| cap 13 · visor PDF | (script) | `DocumentViewerScreen` · `billete-barcelona.pdf` | document viewer |
 | cap 11 · eliminar | `491:13994` · instancia Basic dialog `492:3372` (icon `error`) | `WalletDeleteDialogPreview` | `wallet_detail` dialog |
 | cap 12 · descartar | `491:14001` · instancia Basic dialog `492:3414` (icon `error`) | `WalletDiscardDialogPreview` | `wallet_add` dialog |
 
 Flow review: `WalletFlowReviewPreview`.
+
+Scripts (Desktop Bridge · `Vf2tNMXyKAlJSV53A1v4Is`): `scripts/figma-design-file-wallet-flows-parity.js` (completo) · `scripts/figma-design-file-wallet-flows-parity-part-a.js` (cap 10 vuelo + cap 2 vacío).
+
+## Viajes · crear y editar `02 · Viajes — crear y editar`
+
+| Cap | Node Figma | Composable(s) | Figma DS |
+|-----|------------|---------------|----------|
+| Crear viaje | [261:926](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-926) | `CreateTripScreen` | **MotDateRangeField** `61340:8809` |
+| Editar viaje | [261:929](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-929) | `EditTripScreen` | ↑ |
+
+Previews: `CreateTripScreenPreview`, `EditTripScreenPreview`.
 
 ## Diario · Spread `05 · Día · Spread`
 

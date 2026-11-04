@@ -24,9 +24,8 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Ámbito | Tarea |
 |--------|--------|
-| date/time · R1 | Láminas PRODUCT: `MotDateField` + modal, `MotTimeField` + modal |
-| date/time · R3 | Filas date/time en `figma-compose-bindings.md` (node-ids láminas PRODUCT) |
-| date/time · R4 | Design-file Crear/editar viaje + Wallet (instancias PRODUCT) |
+| Wallet · design-file | Gaps DS: **WalletQrCard**, **PlanPlacementSourceChip** (warning), icono **wifi_off** offline · otros caps flujo si aplica |
+| — | R6 / P1 resto (menu, swipe, tabs…) |
 
 ---
 
@@ -34,7 +33,14 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
-| 2026-11-04 | date/time | **Fichas diseñador** (Dev Mode + contrato §2–3): `MotDateRangeField` / `MotDateRangePickerDialog` — anatomía, UX, tokens (`mot/spacing/*`, Schemes, celdas); sin decisiones de implementación Figma | Figma Console · `figma-date-product-contract-2026-11-03.md` | Hecho |
+| 2026-11-04 | date/time | **Year/Month autolayout (re-fix):** Surface/Calendar HUG · filas 52px · años 2021–2035 · meses 4×3 · acciones visibles · set sin clip `61348:28897` | Figma Console | Hecho |
+| 2026-11-04 | Wallet · design-file | **Part A hecho:** cap **10** detalle vuelo `491:13987` + cap **2** vacío `491:13915` vía `figma-design-file-wallet-flows-parity-part-a.js` (1× `figma_execute`, fileKey design-file) | Figma verify: cap10 hijos Status bar/App bar/Body · cap2 Status bar/Body · §7.1 | Hecho |
+| 2026-11-04 | Wallet · design-file | **Part B hecho:** caps **10b** hotel `503:6332`, **10c** Teatro/drift `503:6415`, **13** visor PDF `503:6745` (`figma-design-file-wallet-flows-parity-part-b.js` + troceos `.cursor/exec-b64-pb*`; fix find flow `/Wallet.*flujo de app/`) | Figma verify · §7.1 | Hecho |
+| 2026-11-04 | Wallet · design-file | Script completo `figma-design-file-wallet-flows-parity.js` alineado (find flow regex); Part A/B canónicos en `*-part-a.js` / `*-part-b.js` | scripts · §7.1 | Referencia |
+| 2026-11-04 | Wallet · auditoría | **Brecha app ↔ design-file** documentada (tipografía manual cap 10, sin Document attachment / visor PDF, cap 1 ≠ empty «Tu maleta digital») | capturas usuario · §7.1 disparity plan | Abierto |
+| 2026-11-04 | date/time · R4 | Design-file **Crear/editar viaje** (`261:926`, `261:929`): formulario con instancia **MotDateRangeField** (+ Text fields, App bar). Wallet manual **bloqueado** hasta publish `MotDateField` / `MotTimeField` | `scripts/figma-design-file-r4-date-time-product.js` | Supersedido |
+| 2026-11-04 | date/time | **R1 + R2 cerrados:** 6 COMPONENT PRODUCT alineados a app; 0 instancias Input Range kit en secciones PRODUCT; 0 binds kit-only (`label-gap`, `selection-row-gap`, `time-input/*`, …) en maestros; `MotDatePickerDialog` hereda modo | Figma Console audit · contrato §6 | Hecho |
+| 2026-11-04 | date/time | **R3:** filas single date/time en `figma-compose-bindings.md` | docs | Hecho |
 | 2026-11-04 | date/time | **Layout PRODUCT** modal rango: rejilla días columnas iguales (gap 2); Year/Month con pie **Cancelar/Aceptar** visible; preview Light/Dark en frame | Figma Console | Hecho |
 | 2026-11-04 | date/time | **`MotDateRangeField` `61340:8809`:** 2× `Text field` Outlined (Fecha inicio/fin, `dd/mm/aaaa`) + `Icon button` calendario; fila H gap **`mot/spacing/component-sm`**; ancho ref. **360** (= Compose) | Figwright · `MotDateFormFields.kt` | Hecho |
 | 2026-11-04 | date/time | ~~Política **M3 puro** rango = `DateRangePicker` + instancias Modal kit~~ **Supersedida:** rango = calendario acotado Compose; Figma PRODUCT = set `61348:28897` | contrato §3 · bindings | Supersedida |

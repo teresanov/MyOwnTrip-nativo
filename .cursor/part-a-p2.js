@@ -1,0 +1,1 @@
+await figma.loadAllPagesAsync(); await figma.setCurrentPageAsync(figma.root.children.find((p) => p.id === '491:14473')); await rebuildFlightDetail('491:13987'); await rebuildEmpty('491:13915'); figma.notify('Wallet parity part A OK'); return { part: 'A', caps: ['491:13987', '491:13915'] };

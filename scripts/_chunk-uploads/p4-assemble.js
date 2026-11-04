@@ -1,0 +1,1 @@
+const parts=[]; let i=0; while(true){ const p=await figma.clientStorage.getAsync("p4_" + i); if(!p) break; parts.push(p); i++; } const b64=parts.join(''); await figma.clientStorage.setAsync("p4", atob(b64)); return { "p4": 'assembled', parts: i, b64Len: b64.length };

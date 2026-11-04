@@ -60,6 +60,14 @@
 
 Escribir fechas o abrir calendario → modal de rango. Validación al perder foco. Teclado: hoy → +10 años; calendario del modal: hoy → +2 años.
 
+#### Ficha diseñador — `MotDateField` (Dev Mode · `61348:29097`)
+
+| Tema | Detalle |
+|------|---------|
+| Anatomía | 1× Outlined solo lectura + trailing calendario |
+| Placeholder | «Sin fecha» (ejemplo doc) |
+| Comportamiento | Abre **MotDatePickerDialog** · wallet |
+
 **Tokens que NO son contrato de producto** (solo existían en kit M3 importado):  
 `mot/spacing/date-picker/header-gap`, `mot/padding/date-picker/field-top`, gaps 74/244 del modal M3 completo, etc. En Figma: **desenlazar del doc de producto** o archivar en sección «M3 reference · not shipped».
 
@@ -111,7 +119,16 @@ Primer día = inicio; segundo = fin. Mes+año → año → mes → vuelve al mes
 
 **Compose:** `DatePickerDialog` + **`DatePicker` M3** (`DisplayMode.Picker`, `showModeToggle = false`, `SelectableDates`).
 
-**Figma:** lámina PRODUCT pendiente (modal single); kit `51954:18136` · `Type=Day` solo como referencia ARCHIVE, no SoT de producto.
+**Figma PRODUCT:** [`MotDatePickerDialog`](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29373) (modal M3 día). Ficha en Dev Mode.
+
+#### Ficha diseñador — `MotDatePickerDialog` (`61348:29373`)
+
+| Tema | Detalle |
+|------|---------|
+| Cabecera | Supporting + titular (fecha o copy) |
+| Cuerpo | Date picker M3 (mes + selector mes/año) |
+| Pie | Cancelar · Aceptar |
+| Specs | Ancho 360 · margen H `screen-horizontal` · rejilla gap `day-grid-gap` (2) |
 
 ---
 
@@ -127,7 +144,14 @@ Primer día = inicio; segundo = fin. Mes+año → año → mes → vuelve al mes
 | TimeInput / TimePicker pad | `layoutMd` H, `componentSm` V (Input) · `componentSm` H (Picker) |
 | Fila acciones | `componentSm` start, `layoutMd` end · gap `componentSm` |
 
-**Figma debe mostrar:** este layout — **no** el set completo **Keyboard picker** `52949:28053` como contrato de producto salvo que coincida pixel/anatomía con el composable (hoy no es equivalente 1:1).
+**Figma debe mostrar:** este layout — lámina PRODUCT [`MotTimePickerDialog`](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29338) + campo [`MotTimeField`](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29337). El set **Keyboard picker** ARCHIVE (`52949:28053`) no es SoT de producto.
+
+#### Ficha diseñador — `MotTimeField` / `MotTimePickerDialog`
+
+| Componente | Node | Resumen |
+|------------|------|---------|
+| **MotTimeField** | `61348:29337` | Outlined + trailing reloj · 24 h |
+| **MotTimePickerDialog** | `61348:29338` | Título + Time input + toggle + Cancelar/Aceptar |
 
 **Tokens `mot/spacing/time-input/*` y `keyboard-picker/gap`:** solo contrato si están enlazados a nodos que **repliquen este composable**. Si no, archivar como kit reference.
 
@@ -148,10 +172,10 @@ Primer día = inicio; segundo = fin. Mes+año → año → mes → vuelve al mes
 
 ## 6. Gates de paridad (date/time)
 
-- [ ] Cada fila de §1 tiene lámina PRODUCT en Figma trazable a línea Compose.
-- [ ] 0 nodos en láminas PRODUCT con binds a tokens §5.2 (kit-only).
-- [ ] Pantallas Crear/Editar viaje y Wallet form usan instancias PRODUCT.
-- [ ] Auditoría `resolveVariables` false/true en subárbol PRODUCT.
+- [x] Cada fila de §1 tiene lámina PRODUCT en Figma trazable a línea Compose.
+- [x] 0 nodos en láminas PRODUCT (6 maestros) con binds kit-only §5.2.
+- [x] Pantallas Crear/Editar viaje y Wallet form usan instancias PRODUCT (design-file · R4). Caps `261:926`, `261:929`, `491:13980`.
+- [x] Auditoría variables en subárbol PRODUCT (forbidden binds 0; modos explícitos 0 en `MotDatePickerDialog`).
 
 ---
 

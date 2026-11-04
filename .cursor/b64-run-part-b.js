@@ -1,0 +1,1 @@
+const code=(await figma.clientStorage.getAsync('pb0'))+(await figma.clientStorage.getAsync('pb1'))+(await figma.clientStorage.getAsync('pb2'))+(await figma.clientStorage.getAsync('pb3'))+(await figma.clientStorage.getAsync('pb4')); return await (0, eval)('(async () => {' + code + '})()');

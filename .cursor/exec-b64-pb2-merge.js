@@ -1,0 +1,1 @@
+await figma.clientStorage.setAsync("pb2", atob((await figma.clientStorage.getAsync("pb2a"))+(await figma.clientStorage.getAsync("pb2b")))); return { k: "pb2", merged: true };
