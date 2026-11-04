@@ -34,6 +34,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-04 | date/time | `MotDateRangePickerDialog` / `MotDatePickerDialog` → **`DateRangePicker` / `DatePicker` M3** (año/mes al pulsar título; `SelectableDates` + límites viaje/documento) | Kotlin · tests OK | Hecho |
 | 2026-11-04 | tokens | Figma: `component-md` → `spacing/12`; **`component-lg` → `spacing/16`**; Header dialog `paddingTop` → `component-lg` | Figma Console | Hecho |
 | 2026-11-04 | tokens | Escala componente: **`mot/spacing/component-lg` (16)** nuevo; **`component-md` restaurado a 12**; Header dialog → `component-lg`; Compose `MOTSpacing.componentLg` | Figma + Kotlin | Hecho |
 | 2026-11-04 | date/time | `MotDateRangePickerDialog` `61340:8808`: ancho **360 ref.** + `padding` H `mot/spacing/screen-horizontal` (16); `Surface` interior stretch (= Compose `Dialog` + margen + `Surface` fillMaxWidth) | Figma Console | Hecho |

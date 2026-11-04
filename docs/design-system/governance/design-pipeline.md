@@ -40,6 +40,19 @@ Sin aviso, **no** hay paridad inversa: Figma sigue al código.
 
 **Componente desde Figma hacia código:** solo tras tu aviso de cambio intencional en el set ya espejado; entonces se implementa en Compose (paso 1) y se revalida paridad (pasos 2–3).
 
+### Documentación para personas (ficha de componente)
+
+En **Figma · descripción del COMPONENT** (y en el **showcase** cuando exista ficha), usar una **ficha de producto** con esta estructura:
+
+1. **Título** — emoji opcional + nombre EN + nombre ES entre paréntesis.  
+2. **Anatomía** — bloques visibles (contenedor, cabecera, navegación, grid, acciones…).  
+3. **Estados** — reposo, selección, disabled, demo en lámina vs app.  
+4. **Comportamiento / UX** — toques, validaciones reales del producto (lo que hace Compose), no el catálogo M3 genérico si difiere.
+
+Escribir para **diseño y producto** (español). Una línea al final puede enlazar al contrato técnico del repo.
+
+**No** sustituir la ficha por listas de `mot/*`, node-ids ni jerga de agente. Eso va en `parity-log`, bindings y contratos.
+
 ---
 
 ## 3. Gates de salida (por componente)

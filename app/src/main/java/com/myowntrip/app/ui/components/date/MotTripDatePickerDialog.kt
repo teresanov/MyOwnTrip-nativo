@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
@@ -22,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,13 +36,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
-import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
@@ -71,8 +67,8 @@ internal fun MotTripDatePickerDialogImpl(
   initialDate: LocalDate,
   onDismiss: () -> Unit,
   onConfirm: (LocalDate) -> Unit,
-  minDate: LocalDate? = null,
-  maxDate: LocalDate? = null,
+  minDate: LocalDate,
+  maxDate: LocalDate,
   yearRange: IntRange = defaultMotYearRange(),
 ) {
   var step by remember { mutableStateOf(MotDatePickerStep.Year) }
@@ -84,7 +80,7 @@ internal fun MotTripDatePickerDialogImpl(
   val canConfirm = remember(selectedYear, selectedMonth, selectedDay, minDate, maxDate) {
     runCatching { LocalDate.of(selectedYear, selectedMonth, selectedDay) }
       .getOrNull()
-      ?.let { date -> isDateInRange(date, minDate, maxDate) } == true
+      ?.let { date -> isDateInSelectableRange(date, minDate, maxDate) } == true
   }
 
   DatePickerDialog(
@@ -227,85 +223,12 @@ private fun MotDatePickerDialogHeader(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MotYearPickerGrid(
-  yearRange: IntRange,
-  selectedYear: Int,
-  colors: androidx.compose.material3.DatePickerColors,
-  onYearSelected: (Int) -> Unit,
-) {
-  LazyVerticalGrid(
-    columns = GridCells.Fixed(3),
-    modifier = Modifier
-      .fillMaxWidth()
-      .heightIn(min = 240.dp, max = 320.dp)
-      .padding(horizontal = MOTSpacing.layoutMd, vertical = MOTSpacing.componentSm),
-    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
-    verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
-  ) {
-    items(yearRange.toList()) { year ->
-      val selected = year == selectedYear
-      val isCurrent = year == LocalDate.now().year
-      MotPickerCell(
-        label = year.toString(),
-        selected = selected,
-        emphasized = isCurrent && !selected,
-        selectedContainerColor = colors.selectedYearContainerColor,
-        selectedContentColor = colors.selectedYearContentColor,
-        contentColor = if (isCurrent) colors.currentYearContentColor else colors.yearContentColor,
-        onClick = { onYearSelected(year) },
-      )
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun MotMonthPickerGrid(
-  selectedYear: Int,
-  selectedMonth: Int,
-  minDate: LocalDate?,
-  maxDate: LocalDate?,
-  colors: androidx.compose.material3.DatePickerColors,
-  onMonthSelected: (Int) -> Unit,
-) {
-  val months = Month.entries
-  LazyVerticalGrid(
-    columns = GridCells.Fixed(3),
-    modifier = Modifier
-      .fillMaxWidth()
-      .heightIn(min = 220.dp, max = 280.dp)
-      .padding(horizontal = MOTSpacing.layoutMd, vertical = MOTSpacing.componentSm),
-    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
-    verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
-  ) {
-    items(months.size) { index ->
-      val month = months[index]
-      val monthValue = month.value
-      val enabled = isMonthInRange(selectedYear, monthValue, minDate, maxDate)
-      val selected = monthValue == selectedMonth
-      MotPickerCell(
-        label = month.getDisplayName(TextStyle.SHORT, Spanish).replaceFirstChar {
-          if (it.isLowerCase()) it.titlecase(Spanish) else it.toString()
-        },
-        selected = selected,
-        enabled = enabled,
-        selectedContainerColor = colors.selectedYearContainerColor,
-        selectedContentColor = colors.selectedYearContentColor,
-        contentColor = colors.yearContentColor,
-        onClick = { if (enabled) onMonthSelected(monthValue) },
-      )
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 private fun MotDayPickerGrid(
   year: Int,
   month: Int,
   selectedDay: Int,
-  minDate: LocalDate?,
-  maxDate: LocalDate?,
+  minDate: LocalDate,
+  maxDate: LocalDate,
   colors: androidx.compose.material3.DatePickerColors,
   onDaySelected: (Int) -> Unit,
 ) {
@@ -351,7 +274,7 @@ private fun MotDayPickerGrid(
           Box(modifier = Modifier.aspectRatio(1f))
         } else {
           val date = LocalDate.of(year, month, day)
-          val enabled = isDateInRange(date, minDate, maxDate)
+          val enabled = isDateInSelectableRange(date, minDate, maxDate)
           val selected = day == selectedDay
           val isToday = date == today
           MotDayCell(
@@ -415,118 +338,22 @@ private fun MotDayCell(
   }
 }
 
-@Composable
-private fun MotPickerCell(
-  label: String,
-  selected: Boolean,
-  onClick: () -> Unit,
-  selectedContainerColor: androidx.compose.ui.graphics.Color,
-  selectedContentColor: androidx.compose.ui.graphics.Color,
-  contentColor: androidx.compose.ui.graphics.Color,
-  enabled: Boolean = true,
-  emphasized: Boolean = false,
-) {
-  val scheme = MaterialTheme.colorScheme
-  val shape = MaterialTheme.shapes.medium
-  val background = when {
-    selected -> selectedContainerColor
-    emphasized -> scheme.surfaceContainerHigh
-    else -> scheme.surface
-  }
-  val textColor = when {
-    !enabled -> scheme.onSurface.copy(alpha = 0.38f)
-    selected -> selectedContentColor
-    else -> contentColor
-  }
-
-  Surface(
-    modifier = Modifier
-      .fillMaxWidth()
-      .heightIn(min = 44.dp)
-      .then(
-        if (selected) Modifier.border(1.dp, scheme.outline, shape) else Modifier,
-      )
-      .clip(shape)
-      .clickable(enabled = enabled, onClick = onClick)
-      .semantics {
-        contentDescription = label
-        if (selected) stateDescription = "Seleccionado"
-      },
-    color = background,
-    shape = shape,
-  ) {
-    Box(contentAlignment = Alignment.Center) {
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        if (selected) {
-          Icon(
-            imageVector = MOTIcons.Check,
-            contentDescription = null,
-            modifier = Modifier.size(18.dp),
-            tint = scheme.primary,
-          )
-        }
-        Text(
-          text = label,
-          style = MaterialTheme.typography.labelLarge,
-          color = textColor,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-        )
-      }
-    }
-  }
-}
-
-private fun isDateInRange(date: LocalDate, minDate: LocalDate?, maxDate: LocalDate?): Boolean {
-  val (min, max) = resolveMotDocumentDateBounds(minDate, maxDate)
-  return isDateInSelectableRange(date, min, max)
-}
-
-private fun isMonthInRange(
-  year: Int,
-  month: Int,
-  minDate: LocalDate?,
-  maxDate: LocalDate?,
-): Boolean {
-  val start = LocalDate.of(year, month, 1)
-  val end = start.withDayOfMonth(start.lengthOfMonth())
-  if (minDate != null && end.isBefore(minDate)) return false
-  if (maxDate != null && start.isAfter(maxDate)) return false
-  return true
-}
-
 private fun clampDayForMonth(
   year: Int,
   month: Int,
   day: Int,
-  minDate: LocalDate?,
-  maxDate: LocalDate?,
+  minDate: LocalDate,
+  maxDate: LocalDate,
 ): Int {
   val maxDay = LocalDate.of(year, month, 1).lengthOfMonth()
   var result = day.coerceIn(1, maxDay)
   var date = LocalDate.of(year, month, result)
-  if (minDate != null && date.isBefore(minDate)) {
+  if (date.isBefore(minDate)) {
     result = minDate.dayOfMonth.coerceAtMost(maxDay)
     date = LocalDate.of(year, month, result)
   }
-  if (maxDate != null && date.isAfter(maxDate)) {
+  if (date.isAfter(maxDate)) {
     result = maxDate.dayOfMonth.coerceAtMost(maxDay)
   }
   return result
-}
-
-@Preview(name = "Mot date picker · año")
-@Composable
-private fun MotYearPickerPreview() {
-  MyOwnTripTheme {
-    MotYearPickerGrid(
-      yearRange = 2024..2028,
-      selectedYear = 2026,
-      colors = DatePickerDefaults.colors(),
-      onYearSelected = {},
-    )
-  }
 }

@@ -68,3 +68,7 @@ Aplica cuando el usuario pida documentar tokens/rampas en Figma o trabajar con e
 11. **Color de iconos (consumo semántico)**
 - En nodos de icono (`Slot_master` / vector `icon`), bindear **solo** `semantic/color/icon/*`; **nunca** `semantic/color/text/*` en el nodo del icono.
 - Para mapa completo por estilo/estado y gate de salida, aplicar siempre **`.cursor/rules/utilities/icon-color-consumption.mdc`** (fuente canónica).
+
+12. **Descripciones de componentes (ficha para diseñadores)**
+- En la **descripción** del COMPONENT / COMPONENT_SET: **ficha de producto** — título (EN + ES), **1. Anatomía**, **2. Estados**, **3. Comportamiento UX** (comportamiento real de MyOwnTrip en Compose, no M3 catálogo si difiere).
+- Español, legible en Dev Mode. Tokens y paridad: contratos y `parity-log`, no dentro de la ficha salvo una referencia final al contrato.

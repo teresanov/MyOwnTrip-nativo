@@ -8,6 +8,12 @@
 **Código:** `app/src/main/java/com/myowntrip/app/ui/components/date/`  
 **Supersede** para producto: matriz «Input Range = cabecera + dos campos» en [figma-datetime-matrix-2026-10-30.md](figma-datetime-matrix-2026-10-30.md) (sigue válida como log de auditoría del kit antiguo, no como contrato).
 
+### Si diseñas en Figma (léelo primero)
+
+- **Ficha del componente:** en la descripción del COMPONENT en la librería (anatomía → estados → comportamiento UX). Mismo estilo que una guía de producto, no un dump de tokens.
+- **La app manda:** Compose define interacción y límites; la lámina puede usar fechas de ejemplo o «hoy» solo como decoración.
+- **Medidas y tokens:** tablas en este contrato y en `spacing.md` — no sustituyen la ficha humana del componente.
+
 ---
 
 ## 1. Composables en producto (inventario real)
@@ -44,7 +50,9 @@
 
 ## 3. Patrón B — Modal rango / fecha única (`MotDateRangePickerDialog`, `MotDatePickerDialog`)
 
-**Compose:** `Dialog` + `Surface` (`shapes.extraLarge`, `surfaceContainerHigh`) + cabecera custom + **`MotBoundedMonthCalendar`** + acciones.
+**Compose:** `Dialog` + `Surface` (`shapes.extraLarge`, `surfaceContainerHigh`) + cabecera custom + **`DateRangePicker` / `DatePicker` M3** (`rememberDateRangePickerState` / `rememberDatePickerState`, `DisplayMode.Picker`, `showModeToggle = false`) + acciones propias.
+
+**Calendario:** no usar calendario custom mes-a-mes; la navegación **mes/año → rejilla de años → meses** la gestiona la librería Material3 al pulsar el título del mes (igual que `DatePicker`/`DateRangePicker` de referencia).
 
 ### Contenedor
 
@@ -71,8 +79,7 @@ Tipografía: `labelLarge` (supporting), `titleLarge` (headline). Colores: `DateP
 
 | Propiedad | Token |
 |-----------|--------|
-| Nav mes | flechas + `titleLarge` mes |
-| Padding nav | **`component-xs` (4) solo horizontal** — sin `layout-md` en el nav |
+| Nav mes | **`DatePicker` / `DateRangePicker` M3** — pulsar mes/año abre año → mes; flechas incluidas en el composable |
 | Cabecera días semana | **`component-xs` (4) solo `paddingTop`** — ancho completo, sin `layout-md` horizontal |
 | Rejilla (grid) | **`layout-md` (16) H**, **`component-sm` (8) V**; gap celdas **`day-grid-gap` (2)** |
 

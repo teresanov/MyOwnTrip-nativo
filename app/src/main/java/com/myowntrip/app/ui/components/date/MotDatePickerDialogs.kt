@@ -1,14 +1,13 @@
 package com.myowntrip.app.ui.components.date
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
@@ -24,9 +22,8 @@ import java.time.LocalDate
 import java.time.YearMonth
 
 /**
- * Selector de rango con calendario acotado (flechas mes a mes, sin scroll infinito).
- * Límites por defecto: hoy → +2 años · equivalente a [CalendarConstraints] + forward validator.
- * Espejo Figma: `figma-date-product-contract-2026-11-03.md` · Patrón B (modal rango).
+ * Rango de fechas de producto: cabecera M3 + [MotBoundedMonthCalendar] (círculos, paridad Figma).
+ * Mes/año vía rejillas al pulsar el título del mes. Shell [DatePickerDialog] por medición estable.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,66 +41,83 @@ fun MotDateRangePickerDialog(
   val clampedStart = initialStartDate.coerceInRange(min, max)
   val clampedEnd = initialEndDate.coerceInRange(min, max)
 
-  var start by remember { mutableStateOf(clampedStart) }
-  var end by remember { mutableStateOf<LocalDate?>(clampedEnd) }
+  var rangeStart by remember { mutableStateOf(clampedStart) }
+  var rangeEnd by remember { mutableStateOf<LocalDate?>(clampedEnd) }
   var displayedMonth by remember {
     mutableStateOf(clampYearMonth(YearMonth.from(clampedStart), min, max))
   }
-  val colors = DatePickerDefaults.colors()
+  var pickerSurface by remember { mutableStateOf(MotCalendarPickerSurface.Days) }
 
-  Dialog(
+  val scheme = MaterialTheme.colorScheme
+  val colors = DatePickerDefaults.colors(
+    containerColor = scheme.surfaceContainerHigh,
+  )
+  val headline = remember(rangeStart, rangeEnd, inputHeadline) {
+    when (val end = rangeEnd) {
+      null -> inputHeadline
+      else -> formatMotDateRange(rangeStart, end)
+    }
+  }
+  val canConfirm = rangeEnd != null
+
+  DatePickerDialog(
     onDismissRequest = onDismiss,
-    properties = DialogProperties(usePlatformDefaultWidth = false),
-  ) {
-    Surface(
-      shape = MaterialTheme.shapes.extraLarge,
-      color = MaterialTheme.colorScheme.surfaceContainerHigh,
-      modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-    ) {
-      Column {
-        MotPickerDialogHeader(
-          supportingText = supportingText,
-          headline = when (val rangeEnd = end) {
-            null -> formatMotDate(start)
-            else -> formatMotDateRange(start, rangeEnd)
-          },
-          colors = colors,
-        )
-        MotBoundedMonthCalendar(
-          mode = MotCalendarSelectionMode.Range,
-          displayedMonth = displayedMonth,
-          onMonthChange = { month ->
-            displayedMonth = clampYearMonth(month, min, max)
-          },
-          minDate = min,
-          maxDate = max,
-          colors = colors,
-          selectedStart = start,
-          selectedEnd = end,
-          onDateSelected = { date ->
-            val (newStart, newEnd) = applyRangeSelection(date, start, end)
-            start = newStart
-            end = newEnd
-          },
-        )
-        MotPickerDialogActions(
-          onCancel = onDismiss,
-          onConfirm = {
-            val rangeEnd = end ?: start
-            val rangeStart = minOf(start, rangeEnd)
-            val rangeEndDate = maxOf(start, rangeEnd)
-            onConfirm(rangeStart, rangeEndDate)
-          },
-          confirmEnabled = end != null,
-        )
+    confirmButton = {
+      MOTTextButton(
+        onClick = {
+          val end = rangeEnd ?: return@MOTTextButton
+          onConfirm(minOf(rangeStart, end), maxOf(rangeStart, end))
+        },
+        enabled = canConfirm,
+      ) {
+        Text("Aceptar")
       }
+    },
+    dismissButton = {
+      MOTTextButton(onClick = onDismiss) { Text("Cancelar") }
+    },
+    properties = DialogProperties(usePlatformDefaultWidth = false),
+    colors = colors,
+  ) {
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = MOTSpacing.screenHorizontal)
+        .padding(bottom = MOTSpacing.componentSm),
+    ) {
+      MotPickerDialogHeader(
+        supportingText = supportingText,
+        headline = headline,
+        colors = colors,
+        onHeadlineClick = {
+          if (pickerSurface == MotCalendarPickerSurface.Days) {
+            pickerSurface = MotCalendarPickerSurface.Year
+          }
+        },
+      )
+      MotBoundedMonthCalendar(
+        mode = MotCalendarSelectionMode.Range,
+        displayedMonth = displayedMonth,
+        onMonthChange = { displayedMonth = clampYearMonth(it, min, max) },
+        minDate = min,
+        maxDate = max,
+        colors = colors,
+        pickerSurface = pickerSurface,
+        onPickerSurfaceChange = { pickerSurface = it },
+        selectedStart = rangeStart,
+        selectedEnd = rangeEnd,
+        onDateSelected = { date ->
+          val (start, end) = applyRangeSelection(date, rangeStart, rangeEnd)
+          rangeStart = start
+          rangeEnd = end
+          displayedMonth = clampYearMonth(YearMonth.from(start), min, max)
+        },
+      )
     }
   }
 }
 
-/**
- * Selector de fecha única con calendario acotado (flechas mes a mes).
- */
+/** Fecha única: mismo calendario acotado + rejillas año/mes. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MotDatePickerDialog(
@@ -118,45 +132,64 @@ fun MotDatePickerDialog(
   val (min, max) = resolveMotDocumentDateBounds(minDate, maxDate)
   val clampedInitial = initialDate.coerceInRange(min, max)
 
-  var selected by remember { mutableStateOf(clampedInitial) }
+  var selectedDate by remember { mutableStateOf(clampedInitial) }
   var displayedMonth by remember {
     mutableStateOf(clampYearMonth(YearMonth.from(clampedInitial), min, max))
   }
-  val colors = DatePickerDefaults.colors()
+  var pickerSurface by remember { mutableStateOf(MotCalendarPickerSurface.Days) }
 
-  Dialog(
+  val scheme = MaterialTheme.colorScheme
+  val colors = DatePickerDefaults.colors(
+    containerColor = scheme.surfaceContainerHigh,
+  )
+  val headline = remember(selectedDate, inputHeadline) {
+    formatMotDate(selectedDate)
+  }
+
+  DatePickerDialog(
     onDismissRequest = onDismiss,
-    properties = DialogProperties(usePlatformDefaultWidth = false),
-  ) {
-    Surface(
-      shape = MaterialTheme.shapes.extraLarge,
-      color = MaterialTheme.colorScheme.surfaceContainerHigh,
-      modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-    ) {
-      Column {
-        MotPickerDialogHeader(
-          supportingText = supportingText,
-          headline = formatMotDate(selected),
-          colors = colors,
-        )
-        MotBoundedMonthCalendar(
-          mode = MotCalendarSelectionMode.Single,
-          displayedMonth = displayedMonth,
-          onMonthChange = { month ->
-            displayedMonth = clampYearMonth(month, min, max)
-          },
-          minDate = min,
-          maxDate = max,
-          colors = colors,
-          selectedDate = selected,
-          onDateSelected = { date -> selected = date },
-        )
-        MotPickerDialogActions(
-          onCancel = onDismiss,
-          onConfirm = { onConfirm(selected) },
-          confirmEnabled = true,
-        )
+    confirmButton = {
+      MOTTextButton(onClick = { onConfirm(selectedDate) }) {
+        Text("Aceptar")
       }
+    },
+    dismissButton = {
+      MOTTextButton(onClick = onDismiss) { Text("Cancelar") }
+    },
+    properties = DialogProperties(usePlatformDefaultWidth = false),
+    colors = colors,
+  ) {
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = MOTSpacing.screenHorizontal)
+        .padding(bottom = MOTSpacing.componentSm),
+    ) {
+      MotPickerDialogHeader(
+        supportingText = supportingText,
+        headline = headline,
+        colors = colors,
+        onHeadlineClick = {
+          if (pickerSurface == MotCalendarPickerSurface.Days) {
+            pickerSurface = MotCalendarPickerSurface.Year
+          }
+        },
+      )
+      MotBoundedMonthCalendar(
+        mode = MotCalendarSelectionMode.Single,
+        displayedMonth = displayedMonth,
+        onMonthChange = { displayedMonth = clampYearMonth(it, min, max) },
+        minDate = min,
+        maxDate = max,
+        colors = colors,
+        pickerSurface = pickerSurface,
+        onPickerSurfaceChange = { pickerSurface = it },
+        selectedDate = selectedDate,
+        onDateSelected = { date ->
+          selectedDate = date
+          displayedMonth = clampYearMonth(YearMonth.from(date), min, max)
+        },
+      )
     }
   }
 }
@@ -167,6 +200,7 @@ private fun MotPickerDialogHeader(
   supportingText: String,
   headline: String,
   colors: androidx.compose.material3.DatePickerColors,
+  onHeadlineClick: (() -> Unit)? = null,
 ) {
   Column(
     modifier = Modifier.padding(
@@ -185,25 +219,16 @@ private fun MotPickerDialogHeader(
       text = headline,
       style = MaterialTheme.typography.titleLarge,
       color = colors.headlineContentColor,
-      modifier = Modifier.padding(top = MOTSpacing.componentXs),
+      modifier = Modifier
+        .padding(top = MOTSpacing.componentXs)
+        .then(
+          if (onHeadlineClick != null) {
+            Modifier.clickable(onClick = onHeadlineClick)
+          } else {
+            Modifier
+          },
+        ),
     )
-  }
-}
-
-@Composable
-private fun MotPickerDialogActions(
-  onCancel: () -> Unit,
-  onConfirm: () -> Unit,
-  confirmEnabled: Boolean,
-) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = MOTSpacing.componentSm, vertical = MOTSpacing.componentXs),
-    horizontalArrangement = Arrangement.End,
-  ) {
-    MOTTextButton(onClick = onCancel) { Text("Cancelar") }
-    MOTTextButton(onClick = onConfirm, enabled = confirmEnabled) { Text("Aceptar") }
   }
 }
 
