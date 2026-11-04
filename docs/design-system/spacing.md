@@ -28,6 +28,7 @@ Fuente código: `designsystem/.../MOTSpacing.kt`
 | `MOTSpacing.layoutLg` | `mot/spacing/layout-lg` | 24 |
 | `MOTSpacing.componentSm` | `mot/spacing/component-sm` | 8 |
 | `MOTSpacing.componentMd` | `mot/spacing/component-md` | 12 |
+| `MOTSpacing.componentLg` | `mot/spacing/component-lg` | 16 |
 | `MOTSpacing.componentXs` | `mot/spacing/component-xs` | 4 |
 | `MOTSpacing.gutterGrid` | `mot/spacing/gutter-grid` | 16 |
 | `MOTSpacing.screenContentBottomWithFab` | `mot/spacing/screen-content-bottom-with-fab` | 88 |

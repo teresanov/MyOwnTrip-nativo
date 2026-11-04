@@ -18,11 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -45,6 +40,7 @@ import androidx.compose.ui.zIndex
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.TripSortOrder
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
@@ -135,7 +131,7 @@ private fun HomeSearchBarRow(
   ) {
     if (showLeadingSearchIcon) {
       Icon(
-        imageVector = Icons.Default.Search,
+        imageVector = MOTIcons.Search,
         contentDescription = null,
         modifier = Modifier
           .padding(start = MOTSpacing.layoutMd)
@@ -180,7 +176,7 @@ private fun HomeSearchBarRow(
         modifier = Modifier.semantics { contentDescription = "Borrar búsqueda" },
       ) {
         Icon(
-          imageVector = Icons.Default.Close,
+          imageVector = MOTIcons.Close,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -191,7 +187,7 @@ private fun HomeSearchBarRow(
       modifier = Modifier.semantics { contentDescription = "Filtros y ordenación" },
     ) {
       Icon(
-        imageVector = Icons.Outlined.Tune,
+        imageVector = MOTIcons.Tune,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.onSurfaceVariant,
       )
@@ -437,7 +433,7 @@ internal fun HomeFilterMenuItemRow(
       ) {
         if (selected) {
           Icon(
-            imageVector = Icons.Default.Check,
+            imageVector = MOTIcons.Check,
             contentDescription = null,
             modifier = Modifier.size(HomeFilterMenuSpec.LeadingIconSize),
             tint = scheme.primary,

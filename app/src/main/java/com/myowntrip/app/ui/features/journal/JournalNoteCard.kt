@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.JournalNote
+import com.myowntrip.app.ui.theme.MOTIcons
 import java.io.File
 import java.text.DateFormat
 import java.util.Date
@@ -69,13 +67,13 @@ fun JournalNoteCard(
       ) {
         if (note.audioUri != null) {
           Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.Mic, contentDescription = null)
+            Icon(MOTIcons.Mic, contentDescription = null)
             Text("Audio", modifier = Modifier.padding(start = 4.dp))
           }
         }
         if (note.latitude != null && note.longitude != null) {
           Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.LocationOn, contentDescription = null)
+            Icon(MOTIcons.LocationOn, contentDescription = null)
             Text(
               formatCoordinates(note.latitude, note.longitude),
               modifier = Modifier.padding(start = 4.dp),

@@ -16,9 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -35,14 +32,13 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Keyboard
 import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.JournalPieceType
 import com.myowntrip.app.domain.model.JournalTextStyle
 import com.myowntrip.app.platform.media.StickerShape
 import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -132,7 +128,7 @@ fun SpreadCaptionSheetContent(
           selected = textStyle == JournalTextStyle.HAND,
           onClick = { onTextStyleChange(JournalTextStyle.HAND) },
           label = { Text("A mano") },
-          leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
+          leadingIcon = { Icon(MOTIcons.Edit, contentDescription = null) },
           modifier = Modifier.semantics {
             contentDescription = "Estilo a mano" +
               if (textStyle == JournalTextStyle.HAND) ", seleccionado" else ""
@@ -142,7 +138,7 @@ fun SpreadCaptionSheetContent(
           selected = textStyle == JournalTextStyle.TYPED,
           onClick = { onTextStyleChange(JournalTextStyle.TYPED) },
           label = { Text("A máquina") },
-          leadingIcon = { Icon(Icons.Default.Keyboard, contentDescription = null) },
+          leadingIcon = { Icon(MOTIcons.Keyboard, contentDescription = null) },
           modifier = Modifier.semantics {
             contentDescription = "Estilo a máquina (post-it)" +
               if (textStyle == JournalTextStyle.TYPED) ", seleccionado" else ""
@@ -181,13 +177,13 @@ fun SpreadCaptionSheetContent(
           selected = photoAttached,
           onClick = onRequestCamera,
           label = { Text("Cámara") },
-          leadingIcon = { Icon(Icons.Default.PhotoCamera, contentDescription = null) },
+          leadingIcon = { Icon(MOTIcons.PhotoCamera, contentDescription = null) },
         )
         FilterChip(
           selected = false,
           onClick = onRequestGallery,
           label = { Text("Galería") },
-          leadingIcon = { Icon(Icons.Default.PhotoLibrary, contentDescription = null) },
+          leadingIcon = { Icon(MOTIcons.PhotoLibrary, contentDescription = null) },
         )
       }
     }
@@ -387,13 +383,13 @@ fun EventBookmarkCaptureContent(
         selected = photoAttached,
         onClick = onRequestCamera,
         label = { Text("Foto") },
-        leadingIcon = { Icon(Icons.Default.PhotoCamera, contentDescription = null) },
+        leadingIcon = { Icon(MOTIcons.PhotoCamera, contentDescription = null) },
       )
       FilterChip(
         selected = false,
         onClick = onRequestGallery,
         label = { Text("Galería") },
-        leadingIcon = { Icon(Icons.Default.PhotoLibrary, contentDescription = null) },
+        leadingIcon = { Icon(MOTIcons.PhotoLibrary, contentDescription = null) },
       )
     }
     MOTButton(

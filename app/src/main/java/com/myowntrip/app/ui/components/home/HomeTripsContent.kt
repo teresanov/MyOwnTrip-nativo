@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,6 +37,7 @@ import com.myowntrip.app.ui.features.trips.previewHomeTrips
 import com.myowntrip.app.ui.features.trips.previewHomeTripsOnlyPast
 import com.myowntrip.app.ui.features.trips.sortTripsForHome
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.LocalDate
@@ -129,7 +128,7 @@ fun LazyListScope.homeTripsListItems(
         onClick = onCreateTrip,
         modifier = horizontal.fillMaxWidth(),
       ) {
-        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+        Icon(MOTIcons.Add, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(MOTSpacing.componentSm))
         Text("Crear viaje")
       }

@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -35,6 +32,7 @@ import com.myowntrip.app.domain.model.PlaceCategory
 import com.myowntrip.app.ui.features.restaurants.categoryLabel
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -51,7 +49,7 @@ fun PlaceImportScreen(
         title = { Text("Guardar sitio") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Atrás")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Atrás")
           }
         },
       )
@@ -140,7 +138,7 @@ private fun LocationStatus(resolving: Boolean, hasLocation: Boolean, hasLink: Bo
       }
       hasLocation -> {
         Icon(
-          Icons.Default.LocationOn,
+          MOTIcons.LocationOn,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.tertiary,
           modifier = Modifier.size(18.dp),

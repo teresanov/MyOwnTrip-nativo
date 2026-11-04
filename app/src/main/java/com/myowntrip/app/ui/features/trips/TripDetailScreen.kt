@@ -14,15 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.AccountBalanceWallet
-import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -68,6 +61,7 @@ import com.myowntrip.app.ui.features.wallet.WalletScreen
 import com.myowntrip.app.ui.features.wallet.previewWalletEntries
 import com.myowntrip.app.ui.features.wallet.previewWalletTrip
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTab
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -130,12 +124,12 @@ fun TripDetailScreen(
         },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
         actions = {
           MOTIconButton(onClick = onEditTrip) {
-            Icon(Icons.Default.Edit, contentDescription = "Editar viaje")
+            Icon(MOTIcons.Edit, contentDescription = "Editar viaje")
           }
         },
       )
@@ -155,16 +149,16 @@ fun TripDetailScreen(
               }
             },
             modifier = Modifier.semantics { contentDescription = "Añadir actividad al día" },
-          ) { Icon(Icons.Default.Add, contentDescription = null) }
+          ) { Icon(MOTIcons.Add, contentDescription = null) }
         }
         3 -> FloatingActionButton(
           onClick = onAddExpense,
           modifier = Modifier.semantics { contentDescription = "Añadir gasto" },
-        ) { Icon(Icons.Default.Add, contentDescription = null) }
+        ) { Icon(MOTIcons.Add, contentDescription = null) }
         4 -> FloatingActionButton(
           onClick = onAddRestaurant,
           modifier = Modifier.semantics { contentDescription = "Añadir sitio" },
-        ) { Icon(Icons.Default.Add, contentDescription = null) }
+        ) { Icon(MOTIcons.Add, contentDescription = null) }
         else -> {}
       }
     },
@@ -378,7 +372,7 @@ private fun ExpenseCard(expense: Expense, onClick: () -> Unit) {
         Text(expense.concept, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
         if (expense.walletEntryId != null) {
           Icon(
-            Icons.Default.AccountBalanceWallet,
+            MOTIcons.AccountBalanceWallet,
             contentDescription = "Viene de una reserva de Wallet",
             modifier = Modifier.size(20.dp),
             tint = MaterialTheme.colorScheme.tertiary,
@@ -386,7 +380,7 @@ private fun ExpenseCard(expense: Expense, onClick: () -> Unit) {
         }
         if (expense.receiptUri != null) {
           Icon(
-            Icons.Default.Receipt,
+            MOTIcons.Receipt,
             contentDescription = "Tiene ticket adjunto",
             modifier = Modifier.size(20.dp),
             tint = MaterialTheme.colorScheme.tertiary,
@@ -511,7 +505,7 @@ fun TripDetailWalletTabPreview() {
           navigationIcon = {
             MOTIconButton(onClick = {}) {
               Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
+                MOTIcons.ArrowBack,
                 contentDescription = "Volver",
               )
             }

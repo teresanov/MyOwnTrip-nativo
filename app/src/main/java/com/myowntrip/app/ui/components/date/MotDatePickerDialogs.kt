@@ -172,7 +172,7 @@ private fun MotPickerDialogHeader(
     modifier = Modifier.padding(
       start = MOTSpacing.layoutMd,
       end = MOTSpacing.componentSm,
-      top = MOTSpacing.componentSm,
+      top = MOTSpacing.componentLg,
       bottom = MOTSpacing.componentXs,
     ),
   ) {

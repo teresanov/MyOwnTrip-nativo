@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,6 +24,7 @@ import com.myowntrip.app.ui.features.trips.HomeTripPhase
 import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.homePhase
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.time.LocalDate
@@ -144,7 +143,7 @@ fun HomeEmptyState(
         .fillMaxWidth()
         .padding(horizontal = MOTSpacing.screenHorizontal),
     ) {
-      Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+      Icon(MOTIcons.Add, contentDescription = null, modifier = Modifier.size(18.dp))
       Spacer(Modifier.width(MOTSpacing.componentSm))
       Text("Crear mi primer viaje")
     }

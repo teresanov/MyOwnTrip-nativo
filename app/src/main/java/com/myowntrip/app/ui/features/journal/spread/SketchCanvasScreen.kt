@@ -15,13 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Redo
-import androidx.compose.material.icons.automirrored.filled.Undo
-import androidx.compose.material.icons.filled.Brush
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.Icon
@@ -57,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 
 data class SketchStroke(
@@ -120,7 +114,7 @@ fun SketchCanvasScaffold(
         title = { Text("Boceto") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
         actions = {
@@ -128,7 +122,7 @@ fun SketchCanvasScaffold(
             onClick = onSave,
             enabled = canSave && !isSaving,
           ) {
-            Icon(Icons.Default.Save, contentDescription = "Guardar boceto")
+            Icon(MOTIcons.Save, contentDescription = "Guardar boceto")
           }
         },
       )
@@ -300,14 +294,14 @@ private fun SketchToolbar(
           modifier = Modifier.semantics {
             contentDescription = "Pincel" + if (tool == SketchTool.BRUSH) ", activo" else ""
           },
-        ) { Icon(Icons.Default.Brush, contentDescription = null) }
+        ) { Icon(MOTIcons.Brush, contentDescription = null) }
         FilledIconToggleButton(
           checked = tool == SketchTool.ERASER,
           onCheckedChange = { onToolChange(SketchTool.ERASER) },
           modifier = Modifier.semantics {
             contentDescription = "Goma de borrar" + if (tool == SketchTool.ERASER) ", activo" else ""
           },
-        ) { Icon(Icons.Default.Delete, contentDescription = null) }
+        ) { Icon(MOTIcons.Delete, contentDescription = null) }
 
         Spacer(Modifier.weight(1f))
 
@@ -315,17 +309,17 @@ private fun SketchToolbar(
           onClick = onUndo,
           enabled = canUndo,
           modifier = Modifier.semantics { contentDescription = "Deshacer" },
-        ) { Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = null) }
+        ) { Icon(MOTIcons.Undo, contentDescription = null) }
         MOTIconButton(
           onClick = onRedo,
           enabled = canRedo,
           modifier = Modifier.semantics { contentDescription = "Rehacer" },
-        ) { Icon(Icons.AutoMirrored.Filled.Redo, contentDescription = null) }
+        ) { Icon(MOTIcons.Redo, contentDescription = null) }
         MOTIconButton(
           onClick = onClear,
           enabled = canUndo,
           modifier = Modifier.semantics { contentDescription = "Borrar todo" },
-        ) { Icon(Icons.Default.Delete, contentDescription = null) }
+        ) { Icon(MOTIcons.Delete, contentDescription = null) }
       }
 
       Row(

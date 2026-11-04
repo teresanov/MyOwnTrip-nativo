@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.ui.components.date.MotTimeTextField
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 
@@ -67,7 +66,7 @@ fun AddPlanActivitySheet(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
       ) {
         Icon(
-          Icons.Default.Link,
+          MOTIcons.Link,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.tertiary,
         )

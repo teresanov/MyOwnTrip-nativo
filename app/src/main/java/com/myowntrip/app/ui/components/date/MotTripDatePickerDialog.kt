@@ -16,9 +16,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -195,7 +193,7 @@ private fun MotDatePickerDialogHeader(
       if (step != MotDatePickerStep.Year) {
         MOTIconButton(onClick = onBack) {
           Icon(
-            Icons.AutoMirrored.Filled.ArrowBack,
+            MOTIcons.ArrowBack,
             contentDescription = "Paso anterior",
           )
         }
@@ -464,7 +462,7 @@ private fun MotPickerCell(
       ) {
         if (selected) {
           Icon(
-            imageVector = Icons.Default.Check,
+            imageVector = MOTIcons.Check,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
             tint = scheme.primary,

@@ -1,12 +1,11 @@
 package com.myowntrip.app.ui.features.journal
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTTextButton
 
 @Composable
@@ -18,7 +17,7 @@ fun JournalDeleteNoteDialog(
     onDismissRequest = onDismiss,
     icon = {
       Icon(
-        Icons.Default.Error,
+        MOTIcons.Error,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.error,
       )

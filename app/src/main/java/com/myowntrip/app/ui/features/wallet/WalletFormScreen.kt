@@ -18,13 +18,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
-import androidx.compose.material.icons.filled.AttachFile
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.PhotoLibrary
-import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -72,6 +65,7 @@ import com.myowntrip.app.ui.features.journal.TakePhotoScreen
 import com.myowntrip.app.ui.features.journal.rememberJournalPermissionRequest
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -200,7 +194,7 @@ fun WalletFormScreen(
         title = { Text(screenTitle) },
         navigationIcon = {
           MOTIconButton(onClick = if (awaitingSystemPicker) onBack else requestExit) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -394,7 +388,7 @@ private fun WalletPickFileStep(
   onCancel: () -> Unit,
 ) {
   MOTButton(onClick = onPickFile, modifier = Modifier.fillMaxWidth()) {
-    Icon(Icons.Default.AttachFile, contentDescription = null)
+    Icon(MOTIcons.AttachFile, contentDescription = null)
     Spacer(Modifier.width(MOTSpacing.componentSm))
     Text("Elegir archivo")
   }
@@ -704,25 +698,25 @@ internal fun WalletManualAddStep(
         selected = false,
         onClick = onTakePhoto,
         label = { Text("Hacer foto") },
-        leadingIcon = { Icon(Icons.Default.PhotoCamera, contentDescription = null) },
+        leadingIcon = { Icon(MOTIcons.PhotoCamera, contentDescription = null) },
       )
       FilterChip(
         selected = false,
         onClick = onPickGallery,
         label = { Text("Galería") },
-        leadingIcon = { Icon(Icons.Default.PhotoLibrary, contentDescription = null) },
+        leadingIcon = { Icon(MOTIcons.PhotoLibrary, contentDescription = null) },
       )
       FilterChip(
         selected = false,
         onClick = onPickFile,
         label = { Text("PDF o archivo") },
-        leadingIcon = { Icon(Icons.Default.AttachFile, contentDescription = null) },
+        leadingIcon = { Icon(MOTIcons.AttachFile, contentDescription = null) },
       )
       FilterChip(
         selected = false,
         onClick = onScanQr,
         label = { Text("Escanear QR") },
-        leadingIcon = { Icon(Icons.Default.QrCodeScanner, contentDescription = null) },
+        leadingIcon = { Icon(MOTIcons.QrCodeScanner, contentDescription = null) },
       )
     }
   }

@@ -6,12 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ConfirmationNumber
-import androidx.compose.material.icons.filled.DragHandle
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +22,7 @@ import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.ui.features.wallet.entryTypeLabel
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 
@@ -93,7 +88,7 @@ fun PlanActivityCard(
             },
           ) {
             Icon(
-              imageVector = Icons.Default.DragHandle,
+              imageVector = MOTIcons.DragHandle,
               contentDescription = null,
               tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -104,7 +99,7 @@ fun PlanActivityCard(
               onClick = onMoveUp,
               modifier = Modifier.semantics { contentDescription = "Subir actividad" },
             ) {
-              Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)
+              Icon(MOTIcons.KeyboardArrowUp, contentDescription = null)
             }
           }
           if (canMoveDown) {
@@ -112,7 +107,7 @@ fun PlanActivityCard(
               onClick = onMoveDown,
               modifier = Modifier.semantics { contentDescription = "Bajar actividad" },
             ) {
-              Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+              Icon(MOTIcons.KeyboardArrowDown, contentDescription = null)
             }
           }
         }
@@ -128,7 +123,7 @@ fun PlanActivityCard(
           horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
         ) {
           Icon(
-            Icons.Default.ConfirmationNumber,
+            MOTIcons.ConfirmationNumber,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.tertiary,
           )
@@ -152,7 +147,7 @@ fun PlanActivityCard(
           onClick = onLinkWallet,
           modifier = Modifier.padding(top = MOTSpacing.componentXs),
         ) {
-          Icon(Icons.Default.Link, contentDescription = null)
+          Icon(MOTIcons.Link, contentDescription = null)
           Text(
             if (linkedWalletEntry != null) {
               "Cambiar documento de Wallet"

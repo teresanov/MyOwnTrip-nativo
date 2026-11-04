@@ -32,7 +32,7 @@ Sin aviso, **no** hay paridad inversa: Figma sigue al código.
 |------|-------|-------------|--------|
 | **1. Compose** (SoT) | `designsystem/`, `ui/components/` | Crear o ajustar el composable con tokens del tema: `colorScheme`, `MaterialTheme.shapes`, `MOTSpacing`, `AppTypography`. Añadir `@Preview` claro y oscuro. | Código compilando |
 | **2. Figma** (espejo) | Librería `zrGAL4v6` | Component set con los mismos roles M3, variantes y estados. Bindings a variables y text styles. Pantallas solo con instancias en `Vf2tNMXy`. | Set publicado |
-| **3. Paridad** | Compose ↔ Figma | Comprobar estados, variantes, forma, color por rol, espaciado y tipografía. Registrar en auditoría. | `docs/design-system/audits/YYYY-MM-DD_*.md` |
+| **3. Paridad** | Compose ↔ Figma | Comprobar paridad. **Append** en [parity-log.md](../parity-log.md). No crear audit nuevo por discrepancia. | Entrada en bitácora; contrato solo si cambia el spec |
 | **4. Showcase** (documentación) | `ds-showcase/` | Ficha del componente: variantes, estados, accesibilidad, ejemplos, versión y cambios. | `src/data/components/<id>.json` + página |
 | **5. Notion** (registro) | Changelog DS / Diario del proyecto | Entrada con la decisión, el motivo y los enlaces a código, Figma y ficha. | Entrada fechada |
 
@@ -66,7 +66,7 @@ Un componente solo pasa a **Ready** cuando cumple todo:
 | Pantallas | Compose | Design-file Figma `Vf2tNMXy` (instancias) | Notion (flujos) |
 | Fichas de componente | Compose | — | **Showcase** (`ds-showcase/`) |
 | Decisiones e historial | — | — | **Notion** (Changelog DS, Diario) |
-| Auditorías y contratos | — | — | Repo (`docs/design-system/audits/`) |
+| Auditorías y contratos | — | — | Repo: contratos estables + **[parity-log.md](../parity-log.md)**; audits `*-phase-*` históricos |
 
 ---
 
@@ -133,6 +133,6 @@ Ejemplo: el campo de hora (`.Building Blocks/Input`, `Direct Input (keyboard) in
 
 **Bidireccional (componentes):** solo si cambias en Figma un set **PRODUCT** ya espejado del código y **avisas** — entonces paridad hacia Kotlin.
 
-El kit M3 importado (**Input / Modal / Keyboard picker**) que **no** coincide con el composable **no** manda por sí solo; se alinea al código o se archiva. Contrato: [figma-date-product-contract-2026-11-03.md](../audits/figma-date-product-contract-2026-11-03.md).
+El kit M3 importado (**Input / Modal / Keyboard picker**) que **no** coincide con el composable **no** manda por sí solo; se alinea al código o se archiva. Contrato: [figma-date-product-contract-2026-11-03.md](../audits/figma-date-product-contract-2026-11-03.md). Cambios: [parity-log.md](../parity-log.md).
 
 **`MotTripDatePickerDialog`:** sin pantalla consumidora → no PRODUCT en Figma hasta uso en app.

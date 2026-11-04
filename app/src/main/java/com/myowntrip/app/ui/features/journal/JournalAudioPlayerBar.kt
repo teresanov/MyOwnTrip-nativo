@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -65,7 +63,7 @@ fun JournalAudioPlayerBar(
         },
       ) {
         androidx.compose.material3.Icon(
-          imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+          imageVector = if (isPlaying) MOTIcons.Pause else MOTIcons.PlayArrow,
           contentDescription = null,
         )
       }

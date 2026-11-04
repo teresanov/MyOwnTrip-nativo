@@ -13,12 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Upload
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.ui.components.DestinationCoverPreview
 import com.myowntrip.app.ui.components.date.MotDateRangeField
@@ -76,7 +71,7 @@ fun CreateTripScreen(
           MOTIconButton(onClick = {
             if (dirty && !tripSaved) showDiscard = true else onBack()
           }) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -193,7 +188,7 @@ fun CreateTripScreen(
       onDismissRequest = { showDiscard = false },
       icon = {
         Icon(
-          Icons.Default.Error,
+          MOTIcons.Error,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.error,
         )
@@ -225,7 +220,7 @@ private fun CreateTripSavedBanner() {
       horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
     ) {
       Icon(
-        Icons.Default.CheckCircle,
+        MOTIcons.CheckCircle,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.onTertiaryContainer,
       )
@@ -263,12 +258,12 @@ private fun CreateTripDocumentsSection(
         modifier = Modifier.weight(1f),
         enabled = enabled,
       ) {
-        Icon(Icons.Default.Upload, contentDescription = null, modifier = Modifier.size(18.dp))
+        Icon(MOTIcons.Upload, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(MOTSpacing.componentSm))
         Text("Importar")
       }
       MOTButton(onClick = onManual, modifier = Modifier.weight(1f), enabled = enabled) {
-        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+        Icon(MOTIcons.Add, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(MOTSpacing.componentSm))
         Text("Añadir")
       }

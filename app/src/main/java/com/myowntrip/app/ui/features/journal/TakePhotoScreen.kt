@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -38,6 +35,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -66,7 +64,7 @@ fun TakePhotoScreen(
         title = { Text("Hacer foto") },
         navigationIcon = {
           MOTIconButton(onClick = onCancel) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -93,7 +91,7 @@ fun TakePhotoScreen(
         },
         modifier = Modifier.semantics { contentDescription = "Capturar foto" },
       ) {
-        Icon(Icons.Default.CameraAlt, contentDescription = null)
+        Icon(MOTIcons.CameraAlt, contentDescription = null)
       }
     },
   ) { padding ->

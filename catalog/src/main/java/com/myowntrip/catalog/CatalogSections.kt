@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -35,6 +33,7 @@ import com.myowntrip.app.ui.brand.MyOwnTripWordmark
 import com.myowntrip.app.ui.brand.WordmarkVariant
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MOTTonalButton
 import java.util.Locale
@@ -197,7 +196,7 @@ fun ButtonsSection() {
   SpecimenLabel("MOTIconButton")
   Specimen {
     MOTIconButton(onClick = {}, enabled = enabled) {
-      Icon(Icons.Default.Add, contentDescription = null)
+      Icon(MOTIcons.Add, contentDescription = null)
     }
   }
 }

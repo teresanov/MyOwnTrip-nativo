@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +31,7 @@ import com.myowntrip.app.domain.wallet.offlineAvailability
 import com.myowntrip.app.ui.components.DocumentAttachmentCard
 import com.myowntrip.app.ui.features.plan.PlanPlacementSourceChip
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MOTTonalButton
@@ -103,13 +101,13 @@ internal fun WalletDetailScaffold(
         title = { Text(entry?.title ?: "Documento") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
         actions = {
           if (entry != null) {
             MOTIconButton(onClick = onRequestDelete) {
-              Icon(Icons.Default.Delete, contentDescription = "Eliminar documento")
+              Icon(MOTIcons.Delete, contentDescription = "Eliminar documento")
             }
           }
         },

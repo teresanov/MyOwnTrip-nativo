@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +33,7 @@ import com.myowntrip.app.ui.components.date.MotDateRangeField
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTHorizontalDivider
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -64,7 +62,7 @@ fun EditTripScreen(
           MOTIconButton(onClick = {
             if (dirty) showDiscard = true else onBack()
           }) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -185,7 +183,7 @@ fun EditTripScreen(
       onDismissRequest = { showDiscard = false },
       icon = {
         Icon(
-          Icons.Default.Error,
+          MOTIcons.Error,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.error,
         )
@@ -208,7 +206,7 @@ fun EditTripScreen(
       onDismissRequest = { showDeleteConfirm = false },
       icon = {
         Icon(
-          Icons.Default.Error,
+          MOTIcons.Error,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.error,
         )

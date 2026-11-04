@@ -15,12 +15,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Luggage
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.AppMotion
 import com.myowntrip.app.ui.theme.LocalReduceMotion
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
@@ -110,7 +105,7 @@ fun HomeSpeedDial(
         },
       ) {
         androidx.compose.material3.Icon(
-          imageVector = if (expanded) Icons.Default.Close else Icons.Default.Add,
+          imageVector = if (expanded) MOTIcons.Close else MOTIcons.Add,
           contentDescription = null,
         )
       }
@@ -164,19 +159,19 @@ private fun HomeSpeedDialPreview() {
         actions = listOf(
           HomeQuickAction(
             label = "Nuevo viaje",
-            icon = Icons.Default.Luggage,
+            icon = MOTIcons.Luggage,
             contentDescription = "Crear viaje",
             onClick = {},
           ),
           HomeQuickAction(
             label = "Documento",
-            icon = Icons.Default.Upload,
+            icon = MOTIcons.Upload,
             contentDescription = "Añadir documento",
             onClick = {},
           ),
           HomeQuickAction(
             label = "Recuerdo",
-            icon = Icons.Default.PhotoCamera,
+            icon = MOTIcons.PhotoCamera,
             contentDescription = "Añadir recuerdo",
             onClick = {},
           ),

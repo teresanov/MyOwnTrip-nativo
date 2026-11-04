@@ -19,8 +19,10 @@ object MOTSpacing {
   val layoutMd = 16.dp
   val layoutLg = 24.dp
   val componentSm = 8.dp
-  /** Hueco / inset intermedio (12). Figma: `mot/spacing/component-md`. */
+  /** Inset/gap componente md (12). Figma: `mot/spacing/component-md` → alias `spacing/12`. */
   val componentMd = 12.dp
+  /** Inset/gap componente lg (16). Figma: `mot/spacing/component-lg` → alias `spacing/16`. */
+  val componentLg = 16.dp
   val componentXs = 4.dp
   val gutterGrid = 16.dp
   /** Lista con FAB flotante en la misma pantalla. */

@@ -3,6 +3,8 @@
 **Fecha:** 2026-11-03 · **Estado:** vigente  
 **Decisión:** lo que está en **`app/`** y se consume en pantallas es la única fuente de verdad. La página **Date & time pickers** y cualquier set del DS deben **reproducir exactamente** esos composables — no el kit M3 de catálogo Google si difiere. Si Figma no coincide, **se cambia Figma**.
 
+**Bitácora (cambios):** [parity-log.md](../parity-log.md) — único registro del repo; no crear MD por sesión.
+
 **Código:** `app/src/main/java/com/myowntrip/app/ui/components/date/`  
 **Supersede** para producto: matriz «Input Range = cabecera + dos campos» en [figma-datetime-matrix-2026-10-30.md](figma-datetime-matrix-2026-10-30.md) (sigue válida como log de auditoría del kit antiguo, no como contrato).
 
@@ -50,7 +52,8 @@
 |-----------|-------------|
 | Shape | `MaterialTheme.shapes.extraLarge` (28) |
 | Color | `colorScheme.surfaceContainerHigh` |
-| Margen H dialog | `MOTSpacing.screenHorizontal` |
+| Margen H dialog | `MOTSpacing.screenHorizontal` (16) **fuera** del `Surface` — en Figma: contenedor del componente **360 ref.** con `padding` H = `mot/spacing/screen-horizontal`; **`Surface` interior** ancho = contenedor − 2×16 (328 @ 360, 380 @ 412, …). No fijar el componente entero a 328. |
+| Auto-layout (Figma) | **Ancho:** raíz **Fixed** (= ancho viewport del frame padre); `Surface` + bloques **Fill** horizontal. **Alto:** raíz, `Surface`, Header, Calendar y Actions → **Hug** (contenido); **prohibido** Fixed/Fill en vertical salvo celdas/atoms con altura intrínseca. |
 
 ### Cabecera (`MotPickerDialogHeader`)
 
@@ -58,7 +61,7 @@
 |---------|--------|
 | start | `mot/spacing/layout-md` (16) |
 | end | `mot/spacing/component-sm` (8) |
-| top | `mot/spacing/component-sm` (8) |
+| top | `mot/spacing/component-lg` (16) |
 | bottom | `mot/spacing/component-xs` (4) |
 | gap título | `mot/spacing/component-xs` (4) |
 
@@ -69,10 +72,9 @@ Tipografía: `labelLarge` (supporting), `titleLarge` (headline). Colores: `DateP
 | Propiedad | Token |
 |-----------|--------|
 | Nav mes | flechas + `titleLarge` mes |
-| Padding nav | `componentXs` H |
-| Cabecera días semana | `layoutMd` H, `componentSm` V |
-| Gap entre días | **`mot/spacing/date-picker/day-grid-gap` (2)** |
-| Celda día | círculo, `bodyLarge`, colores `DatePickerColors` / `colorScheme` |
+| Padding nav | **`component-xs` (4) solo horizontal** — sin `layout-md` en el nav |
+| Cabecera días semana | **`component-xs` (4) solo `paddingTop`** — ancho completo, sin `layout-md` horizontal |
+| Rejilla (grid) | **`layout-md` (16) H**, **`component-sm` (8) V**; gap celdas **`day-grid-gap` (2)** |
 
 **Comportamiento:** un mes visible, flechas mes anterior/siguiente; **sin** scroll infinito de años. Límites: viaje **hoy → +2 años** (`resolveMotTripDateBounds`); documento wallet **±10 años** (`resolveMotDocumentDateBounds`).
 
@@ -108,9 +110,8 @@ Tipografía: `labelLarge` (supporting), `titleLarge` (headline). Colores: `DateP
 ## 5. Qué hacer en Figma (checklist)
 
 1. **Renombrar secciones** en «Date & time pickers»:  
-   - `PRODUCT · MotDateRangeField` + `PRODUCT · MotDateRangePickerDialog`  
-   - `PRODUCT · MotDateField` + `PRODUCT · MotDatePickerDialog`  
-   - `PRODUCT · MotTimeField` + `PRODUCT · MotTimePickerDialog`  
+   - `PRODUCT · MotDateRangeField` + **`MotDateRangePickerDialog`** como **COMPONENT** (`61340:8809` / `61340:8808`)  
+   - Igual para `MotDateField`, `MotDatePickerDialog`, `MotTimeField`, `MotTimePickerDialog` (componentes, no frames huérfanos)  
    - `ARCHIVE · M3 kit (not in app)` → sets `Input date picker` `51954:18540`, `Modal date picker` `51954:18136` completos, `Keyboard picker` si no coincide con C.
 2. **Bindings:** en láminas PRODUCT, solo tokens listados en §2–4 (+ `colorScheme` / text styles). Quitar binds de `header-gap`, `field-top`, `label-gap`, `block-gap` en doc de producto.
 3. **`MOTSpacing`:** mantener en Kotlin solo tokens **§3–4**; propiedades `DatePicker.headerGap`, `fieldTop`, `labelGap`, … son **deuda de kit** — no ampliar; opcional eliminarlas cuando Figma archive el kit.

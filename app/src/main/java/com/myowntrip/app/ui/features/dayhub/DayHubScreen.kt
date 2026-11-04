@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -43,6 +40,7 @@ import com.myowntrip.app.ui.features.plan.DayPlanSchedule
 import com.myowntrip.app.ui.features.plan.MoveBlockDayDialog
 import com.myowntrip.app.ui.features.plan.UpdateDocumentPlanSheet
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTTab
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -110,7 +108,7 @@ fun DayHubScreen(
         },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -120,7 +118,7 @@ fun DayHubScreen(
         FloatingActionButton(
           onClick = { viewModel.showAddBlock() },
           modifier = Modifier.semantics { contentDescription = "Añadir actividad" },
-        ) { Icon(Icons.Default.Add, contentDescription = null) }
+        ) { Icon(MOTIcons.Add, contentDescription = null) }
       }
     },
   ) { padding ->

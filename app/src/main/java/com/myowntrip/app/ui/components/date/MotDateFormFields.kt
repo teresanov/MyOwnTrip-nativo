@@ -1,9 +1,6 @@
 package com.myowntrip.app.ui.components.date
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -18,6 +15,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.myowntrip.app.domain.plan.PlanPlacementLogic
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -56,7 +54,7 @@ fun MotDateRangeField(
       if (enabled) {
         MOTIconButton(onClick = { showPicker = true }) {
           Icon(
-            Icons.Outlined.CalendarMonth,
+            MOTIcons.CalendarMonth,
             contentDescription = "Abrir calendario de fechas",
           )
         }
@@ -112,7 +110,7 @@ fun MotDateField(
       if (enabled) {
         MOTIconButton(onClick = { showPicker = true }) {
           Icon(
-            Icons.Outlined.CalendarMonth,
+            MOTIcons.CalendarMonth,
             contentDescription = "Abrir calendario",
           )
         }
@@ -166,7 +164,7 @@ fun MotTimeField(
       if (enabled) {
         MOTIconButton(onClick = { showPicker = true }) {
           Icon(
-            Icons.Outlined.Schedule,
+            MOTIcons.Schedule,
             contentDescription = "Abrir selector de hora",
           )
         }

@@ -5,11 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +29,7 @@ import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.domain.plan.WalletPlanPlacementInfo
 import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 
 /**
@@ -101,7 +97,7 @@ fun SwipeableWalletDocumentRow(
             contentAlignment = Alignment.CenterStart,
           ) {
             Icon(
-              imageVector = if (showArchivedActions) Icons.Outlined.Unarchive else Icons.Outlined.Archive,
+              imageVector = if (showArchivedActions) MOTIcons.Unarchive else MOTIcons.Archive,
               contentDescription = archiveLabel,
               tint = MaterialTheme.colorScheme.onSecondaryContainer,
             )
@@ -116,7 +112,7 @@ fun SwipeableWalletDocumentRow(
             contentAlignment = Alignment.CenterEnd,
           ) {
             Icon(
-              imageVector = Icons.Default.Delete,
+              imageVector = MOTIcons.Delete,
               contentDescription = "Eliminar",
               tint = MaterialTheme.colorScheme.onErrorContainer,
             )
@@ -133,7 +129,7 @@ fun SwipeableWalletDocumentRow(
         trailingActions = {
           MOTIconButton(onClick = { menuExpanded = true }) {
             Icon(
-              imageVector = Icons.Default.MoreVert,
+              imageVector = MOTIcons.MoreVert,
               contentDescription = "Acciones del documento",
               modifier = Modifier.size(22.dp),
             )
@@ -146,7 +142,7 @@ fun SwipeableWalletDocumentRow(
               DropdownMenuItem(
                 text = { Text("Restaurar") },
                 leadingIcon = {
-                  Icon(Icons.Outlined.Unarchive, contentDescription = null)
+                  Icon(MOTIcons.Unarchive, contentDescription = null)
                 },
                 onClick = {
                   menuExpanded = false
@@ -157,7 +153,7 @@ fun SwipeableWalletDocumentRow(
               DropdownMenuItem(
                 text = { Text("Archivar") },
                 leadingIcon = {
-                  Icon(Icons.Outlined.Archive, contentDescription = null)
+                  Icon(MOTIcons.Archive, contentDescription = null)
                 },
                 onClick = {
                   menuExpanded = false
@@ -169,7 +165,7 @@ fun SwipeableWalletDocumentRow(
               text = { Text("Eliminar", color = MaterialTheme.colorScheme.error) },
               leadingIcon = {
                 Icon(
-                  Icons.Default.Delete,
+                  MOTIcons.Delete,
                   contentDescription = null,
                   tint = MaterialTheme.colorScheme.error,
                 )

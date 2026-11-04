@@ -15,15 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import com.myowntrip.app.ui.theme.MOTHorizontalDivider
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -67,7 +64,7 @@ fun RestaurantFormScreen(
         title = { Text("Nuevo sitio") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Atrás")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Atrás")
           }
         },
       )
@@ -92,7 +89,7 @@ fun RestaurantFormScreen(
         modifier = Modifier.fillMaxWidth(),
       ) {
         Icon(
-          Icons.Default.LocationOn,
+          MOTIcons.LocationOn,
           contentDescription = null,
           modifier = Modifier.size(18.dp),
         )
@@ -183,12 +180,12 @@ fun RestaurantDetailScreen(
         title = { Text(restaurant?.name ?: "Sitio") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Atrás")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Atrás")
           }
         },
         actions = {
           MOTIconButton(onClick = { showDeleteDialog = true }) {
-            Icon(Icons.Default.Delete, contentDescription = "Borrar sitio")
+            Icon(MOTIcons.Delete, contentDescription = "Borrar sitio")
           }
         },
       )
@@ -212,7 +209,7 @@ fun RestaurantDetailScreen(
           modifier = Modifier.fillMaxWidth(),
         ) {
           Icon(
-            Icons.Default.LocationOn,
+            MOTIcons.LocationOn,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
           )

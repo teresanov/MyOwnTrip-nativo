@@ -1,7 +1,9 @@
 # Plan de remediación — disparidades Compose ↔ Figma
 
 **Fecha:** 2026-11-03  
-**Pipeline:** [design-pipeline.md](../governance/design-pipeline.md) (Compose → Figma; bidireccional solo con aviso)  
+**Relación con el plan general:** no sustituye [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md). Es la **cola activa** cuando el kit Figma (p. ej. date pickers M3) **no** coincide con Compose: prioriza **R1–R4 date/time PRODUCT**; **R6** retoma P1 del plan de paridad (Home menu, swipe, tabs…). Ejecución día a día → [parity-log.md](../parity-log.md).
+
+**Pipeline:** [design-pipeline.md](../governance/design-pipeline.md)  
 **Contrato date/time:** [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md)
 
 ---
@@ -47,7 +49,9 @@ Cada fase cierra con **auditoría** (`resolveVariables` false/true en subárbol)
 
 **Objetivo:** lo que ve diseño = lo que corre en app.
 
-### 4.1 Crear sección `PRODUCT` (frames de documentación, no COMPONENT_SET del kit)
+### 4.1 Crear sección `PRODUCT` (componentes publicados + lámina doc)
+
+Cada patrón = **`COMPONENT`** en la librería (instanciable en design-file), no solo frame suelto. Átomos internos = instancias de sets P0 (Text field, Button - text, BB calendario…).
 
 | Lámina | Contenido (instancias / composición) | Trazabilidad Compose |
 |--------|--------------------------------------|----------------------|
@@ -71,7 +75,7 @@ Copiar **medidas** del contrato (padding `layout-md`, `component-sm`, `day-grid-
 
 - [ ] 4 láminas PRODUCT publicadas en la página
 - [ ] 0 instancias PRODUCT que apunten a variantes del kit Input Range (Header + 2 campos)
-- [ ] Screenshot + `batch_get` evidencia en `audits/figma-date-product-figma-YYYY-MM-DD.md`
+- [ ] Gate: screenshot + auditoría subárbol — **registrar en** [parity-log.md](../parity-log.md)
 
 ---
 

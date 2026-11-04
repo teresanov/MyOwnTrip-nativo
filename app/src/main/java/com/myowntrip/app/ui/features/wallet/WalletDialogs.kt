@@ -3,10 +3,6 @@ package com.myowntrip.app.ui.features.wallet
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTTextButton
 
 @Composable
@@ -26,7 +23,7 @@ fun WalletDiscardDialog(
     onDismissRequest = onDismiss,
     icon = {
       Icon(
-        Icons.Default.Error,
+        MOTIcons.Error,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.error,
       )
@@ -63,7 +60,7 @@ fun WalletDuplicateDialog(
     onDismissRequest = onDismiss,
     icon = {
       Icon(
-        Icons.Default.Warning,
+        MOTIcons.Warning,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.tertiary,
       )
@@ -73,7 +70,7 @@ fun WalletDuplicateDialog(
       Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Ya tienes «$existingTitle» en este viaje. ¿Qué quieres hacer?")
         MOTTextButton(onClick = onDuplicate, modifier = Modifier.fillMaxWidth()) {
-          Icon(Icons.Default.ContentCopy, contentDescription = null)
+          Icon(MOTIcons.ContentCopy, contentDescription = null)
           Text("Guardar como nuevo")
         }
         MOTTextButton(onClick = onReplace, modifier = Modifier.fillMaxWidth()) {
@@ -98,7 +95,7 @@ fun WalletDeleteEntryDialog(
     onDismissRequest = onDismiss,
     icon = {
       Icon(
-        Icons.Default.Error,
+        MOTIcons.Error,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.error,
       )

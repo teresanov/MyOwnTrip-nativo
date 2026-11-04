@@ -19,6 +19,8 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | [shape.md](shape.md) | Corner tokens, botones 0→20 morph, binding Figma |
 | [spacing.md](spacing.md) | **`MOTSpacing`** / `MOT · Spacing` (producto); legado Semantic · Layout |
 | [figma-compose-bindings.md](figma-compose-bindings.md) | Mapa sets Figma ↔ Compose (P0) |
+| [parity-log.md](parity-log.md) | **Bitácora única** paridad Compose ↔ Figma (pendiente + registro) |
+| [governance/design-pipeline.md](governance/design-pipeline.md) | Flujo Compose → Figma → paridad → showcase |
 | [typography.md](typography.md) | Fraunces + Inter, mapeo a roles M3 |
 | [iconography.md](iconography.md) | Material Symbols Sharp + iconos propios |
 | [components.md](components.md) | M3 puro vs wrappers `MyOwnTrip*` |

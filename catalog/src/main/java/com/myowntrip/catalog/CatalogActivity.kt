@@ -15,10 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.LocalReduceMotion
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
 /**
@@ -76,14 +73,14 @@ fun CatalogApp() {
             navigationIcon = {
               if (section != null) {
                 MOTIconButton(onClick = { section = null }) {
-                  Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Atrás")
+                  Icon(MOTIcons.ArrowBack, contentDescription = "Atrás")
                 }
               }
             },
             actions = {
               MOTIconButton(onClick = { darkTheme = !effectiveDark }) {
                 Icon(
-                  if (effectiveDark) Icons.Default.LightMode else Icons.Default.DarkMode,
+                  if (effectiveDark) MOTIcons.LightMode else MOTIcons.DarkMode,
                   contentDescription = if (effectiveDark) "Modo claro" else "Modo oscuro",
                 )
               }

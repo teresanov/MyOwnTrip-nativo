@@ -3,10 +3,6 @@ package com.myowntrip.app.ui.features.trips
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Luggage
-import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -31,6 +27,7 @@ import com.myowntrip.app.ui.components.home.HomeQuickAction
 import com.myowntrip.app.ui.components.home.HomeSpeedDial
 import com.myowntrip.app.ui.components.home.HomeTripsContentState
 import com.myowntrip.app.ui.components.home.HomeTripsScreen
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import java.time.LocalDate
 import kotlinx.coroutines.launch
@@ -105,19 +102,19 @@ fun TripListScreen(
     listOf(
       HomeQuickAction(
         label = "Nuevo viaje",
-        icon = Icons.Default.Luggage,
+        icon = MOTIcons.Luggage,
         contentDescription = "Crear viaje",
         onClick = onCreateTrip,
       ),
       HomeQuickAction(
         label = "Recuerdo",
-        icon = Icons.Default.Edit,
+        icon = MOTIcons.Edit,
         contentDescription = "Añadir recuerdo al cuaderno",
         onClick = { openFabSheet(HomeFabAddMode.Souvenir) },
       ),
       HomeQuickAction(
         label = "Documento",
-        icon = Icons.Default.Upload,
+        icon = MOTIcons.Upload,
         contentDescription = "Añadir documento a Wallet",
         onClick = { openFabSheet(HomeFabAddMode.Document) },
       ),

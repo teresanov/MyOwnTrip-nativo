@@ -5,14 +5,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Brush
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.StickyNote2
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.FloatingActionButtonMenuItem
@@ -36,6 +28,7 @@ import com.myowntrip.app.ui.features.journal.JournalPermission
 import com.myowntrip.app.ui.features.journal.JournalRecordingDialog
 import com.myowntrip.app.ui.features.journal.TakePhotoScreen
 import com.myowntrip.app.ui.features.journal.rememberJournalPermissionRequest
+import com.myowntrip.app.ui.theme.MOTIcons
 import kotlinx.coroutines.launch
 
 /** Día + hoja donde debe caer una pieza nueva. */
@@ -224,7 +217,7 @@ fun JournalCaptureFabMenu(
         },
       ) {
         Icon(
-          painter = rememberVectorPainter(if (expanded) Icons.Default.Close else Icons.Default.Add),
+          painter = rememberVectorPainter(if (expanded) MOTIcons.Close else MOTIcons.Add),
           contentDescription = null,
           modifier = Modifier.animateIcon({ checkedProgress }),
         )
@@ -234,27 +227,27 @@ fun JournalCaptureFabMenu(
     FloatingActionButtonMenuItem(
       onClick = onPhoto,
       text = { Text("Foto") },
-      icon = { Icon(Icons.Default.PhotoCamera, contentDescription = null) },
+      icon = { Icon(MOTIcons.PhotoCamera, contentDescription = null) },
     )
     FloatingActionButtonMenuItem(
       onClick = onText,
       text = { Text("Texto") },
-      icon = { Icon(Icons.Default.Edit, contentDescription = null) },
+      icon = { Icon(MOTIcons.Edit, contentDescription = null) },
     )
     FloatingActionButtonMenuItem(
       onClick = onAudio,
       text = { Text("Voz") },
-      icon = { Icon(Icons.Default.Mic, contentDescription = null) },
+      icon = { Icon(MOTIcons.Mic, contentDescription = null) },
     )
     FloatingActionButtonMenuItem(
       onClick = onSticker,
       text = { Text("Sticker") },
-      icon = { Icon(Icons.Default.StickyNote2, contentDescription = null) },
+      icon = { Icon(MOTIcons.StickyNote2, contentDescription = null) },
     )
     FloatingActionButtonMenuItem(
       onClick = onSketch,
       text = { Text("Boceto") },
-      icon = { Icon(Icons.Default.Brush, contentDescription = null) },
+      icon = { Icon(MOTIcons.Brush, contentDescription = null) },
     )
   }
 }

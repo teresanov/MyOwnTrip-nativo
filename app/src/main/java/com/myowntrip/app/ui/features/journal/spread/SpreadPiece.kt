@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,6 +33,7 @@ import com.myowntrip.app.domain.model.JournalNote
 import com.myowntrip.app.domain.model.JournalPieceType
 import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.components.EyebrowLabelSize
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import java.io.File
 import java.text.DateFormat
@@ -120,7 +119,7 @@ private fun AudioSpreadPiece(note: JournalNote) {
       Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primary) {
         Box(modifier = Modifier.size(32.dp), contentAlignment = Alignment.Center) {
           androidx.compose.material3.Icon(
-            Icons.Default.Mic,
+            MOTIcons.Mic,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.size(18.dp),

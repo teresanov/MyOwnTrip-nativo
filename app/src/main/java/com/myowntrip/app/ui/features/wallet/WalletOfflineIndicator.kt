@@ -3,10 +3,6 @@ package com.myowntrip.app.ui.features.wallet
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QrCode
-import androidx.compose.material.icons.outlined.Cloud
-import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.myowntrip.app.domain.wallet.WalletOfflineAvailability
 import com.myowntrip.app.domain.wallet.isAvailableOffline
 import com.myowntrip.app.domain.wallet.isCloudOnly
+import com.myowntrip.app.ui.theme.MOTIcons
 
 @Composable
 fun WalletOfflineIndicator(
@@ -27,9 +24,9 @@ fun WalletOfflineIndicator(
   if (!availability.isAvailableOffline() && !availability.isCloudOnly()) return
 
   val (icon, label) = when (availability) {
-    WalletOfflineAvailability.LocalDocument -> Icons.Outlined.WifiOff to "Sin conexión"
-    WalletOfflineAvailability.QrCode -> Icons.Default.QrCode to "QR sin conexión"
-    WalletOfflineAvailability.CloudReference -> Icons.Outlined.Cloud to "En la nube"
+    WalletOfflineAvailability.LocalDocument -> MOTIcons.WifiOff to "Sin conexión"
+    WalletOfflineAvailability.QrCode -> MOTIcons.QrCode to "QR sin conexión"
+    WalletOfflineAvailability.CloudReference -> MOTIcons.Cloud to "En la nube"
     WalletOfflineAvailability.MetadataOnly -> return
   }
 

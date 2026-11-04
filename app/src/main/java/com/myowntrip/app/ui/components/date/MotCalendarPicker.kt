@@ -16,9 +16,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +31,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -96,7 +94,7 @@ internal fun MotBoundedMonthCalendar(
         enabled = canGoPrevious,
       ) {
         Icon(
-          Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+          MOTIcons.KeyboardArrowLeft,
           contentDescription = "Mes anterior",
         )
       }
@@ -112,7 +110,7 @@ internal fun MotBoundedMonthCalendar(
         enabled = canGoNext,
       ) {
         Icon(
-          Icons.AutoMirrored.Filled.KeyboardArrowRight,
+          MOTIcons.KeyboardArrowRight,
           contentDescription = "Mes siguiente",
         )
       }

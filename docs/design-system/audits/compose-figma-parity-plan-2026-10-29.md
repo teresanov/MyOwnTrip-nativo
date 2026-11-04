@@ -7,6 +7,8 @@
 
 Inventario para trabajar por fases: qué hay en Compose, cómo se enlaza a tokens, qué hay en Figma, qué falta.
 
+**Cola activa (nov 2026):** date/time producto ≠ kit M3 → seguir [disparity-remediation-plan-2026-11-03.md](disparity-remediation-plan-2026-11-03.md) (R1–R4) y registrar en [parity-log.md](../parity-log.md). La «Fase C ✅ Date/time» de abajo auditó **sets kit**; las láminas **PRODUCT** son trabajo posterior (R1).
+
 ---
 
 ## 1. Cómo entiende nativo los “semánticos”

@@ -13,13 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.PhotoLibrary
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -50,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -125,7 +119,7 @@ fun JournalAddScreen(
           title = { Text(if (viewModel.isEditMode) "Editar nota" else "Nueva nota") },
           navigationIcon = {
             MOTIconButton(onClick = onBack) {
-              Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+              Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
             }
           },
         )
@@ -150,7 +144,7 @@ fun JournalAddScreen(
         title = { Text(if (viewModel.isEditMode) "Editar nota" else "Nueva nota") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
       )
@@ -188,7 +182,7 @@ fun JournalAddScreen(
             onClick = requestCamera,
             label = { Text("Cámara") },
             leadingIcon = {
-              Icon(Icons.Default.PhotoCamera, contentDescription = null)
+              Icon(MOTIcons.PhotoCamera, contentDescription = null)
             },
             modifier = Modifier.semantics { contentDescription = "Hacer foto con la cámara" },
           )
@@ -197,7 +191,7 @@ fun JournalAddScreen(
             onClick = { pickGalleryImage.launch("image/*") },
             label = { Text("Galería") },
             leadingIcon = {
-              Icon(Icons.Default.PhotoLibrary, contentDescription = null)
+              Icon(MOTIcons.PhotoLibrary, contentDescription = null)
             },
             modifier = Modifier.semantics { contentDescription = "Elegir foto de la galería" },
           )
@@ -208,7 +202,7 @@ fun JournalAddScreen(
           onClick = viewModel::removePhoto,
           label = { Text("Quitar foto") },
           leadingIcon = {
-            Icon(Icons.Default.PhotoCamera, contentDescription = null)
+            Icon(MOTIcons.PhotoCamera, contentDescription = null)
           },
           modifier = Modifier.semantics { contentDescription = "Quitar foto adjunta" },
         )
@@ -238,7 +232,7 @@ fun JournalAddScreen(
           },
           leadingIcon = {
             Icon(
-              if (state.isRecording) Icons.Default.Stop else Icons.Default.Mic,
+              if (state.isRecording) MOTIcons.Stop else MOTIcons.Mic,
               contentDescription = null,
             )
           },
@@ -279,7 +273,7 @@ fun JournalAddScreen(
       ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
           Icon(
-            Icons.Default.LocationOn,
+            MOTIcons.LocationOn,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
           )

@@ -1,5 +1,7 @@
 # Fase C — Date / time pickers
 
+> **Obsoleto como contrato producto (nov 2026):** sets kit abajo → **ARCHIVE**. Producto: [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md) · trabajo: [disparity-remediation-plan-2026-11-03.md](disparity-remediation-plan-2026-11-03.md) · [parity-log.md](../parity-log.md).
+
 **Fecha:** 2026-10-29  
 **Compose:** `MotDatePickerDialog` / `MotDateRangePickerDialog` / `MotTimePickerDialog` / `MotTripDatePickerDialog`  
 **Figma:** `Modal date picker` `51954:18136` · `Input date picker` `51954:18540`

@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
-import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -24,6 +21,7 @@ import coil3.compose.AsyncImage
 import com.myowntrip.app.platform.documents.DocumentKind
 import com.myowntrip.app.platform.documents.fileNameFromSource
 import com.myowntrip.app.platform.documents.documentKindFromName
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import java.io.File
 
@@ -68,7 +66,7 @@ fun DocumentAttachmentCard(
             verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
           ) {
             Icon(
-              Icons.AutoMirrored.Filled.InsertDriveFile,
+              MOTIcons.InsertDriveFile,
               contentDescription = null,
               tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -86,7 +84,7 @@ fun DocumentAttachmentCard(
         modifier = Modifier.padding(top = MOTSpacing.componentSm),
       )
       Icon(
-        Icons.Default.Visibility,
+        MOTIcons.Visibility,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.tertiary,
         modifier = Modifier

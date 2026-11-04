@@ -105,6 +105,11 @@ fun MOTOutlinedButton(
   )
 }
 
+/**
+ * Figma: **Button - text** `58650:8094` · Type=Square.
+ * Label: siempre [Typography.labelLarge] (M3 `TextButton`; no escala por tamaño).
+ * Padding: [ButtonDefaults.TextButtonContentPadding] (12×8) — Figma Small = `mot/padding/button/xsmall-horizontal` + `small-vertical`.
+ */
 @Composable
 fun MOTTextButton(
   onClick: () -> Unit,

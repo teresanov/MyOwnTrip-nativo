@@ -17,11 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ConfirmationNumber
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import com.myowntrip.app.ui.components.date.MotTimeTextField
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTTextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -465,7 +461,7 @@ private fun TimelineGridEvent(
             modifier = Modifier.semantics { contentDescription = "Opciones de actividad" },
           ) {
             Icon(
-              imageVector = Icons.Default.MoreVert,
+              imageVector = MOTIcons.MoreVert,
               contentDescription = null,
               tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -478,7 +474,7 @@ private fun TimelineGridEvent(
               DropdownMenuItem(
                 text = { Text("Corregir horario") },
                 leadingIcon = {
-                  Icon(Icons.Default.Schedule, contentDescription = null)
+                  Icon(MOTIcons.Schedule, contentDescription = null)
                 },
                 onClick = {
                   menuExpanded = false
@@ -489,7 +485,7 @@ private fun TimelineGridEvent(
               DropdownMenuItem(
                 text = { Text("Editar hora") },
                 leadingIcon = {
-                  Icon(Icons.Default.Schedule, contentDescription = null)
+                  Icon(MOTIcons.Schedule, contentDescription = null)
                 },
                 onClick = {
                   menuExpanded = false
@@ -501,7 +497,7 @@ private fun TimelineGridEvent(
                 DropdownMenuItem(
                   text = { Text("Mover a otro día") },
                   leadingIcon = {
-                    Icon(Icons.Default.Today, contentDescription = null)
+                    Icon(MOTIcons.Today, contentDescription = null)
                   },
                   onClick = {
                     menuExpanded = false
@@ -513,7 +509,7 @@ private fun TimelineGridEvent(
             DropdownMenuItem(
               text = { Text("Vincular documento de Wallet") },
               leadingIcon = {
-                Icon(Icons.Default.ConfirmationNumber, contentDescription = null)
+                Icon(MOTIcons.ConfirmationNumber, contentDescription = null)
               },
               onClick = {
                 menuExpanded = false

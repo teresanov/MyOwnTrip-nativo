@@ -23,6 +23,7 @@ description: Audita el design system M3 nativo de MyOwnTrip (Figma ↔ variables
 | Figma DS (librería) | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System) · `zrGAL4v6MEMc9hzZemU432` |
 | Figma design-file (pantallas) | [MyOwnTrip_design-file](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file) · `Vf2tNMXyKAlJSV53A1v4Is` — ver [`figma-libraries.md`](../../../docs/design-system/figma-libraries.md) |
 | Android UI Kit | [MyOwnTrip_Andorid-UI](https://www.figma.com/design/WyjZMISihVMTMg5RYSJWba/MyOwnTrip_Andorid-UI) · `WyjZMISihVMTMg5RYSJWba` |
+| Paridad DS (bitácora) | **`docs/design-system/parity-log.md`** — append; contratos p. ej. `audits/figma-date-product-contract-*.md` |
 
 Si `variables.json` y otra doc discrepan, **gana `variables.json`**.
 

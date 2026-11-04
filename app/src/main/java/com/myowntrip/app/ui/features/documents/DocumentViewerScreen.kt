@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,6 +41,7 @@ import com.myowntrip.app.platform.documents.ResolvedDocument
 import com.myowntrip.app.platform.documents.openDocumentExternally
 import com.myowntrip.app.platform.documents.resolveLocalDocument
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import kotlinx.coroutines.launch
@@ -85,13 +83,13 @@ fun DocumentViewerScreen(
         title = { Text(document?.displayName ?: title ?: "Documento") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
         actions = {
           if (document != null && showExternalAction) {
             MOTIconButton(onClick = openExternal) {
-              Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = "Abrir con otra app")
+              Icon(MOTIcons.OpenInNew, contentDescription = "Abrir con otra app")
             }
           }
         },
@@ -270,7 +268,7 @@ private fun UnsupportedDocumentMessage(
       onClick = onOpenExternal,
       modifier = Modifier.padding(top = MOTSpacing.layoutMd),
     ) {
-      Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null)
+      Icon(MOTIcons.OpenInNew, contentDescription = null)
       Text("Probar con otra app")
     }
   }

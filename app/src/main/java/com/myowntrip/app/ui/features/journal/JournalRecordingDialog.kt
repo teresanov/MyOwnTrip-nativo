@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,6 +19,7 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +61,7 @@ fun JournalRecordingDialog(
           onClick = onStop,
           modifier = Modifier.fillMaxWidth(),
         ) {
-          Icon(Icons.Default.Stop, contentDescription = null)
+          Icon(MOTIcons.Stop, contentDescription = null)
           Text(
             text = "Detener",
             modifier = Modifier.padding(start = MOTSpacing.componentSm),

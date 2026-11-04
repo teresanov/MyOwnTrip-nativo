@@ -10,11 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.JournalNote
 import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import java.io.File
 import java.text.DateFormat
@@ -74,7 +70,7 @@ fun JournalDetailScreen(
         title = { Text("Recuerdo") },
         navigationIcon = {
           MOTIconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         },
         actions = {
@@ -83,13 +79,13 @@ fun JournalDetailScreen(
               onClick = { onEdit(current.id) },
               modifier = Modifier.semantics { contentDescription = "Editar recuerdo" },
             ) {
-              Icon(Icons.Default.Edit, contentDescription = null)
+              Icon(MOTIcons.Edit, contentDescription = null)
             }
             MOTIconButton(
               onClick = { showDeleteConfirm = true },
               modifier = Modifier.semantics { contentDescription = "Eliminar recuerdo" },
             ) {
-              Icon(Icons.Default.Delete, contentDescription = null)
+              Icon(MOTIcons.Delete, contentDescription = null)
             }
           }
         },
@@ -210,7 +206,7 @@ private fun JournalDetailContent(
           horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
         ) {
           Icon(
-            Icons.Default.LocationOn,
+            MOTIcons.LocationOn,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.tertiary,
           )

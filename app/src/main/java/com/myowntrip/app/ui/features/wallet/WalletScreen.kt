@@ -21,15 +21,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ConfirmationNumber
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Flight
-import androidx.compose.material.icons.filled.Hotel
-import androidx.compose.material.icons.filled.QrCode
-import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
-import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -52,6 +43,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.BuildConfig
 import com.myowntrip.app.domain.model.Day
@@ -389,7 +381,7 @@ private fun WalletQuickActions(
       onClick = onAddEntry,
       modifier = Modifier.weight(1f),
     ) {
-      Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+      Icon(MOTIcons.Add, contentDescription = null, modifier = Modifier.size(18.dp))
       Spacer(Modifier.width(8.dp))
       Text("Añadir")
     }
@@ -397,7 +389,7 @@ private fun WalletQuickActions(
       onClick = onImportEntry,
       modifier = Modifier.weight(1f),
     ) {
-      Icon(Icons.Default.Upload, contentDescription = null, modifier = Modifier.size(18.dp))
+      Icon(MOTIcons.Upload, contentDescription = null, modifier = Modifier.size(18.dp))
       Spacer(Modifier.width(8.dp))
       Text("Importar")
     }
@@ -678,11 +670,11 @@ private fun entryCountLabel(count: Int): String = when (count) {
 }
 
 private fun entryTypeIcon(type: EntryType): ImageVector = when (type) {
-  EntryType.FLIGHT -> Icons.Default.Flight
-  EntryType.HOTEL -> Icons.Default.Hotel
-  EntryType.ACTIVITY -> Icons.Default.ConfirmationNumber
-  EntryType.TRANSPORT -> Icons.Default.DirectionsCar
-  EntryType.GENERIC -> Icons.AutoMirrored.Filled.InsertDriveFile
+  EntryType.FLIGHT -> MOTIcons.Flight
+  EntryType.HOTEL -> MOTIcons.Hotel
+  EntryType.ACTIVITY -> MOTIcons.ConfirmationNumber
+  EntryType.TRANSPORT -> MOTIcons.DirectionsCar
+  EntryType.GENERIC -> MOTIcons.InsertDriveFile
 }
 
 private fun entryScheduleLabel(entry: WalletEntry): String {

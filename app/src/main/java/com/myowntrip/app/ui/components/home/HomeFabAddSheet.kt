@@ -5,10 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.NoteAdd
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -33,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.features.trips.previewHomeTrips
 import com.myowntrip.app.ui.theme.MOTButton
+import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
@@ -166,7 +163,7 @@ fun HomeFabAddSheet(
           DocumentActionRow(
             title = "Importar archivo",
             subtitle = "PDF o imagen desde el dispositivo",
-            icon = { Icon(Icons.Default.Upload, contentDescription = null) },
+            icon = { Icon(MOTIcons.Upload, contentDescription = null) },
             contentDescription = "Importar documento a Wallet",
             enabled = selectedTripId != null,
             onClick = {
@@ -178,7 +175,7 @@ fun HomeFabAddSheet(
           DocumentActionRow(
             title = "Entrada manual",
             subtitle = "Vuelo, hotel, transporte, actividad u otro",
-            icon = { Icon(Icons.AutoMirrored.Filled.NoteAdd, contentDescription = null) },
+            icon = { Icon(MOTIcons.NoteAdd, contentDescription = null) },
             contentDescription = "Añadir documento manual a Wallet",
             enabled = selectedTripId != null,
             onClick = {
@@ -192,7 +189,7 @@ fun HomeFabAddSheet(
           DocumentActionRow(
             title = "Nota o foto",
             subtitle = "Texto, imagen, audio o ubicación en el día del viaje",
-            icon = { Icon(Icons.Default.Edit, contentDescription = null) },
+            icon = { Icon(MOTIcons.Edit, contentDescription = null) },
             contentDescription = "Añadir recuerdo al diario",
             enabled = selectedTripId != null,
             onClick = {

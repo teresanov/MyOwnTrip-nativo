@@ -35,6 +35,7 @@ MOT_FIGMA_TO_COMPOSE: dict[str, str] = {
     "mot/spacing/layout-lg": "MOTSpacing.layoutLg",
     "mot/spacing/component-sm": "MOTSpacing.componentSm",
     "mot/spacing/component-md": "MOTSpacing.componentMd",
+    "mot/spacing/component-lg": "MOTSpacing.componentLg",
     "mot/spacing/component-xs": "MOTSpacing.componentXs",
     "mot/spacing/gutter-grid": "MOTSpacing.gutterGrid",
     "mot/spacing/screen-content-bottom-with-fab": "MOTSpacing.screenContentBottomWithFab",
