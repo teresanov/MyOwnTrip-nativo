@@ -55,8 +55,8 @@ Cada patrón = **`COMPONENT`** en la librería (instanciable en design-file), no
 
 | Lámina | Contenido (instancias / composición) | Trazabilidad Compose |
 |--------|--------------------------------------|----------------------|
-| **PRODUCT · MotDateRangeField** | 1× `Text field` Outlined + label «Fechas del viaje» + trailing icon calendar | `MotDateFormFields.kt` |
-| **PRODUCT · MotDateRangePickerDialog** | Surface extraLarge + cabecera (2 textos) + rejilla mes (nav + 7×6) + Cancelar/Aceptar | `MotDatePickerDialogs.kt` + `MotCalendarPicker.kt` |
+| **PRODUCT · MotDateRangeField** | 2× `Text field` Outlined (inicio/fin) + icono calendario · gap `component-sm` | `MotDateFormFields.kt` · Figma `61340:8809` |
+| **PRODUCT · MotDateRangePickerDialog** | Set **`Surface`** Days / Year / Month · cabecera + cuerpo + Cancelar/Aceptar | `MotDatePickerDialogs.kt` · Figma `61348:28897` |
 | **PRODUCT · MotDateField** | Outlined + `MotDatePickerDialog` (single) | Wallet |
 | **PRODUCT · MotTimeField + MotTimePickerDialog** | Outlined + dialog: título + TimeInput + toggle + botones | `MotTimePickerDialog.kt` |
 

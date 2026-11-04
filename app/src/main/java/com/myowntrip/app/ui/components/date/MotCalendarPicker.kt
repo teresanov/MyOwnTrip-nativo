@@ -1,8 +1,8 @@
 package com.myowntrip.app.ui.components.date
 
 /**
- * Calendario mes a mes (círculos, paridad Figma). Al pulsar el título del mes abre rejillas
- * año → mes (mismos [MotYearPickerGrid] / [MotMonthPickerGrid] que el patrón M3 del repo).
+ * Calendario mes a mes custom (legacy). **Producto** usa [DateRangePicker] / [DatePicker] M3
+ * en [MotDateRangePickerDialog] / [MotDatePickerDialog]. Se mantiene para tests de selección de rango.
  */
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

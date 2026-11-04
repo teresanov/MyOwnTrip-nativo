@@ -33,66 +33,85 @@
 
 ## 2. Patrón A — Campo de fecha / rango (formulario)
 
-**Compose:** un solo **`OutlinedTextField`** M3 (read-only) + **`MOTIconButton`** trailing (`CalendarMonth`) → abre modal.
+**Compose (`MotDateRangeField`):** fila con **dos** `OutlinedTextField` M3 editables (inicio / fin, `dd/MM/yyyy`, teclado) + **`MOTIconButton`** calendario → [MotDateRangePickerDialog]. Validación al perder foco; ventana **aceptada** al escribir: hoy → +10 años (`defaultMotMaxAcceptedTripDate`); ventana **calendario**: hoy → +2 años (`pickerMaxDate` / `defaultMotMaxSelectableDate`).
+
+**Compose (`MotDateField`):** un `OutlinedTextField` read-only + icono → [MotDatePickerDialog].
 
 | Aspecto | Valor en código |
 |---------|-----------------|
-| Control | `OutlinedTextField` (padding = **M3 por defecto**, no `MOTSpacing.TextField.*` explícito) |
-| Error | `isError` + `supportingText` |
-| Rango copy | `formatMotDateRange` en el value |
+| Control rango | 2× `OutlinedTextField` + icono calendario |
+| Control fecha única | `OutlinedTextField` read-only + trailing icon |
+| Error | `isError` + `supportingText` (parseo local o error de formulario) |
 
-**Figma debe mostrar:** instancia **`Text field` Outlined** (set publicado) + icono calendario — **no** el set legacy **Input date picker** con Header + Date + Date return.
+**Figma debe mostrar:** rango = instancias **`Text field` Outlined** (Date return del Input · Type=Range, `51954:18560`) + icono calendario; fecha única = un campo Outlined + icono. Referencia kit: [Input date picker · Range](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18540) (ARCHIVE → promover a PRODUCT en lámina `61340:8809`).
+
+#### Ficha diseñador — `MotDateRangeField` (Dev Mode · `61340:8809`)
+
+| Tema | Detalle |
+|------|---------|
+| Anatomía | 2× Outlined «Fecha inicio» / «Fecha fin» + icono calendario |
+| Entrada | `dd/mm/aaaa` con teclado |
+| Error | Borde + supporting text |
+| Espaciado fila | `mot/spacing/component-sm` entre controles |
+| Ancho lámina | 360 ref. |
+| Color icono | Schemes del modo (Light/Dark en frame de preview) |
+
+#### Comportamiento (resumen)
+
+Escribir fechas o abrir calendario → modal de rango. Validación al perder foco. Teclado: hoy → +10 años; calendario del modal: hoy → +2 años.
 
 **Tokens que NO son contrato de producto** (solo existían en kit M3 importado):  
 `mot/spacing/date-picker/header-gap`, `mot/padding/date-picker/field-top`, gaps 74/244 del modal M3 completo, etc. En Figma: **desenlazar del doc de producto** o archivar en sección «M3 reference · not shipped».
 
 ---
 
-## 3. Patrón B — Modal rango / fecha única (`MotDateRangePickerDialog`, `MotDatePickerDialog`)
+## 3. Patrón B — Modal rango (`MotDateRangePickerDialog`) y fecha única (`MotDatePickerDialog`)
 
-**Compose:** `Dialog` + `Surface` (`shapes.extraLarge`, `surfaceContainerHigh`) + cabecera custom + **`DateRangePicker` / `DatePicker` M3** (`rememberDateRangePickerState` / `rememberDatePickerState`, `DisplayMode.Picker`, `showModeToggle = false`) + acciones propias.
+### Rango — `MotDateRangePickerDialog`
 
-**Calendario:** no usar calendario custom mes-a-mes; la navegación **mes/año → rejilla de años → meses** la gestiona la librería Material3 al pulsar el título del mes (igual que `DatePicker`/`DateRangePicker` de referencia).
+**Compose:** shell **`DatePickerDialog` M3** + cuerpo **`MotBoundedMonthCalendar`** (`MotCalendarPicker.kt`): **un mes** visible con flechas, selección inicio/fin, y tres superficies (`MotCalendarPickerSurface`):
 
-### Contenedor
+| Superficie | UI |
+|------------|-----|
+| **Days** | Nav mes + cabeceras L–D + rejilla 7×6 |
+| **Year** | Nav atrás + título «Elige el año» + `MotYearPickerGrid` (3 columnas) |
+| **Month** | Nav atrás + título = año + `MotMonthPickerGrid` (3×4, meses `es`) |
+
+**No** se usa `DateRangePicker` M3 (lista vertical de todos los meses). Límites: `SelectableDates` / `coerceInRange` (calendario ~hoy→+2 años; teclado del campo hasta +10 años).
 
 | Propiedad | Token / rol |
 |-----------|-------------|
-| Shape | `MaterialTheme.shapes.extraLarge` (28) |
-| Color | `colorScheme.surfaceContainerHigh` |
-| Margen H dialog | `MOTSpacing.screenHorizontal` (16) **fuera** del `Surface` — en Figma: contenedor del componente **360 ref.** con `padding` H = `mot/spacing/screen-horizontal`; **`Surface` interior** ancho = contenedor − 2×16 (328 @ 360, 380 @ 412, …). No fijar el componente entero a 328. |
-| Auto-layout (Figma) | **Ancho:** raíz **Fixed** (= ancho viewport del frame padre); `Surface` + bloques **Fill** horizontal. **Alto:** raíz, `Surface`, Header, Calendar y Actions → **Hug** (contenido); **prohibido** Fixed/Fill en vertical salvo celdas/atoms con altura intrínseca. |
+| Shape / color | `DatePickerDialog` + `DatePickerDefaults.colors(containerColor = surfaceContainerHigh)` |
+| Margen H | `MOTSpacing.screenHorizontal` (16) |
+| Cabecera | `supportingText` + headline (`inputHeadline` o `formatMotDateRange`) |
+| Acciones | `MOTTextButton` Cancelar / Aceptar |
 
-### Cabecera (`MotPickerDialogHeader`)
+**Figma PRODUCT:** [`MotDateRangePickerDialog`](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-28897) · propiedad **`Surface`**: `Days` · `Year` · `Month`. Ficha completa en la descripción del componente (Dev Mode). Preview Light/Dark: modo en el **frame** de documentación, no fijado en el maestro.
 
-| Padding | Token |
-|---------|--------|
-| start | `mot/spacing/layout-md` (16) |
-| end | `mot/spacing/component-sm` (8) |
-| top | `mot/spacing/component-lg` (16) |
-| bottom | `mot/spacing/component-xs` (4) |
-| gap título | `mot/spacing/component-xs` (4) |
+#### Ficha diseñador — `MotDateRangePickerDialog` (Dev Mode · `61348:28897`)
 
-Tipografía: `labelLarge` (supporting), `titleLarge` (headline). Colores: `DatePickerDefaults.colors()` → `titleContentColor` / `headlineContentColor`.
+| Tema | Detalle |
+|------|---------|
+| **Surface · Days** | Un mes; flechas; título mes+año (salta a año); L–D; rejilla 7 col.; rango inicio/fin/medio en celdas |
+| **Surface · Year** | Atrás; «Elige el año»; rejilla años 3 col. |
+| **Surface · Month** | Atrás; año; meses abrev. (ene…dic) 3×4 |
+| Cabecera | Supporting + titular (rango o copy por defecto) |
+| Pie | Cancelar · Aceptar (Aceptar inactivo sin fecha fin) |
+| Contenedor | Extra large · **Schemes / surface container high** |
+| Margen H diálogo | `mot/spacing/screen-horizontal` (16) |
+| Rejilla días | Gap `mot/spacing/date-picker/day-grid-gap` (2); pad H `layout-md`; pad V `component-sm` |
+| Nav mes | Pad H `mot/spacing/component-xs` (4) |
+| Celdas día | `.Building Blocks/Local M3 calendar cell` — Default, Null, Today, Selected, Selected (Middle) |
 
-### Calendario (`MotBoundedMonthCalendar`)
+#### Comportamiento (resumen)
 
-| Propiedad | Token |
-|-----------|--------|
-| Nav mes | **`DatePicker` / `DateRangePicker` M3** — pulsar mes/año abre año → mes; flechas incluidas en el composable |
-| Cabecera días semana | **`component-xs` (4) solo `paddingTop`** — ancho completo, sin `layout-md` horizontal |
-| Rejilla (grid) | **`layout-md` (16) H**, **`component-sm` (8) V**; gap celdas **`day-grid-gap` (2)** |
+Primer día = inicio; segundo = fin. Mes+año → año → mes → vuelve al mes. Flechas = mes anterior/sigiente. Atrás en año/mes sube nivel. Cancelar cierra sin cambios. Sin scroll de lista de meses.
 
-**Comportamiento:** un mes visible, flechas mes anterior/siguiente; **sin** scroll infinito de años. Límites: viaje **hoy → +2 años** (`resolveMotTripDateBounds`); documento wallet **±10 años** (`resolveMotDocumentDateBounds`).
+### Fecha única — `MotDatePickerDialog`
 
-### Acciones
+**Compose:** `DatePickerDialog` + **`DatePicker` M3** (`DisplayMode.Picker`, `showModeToggle = false`, `SelectableDates`).
 
-| Propiedad | Token |
-|-----------|--------|
-| Padding | `componentSm` H, `componentXs` V |
-| Botones | `MOTTextButton` — «Cancelar» / «Aceptar» |
-
-**Figma debe mostrar:** una lámina **«Product · Range calendar dialog»** y **«Product · Single calendar dialog»** con esta anatomía — **no** `Modal date picker` `Type=Full-screen (range)` del kit M3 si el árbol de nodos no coincide.
+**Figma:** lámina PRODUCT pendiente (modal single); kit `51954:18136` · `Type=Day` solo como referencia ARCHIVE, no SoT de producto.
 
 ---
 
@@ -117,7 +136,7 @@ Tipografía: `labelLarge` (supporting), `titleLarge` (headline). Colores: `DateP
 ## 5. Qué hacer en Figma (checklist)
 
 1. **Renombrar secciones** en «Date & time pickers»:  
-   - `PRODUCT · MotDateRangeField` + **`MotDateRangePickerDialog`** como **COMPONENT** (`61340:8809` / `61340:8808`)  
+   - `PRODUCT · MotDateRangeField` + **`MotDateRangePickerDialog`** COMPONENT_SET (`61340:8809` / `61348:28897`, eje `Surface`)  
    - Igual para `MotDateField`, `MotDatePickerDialog`, `MotTimeField`, `MotTimePickerDialog` (componentes, no frames huérfanos)  
    - `ARCHIVE · M3 kit (not in app)` → sets `Input date picker` `51954:18540`, `Modal date picker` `51954:18136` completos, `Keyboard picker` si no coincide con C.
 2. **Bindings:** en láminas PRODUCT, solo tokens listados en §2–4 (+ `colorScheme` / text styles). Quitar binds de `header-gap`, `field-top`, `label-gap`, `block-gap` en doc de producto.

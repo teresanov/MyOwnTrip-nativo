@@ -4,12 +4,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,8 +26,14 @@ import java.time.LocalDate
 import java.time.YearMonth
 
 /**
- * Rango de fechas de producto: cabecera M3 + [MotBoundedMonthCalendar] (círculos, paridad Figma).
- * Mes/año vía rejillas al pulsar el título del mes. Shell [DatePickerDialog] por medición estable.
+ * Rango de fechas en **un mes visible** + selección inicio/fin (paridad Figma día + rango).
+ *
+ * No usamos [androidx.compose.material3.DateRangePicker]: en **material3 1.5.0-alpha12** ese
+ * composable es una [LazyColumn] vertical con **todos** los meses del `yearRange` (lista larga),
+ * no el calendario de un mes con flechas del kit `Type=Day`.
+ *
+ * Shell [DatePickerDialog] M3; cuerpo [MotBoundedMonthCalendar] + rejillas año/mes (tokens M3).
+ * Fecha única: [MotDatePickerDialog] sí usa [DatePicker] M3.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -117,7 +127,7 @@ fun MotDateRangePickerDialog(
   }
 }
 
-/** Fecha única: mismo calendario acotado + rejillas año/mes. */
+/** Fecha única: [DatePicker] M3 (un mes + selector año/mes en la librería). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MotDatePickerDialog(
@@ -131,25 +141,36 @@ fun MotDatePickerDialog(
 ) {
   val (min, max) = resolveMotDocumentDateBounds(minDate, maxDate)
   val clampedInitial = initialDate.coerceInRange(min, max)
+  val selectableDates = remember(min, max) { motSelectableDates(min, max) }
+  val yearRange = remember(min, max) { min.year..max.year }
 
-  var selectedDate by remember { mutableStateOf(clampedInitial) }
-  var displayedMonth by remember {
-    mutableStateOf(clampYearMonth(YearMonth.from(clampedInitial), min, max))
-  }
-  var pickerSurface by remember { mutableStateOf(MotCalendarPickerSurface.Days) }
-
+  val pickerState = rememberDatePickerState(
+    initialSelectedDateMillis = clampedInitial.toUtcMillis(),
+    initialDisplayedMonthMillis = clampedInitial.toUtcMillis(),
+    yearRange = yearRange,
+    initialDisplayMode = DisplayMode.Picker,
+    selectableDates = selectableDates,
+  )
   val scheme = MaterialTheme.colorScheme
   val colors = DatePickerDefaults.colors(
     containerColor = scheme.surfaceContainerHigh,
   )
-  val headline = remember(selectedDate, inputHeadline) {
-    formatMotDate(selectedDate)
+  val headline by remember(pickerState.selectedDateMillis, inputHeadline) {
+    derivedStateOf {
+      pickerState.selectedDateMillis?.toLocalDateUtc()?.let(::formatMotDate) ?: inputHeadline
+    }
   }
 
   DatePickerDialog(
     onDismissRequest = onDismiss,
     confirmButton = {
-      MOTTextButton(onClick = { onConfirm(selectedDate) }) {
+      MOTTextButton(
+        onClick = {
+          val millis = pickerState.selectedDateMillis ?: return@MOTTextButton
+          onConfirm(millis.toLocalDateUtc())
+        },
+        enabled = pickerState.selectedDateMillis != null,
+      ) {
         Text("Aceptar")
       }
     },
@@ -165,30 +186,13 @@ fun MotDatePickerDialog(
         .padding(horizontal = MOTSpacing.screenHorizontal)
         .padding(bottom = MOTSpacing.componentSm),
     ) {
-      MotPickerDialogHeader(
-        supportingText = supportingText,
-        headline = headline,
+      DatePicker(
+        state = pickerState,
+        modifier = Modifier.fillMaxWidth(),
         colors = colors,
-        onHeadlineClick = {
-          if (pickerSurface == MotCalendarPickerSurface.Days) {
-            pickerSurface = MotCalendarPickerSurface.Year
-          }
-        },
-      )
-      MotBoundedMonthCalendar(
-        mode = MotCalendarSelectionMode.Single,
-        displayedMonth = displayedMonth,
-        onMonthChange = { displayedMonth = clampYearMonth(it, min, max) },
-        minDate = min,
-        maxDate = max,
-        colors = colors,
-        pickerSurface = pickerSurface,
-        onPickerSurfaceChange = { pickerSurface = it },
-        selectedDate = selectedDate,
-        onDateSelected = { date ->
-          selectedDate = date
-          displayedMonth = clampYearMonth(YearMonth.from(date), min, max)
-        },
+        title = { Text(supportingText) },
+        headline = { Text(headline) },
+        showModeToggle = false,
       )
     }
   }
