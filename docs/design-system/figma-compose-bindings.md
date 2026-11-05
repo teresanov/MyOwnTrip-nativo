@@ -46,6 +46,8 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **TripHeroCard** | [61199:7862](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61199-7862) | Elevated | `TripHeroCard` | [trip-hero-card](../ds-showcase/components/trip-hero-card.html) |
 | **Eyebrow label** | [61202:16834](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834) | Tertiary · Medium | `EyebrowLabel` | Medium **8×4** / Small **16×4**; `Corner/Small` · [eyebrow-label](../ds-showcase/components/eyebrow-label.html) · audit [Fase B](audits/figma-home-cards-phase-b-2026-10-29.md) |
 | **Document attachment** | [61258:28665](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61258-28665) | Kind=Image\|File | `DocumentAttachmentCard` | `shapes.medium` · pads `layoutMd` · preview 180; audit [C](audits/figma-document-attachment-phase-c-2026-10-29.md) |
+| **Spread piece** | [61258:28716](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61258-28716) | Type=Photo…Event bookmark | Piezas en hoja Spread | Card especial · átomos: Eyebrow label, iconos; página **Cards** |
+| **Scrapbook page** | [61265:29035](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61265-29035) | State=Empty\|Full | Marco hoja álbum | Card especial · composición Spread piece; **Cards** |
 | **Button** | [57994:2227](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57994-2227) | Filled · Square | `MOTButton` | ADR 004; restore 2026-10-29 |
 | **Button - tonal** | [58651:11237](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58651-11237) | Tonal · Square · XSmall pads 12×6 | `MOTTonalButton` | Secondary de producto |
 | **Button - outline** | [58650:10213](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58650-10213) | Outline · Square | `MOTOutlinedButton` | |
@@ -139,6 +141,8 @@ Previews: `CreateTripScreenPreview`, `EditTripScreenPreview`.
 ## Diario · Spread `05 · Día · Spread`
 
 Spec: [`journal-spread-design-spec.md`](journal-spread-design-spec.md)
+
+**Librería DS:** cards especiales en página **Cards** → marco [Spread · special cards](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61370-27708) (`61370:27708`): **Spread piece**, **Scrapbook page**. **No es card:** [Spread album chrome](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61262-28962) (`61262:28962`) → **App bars** (contador + **Day pill** [61261:28761](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61261-28761) en **Chips**). FAB captura = **FAB menu** (**Buttons**). Compose: `AlbumChrome` privado en `ScrapbookAlbum.kt`.
 
 | Cap / frame | Preview Compose | Ruta |
 |-------------|-----------------|------|
