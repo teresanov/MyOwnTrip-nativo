@@ -95,7 +95,6 @@ async function createFilledButton(label, iconKey) {
   const set = await figma.importComponentSetByKeyAsync(KEYS.buttonFilledSet);
   const comp = set.children.find((c) => c.name === 'Type=Square, Size=Medium, State=Enabled');
   const inst = comp.createInstance();
-  inst.layoutGrow = 1;
   setProps(inst, { 'Label text': label, 'Show icon': true });
   const iconNode = inst.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
   if (iconNode) iconNode.swapComponent(await getIcon(iconKey));
@@ -105,7 +104,6 @@ async function createOutlineButton(label, iconKey) {
   const set = await figma.importComponentSetByKeyAsync(KEYS.buttonOutlineSet);
   const comp = set.children.find((c) => c.name === 'Type=Square, Size=Medium, State=Enabled');
   const inst = comp.createInstance();
-  inst.layoutGrow = 1;
   setProps(inst, { 'Label text': label, 'Show icon': true });
   const iconNode = inst.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
   if (iconNode) iconNode.swapComponent(await getIcon(iconKey));
@@ -243,7 +241,6 @@ async function rebuildEmpty(phoneId) {
   const actions = figma.createFrame();
   actions.layoutMode = 'HORIZONTAL';
   actions.itemSpacing = 16;
-  actions.layoutSizingHorizontal = 'FILL';
   appendFill(stack, actions);
   appendFill(actions, await createFilledButton('Añadir', KEYS.iconAdd));
   appendFill(actions, await createOutlineButton('Importar', KEYS.iconUpload));
