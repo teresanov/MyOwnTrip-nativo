@@ -103,29 +103,29 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 
 ## Wallet · flujo de app `04 · Wallet` — [`491:13870`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13870)
 
-Fuente Compose: `WalletFlowReviewScreen` · ruta dev `wallet_flow_review`. **Portero:** datos de preview / seeder / strings reales en Compose; control inventado = gap DS, no frame suelto ([`figma-instances-only.mdc`](../../.cursor/rules/figma-instances-only.mdc)).
+Fuente Compose: `WalletPreviewData` · `@Preview`. **SoT visual:** capturas en [`docs/samples/wallet/caps/README.md`](../../samples/wallet/caps/README.md) (`cap-NN.png`). **Portero:** instancias DS; si preview ≠ captura → gana captura.
 
-| Cap | Node Figma | Preview Compose | Ruta |
-|-----|------------|-----------------|------|
-| cap 1 · con documentos | [491:13876](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13876) | `TripDetailWalletTabPreview` | `trip_detail/{tripId}` tab Wallet |
-| cap 2 · vacío | [491:13915](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13915) | `WalletScreenEmptyPreview` | `trip_detail/{tripId}` empty |
-| cap 3 · esperando picker | — | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` |
-| cap 4 · analizando | — | `WalletFormParsingPreview` | `wallet_add` |
-| cap 5 · revisar vuelo | — | `WalletFormImportReviewPreview` | `wallet_add` |
-| cap 6 · revisar hotel | — | `WalletFormImportReviewHotelPreview` | `wallet_add` |
-| cap 7 · confirmar | `491:13962` · instancia Basic dialog `492:3332` | `WalletConfirmDialogPreview` | `wallet_add` dialog |
-| cap 8 · parse fail | — | `WalletParseFailPreview` | `wallet_add` EC-PARSE-FAIL |
-| cap 9 · manual | [491:13980](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13980) | `WalletFormManualPreview` | `wallet_add?pickAttachment=false` · **MotDateField** + **MotTimeField** |
-| cap 10 · detalle | [491:13987](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13987) | `WalletDetailPreview` · `previewDetailEntry` | `wallet_detail/{entryId}` · **Document attachment** + QR (gap **WalletQrCard** DS) |
-| cap 10b · detalle hotel | (script) | `previewWalletEntries` HOTEL + `previewHotelImportState` | `hotel-casa-bonay-reserva.pdf` |
-| cap 10c · actividad · drift | (script) | `DebugPastTripsSeeder` · Teatro Nacional D. Maria II | chip plan · `teatro-real-las-bodas-de-figaro.pdf` |
-| cap 13 · visor PDF | (script) | `DocumentViewerScreen` · `billete-barcelona.pdf` | document viewer |
-| cap 11 · eliminar | `491:13994` · instancia Basic dialog `492:3372` (icon `error`) | `WalletDeleteDialogPreview` | `wallet_detail` dialog |
-| cap 12 · descartar | `491:14001` · instancia Basic dialog `492:3414` (icon `error`) | `WalletDiscardDialogPreview` | `wallet_add` dialog |
+| Cap | Node Figma | Capture SoT | Preview Compose | Ruta |
+|-----|------------|-------------|-----------------|------|
+| cap 1 · con documentos | [491:13876](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13876) | `cap-01.png` | `TripDetailWalletTabPreview` | `trip_detail/{tripId}` tab Wallet |
+| cap 2 · vacío | [491:13915](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13915) | `cap-02.png` | `WalletScreenEmptyPreview` | `trip_detail/{tripId}` empty |
+| cap 3 · esperando picker | — | `cap-03.png` | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` |
+| cap 4 · analizando | — | `cap-04.png` | `WalletFormParsingPreview` | `wallet_add` |
+| cap 5 · revisar vuelo | — | `cap-05.png` | `WalletFormImportReviewPreview` | `wallet_add` |
+| cap 6 · revisar hotel | — | `cap-06.png` | `WalletFormImportReviewHotelPreview` | `wallet_add` |
+| cap 7 · confirmar | `491:13962` · instancia Basic dialog `492:3332` | `cap-07.png` | `WalletConfirmDialogPreview` | `wallet_add` dialog |
+| cap 8 · parse fail | — | `cap-08.png` | `WalletParseFailPreview` | `wallet_add` EC-PARSE-FAIL |
+| cap 9 · manual | [491:13980](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13980) | `cap-09.png` | `WalletFormManualPreview` | `wallet_add?pickAttachment=false` · **MotDateField** + **MotTimeField** |
+| cap 10 · detalle | [491:13987](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13987) | `cap-10.png` | `WalletDetailPreview` · `previewDetailEntry` | `wallet_detail/{entryId}` · **Document attachment** + QR (gap **WalletQrCard** DS) |
+| cap 10b · detalle hotel | `503:6332` | `cap-10b.png` | `previewWalletEntries` HOTEL + `previewHotelImportState` | `hotel-casa-bonay-reserva.pdf` |
+| cap 10c · actividad · drift | `503:6415` | `cap-10c.png` | `DebugPastTripsSeeder` · Teatro Nacional D. Maria II | chip plan · `teatro-real-las-bodas-de-figaro.pdf` |
+| cap 13 · visor PDF | `503:6745` | `cap-13.png` | `DocumentViewerScreen` · `billete-barcelona.pdf` | document viewer |
+| cap 11 · eliminar | `491:13994` · instancia Basic dialog `492:3372` (icon `error`) | `cap-11.png` | `WalletDeleteDialogPreview` | `wallet_detail` dialog |
+| cap 12 · descartar | `491:14001` · instancia Basic dialog `492:3414` (icon `error`) | `cap-12.png` | `WalletDiscardDialogPreview` | `wallet_add` dialog |
 
 Flow review: `WalletFlowReviewPreview`.
 
-Scripts (Desktop Bridge · `Vf2tNMXyKAlJSV53A1v4Is`): `scripts/figma-design-file-wallet-flows-parity.js` (completo) · `scripts/figma-design-file-wallet-flows-parity-part-a.js` (cap 10 vuelo + cap 2 vacío).
+Scripts (Desktop Bridge · `Vf2tNMXyKAlJSV53A1v4Is`): `scripts/figma-design-file-wallet-cap1.js` (cap 1 · gate captura) · `scripts/figma-design-file-wallet-flows-parity-part-a.js` (cap 10 vuelo + cap 2 vacío) · `scripts/figma-design-file-wallet-flows-parity-part-b.js` (10b/10c/13) · `figma-design-file-wallet-flows-parity.js` (completo).
 
 ## Viajes · crear y editar `02 · Viajes — crear y editar`
 

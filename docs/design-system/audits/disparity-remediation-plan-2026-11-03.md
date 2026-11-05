@@ -132,13 +132,16 @@ Gate: cada control trazable a línea Compose ([figma-instances-only.mdc](../../.
 
 **Regla de flujo:** copy, fechas, PDFs y previews = fuente Compose (`WalletPreviewData`, `@Preview`, `DebugPastTripsSeeder`); Figma solo instancias DS publicadas. Si falta componente en librería → **gap de paridad**, no UI inventada.
 
-| Captura app | Composable(s) | Cap Figma | Script / datos Compose |
-|-------------|---------------|-----------|-------------------------|
-| Detalle vuelo + QR + PDF | `WalletDetailPreview` · `previewDetailEntry` | `491:13987` | `figma-design-file-wallet-flows-parity-part-a.js` · `billete-barcelona.pdf` |
-| Detalle hotel + PDF | hotel preview + import state | cap **10b** (script) | `previewHotelImportState` · `hotel-casa-bonay-reserva.pdf` |
-| Actividad + drift plan | `PlanPlacementSourceChip` + seeder | cap **10c** (script) | Teatro · `teatro-real-las-bodas-de-figaro.pdf` |
-| Visor PDF | `DocumentViewerScreen` | cap **13** (script) | `billete-barcelona.pdf` |
-| Tab vacío | `WalletScreenEmptyPreview` | `491:13915` | part-a · `headlineMedium` + botones 50/50 |
+**Gate visual (2026-11-05):** paridad cerrada solo con diff **captura app** ↔ screenshot `phone` 360×800. Inventario PNG: [`docs/samples/wallet/caps/README.md`](../../samples/wallet/caps/README.md). Si preview ≠ captura → design-file sigue la captura (gap documentado).
+
+| Capture | Composable(s) | Cap Figma | Script / datos Compose |
+|---------|---------------|-----------|-------------------------|
+| `cap-01.png` | `TripDetailWalletTabPreview` | `491:13876` | `figma-design-file-wallet-cap1.js` · `WalletPreviewData` |
+| `cap-02.png` | `WalletScreenEmptyPreview` | `491:13915` | `figma-design-file-wallet-flows-parity-part-a.js` |
+| `cap-10.png` | `WalletDetailPreview` · `previewDetailEntry` | `491:13987` | part-a · `billete-barcelona.pdf` |
+| `cap-10b.png` | hotel preview + import state | `503:6332` | part-b · `previewHotelImportState` · `hotel-casa-bonay-reserva.pdf` |
+| `cap-10c.png` | `PlanPlacementSourceChip` + seeder | `503:6415` | Teatro · `teatro-real-las-bodas-de-figaro.pdf` (lista demo = Sagrada) |
+| `cap-13.png` | `DocumentViewerScreen` | `503:6745` | part-b · `billete-barcelona.pdf` |
 
 **Gaps DS (documentados en script):** `WalletQrCard` (frame doc hasta COMPONENT); chip plan = Assistive chip sin tokens **warning**; offline vuelo = `WifiOff` (icono no publicado — hoy placeholder `qr_code` en fila «Sin conexión»).
 

@@ -24,7 +24,8 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Ámbito | Tarea |
 |--------|--------|
-| Wallet · design-file | Gaps DS: **WalletQrCard**, **PlanPlacementSourceChip** (warning), icono **wifi_off** offline · otros caps flujo si aplica |
+| Wallet · design-file | **Gate captura:** versionar `docs/samples/wallet/caps/cap-*.png` · ejecutar `figma-design-file-wallet-cap1.js` (Bridge) · diff caps 10/2/10b/10c/13 vs PNG · caps 3–9 · Part C automatización |
+| Wallet · design-file | Gaps DS: **WalletQrCard**, **PlanPlacementSourceChip** (warning), icono **wifi_off** offline · highlight cards = gap estructural hasta COMPONENT |
 | — | R6 / P1 resto (menu, swipe, tabs…) |
 
 ---
@@ -33,6 +34,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-05 | Wallet · design-file | **Prep cap 1:** gate captura documentado · `docs/samples/wallet/caps/README.md` · `figma-design-file-wallet-cap1.js` (página `491:14473`, phone `491:13876`, chips clonados, 4 highlights, sin trailing delete) · bindings + §7.1 columna `capture:` | scripts/docs · Figma pendiente (Bridge off) | En curso |
 | 2026-11-04 | date/time | **Year/Month autolayout (re-fix):** Surface/Calendar HUG · filas 52px · años 2021–2035 · meses 4×3 · acciones visibles · set sin clip `61348:28897` | Figma Console | Hecho |
 | 2026-11-04 | Wallet · design-file | **Part A hecho:** cap **10** detalle vuelo `491:13987` + cap **2** vacío `491:13915` vía `figma-design-file-wallet-flows-parity-part-a.js` (1× `figma_execute`, fileKey design-file) | Figma verify: cap10 hijos Status bar/App bar/Body · cap2 Status bar/Body · §7.1 | Hecho |
 | 2026-11-04 | Wallet · design-file | **Part B hecho:** caps **10b** hotel `503:6332`, **10c** Teatro/drift `503:6415`, **13** visor PDF `503:6745` (`figma-design-file-wallet-flows-parity-part-b.js` + troceos `.cursor/exec-b64-pb*`; fix find flow `/Wallet.*flujo de app/`) | Figma verify · §7.1 | Hecho |

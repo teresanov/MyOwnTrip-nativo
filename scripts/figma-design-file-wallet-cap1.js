@@ -1,6 +1,8 @@
 /**
- * Reconstruye cap 1 Wallet · flujo de app con DS + text properties.
- * Ejecutar vía use_figma en Vf2tNMXyKAlJSV53A1v4Is.
+ * Cap 1 · tab Wallet con documentos (`491:13876` phone).
+ * SoT visual: `docs/samples/wallet/caps/cap-01.png` (captura app) > `@Preview`.
+ * Compose: `TripDetailWalletTabPreview` + `WalletPreviewData`.
+ * Ejecutar: MCP `figma_execute` o Bridge en `Vf2tNMXyKAlJSV53A1v4Is` · página `491:14473`.
  */
 if (figma.fileKey !== 'Vf2tNMXyKAlJSV53A1v4Is') {
   throw new Error('ABORT: ejecutar en MyOwnTrip_design-file');
@@ -54,7 +56,7 @@ const DOCS = [
   },
   {
     type: 'Transporte',
-    iconKey: KEYS.iconFlight,
+    iconKey: KEYS.iconCar,
     title: 'AVE 03142',
     meta: 'Transporte · 6 jul 2026 · 18:30',
     schedule: '6 jul 2026 · 18:30',
@@ -128,9 +130,9 @@ async function createAppBar(title) {
   inst.name = 'App bar';
   inst.layoutSizingHorizontal = 'FILL';
   setProps(inst, {
-    'Show 1st trailing': false,
-    'Show 2nd trailing': false,
-    'Show 3rd trailing': false,
+    'Show 1st trailing action': false,
+    'Show 2nd trailing action': false,
+    'Show 3rd trailing action': false,
   });
   const textContent = inst.findOne((n) => n.name === 'Text content');
   if (textContent) {
@@ -208,7 +210,7 @@ async function styledText(name, characters, styleKey) {
   return t;
 }
 
-async function createListItem({ title, meta, iconKey, showDelete }) {
+async function createListItem({ title, meta, iconKey }) {
   const set = await figma.importComponentSetByKeyAsync(KEYS.listItemSet);
   const comp = set.children.find(
     (c) =>
@@ -227,12 +229,8 @@ async function createListItem({ title, meta, iconKey, showDelete }) {
     .findOne((n) => n.name === 'Leading element')
     ?.findOne((n) => n.type === 'INSTANCE');
   if (leadIcon) leadIcon.swapComponent(await getIcon(iconKey));
-  if (showDelete) {
-    const trailIcon = inst
-      .findOne((n) => n.name === 'Trailing element')
-      ?.findOne((n) => n.type === 'INSTANCE');
-    if (trailIcon) trailIcon.swapComponent(await getIcon(KEYS.iconDelete));
-  }
+  const trailing = inst.findOne((n) => n.name === 'Trailing element');
+  if (trailing) trailing.visible = false;
   return inst;
 }
 
@@ -292,7 +290,21 @@ async function createHighlightCard(doc) {
   return card;
 }
 
+async function cloneFilterChipsRow() {
+  const cap2Phone = await figma.getNodeByIdAsync('491:13915');
+  let template = cap2Phone?.findOne((n) => n.name === 'Filter chips' && n.type === 'FRAME');
+  if (!template) {
+    const cap1Phone = await figma.getNodeByIdAsync('491:13876');
+    template = cap1Phone?.findOne((n) => n.name === 'Filter chips' && n.type === 'FRAME');
+  }
+  if (!template) return null;
+  const row = template.clone();
+  row.name = 'Filter chips';
+  return row;
+}
+
 async function buildWalletBody(body) {
+  const filterTemplate = await cloneFilterChipsRow();
   clearChildren(body);
 
   const header = figma.createFrame();
@@ -342,6 +354,11 @@ async function buildWalletBody(body) {
   fillH(actions);
   body.appendChild(actions);
 
+  if (filterTemplate) {
+    filterTemplate.layoutSizingHorizontal = 'FILL';
+    body.appendChild(filterTemplate);
+  }
+
   const proxSection = figma.createFrame();
   proxSection.name = 'Próximos section';
   proxSection.layoutMode = 'VERTICAL';
@@ -365,12 +382,12 @@ async function buildWalletBody(body) {
   cards.paddingLeft = 16;
   cards.paddingRight = 16;
   cards.fills = [];
-  for (const doc of DOCS.slice(0, 2)) cards.appendChild(await createHighlightCard(doc));
+  for (const doc of DOCS) cards.appendChild(await createHighlightCard(doc));
   proxSection.appendChild(cards);
   body.appendChild(proxSection);
 
   const allTitleRow = paddedRow('All docs title row', 16, 8);
-  const allTitle = await styledText('All docs title', 'Todos los documentos', KEYS.textTitleMedium);
+  const allTitle = await styledText('All docs title', 'Documentos activos', KEYS.textTitleMedium);
   fillH(allTitle);
   allTitleRow.appendChild(allTitle);
   fillH(allTitleRow);
@@ -382,7 +399,6 @@ async function buildWalletBody(body) {
         title: doc.title,
         meta: doc.meta,
         iconKey: doc.iconKey,
-        showDelete: true,
       }),
     );
   }
@@ -456,21 +472,15 @@ function hugWidth(node) {
   if ('counterAxisSizingMode' in node && node.layoutMode) node.counterAxisSizingMode = 'AUTO';
 }
 
-await figma.setCurrentPageAsync(figma.root.children.find((p) => p.id === '71:3'));
-const flow = figma.currentPage.findOne((n) => n.id === '266:75');
-if (!flow) throw new Error('Wallet flow not found');
-const screens = flow.findOne((n) => n.name === 'Screens');
-if (!screens) throw new Error('Screens not found');
+await figma.loadAllPagesAsync();
+const page = figma.root.children.find((p) => p.id === '491:14473');
+if (!page) throw new Error('Wallet page 491:14473 not found');
+await figma.setCurrentPageAsync(page);
 
-let cap1 = screens.children.find((c) => /cap\s*1/i.test(c.name));
-if (!cap1) {
-  cap1 = figma.createFrame();
-  cap1.name = 'cap 1 — wallet con documentos';
-  cap1.layoutMode = 'VERTICAL';
-  cap1.itemSpacing = 16;
-  cap1.fills = [];
-  screens.appendChild(cap1);
-}
+const phone = await figma.getNodeByIdAsync('491:13876');
+if (!phone || phone.name !== 'phone') throw new Error('cap 1 phone 491:13876 not found');
+const cap1 = phone.parent;
+if (!cap1) throw new Error('cap 1 column not found');
 
 let caption = cap1.findOne((n) => n.name === 'caption' && n.type === 'TEXT');
 if (!caption) {
@@ -489,32 +499,14 @@ caption.layoutSizingHorizontal = 'FILL';
 cleanupCap1(cap1);
 await ensurePhoneShell(cap1, buildWalletBody);
 
-hugWidth(flow);
-hugWidth(screens);
 hugWidth(cap1);
-
-// Limpieza: instancias huérfanas sueltas en la página (provocan errores de selección en Bridge)
-const keep = new Set([flow.id]);
-flow.findAll().forEach((n) => keep.add(n.id));
-for (const child of [...figma.currentPage.children]) {
-  if (!keep.has(child.id)) child.remove();
-}
-
-flow.layoutMode = 'VERTICAL';
-flow.primaryAxisSizingMode = 'AUTO';
-flow.counterAxisSizingMode = 'AUTO';
-screens.layoutMode = 'HORIZONTAL';
-screens.primaryAxisSizingMode = 'AUTO';
-screens.counterAxisSizingMode = 'AUTO';
-screens.itemSpacing = 40;
-cap1.layoutMode = 'VERTICAL';
-cap1.primaryAxisSizingMode = 'AUTO';
-cap1.counterAxisSizingMode = 'AUTO';
-
-figma.viewport.scrollAndZoomIntoView([cap1]);
+figma.viewport.scrollAndZoomIntoView([phone]);
+figma.notify('Wallet cap 1 rebuilt — diff vs docs/samples/wallet/caps/cap-01.png');
 
 return {
   status: 'rebuilt',
   cap1Id: cap1.id,
-  url: `https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is?node-id=${cap1.id.replace(':', '-')}`,
+  phoneId: phone.id,
+  gate: 'docs/samples/wallet/caps/cap-01.png',
+  url: `https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is?node-id=${phone.id.replace(':', '-')}`,
 };

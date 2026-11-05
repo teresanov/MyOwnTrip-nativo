@@ -1,0 +1,262 @@
+/**
+ * Cap 1 · tab Wallet con documentos (`491:13876` phone).
+ * SoT visual: `docs/samples/wallet/caps/cap-01.png` (captura app) > `@Preview`.
+ * Compose: `TripDetailWalletTabPreview` + `WalletPreviewData`.
+ * Ejecutar: MCP `figma_execute` o Bridge en `Vf2tNMXyKAlJSV53A1v4Is` · página `491:14473`.
+ */
+if (figma.fileKey !== 'Vf2tNMXyKAlJSV53A1v4Is') {
+  throw new Error('ABORT: ejecutar en MyOwnTrip_design-file');
+}
+
+const KEYS = {
+  statusBar: '88d8181832a7a046843e790ed88470cda99cabba',
+  appBarSet: 'f57fabde1da94e3f942cc75ffd7a844d5bfb532e',
+  tabsSet: '5b3e05495acb68822b3e4776811613d852c9b9e6',
+  buttonFilledSet: '14e743023239aeab8e4b8dfe20de85ed8e5ba30a',
+  buttonOutlineSet: '299fa03b373d5ebc27a4306000649895cf8989b5',
+  listItemSet: '38db8d64ec419dbfb5a5028a663a91af3abddf20',
+  iconAdd: '76fc3cf84b76e05f778f9ccdbf33ce12578bbf75',
+  iconUpload: 'ded19a17fde095004ce0c27e82402fdae15eb668',
+  iconArrowBack: '52d53666523506ac044165acdaf9318f4f0baa2f',
+  iconFlight: 'fa70b6b4d1467bb1cd0ec149cf91247bed01524a',
+  iconHotel: '34c3c17c8fc5010be6d94b31ee58d1fa5e4cc977',
+  iconDelete: '2a48234db266f2b0c4a36c4f7ee933a0ea3c52d5',
+  iconCar: 'fa70b6b4d1467bb1cd0ec149cf91247bed01524a',
+  textHeadlineSmall: '790b1161ee4d5a474e3578be78d583da6fe24233',
+  textTitleMedium: '1bc7aec6d9441a6ba4050174a7deed9481779eff',
+  textTitleLarge: '240e03c655394d8eedff4761eff21a696519d4df',
+  textBodyMedium: '8b638b84df298decb21e343aeab711861094ea7e',
+  textLabelLarge: '2dc1c88642ddd9d906d37102f95881a29f64ad99',
+};
+
+const TRIP = {
+  name: 'Barcelona fin de semana',
+  destination: 'Barcelona',
+  dates: '4 jul 2026 – 6 jul 2026',
+  docCount: '4 documentos',
+  subtitle: 'Vuelos, hoteles y documentos en un solo sitio',
+};
+
+const DOCS = [
+  {
+    type: 'Vuelo',
+    iconKey: KEYS.iconFlight,
+    title: 'IB 3254 · Madrid → Barcelona',
+    meta: 'Vuelo · 4 jul 2026 · 09:15',
+    schedule: '4 jul 2026 · 09:15',
+    hasQr: true,
+  },
+  {
+    type: 'Hotel',
+    iconKey: KEYS.iconHotel,
+    title: 'Hotel Casa Bonay',
+    meta: 'Hotel · 4 jul 2026',
+    schedule: '4 jul 2026',
+    hasQr: false,
+  },
+  {
+    type: 'Transporte',
+    iconKey: KEYS.iconCar,
+    title: 'AVE 03142',
+    meta: 'Transporte · 6 jul 2026 · 18:30',
+    schedule: '6 jul 2026 · 18:30',
+    hasQr: false,
+  },
+  {
+    type: 'Actividad',
+    iconKey: KEYS.iconHotel,
+    title: 'Entrada Sagrada Familia',
+    meta: 'Actividad · 5 jul 2026 · 11:00',
+    schedule: '5 jul 2026 · 11:00',
+    hasQr: false,
+  },
+];
+
+const iconCache = {};
+async function getIcon(key) {
+  if (!iconCache[key]) iconCache[key] = await figma.importComponentByKeyAsync(key);
+  return iconCache[key];
+}
+
+function setProps(inst, map) {
+  const props = {};
+  for (const key of Object.keys(inst.componentProperties)) {
+    for (const [prefix, value] of Object.entries(map)) {
+      if (key.startsWith(prefix)) props[key] = value;
+    }
+  }
+  if (Object.keys(props).length) inst.setProperties(props);
+}
+
+function fillH(node) {
+  if ('layoutSizingHorizontal' in node) node.layoutSizingHorizontal = 'FILL';
+}
+
+function clearChildren(frame) {
+  [...frame.children].forEach((child) => child.remove());
+}
+
+function cleanupCap1(cap) {
+  for (const child of [...cap.children]) {
+    if (child.name === 'phone') continue;
+    if (child.name === 'caption' && child.type === 'TEXT') continue;
+    child.remove();
+  }
+}
+
+function paddedRow(name, paddingLeft, paddingTop = 0) {
+  const row = figma.createFrame();
+  row.name = name;
+  row.layoutMode = 'HORIZONTAL';
+  row.primaryAxisSizingMode = 'AUTO';
+  row.counterAxisSizingMode = 'AUTO';
+  row.paddingLeft = paddingLeft;
+  row.paddingTop = paddingTop;
+  row.fills = [];
+  return row;
+}
+
+async function applyTextStyle(node, styleKey) {
+  try {
+    const style = await figma.importStyleByKeyAsync(styleKey);
+    if (node.type === 'TEXT') node.textStyleId = style.id;
+  } catch (_) {}
+}
+
+async function createAppBar(title) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.appBarSet);
+  const comp = set.children.find((c) => c.name === 'Configuration=Small, Elevation=Flat');
+  const inst = comp.createInstance();
+  inst.name = 'App bar';
+  inst.layoutSizingHorizontal = 'FILL';
+  setProps(inst, {
+    'Show 1st trailing action': false,
+    'Show 2nd trailing action': false,
+    'Show 3rd trailing action': false,
+  });
+  const textContent = inst.findOne((n) => n.name === 'Text content');
+  if (textContent) {
+    setProps(textContent, {
+      Headline: title,
+      'Show-supporting-text': false,
+    });
+    const supporting = textContent.findOne((n) => n.name === 'Supporting-text');
+    if (supporting) supporting.visible = false;
+  }
+  const trailing = inst.findOne((n) => n.name === 'Trailing elements');
+  if (trailing) trailing.visible = false;
+  const leading = inst.findOne((n) => n.name === 'Leading icon');
+  const iconNode = leading?.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
+  if (iconNode) iconNode.swapComponent(await getIcon(KEYS.iconArrowBack));
+  return inst;
+}
+
+async function createTabs() {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.tabsSet);
+  const comp = set.children.find(
+    (c) => c.name === 'Type=Scrollable, Style=Primary, Configuration=Label only',
+  );
+  const inst = comp.createInstance();
+  inst.name = 'Tabs';
+  inst.layoutSizingHorizontal = 'FILL';
+  const labels = ['Wallet', 'Días', 'Gastos', 'Sitios'];
+  const tabs = inst.findAll((n) => /^Tab \d$/.test(n.name));
+  labels.forEach((label, i) => {
+    if (!tabs[i]) return;
+    setProps(tabs[i], {
+      'Label text': label,
+      Selected: i === 0 ? 'True' : 'False',
+      State: 'Enabled',
+    });
+  });
+  tabs.forEach((tab) => {
+    const num = parseInt(tab.name.replace('Tab ', ''), 10);
+    if (num > 4) tab.visible = false;
+  });
+  return inst;
+}
+
+async function createFilledButton(label, iconKey) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.buttonFilledSet);
+  const comp = set.children.find((c) => c.name === 'Type=Square, Size=Medium, State=Enabled');
+  const inst = comp.createInstance();
+  inst.layoutGrow = 1;
+  setProps(inst, { 'Label text': label, 'Show icon': true });
+  const iconNode = inst.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
+  if (iconNode) iconNode.swapComponent(await getIcon(iconKey));
+  return inst;
+}
+
+async function createOutlineButton(label, iconKey) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.buttonOutlineSet);
+  const comp = set.children.find((c) => c.name === 'Type=Square, Size=Medium, State=Enabled');
+  const inst = comp.createInstance();
+  inst.layoutGrow = 1;
+  setProps(inst, { 'Label text': label, 'Show icon': true });
+  const iconNode = inst.findOne((n) => n.type === 'INSTANCE' && n.name === 'Icon');
+  if (iconNode) iconNode.swapComponent(await getIcon(iconKey));
+  return inst;
+}
+
+async function styledText(name, characters, styleKey) {
+  await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
+  await figma.loadFontAsync({ family: 'Fraunces', style: 'SemiBold' });
+  const t = figma.createText();
+  t.name = name;
+  t.characters = characters;
+  t.textAutoResize = 'HEIGHT';
+  t.layoutSizingHorizontal = 'FILL';
+  await applyTextStyle(t, styleKey);
+  return t;
+}
+
+async function createListItem({ title, meta, iconKey }) {
+  const set = await figma.importComponentSetByKeyAsync(KEYS.listItemSet);
+  const comp = set.children.find(
+    (c) =>
+      c.name ===
+      'Condition=2 line, Leading=Icon, Trailing=Icon, Show overline=False, Show supporting text=True',
+  );
+  const inst = comp.createInstance();
+  inst.name = title;
+  inst.layoutSizingHorizontal = 'FILL';
+  setProps(inst, {
+    Headline: title,
+    'Supporting text': meta,
+    'Show divider': true,
+  });
+  const leadIcon = inst
+    .findOne((n) => n.name === 'Leading element')
+    ?.findOne((n) => n.type === 'INSTANCE');
+  if (leadIcon) leadIcon.swapComponent(await getIcon(iconKey));
+  const trailing = inst.findOne((n) => n.name === 'Trailing element');
+  if (trailing) trailing.visible = false;
+  return inst;
+}
+
+async function createHighlightCard(doc) {
+  const card = figma.createFrame();
+  card.name = `Highlight · ${doc.title}`;
+  card.layoutMode = 'VERTICAL';
+  card.primaryAxisSizingMode = 'AUTO';
+  card.counterAxisSizingMode = 'AUTO';
+  card.minWidth = 248;
+  card.layoutSizingHorizontal = 'HUG';
+  card.itemSpacing = 8;
+  card.paddingLeft = 16;
+  card.paddingRight = 16;
+  card.paddingTop = 16;
+  card.paddingBottom = 16;
+  card.cornerRadius = 12;
+  card.fills = [{ type: 'SOLID', color: { r: 0.93, g: 0.9, b: 0.86 } }];
+
+  const row = figma.createFrame();
+  row.name = 'Type row';
+  row.layoutMode = 'HORIZONTAL';
+  row.primaryAxisSizingMode = 'AUTO';
+  row.counterAxisSizingMode = 'AUTO';
+  row.itemSpacing = 10;
+  row.fills = [];
+  card.appendChild(row);
+
+  

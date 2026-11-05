@@ -1,0 +1,2 @@
+await figma.clientStorage.setAsync('cap1_5', "\r\n\r\nreturn {\r\n  status: 'rebuilt',\r\n  cap1Id: cap1.id,\r\n  phoneId: phone.id,\r\n  gate: 'docs/samples/wallet/caps/cap-01.png',\r\n  url: `https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is?node-id=${phone.id.replace(':', '-')}`,\r\n};\r\n");
+return { chunk: 5, len: 231 };

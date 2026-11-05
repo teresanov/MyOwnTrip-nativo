@@ -1,0 +1,251 @@
+const iconWrap = figma.createFrame();
+  iconWrap.name = 'Icon';
+  iconWrap.resize(36, 36);
+  iconWrap.layoutMode = 'HORIZONTAL';
+  iconWrap.primaryAxisSizingMode = 'FIXED';
+  iconWrap.counterAxisSizingMode = 'FIXED';
+  iconWrap.primaryAxisAlignItems = 'CENTER';
+  iconWrap.counterAxisAlignItems = 'CENTER';
+  iconWrap.cornerRadius = 18;
+  iconWrap.fills = [{ type: 'SOLID', color: { r: 0.9, g: 0.87, b: 0.83 } }];
+  const iconInst = (await getIcon(doc.iconKey)).createInstance();
+  iconInst.resize(20, 20);
+  iconWrap.appendChild(iconInst);
+  row.appendChild(iconWrap);
+
+  const typeLabel = await styledText('Type', doc.type, KEYS.textLabelLarge);
+  typeLabel.layoutSizingHorizontal = 'HUG';
+  typeLabel.fills = [{ type: 'SOLID', color: { r: 0.51, g: 0.33, b: 0.08 } }];
+  row.appendChild(typeLabel);
+
+  const title = await styledText('Title', doc.title, KEYS.textTitleLarge);
+  title.layoutSizingHorizontal = 'FILL';
+  card.appendChild(title);
+
+  const sched = await styledText('Schedule', doc.schedule, KEYS.textBodyMedium);
+  sched.fills = [{ type: 'SOLID', color: { r: 0.29, g: 0.27, b: 0.25 } }];
+  card.appendChild(sched);
+
+  return card;
+}
+
+async function cloneFilterChipsRow() {
+  const cap2Phone = await figma.getNodeByIdAsync('491:13915');
+  let template = cap2Phone?.findOne((n) => n.name === 'Filter chips' && n.type === 'FRAME');
+  if (!template) {
+    const cap1Phone = await figma.getNodeByIdAsync('491:13876');
+    template = cap1Phone?.findOne((n) => n.name === 'Filter chips' && n.type === 'FRAME');
+  }
+  if (!template) return null;
+  const row = template.clone();
+  row.name = 'Filter chips';
+  return row;
+}
+
+async function buildWalletBody(body) {
+  const filterTemplate = await cloneFilterChipsRow();
+  clearChildren(body);
+
+  const header = figma.createFrame();
+  header.name = 'Wallet header';
+  header.layoutMode = 'VERTICAL';
+  header.primaryAxisSizingMode = 'AUTO';
+  header.counterAxisSizingMode = 'FIXED';
+  header.layoutSizingHorizontal = 'FILL';
+  header.itemSpacing = 2;
+  header.paddingLeft = 16;
+  header.paddingRight = 16;
+  header.paddingTop = 8;
+  header.paddingBottom = 8;
+  header.fills = [];
+
+  const dest = await styledText('destination', TRIP.destination, KEYS.textHeadlineSmall);
+  header.appendChild(dest);
+  fillH(dest);
+  const dates = await styledText('dates', TRIP.dates, KEYS.textBodyMedium);
+  dates.fills = [{ type: 'SOLID', color: { r: 0.29, g: 0.27, b: 0.25 } }];
+  header.appendChild(dates);
+  const count = await styledText('doc_count', TRIP.docCount, KEYS.textTitleLarge);
+  count.layoutSizingHorizontal = 'FILL';
+  header.appendChild(count);
+  const sub = await styledText('subtitle', TRIP.subtitle, KEYS.textBodyMedium);
+  sub.fills = [{ type: 'SOLID', color: { r: 0.29, g: 0.27, b: 0.25 } }];
+  header.appendChild(sub);
+  body.appendChild(header);
+  fillH(header);
+
+  const actions = figma.createFrame();
+  actions.name = 'Quick actions';
+  actions.layoutMode = 'HORIZONTAL';
+  actions.primaryAxisSizingMode = 'FIXED';
+  actions.counterAxisSizingMode = 'AUTO';
+  actions.layoutSizingHorizontal = 'FILL';
+  actions.itemSpacing = 12;
+  actions.paddingLeft = 16;
+  actions.paddingRight = 16;
+  actions.fills = [];
+  const addBtn = await createFilledButton('Añadir', KEYS.iconAdd);
+  const importBtn = await createOutlineButton('Importar', KEYS.iconUpload);
+  actions.appendChild(addBtn);
+  fillH(addBtn);
+  actions.appendChild(importBtn);
+  fillH(importBtn);
+  fillH(actions);
+  body.appendChild(actions);
+
+  if (filterTemplate) {
+    filterTemplate.layoutSizingHorizontal = 'FILL';
+    body.appendChild(filterTemplate);
+  }
+
+  const proxSection = figma.createFrame();
+  proxSection.name = 'Próximos section';
+  proxSection.layoutMode = 'VERTICAL';
+  proxSection.primaryAxisSizingMode = 'AUTO';
+  proxSection.counterAxisSizingMode = 'AUTO';
+  proxSection.layoutSizingHorizontal = 'FILL';
+  proxSection.itemSpacing = 8;
+  proxSection.fills = [];
+  const proxTitleRow = paddedRow('Próximos title row', 16);
+  const proxTitle = await styledText('Section', 'Próximos', KEYS.textTitleMedium);
+  fillH(proxTitle);
+  proxTitleRow.appendChild(proxTitle);
+  fillH(proxTitleRow);
+  proxSection.appendChild(proxTitleRow);
+  const cards = figma.createFrame();
+  cards.name = 'Highlight cards';
+  cards.layoutMode = 'HORIZONTAL';
+  cards.primaryAxisSizingMode = 'AUTO';
+  cards.counterAxisSizingMode = 'AUTO';
+  cards.itemSpacing = 12;
+  cards.paddingLeft = 16;
+  cards.paddingRight = 16;
+  cards.fills = [];
+  for (const doc of DOCS) cards.appendChild(await createHighlightCard(doc));
+  proxSection.appendChild(cards);
+  body.appendChild(proxSection);
+
+  const allTitleRow = paddedRow('All docs title row', 16, 8);
+  const allTitle = await styledText('All docs title', 'Documentos activos', KEYS.textTitleMedium);
+  fillH(allTitle);
+  allTitleRow.appendChild(allTitle);
+  fillH(allTitleRow);
+  body.appendChild(allTitleRow);
+
+  for (const doc of DOCS) {
+    body.appendChild(
+      await createListItem({
+        title: doc.title,
+        meta: doc.meta,
+        iconKey: doc.iconKey,
+      }),
+    );
+  }
+}
+
+async function ensurePhoneShell(cap, buildBody) {
+  let phone = cap.findOne((n) => n.name === 'phone');
+  if (!phone) {
+    phone = figma.createFrame();
+    phone.name = 'phone';
+    phone.resize(360, 800);
+    phone.layoutMode = 'VERTICAL';
+    phone.clipsContent = true;
+    phone.primaryAxisSizingMode = 'FIXED';
+    phone.counterAxisSizingMode = 'FIXED';
+    phone.fills = [{ type: 'SOLID', color: { r: 1, g: 0.985, b: 0.969 } }];
+    cap.appendChild(phone);
+  }
+
+  phone.children.forEach((c) => {
+    if (!['Status bar', 'App bar', 'Tabs', 'Body'].includes(c.name)) c.remove();
+  });
+
+  if (!phone.findOne((n) => n.name === 'Status bar')) {
+    try {
+      const sbMc = await figma.importComponentByKeyAsync(KEYS.statusBar);
+      const sb = sbMc.createInstance();
+      sb.name = 'Status bar';
+      sb.layoutSizingHorizontal = 'FILL';
+      phone.insertChild(0, sb);
+    } catch (_) {
+      const homePage = figma.root.children.find((p) => p.name.includes('01'));
+      const ref = homePage?.findOne((n) => n.name === 'Status bar' && n.type === 'INSTANCE');
+      if (ref) phone.insertChild(0, ref.clone());
+    }
+  }
+
+  let appBar = phone.findOne((n) => n.name === 'App bar');
+  if (appBar) appBar.remove();
+  appBar = await createAppBar(TRIP.name);
+  phone.insertChild(1, appBar);
+
+  let tabs = phone.findOne((n) => n.name === 'Tabs');
+  if (tabs) tabs.remove();
+  tabs = await createTabs();
+  phone.insertChild(2, tabs);
+
+  let body = phone.findOne((n) => n.name === 'Body');
+  if (!body) {
+    body = figma.createFrame();
+    body.name = 'Body';
+    body.layoutMode = 'VERTICAL';
+    body.layoutSizingHorizontal = 'FILL';
+    body.layoutGrow = 1;
+    body.primaryAxisSizingMode = 'AUTO';
+    body.counterAxisSizingMode = 'FIXED';
+    body.itemSpacing = 8;
+    body.paddingBottom = 24;
+    body.fills = [{ type: 'SOLID', color: { r: 1, g: 0.985, b: 0.969 } }];
+    phone.appendChild(body);
+  }
+  body.paddingLeft = 0;
+  body.paddingRight = 0;
+
+  await buildBody(body);
+}
+
+function hugWidth(node) {
+  if ('layoutSizingHorizontal' in node) node.layoutSizingHorizontal = 'HUG';
+  if ('primaryAxisSizingMode' in node && node.layoutMode) node.primaryAxisSizingMode = 'AUTO';
+  if ('counterAxisSizingMode' in node && node.layoutMode) node.counterAxisSizingMode = 'AUTO';
+}
+
+await figma.loadAllPagesAsync();
+const page = figma.root.children.find((p) => p.id === '491:14473');
+if (!page) throw new Error('Wallet page 491:14473 not found');
+await figma.setCurrentPageAsync(page);
+
+const phone = await figma.getNodeByIdAsync('491:13876');
+if (!phone || phone.name !== 'phone') throw new Error('cap 1 phone 491:13876 not found');
+const cap1 = phone.parent;
+if (!cap1) throw new Error('cap 1 column not found');
+
+let caption = cap1.findOne((n) => n.name === 'caption' && n.type === 'TEXT');
+if (!caption) {
+  caption = figma.createText();
+  caption.name = 'caption';
+  await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
+  caption.fontSize = 12;
+  caption.fills = [{ type: 'SOLID', color: { r: 0.4, g: 0.4, b: 0.4 } }];
+  cap1.insertChild(0, caption);
+}
+caption.characters =
+  'cap 1 · Wallet · con documentos\npreview: TripDetailWalletTabPreview · route: trip_detail/{tripId} · tab Wallet';
+caption.textAutoResize = 'HEIGHT';
+caption.layoutSizingHorizontal = 'FILL';
+
+cleanupCap1(cap1);
+await ensurePhoneShell(cap1, buildWalletBody);
+
+hugWidth(cap1);
+figma.viewport.scrollAndZoomIntoView([phone]);
+figma.notify('Wallet cap 1 rebuilt — diff vs docs/samples/wallet/caps/cap-01.png');
+
+return {
+  status: 'rebuilt',
+  cap1Id: cap1.id,
+  phoneId: phone.id,
+  gate: 'docs/samples/wallet/caps/cap-01.png',
+  url: `https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is?node-id=${phone.id.replace(':', '-')}`,
+};
