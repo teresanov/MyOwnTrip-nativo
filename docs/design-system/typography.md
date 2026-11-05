@@ -22,7 +22,8 @@ No hay escala M3 “stock” (Roboto) en el DS. Se eliminó el 2026-10-29.
 | `headlineLarge` | `M3/headline/large` | Fraunces | 32 Regular |
 | `headlineMedium` | `M3/headline/medium` | Fraunces | 28 Regular |
 | `headlineSmall` | `M3/headline/small` | Fraunces | 24 Regular |
-| `titleLarge` | `M3/title/large` | Inter | 22 Semi Bold |
+| `headlineSmallEmphasized` | `M3/headline/small-emphasized` | Fraunces | 24 Black |
+| `titleLarge` | `M3/title/large` | Inter | 22 Regular |
 | `titleMedium` | `M3/title/medium` | Inter | 16 Medium |
 | `titleSmall` | `M3/title/small` | Inter | 14 Medium |
 | `bodyLarge` | `M3/body/large` | Inter | 16 Regular |
@@ -32,7 +33,7 @@ No hay escala M3 “stock” (Roboto) en el DS. Se eliminó el 2026-10-29.
 | `labelMedium` | `M3/label/medium` | Inter | 12 Medium |
 | `labelSmall` | `M3/label/small` | Inter | 11 Medium |
 
-**15 estilos UI.** Sin variantes `-emphasized` ni `button-*` (Compose no las expone).
+**16 estilos UI.** `headlineSmallEmphasized` es el corte Black de `headlineSmall` (destino en Wallet embebida y título del vacío). Sin `button-*`.
 
 ## Variables (cadena de binds)
 
@@ -43,7 +44,8 @@ Text style M3/{role}
 ```
 
 Cada uno de los 15 estilos tiene las **5 props** bindeadas a su rol Typescale (no literales).  
-`Static/Title Large/Weight` → `Font theme / Static/Weight/Bold` (**SemiBold**), alineado a Compose `titleLarge`.
+`Static/Title Large/Weight` → `Font theme / Static/Weight/Regular`, alineado a Compose `titleLarge`.  
+`Static/Headline Small/Weight-emphasized` → `Font theme / Static/Weight/Black`, alineado a Compose `headlineSmallEmphasized`.
 
 ## Brand page (excepción)
 

@@ -50,12 +50,14 @@ object MOTSpacing {
 
   /**
    * List item / swipe reveal. Figma: `mot/padding/list-item/…` · `mot/spacing/list-item/gap`.
-   * Swipe backgrounds en Compose usan [layoutMd] (16) = horizontal.
+   * El set M3 `List Item: 0 Density` usa [layoutMd] (16) entre leading y texto;
+   * [gap] 12 es el hueco del swipe. [trailingGap] = icono trailing y meta.
    */
   object ListItem {
     val horizontal = 16.dp
     val vertical = 12.dp
     val gap = 12.dp
+    val trailingGap = 10.dp
   }
 
   /**

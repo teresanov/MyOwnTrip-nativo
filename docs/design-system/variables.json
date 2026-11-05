@@ -63558,6 +63558,12 @@
               "value": "SemiBold"
             },
             {
+              "name": "Static/Weight/Black",
+              "type": "string",
+              "isAlias": false,
+              "value": "Black"
+            },
+            {
               "name": "Static/Font/Plain",
               "type": "string",
               "isAlias": false,
@@ -63600,6 +63606,12 @@
             },
             {
               "name": "Static/Weight/Bold",
+              "type": "string",
+              "isAlias": false,
+              "value": "Regular"
+            },
+            {
+              "name": "Static/Weight/Black",
               "type": "string",
               "isAlias": false,
               "value": "Regular"
@@ -63899,7 +63911,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Font theme",
-                "name": "Static/Weight/Medium"
+                "name": "Static/Weight/Black"
               }
             },
             {

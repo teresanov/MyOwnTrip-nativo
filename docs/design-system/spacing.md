@@ -48,7 +48,7 @@ Fuente código: `designsystem/.../MOTSpacing.kt`
 | *(Figma Basic dialog)* | `mot/padding/dialog/container` · `mot/padding/button/xsmall-horizontal` (botones de acción) · `mot/spacing/dialog/{section,title-body,actions}-gap` | 24 · 12 (botones) · 16 / 12 / 8 |
 | *(Figma Snackbar)* | `mot/padding/snackbar/{horizontal,vertical}` · `mot/spacing/snackbar/gap{,-sm,-xs}` | 16 / 12 · 12 / 8 / 4 |
 | `MOTSpacing.Menu.groupGap` | `mot/spacing/menu/group-gap` | 2 |
-| `MOTSpacing.ListItem.horizontal|vertical|gap` | `mot/padding/list-item/{horizontal,vertical}` · `mot/spacing/list-item/gap` | 16 / 12 / 12 |
+| `MOTSpacing.ListItem.horizontal|vertical|gap|trailingGap` | `mot/padding/list-item/{horizontal,vertical}` · `mot/spacing/list-item/gap` · `mot/spacing/list-item/trailing-gap` | 16 / 12 / 12 / 10 |
 | `MOTSpacing.DatePicker.cell` / `dayGridGap` | `mot/spacing|padding/date-picker/cell` · `mot/spacing/date-picker/day-grid-gap` | 10 / 2 |
 | `MOTSpacing.Tab.{horizontal,vertical,gap,indicatorInset}` | `mot/padding/tab/{horizontal,vertical,indicator-inset}` · `mot/spacing/tab/gap` | 16 / 14 / 4 / 2 |
 | `MOTSpacing.DocumentAttachment.previewHeight` | *(altura frame Figma; pads card = `layout-md` / `component-sm`)* | 180 |

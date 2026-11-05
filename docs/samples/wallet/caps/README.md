@@ -2,11 +2,13 @@
 
 **Gate de paridad design-file:** screenshot del frame `phone` (360×800) ≈ PNG de esta carpeta. Si `@Preview` y captura difieren, gana la **captura** ([§7.1](../../design-system/audits/disparity-remediation-plan-2026-11-03.md)).
 
+**Media mientras no hay PNG:** en Figma dejar **slot** (no inventar foto). Avisar al cerrar el cap. Teresa rellena la imagen después. Los PNG de esta carpeta siguen siendo el SoT cuando existan.
+
 ## Convención de nombres
 
 | Archivo | Cap Figma (node) | Preview Compose | Notas |
 |---------|------------------|-----------------|-------|
-| `cap-01.png` | `491:13876` | `TripDetailWalletTabPreview` | Tab Wallet en detalle viaje · Barcelona jul 2026 |
+| `cap-01.png` | `491:13876` | Captura dispositivo · `[Demo] Barcelona pasado` | Tab Wallet en viaje pasado · 20–22 mar 2026 · 3 documentos |
 | `cap-02.png` | `491:13915` | `WalletScreenEmptyPreview` | Vacío «Tu maleta digital» |
 | `cap-03.png` … `cap-09.png` | (crear/actualizar) | `WalletFormScreen.kt` previews | Import / manual |
 | `cap-10.png` | `491:13987` | `WalletDetailPreview` | Vuelo + QR + PDF |

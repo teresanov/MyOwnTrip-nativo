@@ -5,23 +5,42 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.myowntrip.designsystem.R
 
+private fun frauncesFont(weight: FontWeight) = Font(
+  resId = R.font.fraunces,
+  weight = weight,
+  variationSettings = FontVariation.Settings(
+    FontVariation.weight(weight.weight),
+    FontVariation.Setting("opsz", 9f),
+  ),
+)
+
 val FrauncesFamily = FontFamily(
-  Font(R.font.fraunces, FontWeight.Light),
-  Font(R.font.fraunces, FontWeight.Normal),
-  Font(R.font.fraunces, FontWeight.Medium),
-  Font(R.font.fraunces, FontWeight.SemiBold),
-  Font(R.font.fraunces, FontWeight.Bold),
+  frauncesFont(FontWeight.Light),
+  frauncesFont(FontWeight.Normal),
+  frauncesFont(FontWeight.Medium),
+  frauncesFont(FontWeight.SemiBold),
+  frauncesFont(FontWeight.Bold),
+  frauncesFont(FontWeight.Black),
   Font(R.font.fraunces_italic, FontWeight.Medium, FontStyle.Italic),
 )
 
+private fun interFont(weight: FontWeight) = Font(
+  resId = R.font.inter,
+  weight = weight,
+  variationSettings = FontVariation.Settings(
+    FontVariation.weight(weight.weight),
+  ),
+)
+
 val InterFamily = FontFamily(
-  Font(R.font.inter, FontWeight.Normal),
-  Font(R.font.inter, FontWeight.Medium),
-  Font(R.font.inter, FontWeight.SemiBold),
+  interFont(FontWeight.Normal),
+  interFont(FontWeight.Medium),
+  interFont(FontWeight.SemiBold),
 )
 
 /**
@@ -78,7 +97,7 @@ val AppTypography = Typography(
   ),
   titleLarge = TextStyle(
     fontFamily = InterFamily,
-    fontWeight = FontWeight.SemiBold,
+    fontWeight = FontWeight.Normal,
     fontSize = 22.sp,
     lineHeight = 28.sp,
     letterSpacing = 0.sp,
@@ -140,3 +159,7 @@ val AppTypography = Typography(
     letterSpacing = 0.5.sp,
   ),
 )
+
+/** Destino editorial y vacío de Wallet. Fraunces Black 24 · Figma `M3/headline/small-emphasized`. */
+val Typography.headlineSmallEmphasized: TextStyle
+  get() = headlineSmall.copy(fontWeight = FontWeight.Black)

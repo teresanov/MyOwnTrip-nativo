@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,6 +71,7 @@ import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
+import com.myowntrip.app.ui.theme.headlineSmallEmphasized
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -329,7 +331,7 @@ private fun WalletHeader(
         style = if (showTitle) {
           MaterialTheme.typography.titleMedium
         } else {
-          MaterialTheme.typography.headlineSmall
+          MaterialTheme.typography.headlineSmallEmphasized
         },
         color = if (showTitle) {
           MaterialTheme.colorScheme.onSurfaceVariant
@@ -636,7 +638,9 @@ private fun WalletEmptyState(
   ) {
     Text(
       text = "Tu maleta digital",
-      style = MaterialTheme.typography.headlineMedium,
+      style = MaterialTheme.typography.headlineSmallEmphasized,
+      textAlign = TextAlign.Center,
+      modifier = Modifier.fillMaxWidth(),
       maxLines = 2,
       overflow = TextOverflow.Ellipsis,
     )
@@ -644,7 +648,10 @@ private fun WalletEmptyState(
       text = "Centraliza vuelos, hoteles y PDFs del viaje. Todo disponible sin conexión cuando lo necesites.",
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
-      modifier = Modifier.padding(top = MOTSpacing.layoutMd, bottom = MOTSpacing.layoutLg),
+      textAlign = TextAlign.Center,
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = MOTSpacing.layoutMd, bottom = MOTSpacing.layoutLg),
       maxLines = 4,
       overflow = TextOverflow.Ellipsis,
     )
