@@ -25,7 +25,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 | Ámbito | Tarea |
 |--------|--------|
 | Wallet · design-file | **Gate captura:** versionar `docs/samples/wallet/caps/cap-*.png` · ejecutar `figma-design-file-wallet-cap1.js` (Bridge) · diff caps 10/2/10b/10c/13 vs PNG · caps 3–9 · Part C automatización |
-| Wallet · design-file | Gaps DS: **WalletQrCard**, **PlanPlacementSourceChip** (warning), icono **wifi_off** offline · highlight cards = gap estructural hasta COMPONENT |
+| Wallet · design-file | Gaps DS: icono **wifi_off** offline · **Wallet QR card** creado (`61403:27255`) pendiente de publicar para instanciar · highlight cards = gap estructural hasta COMPONENT |
 | — | R6 / P1 resto (menu, swipe, tabs…) |
 
 ---

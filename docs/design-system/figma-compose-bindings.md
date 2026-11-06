@@ -2,7 +2,7 @@
 title: Figma ↔ Compose bindings
 description: Mapa canónico entre component sets de la librería Figma, fichas showcase y composables de runtime
 status: active
-lastUpdated: 2026-11-03
+lastUpdated: 2026-11-06
 ---
 
 # Figma ↔ Compose — bindings
@@ -47,6 +47,7 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **Eyebrow label** | [61202:16834](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834) | Tertiary · Medium | `EyebrowLabel` | Medium **8×4** / Small **16×4**; `Corner/Small` · [eyebrow-label](../ds-showcase/components/eyebrow-label.html) · audit [Fase B](audits/figma-home-cards-phase-b-2026-10-29.md) |
 | **Document attachment** | [61258:28665](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61258-28665) | Kind=Image\|File | `DocumentAttachmentCard` | `shapes.medium` · pads `layoutMd` · preview 180; audit [C](audits/figma-document-attachment-phase-c-2026-10-29.md) |
 | **Wallet offline storage** | [61402:27244](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61402-27244) | Selected True\|False | `WalletOfflineStorageField` | Card `surfaceContainerLow` + Switch · caps 5–7 |
+| **Wallet QR card** | [61403:27255](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61403-27255) | Size Default\|Compact | `WalletQrCard` | Card `surfaceContainerLowest` + QR generado · Default 260 / Compact 200 · **publicar librería** antes de instanciar en caps 5/10/10c |
 | **Spread piece** | [61258:28716](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61258-28716) | Type=Photo…Event bookmark | Piezas en hoja Spread | Card especial · átomos: Eyebrow label, iconos; página **Cards** |
 | **Scrapbook page** | [61265:29035](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61265-29035) | State=Empty\|Full | Marco hoja álbum | Card especial · composición Spread piece; **Cards** |
 | **Button** | [57994:2227](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57994-2227) | Filled · Square | `MOTButton` | ADR 004; restore 2026-10-29 |
@@ -57,7 +58,7 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **Icon button** (+ outline/standard/tonal + togglable) | [57994:10081](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57994-10081) | Square reposo | `MOTIconButton` | Morph 0→20; Round=`Corner/Large-increased`; audit [C](audits/figma-iconbutton-phase-c-2026-10-29.md) |
 | **Text field** | [52798:24373](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52798-24373) | Outlined only | `OutlinedTextField` (`MaterialTheme.shapes.extraSmall`) | [text-field](../ds-showcase/components/text-field.html) · audit [B.3](audits/figma-textfield-phase-b3-2026-10-29.md) |
 | **Filter chip** | [53923:28270](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28270) | Outlined only | `FilterChip` (`shapes.small`=8) | [filter-chip](../ds-showcase/components/filter-chip.html) · audit [B.3](audits/figma-filterchip-phase-b3-2026-10-29.md) · Elevated CUT Fase D |
-| **Assistive chip** | [53923:28089](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28089) | Outlined only | `AssistChip` (`shapes.small`) | Misma paridad shape/pads que Filter · Elevated CUT Fase D |
+| **Assistive chip** | [53923:28089](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28089) | Outlined \| **Warning** | `AssistChip` / `PlanPlacementSourceChip` | Warning = `warning` fill 14% + borde 35% · cap 10c · hug, no fill |
 | **Basic dialog** | [50723:10929](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=50723-10929) | Icon True/False | `AlertDialog` (`shapes.extraLarge`=28) | [basic-dialog](../ds-showcase/components/basic-dialog.html) · audit [B.3](audits/figma-dialog-phase-b3-2026-10-29.md) |
 | **Snackbar** | [53977:33575](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53977-33575) | Text / action / close | `SnackbarHost` | [snackbar](../ds-showcase/components/snackbar.html) · audit [B.3](audits/figma-snackbar-phase-b3-2026-10-29.md) |
 | **App bar** | [58114:20565](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58114-20565) | Small / Small-centered (+ KEEP Medium/Large/Search) | `TopAppBar` / `CenterAlignedTopAppBar` | pads `mot/spacing/component-*`; audit [B.3](audits/figma-appbar-phase-b3-2026-10-29.md) |
@@ -117,16 +118,17 @@ Tablero en **cuatro tiras** (no una fila lineal): **Entrada** (cap 2) → **Impo
 | cap 2 · vacío | [491:13915](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13915) | `cap-02.png` | `WalletScreenEmptyPreview` | **Añadir** → cap 9 · **Importar** → selector/galería del sistema (cap 3 debajo) |
 | cap 3 · esperando picker | [491:13928](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13928) | `cap-03.png` | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` · **Rellenar manualmente** → cap 9 · Cancelar/atrás sale |
 | cap 4 · analizando | [529:5097](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5097) | `cap-04.png` | `WalletFormParsingPreview` | Tras elegir archivo · Circular + Linear · Cancelar análisis |
-| cap 5 · revisar vuelo | [529:5242](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5242) | `cap-05.png` | `WalletFormImportReviewPreview` | PDF enganchado · Detectado · Confirmar (aún no guarda). QR: gap DS |
+| cap 5 · revisar vuelo | [529:5242](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5242) | `cap-05.png` | `WalletFormImportReviewPreview` | PDF enganchado · Detectado · QR compacto · Confirmar (aún no guarda). Instancia **Wallet QR card** Size=Compact tras publicar |
 | cap 6 · revisar hotel | [529:5395](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5395) | `cap-06.png` | `WalletFormImportReviewHotelPreview` | Igual que cap 5 con Casa Bonay |
 | cap 7 · confirmar | [491:13964](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13964) · Basic dialog `492:3332` | `cap-07.png` | `WalletConfirmDialogPreview` | Diálogo encima de cap 5. Guardar / Cancelar |
 | cap 8 · parse fail | [529:5516](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5516) | `cap-08.png` | `WalletParseFailPreview` | Banner error + PDF ilegible + formulario a mano |
 | cap 9 · Añadir a Wallet | [491:13980](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13980) | `cap-09.png` | `WalletFormManualPreview` · `WalletManualAddStep` | Destino del FAB, de **Añadir** y de **Rellenar manualmente** (cap 3). Chip **Galería** abre la galería del sistema encima del formulario (no se dibuja el picker). |
-| cap 10 · detalle | [491:13987](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13987) | `cap-10.png` | `WalletDetailPreview` · `previewDetailEntry` | `wallet_detail/{entryId}` · **Document attachment** + QR (gap **WalletQrCard** DS) |
+| cap 10 · detalle | [491:13987](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13987) | `cap-10.png` | `WalletDetailPreview` · `previewDetailEntry` | `wallet_detail/{entryId}` · **Document attachment** + QR (instancia **Wallet QR card** Size=Default tras publicar) · papelera → cap 11 |
 | cap 10b · detalle hotel | `503:6332` | `cap-10b.png` | `previewWalletEntries` HOTEL + `previewHotelImportState` | `hotel-casa-bonay-reserva.pdf` |
 | cap 10c · actividad · drift | `503:6415` | `cap-10c.png` | `DebugPastTripsSeeder` · Teatro Nacional D. Maria II | chip plan · `teatro-real-las-bodas-de-figaro.pdf` |
-| cap 13 · visor PDF | `503:6745` | `cap-13.png` | `DocumentViewerScreen` · `billete-barcelona.pdf` | document viewer |
-| cap 11 · eliminar | `491:13994` · instancia Basic dialog `492:3372` (icon `error`) | `cap-11.png` | `WalletDeleteDialogPreview` | `wallet_detail` dialog |
+| cap 13 · visor PDF | `503:6745` | `cap-13.png` | `DocumentViewerScreen` · `billete-barcelona.pdf` | Página de muestra (boarding pass + QR). Sin papelera: borrar vive en detalle (cap 10/11) |
+| cap 13b · visor entrada | `530:6002` | — | `DocumentViewerScreen` · `teatro-real-las-bodas-de-figaro.pdf` | Segunda muestra: entrada Teatro Real · Las bodas de Fígaro (desde cap 10c) |
+| cap 11 · eliminar | `491:13996` · diálogo `492:3372` sobre detalle cap 10 | `cap-11.png` | `WalletDeleteDialogPreview` · `WalletDetailScaffold` | Papelera del app bar · Basic dialog Eliminar · el visor (cap 13) no borra |
 | cap 12 · descartar | `491:14001` · instancia Basic dialog `492:3414` (icon `error`) | `cap-12.png` | `WalletDiscardDialogPreview` | `wallet_add` dialog |
 
 Flow review: `WalletFlowReviewPreview`.

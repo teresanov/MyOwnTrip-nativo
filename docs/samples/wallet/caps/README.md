@@ -16,9 +16,10 @@
 | `cap-10.png` | `491:13987` | `WalletDetailPreview` | Vuelo + QR + PDF |
 | `cap-10b.png` | `503:6332` | hotel import | `hotel-casa-bonay-reserva.pdf` |
 | `cap-10c.png` | `503:6415` | drift plan | Sagrada en lista demo · Teatro solo en cap 10c script |
-| `cap-11.png` | `491:13994` | `WalletDeleteDialogPreview` | Basic dialog |
+| `cap-11.png` | `491:13996` | `WalletDeleteDialogPreview` | Diálogo Eliminar sobre el detalle (papelera del app bar) |
 | `cap-12.png` | `491:14001` | `WalletDiscardDialogPreview` | Basic dialog |
-| `cap-13.png` | `503:6745` | `DocumentViewerScreen` | Visor PDF |
+| `cap-13.png` | `503:6745` | `DocumentViewerScreen` | Visor PDF · página de muestra boarding pass |
+| `cap-13b.png` | `530:6002` | `DocumentViewerScreen` | Visor PDF · entrada Teatro Real · Las bodas de Fígaro |
 
 ## Cómo añadir PNG al repo
 
