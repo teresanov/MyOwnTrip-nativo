@@ -1,6 +1,8 @@
 package com.myowntrip.app.platform.media
 
+import android.content.Context
 import android.graphics.BitmapFactory
+import android.net.Uri
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -23,7 +25,18 @@ class ReceiptTextRecognizer @Inject constructor() {
   /** Devuelve el texto reconocido, o cadena vacía si la imagen no se pudo leer/procesar. */
   suspend fun recognizeText(imageFile: File): String {
     val bitmap = runCatching { BitmapFactory.decodeFile(imageFile.path) }.getOrNull() ?: return ""
-    val image = InputImage.fromBitmap(bitmap, 0)
+    return recognize(InputImage.fromBitmap(bitmap, 0))
+  }
+
+  /** Igual que [recognizeText] pero desde un content:// Uri (adjuntos de Wallet). */
+  suspend fun recognizeText(context: Context, uri: Uri): String {
+    val bitmap = runCatching {
+      context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+    }.getOrNull() ?: return ""
+    return recognize(InputImage.fromBitmap(bitmap, 0))
+  }
+
+  private suspend fun recognize(image: InputImage): String {
     return suspendCancellableCoroutine { cont ->
       recognizer.process(image)
         .addOnSuccessListener { result ->

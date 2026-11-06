@@ -34,9 +34,14 @@ object WalletDocumentParser {
     RegexOption.IGNORE_CASE,
   )
 
+  // Solo términos específicos de vuelo: "salida", "llegada", "puerta" o "asiento" aparecen en
+  // cualquier documento y no deben bastar por sí solos.
   private val FlightKeywords = listOf(
-    "boarding pass", "boarding", "vuelo", "flight", "aeropuerto", "airport", "gate", "puerta",
-    "seat", "asiento", "departure", "salida", "arrival", "llegada", "pnr", "e-ticket",
+    "boarding pass", "boarding", "vuelo", "flight", "aeropuerto", "airport", "gate",
+    "departure", "arrival", "pnr", "e-ticket",
+  )
+  private val InvoiceKeywords = listOf(
+    "factura", "invoice", "recibo", "base imponible", "nif", "cif", "iva", "vat", "importe",
   )
   private val HotelKeywords = listOf(
     "hotel", "check-in", "check in", "check-out", "check out", "reservation", "booking confirmation",
@@ -104,24 +109,44 @@ object WalletDocumentParser {
     corpus: String,
     flightNumber: String?,
   ): EntryType {
-    if (flightNumber != null || score(corpus, FlightKeywords) >= 2 || nameLower.contains("boarding")) {
+    val name = nameLower.replace('_', ' ').replace('-', ' ')
+    val invoiceLike = isInvoiceLike(name, corpus)
+
+    // Un pase de embarque manda sobre todo lo demás.
+    if (hasWord(name, "boarding") || hasWord(corpus, "boarding pass")) {
       return EntryType.FLIGHT
     }
-    if (score(corpus, HotelKeywords) >= 2 || nameLower.contains("hotel") || nameLower.contains("booking")) {
+    // Una factura nunca es vuelo por un número de factura tipo "FA 2026" ni por una palabra suelta.
+    if (!invoiceLike) {
+      val flightScore = score(corpus, FlightKeywords)
+      if ((flightNumber != null && flightScore >= 1) || flightScore >= 2) {
+        return EntryType.FLIGHT
+      }
+    }
+    // Las facturas de hotel sí pueden ser HOTEL: la reserva y el check-in lo delatan.
+    if (score(corpus, HotelKeywords) >= 2 || hasWord(name, "hotel") || hasWord(name, "booking")) {
       return EntryType.HOTEL
     }
+    if (invoiceLike) return EntryType.GENERIC
     if (score(corpus, TransportKeywords) >= 2 ||
-      nameLower.contains("train") || nameLower.contains("rental") || nameLower.contains("ave")
+      hasWord(name, "train") || hasWord(name, "rental") || hasWord(name, "ave")
     ) {
       return EntryType.TRANSPORT
     }
-    if (score(corpus, ActivityKeywords) >= 2 ||
-      nameLower.contains("ticket") || nameLower.contains("entrada")
-    ) {
+    if (score(corpus, ActivityKeywords) >= 2 || hasWord(name, "ticket") || hasWord(name, "entrada")) {
       return EntryType.ACTIVITY
     }
     return EntryType.GENERIC
   }
+
+  private fun isInvoiceLike(name: String, corpus: String): Boolean =
+    hasWord(name, "factura") || hasWord(name, "invoice") || hasWord(name, "recibo") ||
+      score(corpus, InvoiceKeywords) >= 2
+
+  /** Coincidencia de palabra completa: "clave" no contiene la palabra "ave". */
+  private fun hasWord(text: String, keyword: String): Boolean =
+    Regex("(?<![\\p{L}\\p{N}])${Regex.escape(keyword)}(?![\\p{L}\\p{N}])", RegexOption.IGNORE_CASE)
+      .containsMatchIn(text)
 
   private fun buildTitle(
     type: EntryType,
@@ -203,7 +228,7 @@ object WalletDocumentParser {
   }
 
   private fun score(text: String, keywords: List<String>): Int =
-    keywords.count { text.contains(it) }
+    keywords.count { hasWord(text, it) }
 
   private fun findFlightNumber(text: String): String? =
     FlightNumberRegex.find(text)?.let {

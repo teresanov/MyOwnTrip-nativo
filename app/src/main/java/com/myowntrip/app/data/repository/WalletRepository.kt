@@ -12,6 +12,7 @@ import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.domain.wallet.ParsedWalletDocument
 import com.myowntrip.app.domain.wallet.WalletDocumentParser
 import com.myowntrip.app.platform.documents.resolveFileFromSource
+import com.myowntrip.app.platform.media.ReceiptTextRecognizer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -33,6 +34,7 @@ class WalletRepository @Inject constructor(
   private val walletEntryDao: WalletEntryDao,
   private val tripRepository: TripRepository,
   private val planPlacementService: PlanPlacementService,
+  private val receiptTextRecognizer: ReceiptTextRecognizer,
 ) {
   fun observeByTrip(tripId: String): Flow<List<WalletEntry>> =
     walletEntryDao.observeByTrip(tripId).map { list -> list.map { it.toDomain() } }
@@ -112,14 +114,22 @@ class WalletRepository @Inject constructor(
   }
 
   fun suggestEntryType(mimeType: String?, fileName: String?): EntryType =
-    parseDocument(uri = null, mimeType = mimeType, fileName = fileName).type
+    WalletDocumentParser.parse(fileName = fileName, mimeType = mimeType, contentText = "").type
 
-  fun parseDocument(uri: Uri?, mimeType: String?, fileName: String?): ParsedWalletDocument {
-    val contentText = uri?.let { WalletDocumentContentReader.readSearchableText(context, it, mimeType) }.orEmpty()
+  suspend fun parseDocument(uri: Uri?, mimeType: String?, fileName: String?): ParsedWalletDocument {
+    val contentText = uri?.let { readContentText(it, mimeType) }.orEmpty()
     val parsed = WalletDocumentParser.parse(fileName = fileName, mimeType = mimeType, contentText = contentText)
     val qrPayload = uri?.let { WalletQrExtractor.extract(context, it, mimeType) }
     return parsed.copy(qrPayload = qrPayload)
   }
+
+  /** PDF y texto: lectura local. Imágenes: OCR on-device de ML Kit (funciona sin conexión). */
+  private suspend fun readContentText(uri: Uri, mimeType: String?): String =
+    if (mimeType?.startsWith("image/") == true) {
+      receiptTextRecognizer.recognizeText(context, uri)
+    } else {
+      WalletDocumentContentReader.readSearchableText(context, uri, mimeType)
+    }
 
   fun buildEntry(
     tripId: String,
