@@ -136,7 +136,7 @@ fun TripDetailScreen(
     },
     floatingActionButton = {
       when (tabIndex) {
-        0 -> if (!state.isPastTrip && state.walletEntries.isNotEmpty()) {
+        0 -> if (state.walletEntries.isNotEmpty()) {
           FloatingActionButton(
             onClick = onAddWallet,
             modifier = Modifier.semantics { contentDescription = "Añadir documento a Wallet" },

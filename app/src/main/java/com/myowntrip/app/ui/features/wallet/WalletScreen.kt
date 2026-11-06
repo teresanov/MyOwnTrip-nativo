@@ -156,7 +156,9 @@ fun WalletScreen(
 
   LazyColumn(
     modifier = modifier.fillMaxSize(),
-    contentPadding = PaddingValues(bottom = MOTSpacing.screenContentBottom),
+    contentPadding = PaddingValues(
+      bottom = if (embeddedInTrip) MOTSpacing.screenContentBottomWithFab else MOTSpacing.screenContentBottom,
+    ),
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
   ) {
     item {

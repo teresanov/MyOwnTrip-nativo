@@ -108,17 +108,19 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 
 Fuente Compose: `WalletPreviewData` · `@Preview`. **SoT visual:** capturas en [`docs/samples/wallet/caps/README.md`](../../samples/wallet/caps/README.md) (`cap-NN.png`). **Portero:** instancias DS; si preview ≠ captura → gana captura.
 
+Tablero en **cuatro tiras** (no una fila lineal): **Entrada** (cap 2) → **Importar · archivos del sistema** (3–8) o **Añadir a mano** (1 FAB + 9 + 12) → **Ya en la maleta** (10–13). La herramienta (Importar vs Añadir/FAB) elige el camino.
+
 | Cap | Node Figma | Capture SoT | Preview Compose | Ruta |
 |-----|------------|-------------|-----------------|------|
-| cap 1 · viaje pasado con documentos | [491:13876](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13876) | `cap-01.png` (cuando exista) · captura `[Demo] Barcelona pasado` | `DebugPastTripsSeeder` · tab Wallet | `trip_detail/{tripId}` tab Wallet · pasado |
-| cap 2 · vacío | [491:13915](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13915) | `cap-02.png` | `WalletScreenEmptyPreview` | `trip_detail/{tripId}` empty |
-| cap 3 · esperando picker | [491:13928](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13928) | `cap-03.png` | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` |
-| cap 4 · analizando | — | `cap-04.png` | `WalletFormParsingPreview` | `wallet_add` |
-| cap 5 · revisar vuelo | — | `cap-05.png` | `WalletFormImportReviewPreview` | `wallet_add` |
-| cap 6 · revisar hotel | — | `cap-06.png` | `WalletFormImportReviewHotelPreview` | `wallet_add` |
-| cap 7 · confirmar | `491:13962` · instancia Basic dialog `492:3332` | `cap-07.png` | `WalletConfirmDialogPreview` | `wallet_add` dialog |
-| cap 8 · parse fail | — | `cap-08.png` | `WalletParseFailPreview` | `wallet_add` EC-PARSE-FAIL |
-| cap 9 · manual | [491:13980](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13980) | `cap-09.png` | `WalletFormManualPreview` | `wallet_add?pickAttachment=false` · **MotDateField** + **MotTimeField** |
+| cap 1 · viaje pasado con documentos | [491:13876](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13876) | `cap-01.png` (cuando exista) · captura `[Demo] Barcelona pasado` | `DebugPastTripsSeeder` · tab Wallet · **FAB** `+` → cap 9 | `trip_detail/{tripId}` tab Wallet · listado con documentos (FAB también en viaje pasado) |
+| cap 2 · vacío | [491:13915](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13915) | `cap-02.png` | `WalletScreenEmptyPreview` | **Añadir** → cap 9 · **Importar** → selector/galería del sistema (cap 3 debajo) |
+| cap 3 · esperando picker | [491:13928](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13928) | `cap-03.png` | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` · **Rellenar manualmente** → cap 9 · Cancelar/atrás sale |
+| cap 4 · analizando | [529:5097](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5097) | `cap-04.png` | `WalletFormParsingPreview` | Tras elegir archivo · Circular + Linear · Cancelar análisis |
+| cap 5 · revisar vuelo | [529:5242](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5242) | `cap-05.png` | `WalletFormImportReviewPreview` | PDF enganchado · Detectado · Confirmar (aún no guarda). QR: gap DS |
+| cap 6 · revisar hotel | [529:5395](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5395) | `cap-06.png` | `WalletFormImportReviewHotelPreview` | Igual que cap 5 con Casa Bonay |
+| cap 7 · confirmar | [491:13964](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13964) · Basic dialog `492:3332` | `cap-07.png` | `WalletConfirmDialogPreview` | Diálogo encima de cap 5. Guardar / Cancelar |
+| cap 8 · parse fail | [529:5516](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=529-5516) | `cap-08.png` | `WalletParseFailPreview` | Banner error + PDF ilegible + formulario a mano |
+| cap 9 · Añadir a Wallet | [491:13980](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13980) | `cap-09.png` | `WalletFormManualPreview` · `WalletManualAddStep` | Destino del FAB, de **Añadir** y de **Rellenar manualmente** (cap 3). Chip **Galería** abre la galería del sistema encima del formulario (no se dibuja el picker). |
 | cap 10 · detalle | [491:13987](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13987) | `cap-10.png` | `WalletDetailPreview` · `previewDetailEntry` | `wallet_detail/{entryId}` · **Document attachment** + QR (gap **WalletQrCard** DS) |
 | cap 10b · detalle hotel | `503:6332` | `cap-10b.png` | `previewWalletEntries` HOTEL + `previewHotelImportState` | `hotel-casa-bonay-reserva.pdf` |
 | cap 10c · actividad · drift | `503:6415` | `cap-10c.png` | `DebugPastTripsSeeder` · Teatro Nacional D. Maria II | chip plan · `teatro-real-las-bodas-de-figaro.pdf` |

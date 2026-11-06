@@ -8,9 +8,11 @@
 
 | Archivo | Cap Figma (node) | Preview Compose | Notas |
 |---------|------------------|-----------------|-------|
-| `cap-01.png` | `491:13876` | Captura dispositivo · `[Demo] Barcelona pasado` | Tab Wallet en viaje pasado · 20–22 mar 2026 · 3 documentos |
+| `cap-01.png` | `491:13876` | Captura dispositivo · `[Demo] Barcelona pasado` | Tab Wallet · 3 documentos · FAB `+` → Añadir a Wallet |
 | `cap-02.png` | `491:13915` | `WalletScreenEmptyPreview` | Vacío «Tu maleta digital» |
-| `cap-03.png` … `cap-09.png` | (crear/actualizar) | `WalletFormScreen.kt` previews | Import / manual |
+| `cap-03.png` | `491:13928` | `WalletAwaitingPickerPreview` | Importar · selector del sistema abierto · Rellenar → cap 9 |
+| `cap-04.png` … `cap-08.png` | (crear/actualizar) | `WalletFormScreen.kt` previews | Analizar / revisar / parse fail |
+| `cap-09.png` | `491:13980` | `WalletFormManualPreview` | Añadir a Wallet · llega de FAB, Añadir o Rellenar |
 | `cap-10.png` | `491:13987` | `WalletDetailPreview` | Vuelo + QR + PDF |
 | `cap-10b.png` | `503:6332` | hotel import | `hotel-casa-bonay-reserva.pdf` |
 | `cap-10c.png` | `503:6415` | drift plan | Sagrada en lista demo · Teatro solo en cap 10c script |
