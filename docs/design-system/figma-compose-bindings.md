@@ -112,7 +112,7 @@ Fuente Compose: `WalletPreviewData` · `@Preview`. **SoT visual:** capturas en [
 |-----|------------|-------------|-----------------|------|
 | cap 1 · viaje pasado con documentos | [491:13876](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13876) | `cap-01.png` (cuando exista) · captura `[Demo] Barcelona pasado` | `DebugPastTripsSeeder` · tab Wallet | `trip_detail/{tripId}` tab Wallet · pasado |
 | cap 2 · vacío | [491:13915](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13915) | `cap-02.png` | `WalletScreenEmptyPreview` | `trip_detail/{tripId}` empty |
-| cap 3 · esperando picker | — | `cap-03.png` | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` |
+| cap 3 · esperando picker | [491:13928](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13928) | `cap-03.png` | `WalletAwaitingPickerPreview` | `wallet_add?pickAttachment=true` |
 | cap 4 · analizando | — | `cap-04.png` | `WalletFormParsingPreview` | `wallet_add` |
 | cap 5 · revisar vuelo | — | `cap-05.png` | `WalletFormImportReviewPreview` | `wallet_add` |
 | cap 6 · revisar hotel | — | `cap-06.png` | `WalletFormImportReviewHotelPreview` | `wallet_add` |

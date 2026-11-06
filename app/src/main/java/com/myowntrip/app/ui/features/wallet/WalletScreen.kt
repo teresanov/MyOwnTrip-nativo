@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -71,7 +72,6 @@ import com.myowntrip.app.ui.theme.MOTHorizontalDivider
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
-import com.myowntrip.app.ui.theme.headlineSmallEmphasized
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -173,14 +173,6 @@ fun WalletScreen(
     }
 
     if (!isPastTrip) {
-      item {
-        WalletQuickActions(
-          onAddEntry = onAddEntry,
-          onImportEntry = onImportEntry,
-          modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal),
-        )
-      }
-
       item {
         WalletDocumentFilterChips(
           filterPhase = filterPhase,
@@ -331,7 +323,7 @@ private fun WalletHeader(
         style = if (showTitle) {
           MaterialTheme.typography.titleMedium
         } else {
-          MaterialTheme.typography.headlineSmallEmphasized
+          MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Black)
         },
         color = if (showTitle) {
           MaterialTheme.colorScheme.onSurfaceVariant
@@ -638,7 +630,7 @@ private fun WalletEmptyState(
   ) {
     Text(
       text = "Tu maleta digital",
-      style = MaterialTheme.typography.headlineSmallEmphasized,
+      style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Black),
       textAlign = TextAlign.Center,
       modifier = Modifier.fillMaxWidth(),
       maxLines = 2,

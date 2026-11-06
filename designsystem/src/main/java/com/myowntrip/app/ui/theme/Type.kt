@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.text.ExperimentalTextApi::class)
+
 package com.myowntrip.app.ui.theme
 
 import androidx.compose.material3.Typography
@@ -159,7 +161,3 @@ val AppTypography = Typography(
     letterSpacing = 0.5.sp,
   ),
 )
-
-/** Destino editorial y vacío de Wallet. Fraunces Black 24 · Figma `M3/headline/small-emphasized`. */
-val Typography.headlineSmallEmphasized: TextStyle
-  get() = headlineSmall.copy(fontWeight = FontWeight.Black)

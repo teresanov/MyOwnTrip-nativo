@@ -136,6 +136,12 @@ fun TripDetailScreen(
     },
     floatingActionButton = {
       when (tabIndex) {
+        0 -> if (!state.isPastTrip) {
+          FloatingActionButton(
+            onClick = onAddWallet,
+            modifier = Modifier.semantics { contentDescription = "Añadir documento a Wallet" },
+          ) { Icon(MOTIcons.Add, contentDescription = null) }
+        }
         1 -> if (!state.isPastTrip) {
           FloatingActionButton(
             onClick = {
