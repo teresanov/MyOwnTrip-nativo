@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.myowntrip.app.platform.documents.DocumentKind
@@ -44,6 +45,7 @@ import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
+import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -287,3 +289,26 @@ private fun openPdfDescriptor(
       else -> null
     }
   }.getOrNull()
+
+@Preview(name = "cap 13d · visor archivo no encontrado", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun MissingDocumentPreview() {
+  MyOwnTripTheme {
+    Scaffold(
+      topBar = {
+        TopAppBar(
+          title = { Text("entrada-teatro.jpg") },
+          navigationIcon = {
+            MOTIconButton(onClick = {}) {
+              Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
+            }
+          },
+        )
+      },
+    ) { padding ->
+      Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+        MissingDocumentMessage()
+      }
+    }
+  }
+}

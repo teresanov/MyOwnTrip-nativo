@@ -57,7 +57,7 @@ fun WalletFlowReviewScreen(
         .padding(vertical = MOTSpacing.layoutMd),
       verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutLg),
     ) {
-      WalletFlowCap("Cap 1 · Wallet con documentos") {
+      WalletFlowCap("Cap 1 · Wallet viaje pasado") {
         WalletScreen(
           trip = previewWalletTrip,
           entries = previewWalletEntries,
@@ -65,6 +65,22 @@ fun WalletFlowReviewScreen(
           onImportEntry = {},
           onEntryClick = {},
           embeddedInTrip = true,
+          isPastTrip = true,
+          modifier = Modifier.fillMaxSize(),
+        )
+      }
+
+      flowDivider()
+
+      WalletFlowCap("Cap 1b · Wallet viaje en curso") {
+        WalletScreen(
+          trip = previewCurrentWalletTrip,
+          entries = previewCurrentWalletEntries,
+          onAddEntry = {},
+          onImportEntry = {},
+          onEntryClick = {},
+          embeddedInTrip = true,
+          isPastTrip = false,
           modifier = Modifier.fillMaxSize(),
         )
       }

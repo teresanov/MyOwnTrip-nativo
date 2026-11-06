@@ -257,6 +257,22 @@ fun WalletDetailPreview() {
   }
 }
 
+@Preview(name = "cap 10d · Detalle con gasto", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+fun WalletDetailExpensePreview() {
+  MyOwnTripTheme {
+    WalletDetailScaffold(
+      entry = previewDetailWithAmount,
+      planPlacement = null,
+      showDeleteConfirm = false,
+      onBack = {},
+      onRequestDelete = {},
+      onDismissDelete = {},
+      onConfirmDelete = {},
+    )
+  }
+}
+
 @Preview(name = "cap 11 · Eliminar documento", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun WalletDeleteDialogPreview() {

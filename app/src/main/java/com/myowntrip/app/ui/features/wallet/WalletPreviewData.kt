@@ -17,6 +17,13 @@ internal val previewWalletTrip = Trip(
   createdAt = 0L,
 )
 
+/** Misma maleta que [previewWalletTrip], fechas en diciembre 2026 (viaje aún no pasado). */
+internal val previewCurrentWalletTrip = previewWalletTrip.copy(
+  id = "trip-current",
+  startDate = LocalDate.of(2026, 12, 4),
+  endDate = LocalDate.of(2026, 12, 6),
+)
+
 internal val previewWalletEntries = listOf(
   WalletEntry(
     id = "1",
@@ -52,6 +59,13 @@ internal val previewWalletEntries = listOf(
     time = LocalTime.of(11, 0),
   ),
 )
+
+internal val previewCurrentWalletEntries = previewWalletEntries.map { entry ->
+  entry.copy(
+    tripId = previewCurrentWalletTrip.id,
+    date = entry.date?.withMonth(12),
+  )
+}
 
 internal val previewFlightImportState = WalletFormUiState(
   tripId = "trip-1",
@@ -95,7 +109,45 @@ internal val previewParseFailState = WalletFormUiState(
 
 internal val previewManualFormState = WalletFormUiState(
   tripId = "trip-1",
+  trips = listOf(previewWalletTrip),
   title = "",
+)
+
+internal val previewManualWithAttachmentState = previewManualFormState.copy(
+  title = "Entrada Teatro Real",
+  type = EntryType.ACTIVITY,
+  date = LocalDate.of(2026, 12, 5),
+  time = LocalTime.of(19, 15),
+  attachmentUri = Uri.parse("content://preview/entrada-teatro.jpg"),
+  attachmentFileName = "entrada-teatro.jpg",
+)
+
+internal val previewNoTripsFormState = WalletFormUiState(
+  tripId = "",
+  trips = emptyList(),
+  title = "",
+)
+
+internal val previewTitleErrorFormState = previewManualFormState.copy(
+  title = "",
+  titleError = "Obligatorio",
+)
+
+internal val previewTypeCorrectionState = previewFlightImportState.copy(
+  showTypeCorrection = true,
+)
+
+internal val previewArchivedWalletEntries = previewCurrentWalletEntries.map { entry ->
+  if (entry.type == EntryType.ACTIVITY) entry.copy(archivedAt = 1L) else entry
+}
+
+internal val previewAllArchivedWalletEntries = previewCurrentWalletEntries.map {
+  it.copy(archivedAt = 1L)
+}
+
+internal val previewDetailWithAmount = previewDetailEntry.copy(
+  amount = 89.0,
+  currency = "EUR",
 )
 
 internal fun previewConfirmEntry() = WalletEntry(

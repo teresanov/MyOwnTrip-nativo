@@ -688,7 +688,7 @@ private fun entryScheduleLabel(entry: WalletEntry): String {
   }
 }
 
-@Preview(name = "cap 1 · Wallet · con documentos", showBackground = true, widthDp = 360, heightDp = 800)
+@Preview(name = "cap 1 · Wallet · viaje pasado", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun WalletScreenPreview() {
   MyOwnTripTheme {
@@ -699,6 +699,60 @@ fun WalletScreenPreview() {
         onAddEntry = {},
         onEntryClick = {},
         embeddedInTrip = true,
+        isPastTrip = true,
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 1b · Wallet · viaje en curso", showBackground = true, widthDp = 360, heightDp = 1000)
+@Composable
+fun WalletScreenInProgressPreview() {
+  MyOwnTripTheme {
+    Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+      WalletScreen(
+        trip = previewCurrentWalletTrip,
+        entries = previewCurrentWalletEntries,
+        onAddEntry = {},
+        onEntryClick = {},
+        embeddedInTrip = true,
+        isPastTrip = false,
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 1c · Wallet · archivados con filas", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+fun WalletScreenArchivedPreview() {
+  MyOwnTripTheme {
+    Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+      WalletScreen(
+        trip = previewCurrentWalletTrip,
+        entries = previewArchivedWalletEntries,
+        filterPhase = WalletDocumentFilterPhase.Archived,
+        onAddEntry = {},
+        onEntryClick = {},
+        embeddedInTrip = true,
+        isPastTrip = false,
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 1f · Wallet · activos vacío", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+fun WalletScreenActiveEmptyPreview() {
+  MyOwnTripTheme {
+    Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+      WalletScreen(
+        trip = previewCurrentWalletTrip,
+        entries = previewAllArchivedWalletEntries,
+        filterPhase = WalletDocumentFilterPhase.Active,
+        onAddEntry = {},
+        onEntryClick = {},
+        embeddedInTrip = true,
+        isPastTrip = false,
       )
     }
   }

@@ -31,11 +31,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTIcons
+import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -165,4 +167,16 @@ private fun bindCameraPreview(
     },
     ContextCompat.getMainExecutor(context),
   )
+}
+
+@Preview(name = "cap 9c · Hacer foto", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun TakePhotoScreenPreview() {
+  MyOwnTripTheme {
+    TakePhotoScreen(
+      outputFile = File("preview-entrada.jpg"),
+      onPhotoSaved = {},
+      onCancel = {},
+    )
+  }
 }

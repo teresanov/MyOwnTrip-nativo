@@ -15,13 +15,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.myowntrip.app.domain.model.WalletEntry
 import com.myowntrip.app.ui.features.wallet.entryTypeLabel
+import com.myowntrip.app.ui.features.wallet.previewWalletEntries
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
+import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
 @Composable
 fun WalletLinkDialog(
@@ -117,5 +120,35 @@ private fun WalletLinkOptionRow(
         )
       }
     }
+  }
+}
+
+@Preview(name = "cap 14 · Vincular documento de Wallet", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletLinkDialogPreview() {
+  MyOwnTripTheme {
+    WalletLinkDialog(
+      walletEntries = previewWalletEntries,
+      selectedEntryId = previewWalletEntries.first().id,
+      onSelectEntry = {},
+      onDismiss = {},
+      onConfirm = {},
+      onAddToWallet = {},
+    )
+  }
+}
+
+@Preview(name = "cap 14b · Vincular Wallet vacío", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletLinkDialogEmptyPreview() {
+  MyOwnTripTheme {
+    WalletLinkDialog(
+      walletEntries = emptyList(),
+      selectedEntryId = null,
+      onSelectEntry = {},
+      onDismiss = {},
+      onConfirm = {},
+      onAddToWallet = {},
+    )
   }
 }

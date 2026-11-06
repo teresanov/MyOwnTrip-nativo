@@ -490,7 +490,7 @@ private fun EmptyPlacesState() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(
-  name = "cap 1 · Trip detail · tab Wallet",
+  name = "cap 1 · Trip detail · tab Wallet pasado",
   showBackground = true,
   widthDp = 360,
   heightDp = 800,
@@ -540,6 +540,7 @@ fun TripDetailWalletTabPreview() {
           onEntryClick = {},
           onDeleteEntry = {},
           embeddedInTrip = true,
+          isPastTrip = true,
         )
       }
     }

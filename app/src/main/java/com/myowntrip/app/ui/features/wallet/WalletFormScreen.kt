@@ -1076,6 +1076,160 @@ private fun WalletFormManualPreview() {
   }
 }
 
+@Preview(name = "cap 5b · Import · cambiar tipo", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletFormTypeCorrectionPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Revisar importación", scrollable = false) {
+      WalletImportReviewStep(
+        state = previewTypeCorrectionState,
+        onPickFile = {},
+        onViewDocument = { _, _ -> },
+        onTitleChange = {},
+        onTypeChange = {},
+        onShowTypeCorrection = {},
+        onSaveOfflineCopyChange = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 7b · Confirmar con plan", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletConfirmWithPlanPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Revisar importación", scrollable = false) {
+      WalletImportReviewStep(
+        state = previewFlightImportState,
+        onPickFile = {},
+        onViewDocument = { _, _ -> },
+        onTitleChange = {},
+        onTypeChange = {},
+        onShowTypeCorrection = {},
+        onSaveOfflineCopyChange = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+    WalletConfirmDialog(
+      entry = previewConfirmEntry(),
+      attachmentFileName = "billete-barcelona.pdf",
+      planAddToPlan = true,
+      planCanPlace = true,
+      planSummary = "Se añadirá al Día 1 · 4 dic 2026",
+      planTripDays = emptyList(),
+      onDismiss = {},
+      onSave = {},
+    )
+  }
+}
+
+@Preview(name = "cap 7c · Confirmar sin plan", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletConfirmNoPlanPreview() {
+  MyOwnTripTheme {
+    WalletConfirmDialog(
+      entry = previewConfirmEntry(),
+      attachmentFileName = "billete-barcelona.pdf",
+      planAddToPlan = false,
+      planCanPlace = false,
+      planSummary = "No se añadirá al plan: la fecha no coincide con ningún día del viaje.",
+      onDismiss = {},
+      onSave = {},
+    )
+  }
+}
+
+@Preview(name = "cap 7d · Documento similar", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletDuplicateDialogPreview() {
+  MyOwnTripTheme {
+    WalletDuplicateDialog(
+      existingTitle = "IB 3254 · Madrid → Barcelona",
+      onDismiss = {},
+      onDuplicate = {},
+      onReplace = {},
+    )
+  }
+}
+
+@Preview(name = "cap 9d · Manual · con adjunto", showBackground = true, widthDp = 360, heightDp = 1000)
+@Composable
+private fun WalletFormManualAttachmentPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Añadir a Wallet") {
+      WalletManualAddStep(
+        state = previewManualWithAttachmentState,
+        tripExpanded = false,
+        onTripExpandedChange = {},
+        onCreateTrip = {},
+        onTripSelected = {},
+        onTitleChange = {},
+        onTypeChange = {},
+        onDateChange = {},
+        onTimeChange = {},
+        onNotesChange = {},
+        onShowNotes = {},
+        onSaveOfflineCopyChange = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 9e · Manual · sin viajes", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletFormNoTripsPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Añadir a Wallet") {
+      WalletManualAddStep(
+        state = previewNoTripsFormState,
+        tripExpanded = false,
+        onTripExpandedChange = {},
+        onCreateTrip = {},
+        onTripSelected = {},
+        onTitleChange = {},
+        onTypeChange = {},
+        onDateChange = {},
+        onTimeChange = {},
+        onNotesChange = {},
+        onShowNotes = {},
+        onSaveOfflineCopyChange = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
+@Preview(name = "cap 9f · Manual · título obligatorio", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletFormTitleErrorPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Añadir a Wallet") {
+      WalletManualAddStep(
+        state = previewTitleErrorFormState,
+        tripExpanded = false,
+        onTripExpandedChange = {},
+        onCreateTrip = {},
+        onTripSelected = {},
+        onTitleChange = {},
+        onTypeChange = {},
+        onDateChange = {},
+        onTimeChange = {},
+        onNotesChange = {},
+        onShowNotes = {},
+        onSaveOfflineCopyChange = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+  }
+}
+
 @Preview(name = "cap 12 · Descartar borrador", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 private fun WalletDiscardDialogPreview() {
@@ -1095,6 +1249,36 @@ private fun WalletDiscardDialogPreview() {
     }
     WalletDiscardDialog(
       hasAttachment = true,
+      onDismiss = {},
+      onConfirmDiscard = {},
+    )
+  }
+}
+
+@Preview(name = "cap 12b · Descartar sin adjunto", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun WalletDiscardNoAttachmentPreview() {
+  MyOwnTripTheme {
+    WalletFormPreviewScaffold(title = "Añadir a Wallet") {
+      WalletManualAddStep(
+        state = previewManualFormState,
+        tripExpanded = false,
+        onTripExpandedChange = {},
+        onCreateTrip = {},
+        onTripSelected = {},
+        onTitleChange = {},
+        onTypeChange = {},
+        onDateChange = {},
+        onTimeChange = {},
+        onNotesChange = {},
+        onShowNotes = {},
+        onSaveOfflineCopyChange = {},
+        onConfirm = {},
+        onCancel = {},
+      )
+    }
+    WalletDiscardDialog(
+      hasAttachment = false,
       onDismiss = {},
       onConfirmDiscard = {},
     )

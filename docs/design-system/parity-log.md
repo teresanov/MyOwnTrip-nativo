@@ -25,7 +25,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 | Ámbito | Tarea |
 |--------|--------|
 | Wallet · design-file | **Gate captura:** versionar `docs/samples/wallet/caps/cap-*.png` · ejecutar `figma-design-file-wallet-cap1.js` (Bridge) · diff caps 10/2/10b/10c/13 vs PNG · caps 3–9 · Part C automatización |
-| Wallet · design-file | Gaps DS: icono **wifi_off** offline · **Wallet QR card** creado (`61403:27255`) pendiente de publicar para instanciar · highlight cards = gap estructural hasta COMPONENT |
+| Wallet · design-file | Gaps DS: icono **wifi_off** offline · **Wallet QR card** creado (`61403:27255`) pendiente de publicar para instanciar · **Wallet highlight card** (carrusel Próximos en cap 1b) aún frames bindeados, no COMPONENT |
 | — | R6 / P1 resto (menu, swipe, tabs…) |
 
 ---
@@ -34,6 +34,11 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-06 | Wallet · design-file | **13c** foto de entrada maquetada (Teresa) · `cap-13c.png`. | `534:12865` | Hecho |
+| 2026-11-06 | Wallet · design-file | **7b** Switch Añadir al plan + MotTimeField · **13c** visor imagen = slot (no PDF). | `534:10017` · `534:12865` | Hecho |
+| 2026-11-06 | Wallet · design-file | Casuística restante: 1e–1i, 5b, 7b–7d, 9c–9f, 10d, 12b, 13c–13d, 14/14b. Previews Compose añadidos. Copy viaje pasado quitado de 1b/1c/1d. | `04 · Wallet` · bindings | Hecho |
+| 2026-11-06 | Wallet · design-file | Guía del tablero **sin flechas de conector**: overlay/huecos fuera; texto «Cómo leer» + tiras/caps. | `04 · Wallet` `491:13870` · bindings | Hecho |
+| 2026-11-06 | Wallet · design-file | Casuística listado: **cap 1b** viaje en curso (Próximos + chips) `532:6435` · **1c** Archivados `533:7343` · **1d** Todos `533:7746` · **9b** Escanear QR `533:7611`. Previews Compose `WalletScreenInProgressPreview` + `isPastTrip` en cap 1. | `04 · Wallet` tira Añadir · bindings | Hecho |
 | 2026-11-05 | Wallet · design-file | **Prep cap 1:** gate captura documentado · `docs/samples/wallet/caps/README.md` · `figma-design-file-wallet-cap1.js` (página `491:14473`, phone `491:13876`, chips clonados, 4 highlights, sin trailing delete) · bindings + §7.1 columna `capture:` | scripts/docs · Figma pendiente (Bridge off) | En curso |
 | 2026-11-04 | date/time | **Year/Month autolayout (re-fix):** Surface/Calendar HUG · filas 52px · años 2021–2035 · meses 4×3 · acciones visibles · set sin clip `61348:28897` | Figma Console | Hecho |
 | 2026-11-04 | Wallet · design-file | **Part A hecho:** cap **10** detalle vuelo `491:13987` + cap **2** vacío `491:13915` vía `figma-design-file-wallet-flows-parity-part-a.js` (1× `figma_execute`, fileKey design-file) | Figma verify: cap10 hijos Status bar/App bar/Body · cap2 Status bar/Body · §7.1 | Hecho |
