@@ -1,4 +1,4 @@
-import{i as n}from"./bootstrap-DeDV_W93.js";import{t as e}from"./tokens-GdfYCzkC.js";n("color");function i(t,o){return`
+import{i as n}from"./bootstrap-C_ZQ7Ieu.js";import{t as e}from"./tokens-GdfYCzkC.js";n("color");function i(t,o){return`
     <div class="swatch">
       <div class="swatch__color" style="background-color:${o}" aria-hidden="true"></div>
       <div class="swatch__meta"><strong>${t}</strong><br><code>${o}</code></div>
