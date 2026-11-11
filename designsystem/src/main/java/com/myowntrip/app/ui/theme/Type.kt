@@ -21,6 +21,21 @@ private fun frauncesFont(weight: FontWeight) = Font(
   ),
 )
 
+/**
+ * `fraunces_italic.ttf` es variable: el eje `wght` tiene **default 900** (named
+ * instance «9pt Black Italic»). Sin `variationSettings`, Compose pinta Black
+ * aunque el `FontWeight` del constructor sea Medium.
+ */
+private fun frauncesItalicFont(weight: FontWeight) = Font(
+  resId = R.font.fraunces_italic,
+  weight = weight,
+  style = FontStyle.Italic,
+  variationSettings = FontVariation.Settings(
+    FontVariation.weight(weight.weight),
+    FontVariation.Setting("opsz", 9f),
+  ),
+)
+
 val FrauncesFamily = FontFamily(
   frauncesFont(FontWeight.Light),
   frauncesFont(FontWeight.Normal),
@@ -28,7 +43,12 @@ val FrauncesFamily = FontFamily(
   frauncesFont(FontWeight.SemiBold),
   frauncesFont(FontWeight.Bold),
   frauncesFont(FontWeight.Black),
-  Font(R.font.fraunces_italic, FontWeight.Medium, FontStyle.Italic),
+  frauncesItalicFont(FontWeight.Light),
+  frauncesItalicFont(FontWeight.Normal),
+  frauncesItalicFont(FontWeight.Medium),
+  frauncesItalicFont(FontWeight.SemiBold),
+  frauncesItalicFont(FontWeight.Bold),
+  frauncesItalicFont(FontWeight.Black),
 )
 
 private fun interFont(weight: FontWeight) = Font(
@@ -51,7 +71,7 @@ val InterFamily = FontFamily(
  * apuntar aquí; de momento usa Fraunces itálica como sustituta (único punto de cambio).
  */
 val HandFamily = FontFamily(
-  Font(R.font.fraunces_italic, FontWeight.Medium, FontStyle.Italic),
+  frauncesItalicFont(FontWeight.Medium),
 )
 
 val AppTypography = Typography(

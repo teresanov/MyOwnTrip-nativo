@@ -27,6 +27,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -74,9 +76,12 @@ import com.myowntrip.app.domain.model.JournalPieceType
 import com.myowntrip.app.domain.model.JournalTextStyle
 import com.myowntrip.app.ui.brand.BrandColors
 import com.myowntrip.app.ui.brand.BrandRibbon
+import com.myowntrip.app.ui.components.EyebrowLabel
+import com.myowntrip.app.ui.components.EyebrowLabelSize
 import com.myowntrip.app.ui.theme.FrauncesFamily
 import com.myowntrip.app.ui.theme.HandFamily
 import com.myowntrip.app.ui.theme.InterFamily
+import com.myowntrip.app.ui.theme.MOTIcons
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -264,7 +269,11 @@ private fun AlbumCoachOverlay(onDismiss: () -> Unit) {
           .padding(horizontal = 22.dp, vertical = 10.dp)
           .semantics { contentDescription = "Entendido, cerrar la ayuda" },
       ) {
-        Text("Entendido", fontFamily = InterFamily, fontSize = 14.sp, color = Color.White)
+        Text(
+          "Entendido",
+          style = MaterialTheme.typography.labelLarge,
+          color = Color.White,
+        )
       }
     }
   }
@@ -282,7 +291,7 @@ private fun CoachLine(lead: String, rest: String) {
     )
     Text(
       buildString { append(lead); append(" "); append(rest) },
-      fontFamily = InterFamily, fontSize = 14.sp, lineHeight = 20.sp,
+      style = MaterialTheme.typography.bodyMedium,
       color = BrandColors.Ink.copy(alpha = 0.85f),
     )
   }
@@ -320,10 +329,9 @@ private fun AlbumMasthead(page: AlbumPageUi) {
   val day = page.day
   Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 8.dp)) {
     if (page.isChapterStart) {
-      Text(
-        "DÍA ${day.dayNumber}",
-        fontFamily = FrauncesFamily, fontWeight = FontWeight.SemiBold,
-        fontSize = 11.sp, letterSpacing = 1.8.sp, color = BrandColors.AccentOcre,
+      EyebrowLabel(
+        text = "DÍA ${day.dayNumber}",
+        size = EyebrowLabelSize.Small,
       )
       Text(
         day.title?.takeIf { it.isNotBlank() } ?: day.date.format(SpanishSheetDate),
@@ -332,7 +340,8 @@ private fun AlbumMasthead(page: AlbumPageUi) {
       )
       Text(
         day.date.format(SpanishSheetDate),
-        fontSize = 12.sp, color = BrandColors.Ink.copy(alpha = 0.75f),
+        style = MaterialTheme.typography.bodySmall,
+        color = BrandColors.Ink.copy(alpha = 0.75f),
       )
     } else {
       val place = day.title?.takeIf { it.isNotBlank() } ?: "Día ${day.dayNumber}"
@@ -586,7 +595,7 @@ private fun PostIt(text: String) {
   ) {
     Text(
       text,
-      fontFamily = InterFamily, fontSize = 14.sp, lineHeight = 20.sp,
+      style = MaterialTheme.typography.bodyMedium,
       color = BrandColors.Ink,
     )
   }
@@ -618,7 +627,14 @@ private fun AudioChip(note: JournalNote) {
       Box(
         Modifier.size(26.dp).border(1.5.dp, BrandColors.Ink, CircleShape),
         contentAlignment = Alignment.Center,
-      ) { Text("▶", fontSize = 10.sp, color = BrandColors.Ink) }
+      ) {
+        Icon(
+          imageVector = MOTIcons.PlayArrow,
+          contentDescription = "Reproducir",
+          modifier = Modifier.size(14.dp),
+          tint = BrandColors.Ink,
+        )
+      }
       Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.5.dp),
@@ -670,10 +686,9 @@ private fun EventPiece(note: JournalNote, block: ItineraryBlock?) {
     ) {
       val title = block?.title ?: "Evento del plan"
       val label = block?.timeLabel?.let { "$title · $it" } ?: title
-      Text(
-        label.uppercase(Locale.getDefault()),
-        fontSize = 10.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 1.sp,
-        color = BrandColors.Ink,
+      EyebrowLabel(
+        text = label.uppercase(Locale.getDefault()),
+        size = EyebrowLabelSize.Small,
       )
       when {
         note.photoUri != null -> SpreadMediaImage(
@@ -754,10 +769,9 @@ private fun Stamp(city: String, date: String) {
       fontFamily = FrauncesFamily, fontWeight = FontWeight.SemiBold, fontSize = 15.sp,
       letterSpacing = 1.2.sp, color = BrandColors.AccentOcre,
     )
-    Text(
-      "$date · 2026",
-      fontSize = 9.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 1.6.sp,
-      color = BrandColors.AccentOcre,
+    EyebrowLabel(
+      text = "$date · 2026",
+      size = EyebrowLabelSize.Small,
     )
   }
 }
@@ -824,7 +838,7 @@ private fun AlbumChrome(
       ) {
         Text(
           "Día ${d.dayNumber}",
-          fontSize = 12.sp, fontWeight = FontWeight.Medium,
+          style = MaterialTheme.typography.labelMedium,
           color = if (active) Color.White else BrandColors.Ink,
         )
       }
@@ -835,10 +849,16 @@ private fun AlbumChrome(
         .size(40.dp)
         .clip(CircleShape)
         .border(1.dp, BrandColors.Ink.copy(alpha = 0.35f), CircleShape)
-        .clickable { onOpenReading() }
-        .semantics { contentDescription = "Ordenar y leer la hoja" },
+        .clickable { onOpenReading() },
       contentAlignment = Alignment.Center,
-    ) { Text("≡", fontSize = 18.sp, color = BrandColors.Ink) }
+    ) {
+      Icon(
+        imageVector = MOTIcons.Menu,
+        contentDescription = "Ordenar y leer la hoja",
+        modifier = Modifier.size(20.dp),
+        tint = BrandColors.Ink,
+      )
+    }
     if (!readOnly) {
       Spacer(Modifier.width(8.dp))
       Box(
@@ -846,10 +866,16 @@ private fun AlbumChrome(
           .size(48.dp)
           .shadow(6.dp, CircleShape)
           .background(BrandColors.Ink, CircleShape)
-          .clickable { onAddSheet() }
-          .semantics { contentDescription = "Nueva hoja" },
+          .clickable { onAddSheet() },
         contentAlignment = Alignment.Center,
-      ) { Text("+", color = Color.White, fontSize = 24.sp) }
+      ) {
+        Icon(
+          imageVector = MOTIcons.Add,
+          contentDescription = "Nueva hoja",
+          modifier = Modifier.size(24.dp),
+          tint = Color.White,
+        )
+      }
     }
   }
 }
@@ -936,9 +962,9 @@ private fun AlbumEmptyState(modifier: Modifier) {
 
 /* ----------------------------- preview ----------------------------- */
 
-@Preview(name = "Diario · álbum (datos)", showBackground = true, widthDp = 360, heightDp = 760)
+@Preview(name = "Diario · álbum", showBackground = true, widthDp = 360, heightDp = 760)
 @Composable
-private fun ScrapbookAlbumDataPreview() {
+fun ScrapbookAlbumPreview() {
   val day1 = Day("d1", "t1", LocalDate.of(2026, 6, 12), 3, "Madrid")
   val day2 = Day("d2", "t1", LocalDate.of(2026, 6, 13), 4, "Sevilla")
   val pagesDb = listOf(

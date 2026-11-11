@@ -45,6 +45,7 @@ ICONS = {
     "LocationOn": ("location_on", False),
     "Luggage": ("luggage", False),
     "Mic": ("mic", False),
+    "Menu": ("menu", False),
     "MoreVert": ("more_vert", False),
     "NoteAdd": ("note_add", True),
     "OpenInNew": ("open_in_new", True),

@@ -110,12 +110,16 @@ comprobar si heredan la familia del sistema o caen al valor por defecto de M3 �
 ni Inter. Si caen, hay que declararlos en `Type.kt` antes de usarlos. **Sin verificar:** requiere
 inspeccionar `material3 1.5.0-alpha12`.
 
-**2. La itálica puede estar pintando en Black.** `HandFamily` y la cara itálica de `FrauncesFamily`
-se declaran con `Font(R.font.fraunces_italic, FontWeight.Medium, FontStyle.Italic)` **sin**
-`variationSettings`, a diferencia de `frauncesFont()`, que sí fija `FontVariation.weight` y `opsz`.
-El eje `wght` de `fraunces_italic.ttf` tiene **900 por defecto**, así que es probable que la pluma
-se esté pintando en Black Italic en lugar de Medium Italic. **Sin verificar:** se comprueba en una
-preview del álbum.
+**2. La itálica estaba pintando en Black — confirmado y corregido (2026-11-11).**
+`designsystem/src/main/res/font/fraunces_italic.ttf`:
+
+| Evidencia | Valor |
+|---|---|
+| Eje `wght` | min 100 · **default 900** · max 900 |
+| `name` ID 4 / 17 | «Fraunces 9pt Black Italic» / «Black Italic» |
+| `OS/2.usWeightClass` | 900 |
+
+Sin `FontVariation.weight`, Compose ignora el `FontWeight.Medium` del constructor y pinta el default del eje. Se añadió `frauncesItalicFont()` análoga a `frauncesFont()` (`wght` + `opsz` 9) y se usa en `FrauncesFamily` (todos los pesos) y `HandFamily` (Medium). La pluma y cualquier Fraunces itálica pasan de Black Italic a Medium Italic: es el único cambio visual intencional fuera del grupo D (chip del eyebrow).
 
 Es la misma causa que obligó a enlazar `small-emphasized` a `Static/weight/black` en Figma.
 
@@ -129,3 +133,14 @@ Es la misma causa que obligó a enlazar `small-emphasized` a `Static/weight/blac
 6. Cerrar **B** y **F** con la decisión que salga de 5.
 
 Los pasos 2, 3 y 4 se pueden hacer ya. El 5 es el que necesita la pasada de paridad.
+
+## Cierre parcial (2026-11-11)
+
+| Grupo | Estado | Notas |
+|---|---|---|
+| **0 / itálica** | Cerrado | Confirmado Black por defecto; `frauncesItalicFont()` en `Type.kt`. |
+| **A** | Cerrado | `bodyMedium`, `bodySmall`, `labelMedium`, `labelLarge`. Sin literales. |
+| **D** | Cerrado | Masthead «DÍA N», etiqueta de evento y fecha del sello → `EyebrowLabel` Small. El componente trae contenedor (`tertiaryFixedDim`) + Inter `labelSmall`; deja de ser texto suelto Fraunces/ocre. Pendiente de paridad visual si diseño quiere una variante sin chip o un tamaño 9/10. |
+| **G** | Cerrado | `MOTIcons.PlayArrow` / `Menu` / `Add` con `contentDescription`. |
+| **H** | Cerrado | `ScrapbookAlbumPreview` usa `ScrapbookAlbum` con datos de ejemplo. `ScrapbookAlbumDemo` y `ScrapbookCanvasDemo.kt` eliminados (quedaban sin uso). |
+| **B, C, E, F** | Abierto | Sin tocar; consolidación Fraunces / pluma / 13sp / tracking de `labelSmall` con Figma delante. |
