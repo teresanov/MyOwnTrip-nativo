@@ -111,14 +111,31 @@ Previews: `HomeEmptyStatePreview`, `TripListWithTripsPreview`, `TripListFilterMe
 
 Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spacing/*`.
 
-## Detalle de viaje · tabs `03 · Detalle de viaje` · Day hub `05 · Día & itinerario`
+## Páginas de módulo (Compose `TripDetailScreen` tiene 5 tabs; cada tab vive en su página Figma)
 
-Compose SoT: `tripDetailTabs` = Wallet · Plan · Diario · Gastos · Sitios (`ScrollableTabRow` + `MOTTab`). Day hub: Plan · Diario (`TabRow` + `MOTTab`). Set Figma **Tabs** `54563:40023`.
+`03` **no** monta Wallet / Plan / Diario / Gastos / Sitios. Editar el viaje: `02`. Day hub Plan\|Diario: `05` (además del tab).
 
-| Superficie | Preview / ruta | Figma DS |
-|------------|----------------|----------|
-| Trip detail (5 tabs) | `TripDetailScreen` · `trip_detail/{tripId}` | Tabs Scrollable Primary en `03` `261:937` (Wallet/Plan/Diario/Gastos/Sitios). Cap 1 = clone Wallet. Caps 2–4: chrome + tab selected; **cuerpo Plan/Gastos/Sitios gap**. |
-| Day hub (2 tabs) | `DayHubScreen` · `day_hub` | Tabs Fixed Primary Plan\|Diario · `05` `477:2043` |
+| Página | Flujo Figma | Caps |
+|--------|-------------|------|
+| `03 · Detalle de viaje` | `261:935` | Vacío de módulos. Pendiente: ficha del viaje si no es `trip_edit`. |
+| `04 · Wallet` | [`491:13870`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13870) | Entrada + import + alta + maleta |
+| `05 · Plan` | [`583:16744`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16744) | **2** `261:941` · **2b** `573:13289` · **2c** `573:13390` · **2d** `573:13443` |
+| `06 · Diario` | [`583:16747`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16747) | **5** `574:13966` · **5b** `574:14129` · **5c** `574:14292` |
+| `07 · Gastos` | [`261:1087`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1087) | **3** `261:944` · **3b** `576:14844` |
+| `08 · Sitios` | [`261:1247`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1247) | **4** `261:947` · **4b** `576:15050` · **4c** `581:15264` · **4d** `581:15447` · **4f** `583:15790` · **4g** `583:15942` · **4h** `583:16095` · **4e** pin pendiente |
+
+### `08 · Sitios` — casuísticas
+
+| Cap | Node | Preview / composable | Notas |
+|-----|------|----------------------|--------|
+| **4** sitios · vacío | `261:947` | `EmptyPlacesState` | 2 líneas + FAB + |
+| **4b** sitios · lista | `576:15050` | `RestaurantsTab` cards | Solo cards Text only + FAB. **Sin mapa** en el tab. |
+| **4c** Nuevo sitio | `581:15264` | `RestaurantFormScreen` | Outline Fill «Buscar en Google Maps» + location. Alta a mano. |
+| **4d** Guardar sitio · sin pin | `581:15447` | `PlaceImportScreen` | Chips de **todos** los viajes no archivados. |
+| **4e** *(pendiente)* | — | `hasLocation` | No montar hasta arreglar el pin. |
+| **4f** detalle · restaurante | `583:15790` | `RestaurantDetailScreen` | Cal Pep · Reservado · Abrir Maps · delete. |
+| **4g** detalle · sin reserva | `583:15942` | mirador | Bunkers · Por ir / Visitado. |
+| **4h** detalle · borrar | `583:16095` | `AlertDialog` | Borrar sitio. |
 
 ## Wallet · flujo de app `04 · Wallet` — [`491:13870`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13870)
 

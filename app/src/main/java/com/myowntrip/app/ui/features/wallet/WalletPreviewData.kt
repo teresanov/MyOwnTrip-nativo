@@ -145,6 +145,10 @@ internal val previewAllArchivedWalletEntries = previewCurrentWalletEntries.map {
   it.copy(archivedAt = 1L)
 }
 
+internal val previewDetailEntry = previewWalletEntries.first().copy(
+  pdfUri = "file://preview/billete-barcelona.pdf",
+)
+
 internal val previewDetailWithAmount = previewDetailEntry.copy(
   amount = 89.0,
   currency = "EUR",
@@ -159,8 +163,4 @@ internal fun previewConfirmEntry() = WalletEntry(
   time = LocalTime.of(9, 15),
   pdfUri = "file://preview/billete-barcelona.pdf",
   qrPayload = previewWalletEntries.first().qrPayload,
-)
-
-internal val previewDetailEntry = previewWalletEntries.first().copy(
-  pdfUri = "file://preview/billete-barcelona.pdf",
 )

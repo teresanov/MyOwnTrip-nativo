@@ -21,6 +21,9 @@ interface RestaurantDao {
   @Query("UPDATE restaurants SET status = :status WHERE id = :id")
   suspend fun updateStatus(id: String, status: com.myowntrip.app.domain.model.RestaurantStatus)
 
+  @Query("UPDATE restaurants SET latitude = :latitude, longitude = :longitude WHERE id = :id")
+  suspend fun updateLocation(id: String, latitude: Double, longitude: Double)
+
   @Query("DELETE FROM restaurants WHERE id = :id")
   suspend fun deleteById(id: String)
 }

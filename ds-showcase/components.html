@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Components · MyOwnTrip DS</title>
+    <title>Componentes · MyOwnTrip DS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -15,12 +15,17 @@
       <nav class="rail" id="site-nav" aria-label="Navegación"></nav>
       <div class="content">
         <header class="page-header">
-          <p class="page-header__eyebrow">Components</p>
-          <h1>Índice</h1>
-          <p class="page-header__lead">Fichas de componente. Cada una incluye variantes, a11y, Do/Don't y snippet Compose.</p>
+          <p class="page-header__eyebrow">Componentes</p>
+          <h1>Bloques reutilizables</h1>
+          <p class="page-header__lead">
+            Agrupados por para qué sirven. Cada ficha empieza por cuándo usar el componente
+            y cuándo no; la implementación va al final.
+          </p>
         </header>
         <main id="contenido"><div id="components-list"></div></main>
-        <footer class="footer"><p>Añadir componentes en <code>src/data/components.json</code></p></footer>
+        <footer class="footer">
+          <p>Añadir un componente: <code>src/data/components/&lt;id&gt;.json</code> + entrada en <code>components.json</code> y en <code>vite.config.js</code>.</p>
+        </footer>
       </div>
     </div>
     <script type="module" src="/src/pages/components.js"></script>

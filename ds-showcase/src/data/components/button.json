@@ -1,16 +1,161 @@
 {
   "id": "button",
   "name": "Button",
-  "status": "draft",
-  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168",
-  "purpose": "Ejecutar acciones: confirmar, guardar, continuar. En MyOwnTrip: crear viaje, guardar gasto, confirmar entrada Wallet (H7).",
+  "status": "in-review",
+  "priority": "P0",
+  "category": "acciones",
+  "summary": "Ejecuta una acción: confirmar, guardar, continuar.",
+  "figma": {
+    "label": "Button · Filled · Square",
+    "node": "57994:2227",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57994-2227"
+  },
+  "usage": {
+    "purpose": "Un botón ejecuta una acción en el sitio donde está: confirmar, guardar, continuar. En MyOwnTrip son crear un viaje, guardar un gasto y confirmar una entrada del Wallet.",
+    "when": [
+      "La persona ejecuta algo que cambia datos o cierra un flujo: guardar, confirmar, crear, eliminar.",
+      "La acción necesita una etiqueta con verbo para que se entienda sin contexto.",
+      "Hay que marcar jerarquía entre dos o tres acciones que conviven en la misma pantalla."
+    ],
+    "whenNot": [
+      {
+        "case": "Filtrar o alternar un valor que se queda activo",
+        "use": "Filter chip",
+        "href": "components/filter-chip.html"
+      },
+      {
+        "case": "Acción compacta en la top app bar o dentro de un campo",
+        "use": "MOTIconButton",
+        "href": "components.html"
+      },
+      {
+        "case": "Navegar a un detalle desde una lista o una tarjeta",
+        "use": "List item o Card — la fila entera es el área pulsable",
+        "href": "components/stacked-card.html"
+      },
+      {
+        "case": "Llevar a otro sitio desde dentro de un párrafo",
+        "use": "Un enlace, no un Text button"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Es la acción que completa el flujo (Guardar, Confirmar, Hecho)",
+        "use": "MOTButton",
+        "note": "Una sola por pantalla."
+      },
+      {
+        "if": "Acción de apoyo que necesita más peso que un outlined (Siguiente en onboarding)",
+        "use": "MOTTonalButton",
+        "note": "Padding XSmall: es visualmente más compacto."
+      },
+      {
+        "if": "Acción importante que no es la principal, o salir del flujo",
+        "use": "MOTOutlinedButton",
+        "note": "También para «dar la opción de cambiar de opinión»."
+      },
+      {
+        "if": "Varias opciones de baja prioridad juntas, o acciones de un diálogo",
+        "use": "MOTTextButton",
+        "note": "El label es siempre labelLarge; no escala por tamaño."
+      },
+      {
+        "if": "El botón necesita separarse de un fondo con patrón o de una imagen",
+        "use": "Button de M3 + elevation",
+        "note": "No hay wrapper MOT para elevated; poco uso en Compose."
+      }
+    ],
+    "related": [
+      { "label": "Filter chip", "href": "components/filter-chip.html" },
+      { "label": "Basic dialog", "href": "components/basic-dialog.html" },
+      { "label": "Forma (morph del botón)", "href": "shape.html" }
+    ]
+  },
   "variants": [
-    { "id": "filled", "label": "Filled", "usage": "Acción principal de la pantalla (una por vista)." },
-    { "id": "tonal", "label": "Tonal", "usage": "Acción secundaria con énfasis moderado (`secondaryContainer`)." },
-    { "id": "outlined", "label": "Outlined", "usage": "Acciones alternativas o cancelar." },
-    { "id": "text", "label": "Text", "usage": "Acciones terciarias, bajo peso visual." }
+    {
+      "id": "filled",
+      "label": "Filled",
+      "composable": "MOTButton",
+      "usage": "Acción principal de la pantalla (una por vista).",
+      "figmaNode": "57994:2227"
+    },
+    {
+      "id": "tonal",
+      "label": "Tonal",
+      "composable": "MOTTonalButton",
+      "usage": "Acción secundaria con énfasis moderado (secondaryContainer).",
+      "figmaNode": "58651:11237"
+    },
+    {
+      "id": "outlined",
+      "label": "Outlined",
+      "composable": "MOTOutlinedButton",
+      "usage": "Acciones alternativas o cancelar.",
+      "figmaNode": "58650:10213"
+    },
+    {
+      "id": "text",
+      "label": "Text",
+      "composable": "MOTTextButton",
+      "usage": "Acciones terciarias, bajo peso visual.",
+      "figmaNode": "58650:8094"
+    }
   ],
-  "tokens": ["primary", "onPrimary", "secondaryContainer", "onSecondaryContainer", "outline"],
+  "anatomy": [
+    "<strong>Contenedor</strong> — superficie pulsable. El radio no es fijo: 0 dp en reposo y 20 dp en interacción (ver Comportamiento).",
+    "<strong>Label</strong> — verbo en Inter <code>labelLarge</code>. Nunca Fraunces.",
+    "<strong>Icono opcional</strong> — Material Symbols Sharp w300, antes del label.",
+    "<strong>State layer</strong> — capa de color en runtime sobre el rol <code>on*</code>; es lo que comunica hover, focus y pressed.",
+    "<strong>Área táctil</strong> — mínimo 48 dp de alto, aunque el contenedor visible mida menos."
+  ],
+  "behavior": {
+    "lead": "El botón de MyOwnTrip tiene una firma propia: es un rectángulo en reposo que se redondea al tocarlo. Es la decisión visual más característica del sistema, así que conviene documentarla antes que los tokens.",
+    "rows": [
+      { "state": "Reposo (y disabled)", "corner": "0 dp", "figma": "Corner/None", "extra": "Sin escala." },
+      { "state": "Hover (donde exista)", "corner": "20 dp", "figma": "Corner/Large-increased", "extra": "Sin escala." },
+      { "state": "Focus", "corner": "20 dp", "figma": "Corner/Large-increased", "extra": "Sin escala." },
+      { "state": "Pressed", "corner": "20 dp", "figma": "Corner/Large-increased", "extra": "Escala 0.96 (squish)." },
+      { "state": "Selected (toggle, tab, segmented)", "corner": "20 dp", "figma": "Corner/Large-increased", "extra": "Vía forceActive = true." }
+    ],
+    "notes": [
+      "La transición es <strong>asimétrica</strong>: entra rápido (120 ms, <code>EmphasizedAccelerate</code>) para que el dedo note la respuesta, y sale con un muelle (damping 0.6, stiffness 380) que rebasa y asienta.",
+      "El muelle de salida rebasa por debajo de 0 dp; <code>RoundedCornerShape</code> no admite radios negativos, así que el valor se recorta con <code>coerceAtLeast(0.dp)</code>.",
+      "El squish solo actúa en <strong>pressed</strong>. Hover y focus morfan la esquina sin escalar.",
+      "Con <code>LocalReduceMotion</code> activo, ambas animaciones pasan a <code>snap()</code>: cambio instantáneo, sin movimiento.",
+      "Todos los tamaños y todos los estilos (filled, tonal, outlined, text, elevated) comparten la misma pareja reposo/interactivo.",
+      "El radio <strong>no sustituye</strong> al feedback de color: los state layers siguen aplicándose en runtime."
+    ],
+    "exceptions": [
+      "<strong>FAB y Extended FAB</strong> — circulares, sin morph.",
+      "<strong>Cards</strong> — 12 dp fijo.",
+      "<strong>Chips</strong> — 8 dp fijo; <em>selected</em> se comunica con color, no con radio."
+    ]
+  },
+  "a11y": [
+    "Área táctil mínima de 48 dp de alto, aunque el contenedor visible sea más bajo (Tonal con padding XSmall queda en 32 dp visibles).",
+    "El morph a 20 dp no es el indicador de foco: el foco necesita su propio anillo visible, separado del contenido.",
+    "Disabled se comunica con opacidad (38 % contenido, 12 % contenedor), nunca con un color distinto.",
+    "La etiqueta debe entenderse fuera de contexto: «Guardar gasto», no «Aceptar». TalkBack la lee sola.",
+    "Si la acción falla, el error se comunica con icono y texto; nunca solo con color."
+  ],
+  "tokens": {
+    "color": [
+      { "token": "primary / onPrimary", "use": "Contenedor y label de MOTButton (filled)." },
+      { "token": "secondaryContainer / onSecondaryContainer", "use": "MOTTonalButton." },
+      { "token": "outline", "use": "Borde de MOTOutlinedButton." },
+      { "token": "primary", "use": "Label de MOTOutlinedButton y MOTTextButton." }
+    ],
+    "shape": [
+      { "token": "rememberMOTButtonShape()", "use": "0 → 20 dp. Fuera de la escala MaterialTheme.shapes." }
+    ],
+    "spacing": [
+      { "token": "MOTSpacing.ButtonSmall", "use": "24 × 8 dp — por defecto en MOTButton y MOTOutlinedButton." },
+      { "token": "MOTSpacing.ButtonXSmall", "use": "12 × 6 dp — por defecto en MOTTonalButton." }
+    ],
+    "type": [
+      { "token": "labelLarge", "use": "Inter 14 Medium. El Text button no escala el label por tamaño." }
+    ]
+  },
   "guidelines": {
     "links": [
       {
@@ -40,27 +185,47 @@
   "productRules": {
     "dos": [
       "Un solo botón Filled como CTA principal por pantalla.",
-      "Etiquetas con verbos en Inter (`labelLarge`).",
-      "Estados interactivos vía state layers M3 (no colores custom por estado)."
+      "Etiquetas con verbos en Inter (labelLarge).",
+      "Estados interactivos vía state layers M3, no colores custom por estado.",
+      "Pasar siempre el mismo interactionSource que recibe el botón: si no, el squish nunca se dispara."
     ],
     "donts": [
-      "No usar `tertiary` para acciones destructivas — usar `error` + confirmación.",
-      "No crear tokens `button/hover` o similares.",
-      "No Fraunces en el label del botón."
+      "No usar tertiary para acciones destructivas — usar error más confirmación.",
+      "No crear tokens button/hover ni similares.",
+      "No usar Fraunces en el label del botón.",
+      "No usar MaterialTheme.shapes.* para dar forma a un botón: el morph vive fuera de esa escala."
     ]
   },
-  "a11y": [
-    "Touch target mínimo 48dp.",
-    "Foco visible: anillo 2dp separado del contenido.",
-    "Estado disabled: opacidad 38% / 12%, no color distinto."
-  ],
-  "compose": "Button(\n    onClick = { onSave() },\n    modifier = Modifier.fillMaxWidth(),\n) {\n    Text(\"Guardar\")\n}",
+  "implementation": {
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTButtons.kt",
+    "import": "com.myowntrip.app.ui.theme.MOTButton",
+    "composable": "MOTButton",
+    "note": "Los wrappers MOT existen por una sola razón: aplicar el morph de forma (ADR 004) y el squish. Delegan en el componente M3 y no añaden ejes propios.",
+    "params": [
+      { "name": "onClick", "type": "() -> Unit", "default": "—", "note": "Obligatorio." },
+      { "name": "modifier", "type": "Modifier", "default": "Modifier", "note": "El wrapper le añade motButtonPressSquish." },
+      { "name": "enabled", "type": "Boolean", "default": "true", "note": "" },
+      { "name": "interactionSource", "type": "MutableInteractionSource", "default": "remember { … }", "note": "Pásalo si necesitas leer el estado fuera." },
+      { "name": "contentPadding", "type": "PaddingValues", "default": "MOTButtonSmallContentPadding", "note": "24 × 8 dp." },
+      { "name": "elevation", "type": "ButtonElevation?", "default": "ButtonDefaults.buttonElevation()", "note": "null en MOTTonalButton." },
+      { "name": "colors", "type": "ButtonColors", "default": "ButtonDefaults.buttonColors()", "note": "Del tema; no pasar colores literales." },
+      { "name": "content", "type": "@Composable RowScope.() -> Unit", "default": "—", "note": "Normalmente un Text." }
+    ],
+    "snippet": "MOTButton(\n    onClick = { onSave() },\n    modifier = Modifier.fillMaxWidth(),\n    enabled = !state.isSaving,\n) {\n    Text(\"Guardar gasto\")\n}",
+    "variantsSnippet": "// Secundaria con énfasis moderado\nMOTTonalButton(onClick = onNext) { Text(\"Siguiente\") }\n\n// Alternativa o salida del flujo\nMOTOutlinedButton(onClick = onCancel) { Text(\"Cancelar\") }\n\n// Baja prioridad / acciones de diálogo\nMOTTextButton(onClick = onDiscard) { Text(\"Descartar\") }"
+  },
   "decisions": {
-    "source": "Figma node 55141-14168 · Compose `Button` (M3)",
-    "why": "Acciones de confirmar, guardar y continuar con M3 directo; la jerarquía la marcan las variantes.",
-    "layer": "Componente M3 directo"
+    "source": "Figma Button 57994:2227 · Compose MOTButton (designsystem)",
+    "why": "M3 directo para la jerarquía por variantes; el wrapper MOT solo añade el morph de forma y el squish de pulsación.",
+    "layer": "Wrapper MOT sobre componente M3",
+    "adr": [
+      { "label": "ADR 004 — Button shape: reposo 0dp, morph a 20dp", "ref": "docs/decisions/004-button-shape-morph.md" },
+      { "label": "ADR 002 — Marca editorial sobre M3", "ref": "docs/decisions/002-brand-editorial-m3.md" }
+    ]
   },
   "changelog": [
-    { "date": "2026-06-08", "note": "Ficha inicial en showcase estático. Compose: M3 directo." }
+    { "date": "2026-06-08", "note": "Ficha inicial en showcase estático." },
+    { "date": "2026-11-11", "note": "Corregido: el runtime es MOTButton, no Button de M3. Añadido Comportamiento (morph 0→20, squish, reduce motion), tabla de parámetros y bloque de elección de variante. Nodo de Figma alineado con figma-compose-bindings.md." }
   ]
 }

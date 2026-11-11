@@ -1,0 +1,31 @@
+# MyOwnTrip Design System
+
+> Design system de la app MyOwnTrip (Android, Jetpack Compose). Material 3 canónico con identidad editorial: Fraunces y Inter, paleta gris-azul con acento ocre, y botones que pasan de 0 a 20 dp de radio al interactuar.
+
+Contexto completo en texto plano: [ds-context.md](https://teresanov.github.io/MyOwnTrip-nativo/ds-context.md)
+
+## Secciones
+
+- [Inicio](https://teresanov.github.io/MyOwnTrip-nativo/index.html)
+- [Empezar aquí](https://teresanov.github.io/MyOwnTrip-nativo/empezar.html)
+- [Color](https://teresanov.github.io/MyOwnTrip-nativo/color.html)
+- [Tipografía](https://teresanov.github.io/MyOwnTrip-nativo/typography.html)
+- [Forma](https://teresanov.github.io/MyOwnTrip-nativo/shape.html)
+- [Espaciado](https://teresanov.github.io/MyOwnTrip-nativo/spacing.html)
+- [Iconografía](https://teresanov.github.io/MyOwnTrip-nativo/iconography.html)
+- [Movimiento](https://teresanov.github.io/MyOwnTrip-nativo/motion.html)
+- [Componentes](https://teresanov.github.io/MyOwnTrip-nativo/components.html)
+- [Patrones](https://teresanov.github.io/MyOwnTrip-nativo/patterns.html)
+- [Gobernanza](https://teresanov.github.io/MyOwnTrip-nativo/gobernanza.html)
+
+## Componentes
+
+- [Button](https://teresanov.github.io/MyOwnTrip-nativo/components/button.html): Ejecuta una acción: confirmar, guardar, continuar.
+- [Text field](https://teresanov.github.io/MyOwnTrip-nativo/components/text-field.html): Entrada de texto en formularios de viaje, wallet y gastos.
+- [Filter chip](https://teresanov.github.io/MyOwnTrip-nativo/components/filter-chip.html): Filtros en Wallet, gastos y journal; Home usa Menu.
+- [Basic dialog](https://teresanov.github.io/MyOwnTrip-nativo/components/basic-dialog.html): Confirmar, eliminar o descartar antes de un cambio irreversible.
+- [Snackbar](https://teresanov.github.io/MyOwnTrip-nativo/components/snackbar.html): Feedback breve tras guardar, con opción de deshacer.
+- [Card](https://teresanov.github.io/MyOwnTrip-nativo/components/stacked-card.html): Stacked y Horizontal — contenedor de viaje, gasto o entrada.
+- [TripHeroCard](https://teresanov.github.io/MyOwnTrip-nativo/components/trip-hero-card.html): Portada del viaje destacado en Home (imagen, scrim y CTA).
+- [Eyebrow label](https://teresanov.github.io/MyOwnTrip-nativo/components/eyebrow-label.html): Etiqueta informativa no interactiva sobre media o surface.
+- [Swipeable list row](https://teresanov.github.io/MyOwnTrip-nativo/components/swipeable-list-row.html): Swipe para archivar o eliminar, con alternativa accesible.

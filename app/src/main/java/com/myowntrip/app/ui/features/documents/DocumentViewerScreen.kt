@@ -290,6 +290,7 @@ private fun openPdfDescriptor(
     }
   }.getOrNull()
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(name = "cap 13d · visor archivo no encontrado", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 private fun MissingDocumentPreview() {

@@ -1,0 +1,19 @@
+{
+  "lead": "Un patrón resuelve un problema recurrente combinando componentes que ya existen. Si algo se puede resolver con un componente suelto, no es un patrón.",
+  "patterns": [
+    {
+      "id": "home-filter-menu",
+      "name": "Home · menú de filtros y orden",
+      "status": "ready",
+      "problem": "Filtrar y ordenar la lista de viajes sin ocupar espacio permanente en una pantalla que ya tiene búsqueda.",
+      "solution": "Search bar con icono <code>tune</code>; al pulsarlo se abre un Menu con <code>Menu Groups = 2</code> (filtro y orden). La selección se marca con <code>check</code> leading en una caja reservada, y el trailing queda oculto.",
+      "components": ["Search bar", "Menu", "Filter chip (no se usa aquí)"],
+      "ref": "docs/design-system/patterns/home-filter-menu.md"
+    }
+  ],
+  "pending": [
+    "Formulario de gasto (campo + validación + guardar)",
+    "Confirmación destructiva (diálogo + snackbar con deshacer)",
+    "Estado vacío de lista"
+  ]
+}

@@ -1,6 +1,33 @@
 import path from "node:path";
 import { defineConfig } from "vite";
 
+/** Cada página HTML necesita su entrada aquí o no se construye. */
+const PAGES = [
+  ["overview", "index.html"],
+  ["empezar", "empezar.html"],
+  // Foundations
+  ["color", "color.html"],
+  ["typography", "typography.html"],
+  ["shape", "shape.html"],
+  ["spacing", "spacing.html"],
+  ["iconography", "iconography.html"],
+  ["motion", "motion.html"],
+  // Componentes
+  ["components", "components.html"],
+  ["button", "components/button.html"],
+  ["text-field", "components/text-field.html"],
+  ["filter-chip", "components/filter-chip.html"],
+  ["basic-dialog", "components/basic-dialog.html"],
+  ["snackbar", "components/snackbar.html"],
+  ["stacked-card", "components/stacked-card.html"],
+  ["trip-hero-card", "components/trip-hero-card.html"],
+  ["eyebrow-label", "components/eyebrow-label.html"],
+  ["swipeable-list-row", "components/swipeable-list-row.html"],
+  // Resto
+  ["patterns", "patterns.html"],
+  ["governance", "gobernanza.html"],
+];
+
 export default defineConfig(({ mode }) => {
   const base = mode === "production" ? "/MyOwnTrip-nativo/" : "/";
 
@@ -21,21 +48,9 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       rollupOptions: {
-        input: {
-          overview: path.resolve(__dirname, "index.html"),
-          color: path.resolve(__dirname, "color.html"),
-          typography: path.resolve(__dirname, "typography.html"),
-          components: path.resolve(__dirname, "components.html"),
-          button: path.resolve(__dirname, "components/button.html"),
-          "text-field": path.resolve(__dirname, "components/text-field.html"),
-          "filter-chip": path.resolve(__dirname, "components/filter-chip.html"),
-          "basic-dialog": path.resolve(__dirname, "components/basic-dialog.html"),
-          snackbar: path.resolve(__dirname, "components/snackbar.html"),
-          "stacked-card": path.resolve(__dirname, "components/stacked-card.html"),
-          "trip-hero-card": path.resolve(__dirname, "components/trip-hero-card.html"),
-          "eyebrow-label": path.resolve(__dirname, "components/eyebrow-label.html"),
-          "swipeable-list-row": path.resolve(__dirname, "components/swipeable-list-row.html"),
-        },
+        input: Object.fromEntries(
+          PAGES.map(([name, file]) => [name, path.resolve(__dirname, file)])
+        ),
       },
     },
   };

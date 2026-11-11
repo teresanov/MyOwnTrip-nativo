@@ -1,0 +1,67 @@
+---
+title: Para diseño
+description: Cómo montar una pantalla con el design system de MyOwnTrip sin inventar componentes.
+sidebar:
+  order: 1
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+## La regla que ordena todo
+
+**Una pantalla no inventa interfaz.** Monta piezas que ya existen en el sistema, les pone el
+contenido real y respeta los espacios de pantalla. Si una maqueta necesita algo que no está en el
+sistema, eso es una decisión de sistema, no un detalle de la pantalla.
+
+## El orden de trabajo
+
+<Steps>
+
+1. **Busca el componente en [Componentes](/componentes/).**
+
+   Cada ficha empieza por cuándo usarlo y cuándo no. El apartado «Cuándo no usarlo» suele ahorrar
+   el error más común: poner un botón donde va un chip, o un botón donde la fila entera debería ser
+   pulsable.
+
+2. **Elige la variante con la tabla de la ficha.**
+
+   Las variantes no son decorativas: marcan jerarquía. La regla transversal es que hay **una sola
+   acción principal por pantalla**.
+
+3. **Usa instancias de la librería de Figma, no copias.**
+
+   La librería guarda los component sets y las variables. Si desvinculas una instancia para
+   retocarla, la pantalla deja de seguir al sistema sin que nadie se entere.
+
+4. **Comprueba el estado del componente.**
+
+   En el menú lateral, cada componente que no esté *Listo* lleva una etiqueta. Un componente en
+   *Borrador* puede cambiar: úsalo sabiendo eso.
+
+5. **Repasa accesibilidad antes de dar la pantalla por hecha.**
+
+   Área táctil de 48 dp, foco visible, texto que se entienda fuera de contexto, y errores con icono
+   y texto además de color.
+
+</Steps>
+
+## Lo que no se decide en una pantalla
+
+Estas cosas se deciden en el sistema, y cambiarlas en una maqueta concreta rompe la consistencia:
+
+- **Colores nuevos.** Se usan los roles del tema. Si hace falta un matiz, se discute el rol.
+- **Un color para un estado.** Pasar el ratón, pulsar o enfocar ya tienen tratamiento automático.
+  No se pinta un hover a mano.
+- **Tamaños de texto sueltos.** Se usa la escala. Si un titular no encaja, el problema es el rol
+  elegido.
+- **Un radio distinto.** Las tarjetas van a 12 dp y los chips a 8 dp. El botón tiene su propio
+  comportamiento, explicado en [Forma](/foundations/forma/).
+
+## Si falta un componente
+
+El sistema permite crear una pieza propia, pero con criterio: solo si Material 3 no ofrece lo que
+hace falta **y** el caso se repite en varias pantallas o tiene un requisito de accesibilidad
+específico. Renombrar un componente de M3 sin cambiar nada no cuenta.
+
+El camino está en [Gobernanza](/gobernanza/estados-de-publicacion/): primero se construye en
+código, luego se publica en Figma, luego se documenta aquí.

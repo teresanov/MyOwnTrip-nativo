@@ -1,0 +1,223 @@
+---
+import { Aside, LinkCard, CardGrid } from "@astrojs/starlight/components";
+import { resolveHref } from "../../lib/links";
+import type { Ficha } from "../../lib/model";
+
+interface Props {
+  ficha: Ficha;
+}
+const { ficha } = Astro.props;
+---
+
+<h2 id="uso">Uso</h2>
+
+{ficha.purpose && <p class="lead" set:html={ficha.purpose} />}
+
+{
+  ficha.when.length > 0 && (
+    <>
+      <h3 id="cuando-usarlo">Cuándo usarlo</h3>
+      <ul>
+        {ficha.when.map((item) => (
+          <li set:html={item} />
+        ))}
+      </ul>
+    </>
+  )
+}
+
+{
+  ficha.whenNot.length > 0 && (
+    <>
+      <h3 id="cuando-no-usarlo">Cuándo no usarlo</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Si lo que necesitas es…</th>
+            <th>Usa esto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ficha.whenNot.map((row: any) => (
+            <tr>
+              <td set:html={row.case} />
+              <td>
+                {resolveHref(row.href) ? (
+                  <a href={resolveHref(row.href)} set:html={row.use} />
+                ) : (
+                  <span set:html={row.use} />
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+{
+  ficha.chooseVariant.length > 0 && (
+    <>
+      <h3 id="elegir-variante">Qué variante elegir</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Si…</th>
+            <th>Usa</th>
+            <th>Ten en cuenta</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ficha.chooseVariant.map((row: any) => (
+            <tr>
+              <td set:html={row.if} />
+              <td>
+                <code>{row.use}</code>
+              </td>
+              <td set:html={row.note ?? ""} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+{
+  ficha.variants.length > 0 && (
+    <>
+      <h3 id="variantes">Variantes</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Variante</th>
+            {ficha.variants.some((v: any) => v.composable) && <th>En código</th>}
+            <th>Cuándo se usa</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ficha.variants.map((v: any) => (
+            <tr>
+              <td>
+                <strong>{v.label}</strong>
+              </td>
+              {ficha.variants.some((x: any) => x.composable) && (
+                <td>{v.composable ? <code>{v.composable}</code> : "—"}</td>
+              )}
+              <td set:html={v.usage} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+{
+  (ficha.dos.length > 0 || ficha.donts.length > 0) && (
+    <>
+      <h3 id="do-dont">Do y Don't</h3>
+      {ficha.guidelineLinks.length > 0 && (
+        <p class="fuente">
+          Guía oficial de Material Design 3:{" "}
+          {ficha.guidelineLinks.map((l: any, i: number) => (
+            <>
+              {i > 0 && " · "}
+              <a href={l.url} target="_blank" rel="noopener">
+                {l.label}
+              </a>
+            </>
+          ))}
+          {ficha.guidelines?.consulted && <> (consultada el {ficha.guidelines.consulted})</>}.
+        </p>
+      )}
+      <div class="dos-donts">
+        {ficha.dos.length > 0 && (
+          <div>
+            <p class="dos-donts__title dos-donts__title--do">Do</p>
+            <ul class="lista-do">
+              {ficha.dos.map((d) => (
+                <li set:html={d} />
+              ))}
+            </ul>
+          </div>
+        )}
+        {ficha.donts.length > 0 && (
+          <div>
+            <p class="dos-donts__title dos-donts__title--dont">Don't</p>
+            <ul class="lista-dont">
+              {ficha.donts.map((d) => (
+                <li set:html={d} />
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
+{
+  (ficha.productRules.dos.length > 0 || ficha.productRules.donts.length > 0) && (
+    <>
+      <h3 id="reglas-myowntrip">Reglas de MyOwnTrip</h3>
+      <p class="fuente">
+        Acuerdos del equipo sobre cómo se usa este componente en el producto. Complementan la guía
+        de M3; no la sustituyen.
+      </p>
+      <div class="dos-donts">
+        {ficha.productRules.dos.length > 0 && (
+          <div>
+            <p class="dos-donts__title dos-donts__title--do">Do</p>
+            <ul class="lista-do">
+              {ficha.productRules.dos.map((d: string) => (
+                <li set:html={d} />
+              ))}
+            </ul>
+          </div>
+        )}
+        {ficha.productRules.donts.length > 0 && (
+          <div>
+            <p class="dos-donts__title dos-donts__title--dont">Don't</p>
+            <ul class="lista-dont">
+              {ficha.productRules.donts.map((d: string) => (
+                <li set:html={d} />
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
+{
+  ficha.productExamples.length > 0 && (
+    <>
+      <h3 id="en-el-producto">En el producto</h3>
+      <ul>
+        {ficha.productExamples.map((ex: any) => (
+          <li>
+            <strong>{ex.screen}</strong>
+            {ex.pattern && <> — <span set:html={ex.pattern} /></>}
+            {ex.fields && <> — <span set:html={Array.isArray(ex.fields) ? ex.fields.join(", ") : ex.fields} /></>}
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+
+{
+  ficha.related.length > 0 && (
+    <>
+      <h3 id="relacionado">Relacionado</h3>
+      <CardGrid>
+        {ficha.related.map((r: any) => (
+          <LinkCard title={r.label} href={resolveHref(r.href) ?? "#"} />
+        ))}
+      </CardGrid>
+    </>
+  )
+}

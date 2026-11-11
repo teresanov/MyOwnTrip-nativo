@@ -200,18 +200,18 @@ Estructura del design-file: **secuencial por módulo** (`figma-app-flows.mdc`). 
 |--------------|------|----------|------|
 | `01 · Home` | `trip_list` | TripListScreen | Shell |
 | `02 · Viajes` | `trip_create` | CreateTripScreen | Shell |
-| `03 · Detalle` | `trip_detail/{tripId}` | TripDetailScreen (tabs) | 1, 3, 4, 6 |
+| `03 · Detalle de viaje` | ficha del viaje (`trip_edit` en `02`) | No monta módulos | — |
 | `04 · Wallet` | `wallet_add/{tripId}` | WalletFormScreen | 1 |
 | `04 · Wallet` | `wallet_import` | WalletFormScreen / ImportActivity | 1 |
 | `04 · Wallet` | `wallet_detail/{entryId}` | WalletDetailScreen | 1 |
-| `05 · Día` | `day_hub/{tripId}/{dayId}` | DayHubScreen (Plan \| Diario spread) | 3, 5 |
-| `05 · Día` | `journal_sketch/{dayId}` | SketchCanvasScreen | 5 |
-| `05 · Día` | `journal_add/{dayId}` | JournalAddScreen (edición) | 5 |
-| `06 · Gastos` | `expense_add/{tripId}?dayId=` | ExpenseFormScreen | 6 |
-| `07 · Restaurantes` | `restaurant_add/{tripId}` | RestaurantFormScreen | 4 |
-| `07 · Restaurantes` | `restaurant_detail/{id}` | RestaurantDetailScreen | 4 |
+| `05 · Plan` | tab Plan + `day_hub` Plan | TripPlanTab · DayHubScreen | 3 |
+| `06 · Diario` | tab Diario + `journal_*` | TripJournalTab · DayHub Diario · sketch/add | 5 |
+| `07 · Gastos` | `expense_add/{tripId}?dayId=` | ExpenseFormScreen + listado tab | 6 |
+| `08 · Sitios` | `restaurant_add/{tripId}` | RestaurantFormScreen | 4 |
+| `08 · Sitios` | `restaurant_detail/{id}` | RestaurantDetailScreen | 4 |
+| `09 · Transversal` | share target, offline | PlaceImportActivity, etc. | — |
 
-Decisiones de diseño: **Day hub** con sub-tabs Plan \| Diario; **Restaurantes** en tab del viaje.
+En Compose el hub `TripDetailScreen` sigue teniendo 5 tabs; en el design-file cada módulo tiene página propia. **Sitios** sustituye Restaurantes (cualquier lugar). Day hub Plan \| Diario se documenta en `05` / `06`.
 
 ### Plan ↔ Wallet · drift de colocación (jun 2026)
 

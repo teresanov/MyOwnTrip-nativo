@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { Badge } from "@astrojs/starlight/components";
+import { STATUS_LABELS, normalize } from "../../lib/model";
+import { ordenDe } from "../../lib/manifest";
+// @ts-ignore -- vocabulario compartido con astro.config.mjs
+import { agrupaPorCategoria } from "../../lib/vocabulario.mjs";
+
+/** Indice de componentes, agrupado por categoria y con el estado a la vista. */
+const entries = await getCollection("componentes");
+const fichas = entries.map((e) => normalize(e.data));
+
+const grupos = agrupaPorCategoria(fichas, (f: any) => ordenDe(f.id));
+
+const headings = grupos.map((g: any) => ({
+  depth: 2,
+  slug: g.slug,
+  text: g.label,
+}));
+
+const listos = fichas.filter((f) => f.status === "ready").length;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Componentes",
+    description:
+      "Índice de componentes del design system de MyOwnTrip, con su estado de publicación.",
+  }}
+  headings={headings}
+>
+  <p>
+    {fichas.length} componentes documentados, de los cuales {listos} están listos para usar. Cada
+    ficha empieza por cuándo usar el componente y cuándo no.
+  </p>
+
+  {
+    grupos.map((grupo: any) => (
+      <>
+        <h2 id={grupo.slug}>{grupo.label}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Para qué sirve</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {grupo.items.map((f: any) => (
+              <tr>
+                <td>
+                  <a href={`${base}/componentes/${f.id}/`}>
+                    <strong>{f.name}</strong>
+                  </a>
+                </td>
+                <td set:html={f.summary || f.purpose} />
+                <td>
+                  <Badge
+                    text={STATUS_LABELS[f.status] ?? f.status}
+                    variant={
+                      f.status === "ready"
+                        ? "success"
+                        : f.status === "deprecated"
+                          ? "danger"
+                          : "caution"
+                    }
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    ))
+  }
+</StarlightPage>

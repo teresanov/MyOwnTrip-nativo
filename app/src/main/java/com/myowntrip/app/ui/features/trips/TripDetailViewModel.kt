@@ -10,6 +10,7 @@ import com.myowntrip.app.data.repository.JournalRepository
 import com.myowntrip.app.data.repository.RestaurantRepository
 import com.myowntrip.app.data.repository.TripRepository
 import com.myowntrip.app.data.repository.WalletRepository
+import com.myowntrip.app.data.share.PlaceCoordinateResolver
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.model.Expense
 import com.myowntrip.app.domain.model.ItineraryBlock
@@ -23,6 +24,7 @@ import com.myowntrip.app.ui.features.journal.spread.CaptureTarget
 import com.myowntrip.app.ui.features.wallet.WalletDocumentFilterPhase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import kotlin.math.abs
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -70,8 +72,9 @@ class TripDetailViewModel @Inject constructor(
   private val journalRepository: JournalRepository,
   private val journalPageRepository: JournalPageRepository,
   expenseRepository: ExpenseRepository,
-  restaurantRepository: RestaurantRepository,
+  private val restaurantRepository: RestaurantRepository,
   private val itineraryRepository: ItineraryRepository,
+  private val placeCoordinateResolver: PlaceCoordinateResolver,
 ) : ViewModel() {
   private val tripId: String = checkNotNull(savedStateHandle["tripId"])
   val initialTab: TripDetailTab = TripDetailTab.fromRoute(savedStateHandle["tab"])
@@ -126,6 +129,29 @@ class TripDetailViewModel @Inject constructor(
           orphans.groupBy { it.dayId }.forEach { (dId, group) ->
             val page = journalPageRepository.ensureDefaultPage(dId, tripId)
             group.forEach { journalRepository.updateNote(it.copy(pageId = page.id)) }
+          }
+        }
+      }
+    }
+    // Sitios importados desde Maps: el pin sale del enlace, no del destino del viaje.
+    // Reintenta una vez por sesión (también corrige un geocode previo al destino, p. ej. Londres).
+    viewModelScope.launch {
+      val attempted = mutableSetOf<String>()
+      restaurants.collect { list ->
+        list.filter { place ->
+          !place.googleMapsUri.isNullOrBlank() && place.id !in attempted
+        }.forEach { place ->
+          attempted += place.id
+          val uri = place.googleMapsUri ?: return@forEach
+          val coords = placeCoordinateResolver.resolveFromMapsLink(uri) ?: return@forEach
+          val lat = place.latitude
+          val lng = place.longitude
+          val samePin = lat != null &&
+            lng != null &&
+            abs(lat - coords.first) < 1e-5 &&
+            abs(lng - coords.second) < 1e-5
+          if (!samePin) {
+            restaurantRepository.updateLocation(place.id, coords.first, coords.second)
           }
         }
       }

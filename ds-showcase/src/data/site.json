@@ -1,0 +1,33 @@
+{
+  "nav": [
+    { "id": "overview", "href": "index.html", "label": "Inicio" },
+    { "id": "empezar", "href": "empezar.html", "label": "Empezar aquí" },
+    {
+      "id": "foundations",
+      "label": "Foundations",
+      "children": [
+        { "id": "color", "href": "color.html", "label": "Color" },
+        { "id": "typography", "href": "typography.html", "label": "Tipografía" },
+        { "id": "shape", "href": "shape.html", "label": "Forma" },
+        { "id": "spacing", "href": "spacing.html", "label": "Espaciado" },
+        { "id": "iconography", "href": "iconography.html", "label": "Iconografía" },
+        { "id": "motion", "href": "motion.html", "label": "Movimiento" }
+      ]
+    },
+    { "id": "components", "href": "components.html", "label": "Componentes", "dynamic": "components" },
+    { "id": "patterns", "href": "patterns.html", "label": "Patrones" },
+    { "id": "governance", "href": "gobernanza.html", "label": "Gobernanza" }
+  ],
+  "categories": [
+    { "id": "acciones", "label": "Acciones" },
+    { "id": "formularios", "label": "Formularios y entradas" },
+    { "id": "mensajeria", "label": "Mensajería" },
+    { "id": "contenido", "label": "Contenido y datos" }
+  ],
+  "statusLabels": {
+    "draft": "Borrador — existe en Figma o en código, sin ficha",
+    "in-review": "En revisión — ficha escrita, pendiente de validar",
+    "ready": "Listo — Figma publicado, ficha completa y Compose alineado",
+    "deprecated": "Obsoleto — no usar en pantallas nuevas"
+  }
+}

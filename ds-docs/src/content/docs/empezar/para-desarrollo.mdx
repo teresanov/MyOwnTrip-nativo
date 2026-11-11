@@ -1,0 +1,84 @@
+---
+title: Para desarrollo
+description: Qué consumir del tema, qué está prohibido y cuándo se permite un wrapper propio en el design system de MyOwnTrip.
+sidebar:
+  order: 2
+---
+
+import { Aside, FileTree } from "@astrojs/starlight/components";
+
+## Qué se consume
+
+Todo el estilo sale del tema. En una pantalla no se escriben valores literales.
+
+| Para | Se usa |
+|---|---|
+| Color | `MaterialTheme.colorScheme.<rol>` |
+| Tipografía | `MaterialTheme.typography.<rol>` |
+| Forma de superficies | `MaterialTheme.shapes.*` |
+| Forma de botones | `rememberMOTButtonShape()`, vía los wrappers `MOT*` |
+| Espaciado de pantalla | `MOTSpacing.*` |
+| Padding interno de un componente | El valor por defecto del componente |
+
+## Lo que está prohibido
+
+<Aside type="danger" title="Reglas no negociables">
+Estas cuatro reglas bloquean la revisión de un cambio de interfaz:
+
+1. **Nada de tokens de color por estado.** No existe `primary/hover` ni `button/pressed`. Las capas
+   de estado se aplican en tiempo de ejecución.
+2. **Nada de colores literales.** Ni `Color(0xFF…)` en una pantalla, ni acceder a `AppColors`
+   directamente desde la interfaz.
+3. **Nada de capas semánticas propias.** `SemanticColors`, `LayoutTokens` y los wrappers del
+   repositorio antiguo no se portan.
+4. **Un error se comunica con icono y texto**, nunca solo con color.
+</Aside>
+
+## Dónde vive cada cosa
+
+<FileTree>
+- designsystem/
+  - src/main/java/com/myowntrip/app/ui/
+    - theme/
+      - Color.kt        valores de los roles
+      - Theme.kt        colorScheme
+      - Type.kt         Fraunces + Inter
+      - Shapes.kt       escala y morph del botón
+      - MOTSpacing.kt   espaciado de pantalla
+      - MOTButtons.kt   wrappers MOT\*
+    - brand/            logotipo, monograma, cinta
+- app/
+  - src/main/java/com/myowntrip/app/ui/features/  pantallas
+</FileTree>
+
+## Dónde se comprueba el comportamiento
+
+Esta web explica cuándo usar un componente y por qué existe. **Cómo se comporta de verdad se
+comprueba en Android Studio**, con las previews `@Preview` del módulo `designsystem` y
+`MyOwnTripPreviewTheme`, que fija el tema y desactiva el movimiento para que la preview sea estable.
+
+El código es la fuente de verdad de las dos cosas. Si esta página y el código no coinciden, manda
+el código.
+
+## Cuándo se permite un wrapper propio
+
+Un componente `MOT*` o `MyOwnTrip*` solo se justifica si Material 3 no cubre el caso **y** se
+cumple alguna de estas condiciones:
+
+- El mismo comportamiento de producto se repite en tres pantallas o más.
+- La composición no existe en M3.
+- Hay un requisito de accesibilidad o de negocio específico.
+
+Y además, el wrapper debe delegar en el componente de M3 subyacente, exponer parámetros alineados
+con M3 y **no** añadir ejes propios de variante.
+
+<Aside type="note" title="Un ejemplo de wrapper bien justificado">
+  Los `MOTButton*` existen por una sola razón: aplicar el morph de forma y la compresión al pulsar.
+  No añaden variantes propias ni esconden el tema. Ver la [ficha de Button](/componentes/button/).
+</Aside>
+
+## Antes de cerrar un cambio de interfaz
+
+El proyecto tiene una puerta de calidad bloqueante que comprueba, entre otras cosas, que no haya
+tokens por estado, que el consumo sea semántico y que el componente tenga ficha aquí. El detalle
+está en `docs/design-system/governance.md`.

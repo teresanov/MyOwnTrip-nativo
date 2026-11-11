@@ -1,35 +1,43 @@
+import site from "../data/site.json";
 import componentsManifest from "../data/components.json";
 import { assetUrl } from "./paths.js";
 
-const PAGES = [
-  { id: "overview", href: "index.html", label: "Overview" },
-  { id: "color", href: "color.html", label: "Color", group: "foundations" },
-  { id: "typography", href: "typography.html", label: "Typography", group: "foundations" },
-  { id: "components", href: "components.html", label: "Components" },
-];
-
+/**
+ * Rail lateral. La arquitectura vive en src/data/site.json, no aquí:
+ * añadir una página es añadir una entrada al JSON y su entry en vite.config.js.
+ */
 export function mountNav(currentPageId, { componentId = null } = {}) {
   const root = document.getElementById("site-nav");
   if (!root) return;
 
-  const overview = PAGES.find((p) => p.id === "overview");
-  const foundations = PAGES.filter((p) => p.group === "foundations");
-  const components = PAGES.find((p) => p.id === "components");
+  const inComponents = currentPageId === "components" || Boolean(componentId);
 
-  const foundationsLinks = foundations
-    .map((p) => linkItem(p, currentPageId))
-    .join("");
+  const items = site.nav
+    .map((entry) => {
+      if (entry.children) {
+        const open = entry.children.some((c) => c.id === currentPageId);
+        return `
+          <li class="rail__group">
+            <span class="rail__group-label">${entry.label}</span>
+            <ul class="rail__sublist">
+              ${entry.children.map((c) => linkItem(c, currentPageId)).join("")}
+            </ul>
+          </li>`;
+      }
 
-  const componentLinks = componentsManifest.components
-    .map((c) => {
-      const active = componentId === c.id;
-      const cls = active ? " is-active" : "";
-      const current = active ? ' aria-current="page"' : "";
-      return `<li><a href="${assetUrl(c.href)}" class="${cls.trim()}"${current}>${c.name}</a></li>`;
+      if (entry.dynamic === "components") {
+        return `
+          <li class="rail__group">
+            <a href="${assetUrl(entry.href)}" class="rail__group-link${inComponents ? " is-active" : ""}"${
+              currentPageId === "components" ? ' aria-current="page"' : ""
+            }>${entry.label}</a>
+            ${inComponents ? `<ul class="rail__sublist">${componentLinks(componentId)}</ul>` : ""}
+          </li>`;
+      }
+
+      return linkItem(entry, currentPageId);
     })
     .join("");
-
-  const onComponentsSection = currentPageId === "components" || componentId;
 
   root.innerHTML = `
     <div class="rail__brand">
@@ -38,27 +46,28 @@ export function mountNav(currentPageId, { componentId = null } = {}) {
         <span class="rail__brand-sub">Design System</span>
       </a>
     </div>
-    <ul class="rail__list">
-      ${linkItem(overview, currentPageId)}
-      <li class="rail__group">
-        <span class="rail__group-label">Foundations</span>
-        <ul class="rail__sublist">${foundationsLinks}</ul>
-      </li>
-      <li class="rail__group">
-        <a href="${assetUrl(components.href)}" class="rail__group-link${onComponentsSection ? " is-active" : ""}"${currentPageId === "components" && !componentId ? ' aria-current="page"' : ""}>Components</a>
-        ${onComponentsSection ? `<ul class="rail__sublist">${componentLinks}</ul>` : ""}
-      </li>
-    </ul>
+    <ul class="rail__list">${items}</ul>
     <div class="rail__footer">
       <button type="button" class="btn btn--outlined" id="theme-toggle">Cambiar tema</button>
-      <p class="rail__meta">Showcase estático · M3 nativo</p>
+      <p class="rail__meta">M3 nativo · Compose</p>
     </div>
   `;
 }
 
+function componentLinks(activeId) {
+  return componentsManifest.components
+    .map((c) => {
+      const active = activeId === c.id;
+      return `<li><a href="${assetUrl(c.href)}" class="${active ? "is-active" : ""}"${
+        active ? ' aria-current="page"' : ""
+      }>${c.name}</a></li>`;
+    })
+    .join("");
+}
+
 function linkItem(page, currentPageId) {
   const active = page.id === currentPageId;
-  const cls = active ? " is-active" : "";
-  const current = active ? ' aria-current="page"' : "";
-  return `<li><a href="${assetUrl(page.href)}" class="${cls.trim()}"${current}>${page.label}</a></li>`;
+  return `<li><a href="${assetUrl(page.href)}" class="${active ? "is-active" : ""}"${
+    active ? ' aria-current="page"' : ""
+  }>${page.label}</a></li>`;
 }

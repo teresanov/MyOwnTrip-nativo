@@ -1,9 +1,12 @@
 {
   "name": "myowntrip-ds-showcase",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
+    "context": "node scripts/generate-agent-context.mjs",
+    "prebuild": "npm run context",
+    "predev": "npm run context",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"

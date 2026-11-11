@@ -1,7 +1,8 @@
 package com.myowntrip.app.ui.features.places
 
+import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -26,14 +27,21 @@ fun PlacesMiniMap(
   interactive: Boolean = true,
 ) {
   val context = LocalContext.current
-  LaunchedEffect(Unit) {
+  DisposableEffect(Unit) {
+    val prefs = context.getSharedPreferences("osmdroid", Context.MODE_PRIVATE)
+    Configuration.getInstance().load(context, prefs)
     Configuration.getInstance().userAgentValue = context.packageName
+    onDispose { }
   }
 
   AndroidView(
     modifier = modifier,
     factory = { ctx ->
+      val prefs = ctx.getSharedPreferences("osmdroid", Context.MODE_PRIVATE)
+      Configuration.getInstance().load(ctx, prefs)
+      Configuration.getInstance().userAgentValue = ctx.packageName
       MapView(ctx).apply {
+        setDestroyMode(false)
         setTileSource(TileSourceFactory.MAPNIK)
         setMultiTouchControls(interactive)
         isClickable = interactive
@@ -45,7 +53,7 @@ fun PlacesMiniMap(
       }
     },
     update = { map ->
-      map.overlays.clear()
+      map.overlays.removeAll { it is Marker }
       val points = places.mapNotNull { place ->
         val lat = place.latitude ?: return@mapNotNull null
         val lng = place.longitude ?: return@mapNotNull null
@@ -64,9 +72,11 @@ fun PlacesMiniMap(
         } else if (points.isNotEmpty()) {
           map.zoomToBoundingBox(BoundingBox.fromGeoPoints(points), false, 96)
         }
+        map.invalidate()
       }
-      map.invalidate()
     },
-    onRelease = { map -> map.onDetach() },
+    onRelease = { map ->
+      map.onPause()
+    },
   )
 }

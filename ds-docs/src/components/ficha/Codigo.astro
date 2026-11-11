@@ -1,0 +1,151 @@
+---
+import { Code, Tabs, TabItem, Aside } from "@astrojs/starlight/components";
+import { repoUrl } from "../../lib/links";
+import type { Ficha } from "../../lib/model";
+
+interface Props {
+  ficha: Ficha;
+}
+const { ficha } = Astro.props;
+const impl = ficha.implementation ?? {};
+const source = repoUrl(impl.sourceFile);
+---
+
+<h2 id="codigo">Código</h2>
+
+<Aside type="note" title="El código es la fuente de verdad">
+  Esta sección describe lo que hay implementado. Si el código y esta página no coinciden, manda el
+  código: avisa para corregir la ficha.
+</Aside>
+
+{
+  (impl.composable || impl.module) && (
+    <table>
+      <tbody>
+        {impl.composable && (
+          <tr>
+            <th scope="row">Composable</th>
+            <td>
+              <code>{impl.composable}</code>
+            </td>
+          </tr>
+        )}
+        {impl.module && (
+          <tr>
+            <th scope="row">Módulo</th>
+            <td>
+              <code>{impl.module}</code>
+            </td>
+          </tr>
+        )}
+        {impl.import && (
+          <tr>
+            <th scope="row">Import</th>
+            <td>
+              <code>{impl.import}</code>
+            </td>
+          </tr>
+        )}
+        {impl.sourceFile && (
+          <tr>
+            <th scope="row">Archivo</th>
+            <td>
+              {source ? (
+                <a href={source} target="_blank" rel="noopener">
+                  <code>{impl.sourceFile}</code>
+                </a>
+              ) : (
+                <code>{impl.sourceFile}</code>
+              )}
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  )
+}
+
+{impl.note && <p set:html={impl.note} />}
+
+{
+  ficha.snippet && (
+    <>
+      <h3 id="ejemplo">Ejemplo</h3>
+      {ficha.variantsSnippet ? (
+        <Tabs>
+          <TabItem label="Principal">
+            <Code code={ficha.snippet} lang="kotlin" />
+          </TabItem>
+          <TabItem label="Otras variantes">
+            <Code code={ficha.variantsSnippet} lang="kotlin" />
+          </TabItem>
+        </Tabs>
+      ) : (
+        <Code code={ficha.snippet} lang="kotlin" />
+      )}
+    </>
+  )
+}
+
+{
+  ficha.params.length > 0 && (
+    <>
+      <h3 id="parametros">Parámetros</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Parámetro</th>
+            <th>Tipo</th>
+            <th>Por defecto</th>
+            <th>Nota</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ficha.params.map((p: any) => (
+            <tr>
+              <td>
+                <code>{p.name}</code>
+              </td>
+              <td>
+                <code>{p.type}</code>
+              </td>
+              <td>{p.default && p.default !== "—" ? <code>{p.default}</code> : "—"}</td>
+              <td set:html={p.note ?? ""} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+{
+  ficha.tokenGroups.length > 0 && (
+    <>
+      <h3 id="tokens">Tokens que consume</h3>
+      {ficha.tokenGroups.map((group) => (
+        <>
+          <h4>{group.label}</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Dónde se aplica</th>
+              </tr>
+            </thead>
+            <tbody>
+              {group.items.map((item) => (
+                <tr>
+                  <td>
+                    <code>{item.token}</code>
+                  </td>
+                  <td set:html={item.use || "—"} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ))}
+    </>
+  )
+}

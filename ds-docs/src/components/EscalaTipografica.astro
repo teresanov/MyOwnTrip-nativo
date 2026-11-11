@@ -1,0 +1,73 @@
+---
+import { escalaTipografica } from "../lib/tipografia";
+
+/**
+ * Pinta la escala tipografica: una muestra a tamaño real por rol, con sus
+ * valores debajo. Los numeros salen de Type.kt, no estan escritos aqui.
+ */
+
+interface Props {
+  /**
+   * Grupo a pintar: display, headline, title, body o label. El encabezado lo
+   * pone la pagina, no este componente, para que salga en el indice lateral.
+   */
+  grupo: string;
+}
+const { grupo: clave } = Astro.props;
+
+const { grupos, total, origen } = escalaTipografica();
+const grupo = grupos.find((g) => g.clave === clave);
+
+/** Texto de muestra por grupo: algo del producto, no «lorem ipsum». */
+const MUESTRA: Record<string, string> = {
+  display: "Lisboa",
+  headline: "Tu próximo viaje",
+  title: "Gastos del viaje",
+  body: "Guarda los billetes, las reservas y los gastos de cada viaje en un solo sitio.",
+  label: "Guardar gasto",
+};
+
+/** Coma decimal, que es como se escribe en español. */
+function num(n: number): string {
+  return String(n).replace(".", ",");
+}
+---
+
+{
+  total === 0 ? (
+    <p>
+      <strong>Escala no disponible.</strong> No se pudo leer <code>{origen}</code>. Los valores no
+      se muestran en lugar de arriesgarse a enseñar unos incorrectos.
+    </p>
+  ) : !grupo ? (
+    <p>
+      No hay roles <code>{clave}</code> en <code>Type.kt</code>.
+    </p>
+  ) : (
+    <>
+      <p>{grupo.descripcion}</p>
+      <div class="escala">
+        {grupo.roles.map((r) => (
+          <div class="escala__fila">
+            <p
+              class={`escala__muestra escala__muestra--${r.familia.toLowerCase()}`}
+              style={`font-size:${r.tamano}px;line-height:${r.interlineado}px;font-weight:${r.peso};letter-spacing:${r.espaciado}px`}
+            >
+              {MUESTRA[grupo.clave]}
+            </p>
+            <p class="escala__meta">
+              <code>{r.rol}</code>
+              <span>
+                {r.familia} {r.pesoNombre}
+              </span>
+              <span>
+                {num(r.tamano)} / {num(r.interlineado)} sp
+              </span>
+              <span>{r.espaciado === 0 ? "sin tracking" : `tracking ${num(r.espaciado)}`}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </>
+  )
+}

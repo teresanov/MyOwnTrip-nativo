@@ -25,6 +25,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 | Ámbito | Tarea |
 |--------|--------|
 | Home swipe revelado | Cap 2 Home sigue en **Horizontal card** (`TripListCard`); no hay cap List Item-Swipe Revealed en «Más viajes». Compose `SwipeableTripListRow` envuelve esa card. |
+| Sitios · pin Maps | Share desde Google Maps guarda el sitio, pero **no resuelve bien lat/lng**. Figma: **4d** = fallo (sin coordenadas). **4e** = éxito con pin / «Ubicación detectada»: no montar hasta arreglar el código. |
 
 ---
 
@@ -32,6 +33,18 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-11 | IA Figma | Páginas: `05 · Plan` · `06 · Diario` · `07 · Gastos` · `08 · Sitios` · `09 · Transversal`. Mapa `00` actualizado. | `00` `261:920` | Hecho |
+| 2026-11-11 | IA Figma | `03` solo ficha de viaje. Plan/Diario → `05`; Gastos → `06`; Sitios → `07`; Wallet ya en `04`. | `583:16744` · `583:16747` · `261:1087` · `261:1247` | Hecho |
+| 2026-11-11 | R6.3 · Sitios | Caps **4f/4g/4h** detalle al pulsar card (`RestaurantDetailScreen` + diálogo borrar). | `583:15790` · `583:15942` · `583:16095` | Hecho |
+| 2026-11-11 | R6.3 · Sitios | Cap **4d**: quitar `Viajes` duplicado; queda el caso sin pin. **4e** éxito+mapa pendiente. | `581:15447` | Hecho |
+| 2026-11-11 | R6.3 · Sitios | Cap **4c**: icono del outline = location (no import); width **Fill**. Corrección en Figma. | `581:15264` | Hecho |
+| 2026-11-11 | R6.3 · Sitios | Caps **4c** Nuevo sitio y **4d** Guardar sitio (sin pin). Pin Maps a pendientes. | `581:15264` · `581:15447` | Hecho |
+| 2026-11-11 | R6.3 · Plan | Parte 1: caps 2 / 2b / 2c / 2d de `TripPlanTab` en `03`. | `261:941` · `573:13289` · `573:13390` · `573:13443` | En curso |
+| 2026-11-11 | R6.3 · Diario | Parte 2: caps 5 / 5b / 5c (`TripJournalTab` + FAB menú). | `574:13966` · `574:14129` · `574:14292` | En curso |
+| 2026-11-11 | R6.3 · Gastos | Parte 3: caps 3 / 3b de `ExpensesTab`. | `261:944` · `576:14844` | En curso |
+| 2026-11-11 | R6.3 · Sitios | Parte 4: caps 4 / 4b de `RestaurantsTab`. | `261:947` · `576:15050` | En curso |
+| 2026-11-11 | R6.3 · Sitios | Cap 4b: quitar mini mapa; listado = cards. | `576:15050` | Hecho |
+| 2026-11-11 | R6.3 · Sitios | Producto: tab Sitios = cards; Maps en `RestaurantFormScreen` (FAB). | Compose `PlacesMiniMap` en `RestaurantsTab` | Disparidad código |
 | 2026-11-11 | Snackbar | Copy de **dos líneas** → variante `# of lines=Two lines`. Cap 1i corregido en Figma; no usar One line. | `534:8881` · bindings · showcase | Hecho |
 | 2026-11-11 | R6.2 | Wallet cap 1g: `List Item - Swipe` Revealed, copy IB 3254, leading `flight`+círculo, 2 acciones `archive`/`delete` (SVG locales `_library imports`). Home: sin cap swipe revelado (Horizontal card). | `534:12667` · `534:13012` | Hecho |
 | 2026-11-11 | R6.3 | Página `03 · Detalle de viaje`: 4 phones con set **Tabs** Scrollable Primary (Wallet/Plan/Diario/Gastos/Sitios). Cap 1 clona Wallet cap 1. Cap 2–4 chrome + tab selected; cuerpo Plan/Gastos/Sitios **gap** (no Day Hub). Day hub Plan\|Diario ya en `05` `477:2043`. | `261:937` | Hecho (cuerpo 2–4 pendiente) |

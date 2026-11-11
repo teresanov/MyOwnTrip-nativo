@@ -41,12 +41,13 @@ Aplica al montar o editar pantallas en **[MyOwnTrip_design-file](https://www.fig
 | `00 · Mapa de la app` | Sitemap / índice de flujos | — · [FigJam MyOwnTrip_structure](https://www.figma.com/board/YxJIkp5I524S9wLxGxulK1/MyOwnTrip_structure?node-id=0-1) (SoT mapa; design-file puede mantener índice ligero) |
 | `01 · Home` | Lista de viajes, búsqueda, filtros | `trip_list` |
 | `02 · Viajes — crear y editar` | Alta y edición de viaje | `trip_create`, `trip_edit/{tripId}` |
-| `03 · Detalle de viaje` | Hub del viaje (tabs) | `trip_detail/{tripId}` |
-| `04 · Wallet` | Import, revisión, detalle, borrar | `wallet_add`, `wallet_detail`, `wallet_import` |
-| `05 · Día & itinerario` | Day hub Plan \| Diario, reorder, notas | `day_hub`, `journal_add` |
-| `06 · Gastos` | Alta rápida, recibo, listado | `expense_add` |
-| `07 · Restaurantes` | Lista, alta, detalle, estados | `restaurant_add`, `restaurant_detail` |
-| `08 · Transversal` | Offline/sync, share target, permisos, biometría | ImportActivity, patrones EC-* |
+| `03 · Detalle de viaje` | Solo el **viaje** (ficha). No módulos. Editar: `02` | `trip_edit/{tripId}` |
+| `04 · Wallet` | Maleta: entrada, import, alta, detalle, borrar | `wallet_add`, `wallet_detail`, `wallet_import` |
+| `05 · Plan` | Tab Plan del viaje + day hub Plan | `TripPlanTab`, `day_hub` |
+| `06 · Diario` | Tab Diario, álbum, captura | `TripJournalTab`, `journal_add` |
+| `07 · Gastos` | Listado del tab + alta rápida, recibo | `expense_add` |
+| `08 · Sitios` | Cualquier lugar (antes Restaurantes). Lista, alta, share, detalle | `restaurant_add`, `restaurant_detail`, PlaceImport |
+| `09 · Transversal` | Offline/sync, share target, permisos, biometría | ImportActivity, patrones EC-* |
 
 **JTBD** (`docs/product/jtbd-flows.md`) sigue siendo la lente de producto; anotar en captions cuando aplique (`JTBD: 1`, `EC-PARSE-FAIL`, etc.).
 

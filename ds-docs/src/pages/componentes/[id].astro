@@ -1,0 +1,121 @@
+---
+import { getCollection } from "astro:content";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { Aside, Badge } from "@astrojs/starlight/components";
+import { normalize, STATUS_LABELS } from "../../lib/model";
+import Uso from "../../components/ficha/Uso.astro";
+import Anatomia from "../../components/ficha/Anatomia.astro";
+import Accesibilidad from "../../components/ficha/Accesibilidad.astro";
+import Codigo from "../../components/ficha/Codigo.astro";
+import Meta from "../../components/ficha/Meta.astro";
+
+/**
+ * Una pagina por cada JSON de ficha. Añadir un componente a la web es
+ * añadir su JSON en ds-showcase/src/data/components/: la pagina y la
+ * entrada del menu aparecen solas.
+ */
+export async function getStaticPaths() {
+  const componentes = await getCollection("componentes");
+  return componentes.map((entry) => ({
+    params: { id: entry.data.id },
+    props: { data: entry.data },
+  }));
+}
+
+const { data } = Astro.props;
+const ficha = normalize(data);
+
+const tieneAnatomia = ficha.anatomy.length > 0 || Boolean(ficha.behavior);
+const tieneCodigo =
+  Boolean(ficha.snippet) ||
+  ficha.params.length > 0 ||
+  ficha.tokenGroups.length > 0 ||
+  Boolean(ficha.implementation?.composable);
+
+/**
+ * La tabla de contenidos de la derecha. En una pagina generada hay que
+ * declararla: Astro solo extrae encabezados del Markdown, no de los componentes.
+ */
+const headings = [
+  { depth: 2, slug: "uso", text: "Uso" },
+  ficha.when.length > 0 && { depth: 3, slug: "cuando-usarlo", text: "Cuándo usarlo" },
+  ficha.whenNot.length > 0 && { depth: 3, slug: "cuando-no-usarlo", text: "Cuándo no usarlo" },
+  ficha.chooseVariant.length > 0 && {
+    depth: 3,
+    slug: "elegir-variante",
+    text: "Qué variante elegir",
+  },
+  ficha.variants.length > 0 && { depth: 3, slug: "variantes", text: "Variantes" },
+  (ficha.dos.length > 0 || ficha.donts.length > 0) && {
+    depth: 3,
+    slug: "do-dont",
+    text: "Do y Don't",
+  },
+  (ficha.productRules.dos.length > 0 || ficha.productRules.donts.length > 0) && {
+    depth: 3,
+    slug: "reglas-myowntrip",
+    text: "Reglas de MyOwnTrip",
+  },
+  ficha.productExamples.length > 0 && {
+    depth: 3,
+    slug: "en-el-producto",
+    text: "En el producto",
+  },
+  ficha.related.length > 0 && { depth: 3, slug: "relacionado", text: "Relacionado" },
+
+  tieneAnatomia && { depth: 2, slug: "anatomia", text: "Anatomía y estados" },
+  tieneAnatomia && ficha.anatomy.length > 0 && { depth: 3, slug: "partes", text: "Partes" },
+  ficha.behavior && { depth: 3, slug: "comportamiento", text: "Comportamiento" },
+  (ficha.behavior?.exceptions?.length ?? 0) > 0 && {
+    depth: 3,
+    slug: "excepciones",
+    text: "Excepciones",
+  },
+
+  { depth: 2, slug: "accesibilidad", text: "Accesibilidad" },
+
+  tieneCodigo && { depth: 2, slug: "codigo", text: "Código" },
+  tieneCodigo && Boolean(ficha.snippet) && { depth: 3, slug: "ejemplo", text: "Ejemplo" },
+  tieneCodigo && ficha.params.length > 0 && { depth: 3, slug: "parametros", text: "Parámetros" },
+  tieneCodigo &&
+    ficha.tokenGroups.length > 0 && { depth: 3, slug: "tokens", text: "Tokens que consume" },
+
+  { depth: 2, slug: "meta", text: "Procedencia" },
+  ficha.changelog.length > 0 && { depth: 3, slug: "cambios", text: "Cambios" },
+].filter(Boolean) as { depth: number; slug: string; text: string }[];
+
+const descripcion = ficha.summary || ficha.purpose.replace(/<[^>]+>/g, "").slice(0, 160);
+---
+
+<StarlightPage
+  frontmatter={{
+    title: ficha.name,
+    description: descripcion,
+  }}
+  headings={headings}
+>
+  <p class="ficha-estado">
+    <Badge
+      text={STATUS_LABELS[ficha.status] ?? ficha.status}
+      variant={ficha.status === "ready" ? "success" : ficha.status === "deprecated" ? "danger" : "caution"}
+    />
+    <Badge text={ficha.priority} variant="note" />
+  </p>
+
+  {ficha.summary && <p class="ficha-resumen">{ficha.summary}</p>}
+
+  {
+    ficha.isLegacy && (
+      <Aside type="caution" title="Ficha sin migrar">
+        Esta ficha todavía usa el formato antiguo: le faltan los bloques de cuándo usarlo, qué
+        variante elegir y la tabla de parámetros. Lo que se muestra es correcto, pero incompleto.
+      </Aside>
+    )
+  }
+
+  <Uso ficha={ficha} />
+  {tieneAnatomia && <Anatomia ficha={ficha} />}
+  <Accesibilidad ficha={ficha} />
+  {tieneCodigo && <Codigo ficha={ficha} />}
+  <Meta ficha={ficha} />
+</StarlightPage>

@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.myowntrip.app.data.repository.RestaurantRepository
 import com.myowntrip.app.data.repository.TripRepository
 import com.myowntrip.app.data.share.LastActiveTripStore
-import com.myowntrip.app.data.share.PlaceGeocoder
-import com.myowntrip.app.data.share.PlaceLinkResolver
+import com.myowntrip.app.data.share.PlaceCoordinateResolver
 import com.myowntrip.app.data.share.PlaceShareParser
 import com.myowntrip.app.domain.model.PlaceCategory
 import com.myowntrip.app.domain.model.Trip
@@ -37,9 +36,8 @@ data class PlaceImportUiState(
 class PlaceImportViewModel @Inject constructor(
   private val restaurantRepository: RestaurantRepository,
   private val tripRepository: TripRepository,
-  private val linkResolver: PlaceLinkResolver,
+  private val coordinateResolver: PlaceCoordinateResolver,
   private val lastActiveTripStore: LastActiveTripStore,
-  private val placeGeocoder: PlaceGeocoder,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(PlaceImportUiState())
@@ -79,14 +77,13 @@ class PlaceImportViewModel @Inject constructor(
 
       if (inlineLatLng != null) return@launch
 
-      // 1) Intenta coordenadas literales en la URL resuelta (funciona con enlaces "clásicos").
-      val url = parsed.url
-      var latlng = url?.let { PlaceShareParser.extractLatLng(linkResolver.resolveChain(it)) }
-      // 2) Si Google no las da (habitual al compartir desde la app móvil: la URL final solo
-      //    trae un ID interno, no @lat,lng), geocodifica el NOMBRE como último recurso.
-      if (latlng == null) {
-        latlng = placeGeocoder.geocode(parsed.name.orEmpty())
-      }
+      val destination = trips.firstOrNull { it.id == defaultTripId }?.destination
+      val latlng = coordinateResolver.resolve(
+        url = parsed.url,
+        name = parsed.name,
+        // El destino solo sesga un nombre tecleado. Con enlace de Maps no se usa.
+        destinationHint = if (parsed.url.isNullOrBlank()) destination else null,
+      )
       _uiState.update {
         it.copy(latitude = latlng?.first, longitude = latlng?.second, resolving = false)
       }

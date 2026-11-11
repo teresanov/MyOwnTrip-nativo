@@ -92,4 +92,41 @@ class PlaceShareParserTest {
     assertNull(PlaceShareParser.extractLatLng("https://x/@999.0,2.0,17z"))
     assertTrue(true)
   }
+
+  @Test
+  fun extractLatLng_searchPathWithExplicitPlus() {
+    val url = "https://www.google.com/maps/search/59.916239,+10.789837?entry=tts"
+    val latlng = PlaceShareParser.extractLatLng(url)
+    assertNotNull(latlng)
+    assertEquals(59.916239, latlng!!.first, 1e-6)
+    assertEquals(10.789837, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun extractLatLngFromText_previewPlaceInMapsHtml() {
+    val html =
+      "https://www.google.com/maps/preview/place/Brandenburg+Gate/@52.5162746,13.3777041,2428a,13.1y/data\\u003d!4m2"
+    val latlng = PlaceShareParser.extractLatLngFromText(html)
+    assertNotNull(latlng)
+    assertEquals(52.5162746, latlng!!.first, 1e-6)
+    assertEquals(13.3777041, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun extractLatLngFromText_prefersPlacePinOverViewportAt() {
+    val html = """
+      <script>window.APP="/maps/place/X/@41.40,2.17,17z/data=!8m2!3d41.4036299!4d2.1743558"</script>
+    """.trimIndent()
+    val latlng = PlaceShareParser.extractLatLngFromText(html)
+    assertNotNull(latlng)
+    assertEquals(41.4036299, latlng!!.first, 1e-6)
+    assertEquals(2.1743558, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun parseShared_stripsTrailingPunctuationFromUrl() {
+    val text = "Cal Pep\nhttps://maps.app.goo.gl/AbCdEf123."
+    val result = PlaceShareParser.parseShared(text)
+    assertEquals("https://maps.app.goo.gl/AbCdEf123", result.url)
+  }
 }

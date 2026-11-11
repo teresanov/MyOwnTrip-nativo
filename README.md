@@ -28,7 +28,7 @@ El design system histórico (Pencil, Figma custom, componentes `MyOwnTrip*`) est
 - **DI:** Hilt
 - **Nav:** Navigation Compose
 
-Módulos Gradle: `:app` (aplicación), `:designsystem` (tema, tokens y marca) y `:catalog` (app de catálogo del DS).
+Módulos Gradle: `:app` (aplicación) y `:designsystem` (tema, tokens y marca).
 
 ```
 app/src/main/java/com/myowntrip/app/
@@ -46,12 +46,12 @@ app/src/main/java/com/myowntrip/app/
 ## Pipeline
 | Workflow | Cuándo | Qué hace |
 |----------|--------|----------|
-| [`android.yml`](.github/workflows/android.yml) | push a `main` / PR que toque Android | `testDebugUnitTest` + `assembleDebug` de `:app` y `:catalog` |
+| [`android.yml`](.github/workflows/android.yml) | push a `main` / PR que toque Android | `testDebugUnitTest` + `assembleDebug` de `:app` |
 | [`deploy-showcase.yml`](.github/workflows/deploy-showcase.yml) | push a `main` / PR que toque `ds-showcase/` | `npm ci` + `vite build`; despliega a GitHub Pages solo en `main` |
 
 En local, lo mismo que CI:
 ```bash
-./gradlew testDebugUnitTest :app:assembleDebug :catalog:assembleDebug
+./gradlew testDebugUnitTest :app:assembleDebug
 cd ds-showcase && npm ci && npm run build
 ```
 

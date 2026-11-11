@@ -1,0 +1,22 @@
+---
+import type { Ficha } from "../../lib/model";
+
+interface Props {
+  ficha: Ficha;
+}
+const { ficha } = Astro.props;
+---
+
+<h2 id="accesibilidad">Accesibilidad</h2>
+
+{
+  ficha.a11y.length > 0 ? (
+    <ul>
+      {ficha.a11y.map((item) => (
+        <li set:html={item} />
+      ))}
+    </ul>
+  ) : (
+    <p>Pendiente de documentar.</p>
+  )
+}

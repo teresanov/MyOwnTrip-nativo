@@ -1,0 +1,110 @@
+---
+title: Tipografía
+description: Fraunces para los titulares e Inter para la interfaz, con la escala completa de Material 3 y sus valores reales.
+sidebar:
+  order: 2
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import EscalaTipografica from "../../../components/EscalaTipografica.astro";
+import FuentesInstaladas from "../../../components/FuentesInstaladas.astro";
+
+Dos familias, con un reparto fijo: **Fraunces** pone la voz editorial en lo que se lee como
+titular, e **Inter** sostiene todo lo que es interfaz. La escala es la de Material 3, sin añadir
+roles nuevos.
+
+## El reparto
+
+| Familia | Dónde se usa | Roles M3 |
+|---|---|---|
+| **Fraunces** | Titulares y cifras protagonistas | `display*`, `headline*` |
+| **Inter** | Títulos de bloque, cuerpo y etiquetas | `title*`, `body*`, `label*` |
+
+La consecuencia práctica: **el texto de un botón nunca va en Fraunces.** Un label es interfaz, y la
+interfaz es Inter.
+
+## La escala
+
+### Display
+
+<EscalaTipografica grupo="display" />
+
+### Headline
+
+<EscalaTipografica grupo="headline" />
+
+### Title
+
+<EscalaTipografica grupo="title" />
+
+### Body
+
+<EscalaTipografica grupo="body" />
+
+### Label
+
+<EscalaTipografica grupo="label" />
+
+<Aside type="note" title="sp, no px">
+  Los tamaños están en **sp**, la unidad de Android que escala con la preferencia de tamaño de
+  texto del sistema. Las muestras de arriba se dibujan en el navegador en px, así que sirven para
+  comparar proporciones, no para medir. El valor que manda es el de la tabla.
+</Aside>
+
+## Qué versión instalar
+
+<FuentesInstaladas seccion="tabla" />
+
+### Pesos disponibles
+
+<FuentesInstaladas seccion="pesos" />
+
+### Ejes variables
+
+<FuentesInstaladas seccion="ejes" />
+
+## Por qué Fraunces sale en Black
+
+Este es el problema más reportado del sistema, y no es un fallo de Figma: viene dentro del archivo.
+
+<Aside type="caution" title="El valor por defecto de Fraunces es 900">
+  En `fraunces.ttf` el eje `wght` tiene **900 (Black) como valor por defecto**, y el archivo se
+  identifica a sí mismo como «Fraunces 9pt Black». Cualquier herramienta que no fije el eje de peso
+  explícitamente cae en ese 900.
+
+  Por eso el estilo **`small-emphasized`** se creó enlazado a **`Static/weight/black`**: apoyarse en
+  una instancia concreta en lugar de dejar que decida el valor por defecto.
+
+  Lo mismo ocurre en la web: el `@font-face` de esta documentación declara
+  `font-weight: 100 900` para que el navegador use el eje en vez del valor por defecto. Sin ese
+  rango, toda la página saldría en Black.
+</Aside>
+
+De Inter se cargan solo tres pesos en la app: Normal, Medium y SemiBold. Añadir uno es una decisión
+de sistema, no de pantalla.
+
+## La «pluma» del Diario
+
+Hay una tercera familia, `HandFamily`, para las notas manuscritas del álbum de viaje. Está limitada
+a ese contexto y a tamaños de 16sp o más, y **nunca** se usa en interfaz funcional.
+
+<p
+  class="escala__muestra escala__muestra--fraunces"
+  style="font-size:20px;line-height:30px;font-weight:500;font-style:italic"
+>
+  El tercer día bajamos andando hasta el río.
+</p>
+
+:::caution[Sustituta temporal]
+`HandFamily` apunta hoy a la itálica de Fraunces como sustituta. La familia definitiva está
+pendiente de incorporar al proyecto. Si ves manuscrita en una maqueta, es provisional.
+:::
+
+## Qué consumir en código
+
+Siempre `MaterialTheme.typography.<rol>`. No se construyen `TextStyle` a mano en una pantalla ni se
+pasan tamaños literales en `sp`.
+
+Los valores de esta página se leen de `Type.kt`, en el módulo `designsystem`, cada vez que se
+compila la web: si cambia la escala en el código, cambia aquí. Para el mapeo completo con Figma,
+ver `docs/design-system/typography.md`.

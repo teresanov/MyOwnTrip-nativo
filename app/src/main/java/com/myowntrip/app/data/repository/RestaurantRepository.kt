@@ -62,6 +62,10 @@ class RestaurantRepository @Inject constructor(
     restaurantDao.updateStatus(restaurantId, status)
   }
 
+  suspend fun updateLocation(restaurantId: String, latitude: Double, longitude: Double) {
+    restaurantDao.updateLocation(restaurantId, latitude, longitude)
+  }
+
   suspend fun deleteRestaurant(restaurantId: String) {
     restaurantDao.deleteById(restaurantId)
   }

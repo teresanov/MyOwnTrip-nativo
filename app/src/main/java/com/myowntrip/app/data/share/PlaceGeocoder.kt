@@ -13,11 +13,8 @@ import javax.inject.Singleton
  * Geocodifica un NOMBRE de sitio a coordenadas aproximadas usando el Geocoder nativo de
  * Android (backend de Google en dispositivos con Play Services) — gratis, sin API key.
  *
- * Último recurso cuando el enlace de Maps no trae coordenadas literales: desde 2025, al
- * compartir un sitio desde la app móvil de Google Maps, el enlace corto resuelve a una URL
- * con solo un ID interno de Google (hash hexadecimal), no `@lat,lng` — así que no hay nada
- * que extraer de la URL. Aproximado por definición: geocodifica el NOMBRE como texto libre,
- * no el punto exacto del POI.
+ * Último recurso cuando ni la URL ni el HTML de Maps traen un pin. Aproximado:
+ * geocodifica el NOMBRE (mejor si va con el destino del viaje), no el punto exacto del POI.
  */
 @Singleton
 class PlaceGeocoder @Inject constructor(

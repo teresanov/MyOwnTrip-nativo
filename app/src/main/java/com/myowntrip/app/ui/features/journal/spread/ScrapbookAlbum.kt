@@ -249,7 +249,7 @@ private fun AlbumCoachOverlay(onDismiss: () -> Unit) {
     ) {
       Text(
         "Tu álbum, a tu manera",
-        fontFamily = FrauncesFamily, fontWeight = FontWeight.Medium,
+        fontFamily = FrauncesFamily, fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp, color = BrandColors.Ink,
       )
       CoachLine("Toca", "un recuerdo para abrirlo o editarlo.")
@@ -322,12 +322,12 @@ private fun AlbumMasthead(page: AlbumPageUi) {
     if (page.isChapterStart) {
       Text(
         "DÍA ${day.dayNumber}",
-        fontFamily = FrauncesFamily, fontWeight = FontWeight.Medium,
+        fontFamily = FrauncesFamily, fontWeight = FontWeight.SemiBold,
         fontSize = 11.sp, letterSpacing = 1.8.sp, color = BrandColors.AccentOcre,
       )
       Text(
         day.title?.takeIf { it.isNotBlank() } ?: day.date.format(SpanishSheetDate),
-        fontFamily = FrauncesFamily, fontWeight = FontWeight.Medium,
+        fontFamily = FrauncesFamily, fontWeight = FontWeight.SemiBold,
         fontSize = 26.sp, color = BrandColors.Ink,
       )
       Text(

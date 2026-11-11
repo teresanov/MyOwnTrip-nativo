@@ -1,0 +1,42 @@
+---
+import tokens from "../../../ds-showcase/src/data/tokens.json";
+
+/**
+ * Muestras de color leidas de tokens.json, que a su vez se genera desde Color.kt.
+ * Los hex no se escriben aqui: si cambia el tema, cambia esta pagina.
+ */
+interface Props {
+  /** Parejas contenedor / contenido, por nombre de rol. */
+  pares: [string, string][];
+  modo?: "light" | "dark" | "ambos";
+}
+
+const { pares, modo = "ambos" } = Astro.props;
+
+const modos = modo === "ambos" ? (["light", "dark"] as const) : ([modo] as const);
+const paleta = tokens as unknown as Record<string, Record<string, string>>;
+---
+
+<div class="muestras">
+  {
+    pares.map(([contenedor, contenido]) => (
+      <div class="muestra">
+        {modos.map((m) => {
+          const bg = paleta[m]?.[contenedor];
+          const fg = paleta[m]?.[contenido];
+          return bg && fg ? (
+            <div class="muestra__par" style={`background:${bg};color:${fg}`}>
+              <span class="muestra__nombre">{contenedor}</span>
+              <span class="muestra__hex">
+                {m === "light" ? "Claro" : "Oscuro"} · {bg.toUpperCase()}
+              </span>
+            </div>
+          ) : null;
+        })}
+        <p class="muestra__modo">
+          El texto de la muestra es <code>{contenido}</code>: si se lee, la pareja funciona.
+        </p>
+      </div>
+    ))
+  }
+</div>

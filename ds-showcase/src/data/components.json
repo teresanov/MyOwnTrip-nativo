@@ -5,88 +5,99 @@
       "name": "Button",
       "status": "in-review",
       "priority": "P0",
+      "category": "acciones",
       "href": "components/button.html",
-      "summary": "Acciones primarias y secundarias. Material 3 directo en Compose."
-    },
-    {
-      "id": "text-field",
-      "name": "Text field",
-      "status": "ready",
-      "priority": "P0",
-      "href": "components/text-field.html",
-      "summary": "OutlinedTextField en formularios viaje, wallet y gastos."
-    },
-    {
-      "id": "filter-chip",
-      "name": "Filter chip",
-      "status": "ready",
-      "priority": "P0",
-      "href": "components/filter-chip.html",
-      "summary": "Filtros Wallet, gastos y journal; Home usa Menu."
-    },
-    {
-      "id": "basic-dialog",
-      "name": "Basic dialog",
-      "status": "ready",
-      "priority": "P0",
-      "href": "components/basic-dialog.html",
-      "summary": "AlertDialog — confirmar, eliminar, descartar (Wallet caps 7/11/12)."
-    },
-    {
-      "id": "snackbar",
-      "name": "Snackbar",
-      "status": "ready",
-      "priority": "P0",
-      "href": "components/snackbar.html",
-      "summary": "Feedback breve tras guardar o deshacer."
+      "summary": "Ejecuta una acción: confirmar, guardar, continuar."
     },
     {
       "id": "icon-button",
       "name": "Icon button",
       "status": "draft",
       "priority": "P1",
+      "category": "acciones",
       "href": "components.html",
       "summary": "Acciones compactas en top app bar y formularios."
     },
     {
-      "id": "list-item",
-      "name": "List item",
-      "status": "draft",
-      "priority": "P1",
-      "href": "components.html",
-      "summary": "Filas en listas de viajes, wallet y restaurantes."
+      "id": "text-field",
+      "name": "Text field",
+      "status": "ready",
+      "priority": "P0",
+      "category": "formularios",
+      "href": "components/text-field.html",
+      "summary": "Entrada de texto en formularios de viaje, wallet y gastos."
+    },
+    {
+      "id": "filter-chip",
+      "name": "Filter chip",
+      "status": "ready",
+      "priority": "P0",
+      "category": "formularios",
+      "href": "components/filter-chip.html",
+      "summary": "Filtros en Wallet, gastos y journal; Home usa Menu."
+    },
+    {
+      "id": "basic-dialog",
+      "name": "Basic dialog",
+      "status": "ready",
+      "priority": "P0",
+      "category": "mensajeria",
+      "href": "components/basic-dialog.html",
+      "summary": "Confirmar, eliminar o descartar antes de un cambio irreversible."
+    },
+    {
+      "id": "snackbar",
+      "name": "Snackbar",
+      "status": "ready",
+      "priority": "P0",
+      "category": "mensajeria",
+      "href": "components/snackbar.html",
+      "summary": "Feedback breve tras guardar, con opción de deshacer."
     },
     {
       "id": "card",
       "name": "Card",
       "status": "ready",
       "priority": "P1",
+      "category": "contenido",
       "href": "components/stacked-card.html",
-      "summary": "Stacked / Horizontal — MotStackedCard, MotHorizontalCard; bindings en figma-compose-bindings.md."
+      "summary": "Stacked y Horizontal — contenedor de viaje, gasto o entrada."
     },
     {
       "id": "trip-hero-card",
       "name": "TripHeroCard",
       "status": "ready",
       "priority": "P1",
+      "category": "contenido",
       "href": "components/trip-hero-card.html",
-      "summary": "Portada del viaje destacado en Home (imagen + scrim + CTA)."
+      "summary": "Portada del viaje destacado en Home (imagen, scrim y CTA)."
     },
     {
       "id": "eyebrow-label",
       "name": "Eyebrow label",
       "status": "ready",
       "priority": "P1",
+      "category": "contenido",
       "href": "components/eyebrow-label.html",
-      "summary": "Etiqueta informativa no interactiva; fase/contexto sobre media o surface."
+      "summary": "Etiqueta informativa no interactiva sobre media o surface."
     },
     {
       "id": "swipeable-list-row",
       "name": "Swipeable list row",
       "status": "in-review",
       "priority": "P1",
+      "category": "contenido",
       "href": "components/swipeable-list-row.html",
-      "summary": "Swipe archivar/eliminar + menú ⋮ en Home y Wallet; alternativa TalkBack."
+      "summary": "Swipe para archivar o eliminar, con alternativa accesible."
+    },
+    {
+      "id": "list-item",
+      "name": "List item",
+      "status": "draft",
+      "priority": "P1",
+      "category": "contenido",
+      "href": "components.html",
+      "summary": "Filas en listas de viajes, wallet y restaurantes."
     }
   ]
 }

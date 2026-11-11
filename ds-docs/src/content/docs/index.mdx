@@ -1,0 +1,62 @@
+---
+title: Design System de MyOwnTrip
+description: Documentación del design system de MyOwnTrip — Material 3 nativo con identidad editorial, para Jetpack Compose.
+template: splash
+hero:
+  tagline: Material 3 canónico con identidad editorial, para una app Android nativa en Jetpack Compose.
+  actions:
+    - text: Empezar a diseñar
+      link: /empezar/para-diseno/
+      icon: right-arrow
+      variant: primary
+    - text: Ver componentes
+      link: /componentes/
+      icon: open-book
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+  <Card title="Una sola fuente de verdad" icon="approve-check">
+    El comportamiento lo define el código de `designsystem/` y `app/`. Figma guarda la librería
+    visual: variables y component sets. Esta web documenta cómo y cuándo usar cada pieza.
+  </Card>
+  <Card title="M3 sin capa semántica propia" icon="puzzle">
+    Se consumen los roles de `MaterialTheme.colorScheme` y `MaterialTheme.typography` tal cual. No
+    hay tokens semánticos intermedios ni tokens de color por estado.
+  </Card>
+  <Card title="Primero el uso" icon="open-book">
+    Cada ficha empieza por cuándo usar el componente y cuándo no, y solo después baja al código.
+    Quien diseña no necesita leer Kotlin para decidir bien.
+  </Card>
+  <Card title="Legible por agentes" icon="seti:json">
+    La misma documentación se publica en <a href="/llms.txt">/llms.txt</a> en texto plano, para que
+    un asistente la lea completa en lugar de adivinar.
+  </Card>
+</CardGrid>
+
+## Por dónde entrar
+
+<CardGrid>
+  <LinkCard
+    title="Para diseño"
+    description="Cómo montar una pantalla con el sistema sin inventar componentes."
+    href="/empezar/para-diseno/"
+  />
+  <LinkCard
+    title="Para desarrollo"
+    description="Cómo aplicar el tema, qué consumir y cuándo se permite un wrapper propio."
+    href="/empezar/para-desarrollo/"
+  />
+  <LinkCard
+    title="Foundations"
+    description="Color, tipografía y forma: las decisiones que atraviesan todo el sistema."
+    href="/foundations/color/"
+  />
+  <LinkCard
+    title="Gobernanza"
+    description="Qué significa que un componente esté listo y qué hace falta para cerrarlo."
+    href="/gobernanza/estados-de-publicacion/"
+  />
+</CardGrid>

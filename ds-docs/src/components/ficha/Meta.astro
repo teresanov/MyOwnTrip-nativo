@@ -1,0 +1,109 @@
+---
+import { repoUrl } from "../../lib/links";
+import { STATUS_LABELS } from "../../lib/model";
+import type { Ficha } from "../../lib/model";
+
+interface Props {
+  ficha: Ficha;
+}
+const { ficha } = Astro.props;
+const d = ficha.decisions ?? {};
+---
+
+<h2 id="meta">Procedencia</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <th scope="row">Estado</th>
+      <td>{STATUS_LABELS[ficha.status] ?? ficha.status}</td>
+    </tr>
+    <tr>
+      <th scope="row">Prioridad</th>
+      <td>{ficha.priority}</td>
+    </tr>
+    {
+      ficha.figma && (
+        <tr>
+          <th scope="row">Figma</th>
+          <td>
+            <a href={ficha.figma.url} target="_blank" rel="noopener">
+              {ficha.figma.label}
+            </a>
+            {ficha.figma.node && <> · <code>{ficha.figma.node}</code></>}
+          </td>
+        </tr>
+      )
+    }
+    {
+      d.source && (
+        <tr>
+          <th scope="row">Fuente</th>
+          <td set:html={d.source} />
+        </tr>
+      )
+    }
+    {
+      d.why && (
+        <tr>
+          <th scope="row">Por qué existe</th>
+          <td set:html={d.why} />
+        </tr>
+      )
+    }
+    {
+      d.layer && (
+        <tr>
+          <th scope="row">Capa</th>
+          <td set:html={d.layer} />
+        </tr>
+      )
+    }
+    {
+      d.adr?.length > 0 && (
+        <tr>
+          <th scope="row">Decisiones</th>
+          <td>
+            <ul class="meta-lista">
+              {d.adr.map((a: any) => (
+                <li>
+                  {repoUrl(a.ref) ? (
+                    <a href={repoUrl(a.ref)} target="_blank" rel="noopener">
+                      {a.label}
+                    </a>
+                  ) : (
+                    a.label
+                  )}
+                </li>
+              ))}
+            </ul>
+          </td>
+        </tr>
+      )
+    }
+  </tbody>
+</table>
+
+{
+  ficha.changelog.length > 0 && (
+    <>
+      <h3 id="cambios">Cambios</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Qué cambió</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ficha.changelog.map((c: any) => (
+            <tr>
+              <td>{c.date}</td>
+              <td set:html={c.note} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}

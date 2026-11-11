@@ -1,0 +1,46 @@
+{
+  "note": "Reglas globales del sistema. Fuente única: de aquí salen la página de Gobernanza y el contexto para agentes (ds-context.md). No duplicar en .cursor/rules/*.mdc: apuntar a la salida generada.",
+  "site": "https://teresanov.github.io/MyOwnTrip-nativo/",
+  "principles": [
+    "Material 3 canónico: no hay capa semántica propia de color ni de espaciado de componente.",
+    "La identidad está en la tipografía (Fraunces + Inter), en el color con cuentagotas y en el morph del botón.",
+    "Figma es librería visual; la documentación de componentes vive en el showcase.",
+    "Las pantallas no inventan UI: ensamblan composables del sistema más MaterialTheme."
+  ],
+  "required": [
+    "Consumir MaterialTheme.colorScheme (roles M3: primary, onSurface, error…).",
+    "Consumir MaterialTheme.typography, mapeado a Fraunces en Display y Headline e Inter de Title hacia abajo.",
+    "Estados interactivos como state layers en runtime: hover 8 %, focus 10 %, pressed 10 %, dragged 16 %.",
+    "Disabled: contenido al 38 % y contenedor al 12 %.",
+    "Errores: icono y texto, nunca solo color.",
+    "Iconos de UI: Material Symbols Sharp peso 300, vía MOTIcons.",
+    "Espaciado de pantalla: MOTSpacing. El padding interno de los componentes M3 se deja en sus defaults.",
+    "Botones: usar los wrappers MOT (MOTButton, MOTTonalButton, MOTOutlinedButton, MOTTextButton, MOTIconButton), que aplican el morph de forma del ADR 004.",
+    "Respetar LocalReduceMotion en cualquier animación."
+  ],
+  "forbidden": [
+    "Tokens de color por estado: primary.hover, *.pressed, text/disabled, semantic/color/*.",
+    "Primitivos de color o tonos sueltos en pantallas; AppColors solo dentro de Theme.kt.",
+    "SemanticColors, LayoutTokens y wrappers del repo archivo MyOwnTrip.",
+    "Fraunces en labels de botón, campos o chips.",
+    "Un segundo set de iconos para UI funcional (navegación, acciones estándar).",
+    "Documentar componentes dentro de Figma: ni láminas, ni Do/Don't, ni changelog en canvas.",
+    "Pasar MaterialTheme.shapes.* como shape de un botón: el morph vive fuera de esa escala.",
+    "La colección Figma legado Semantic · Layout en pantallas o binds nuevos.",
+    "Un segundo semántico de forma tipo MOTCorner."
+  ],
+  "keyColors": [
+    { "role": "primary", "light": "#4A5864", "note": "Gris-azul tinta" },
+    { "role": "tertiary", "light": "#825513", "note": "Acento ocre de marca, UI" },
+    { "role": "error", "light": "#904A42", "note": "Validación — distinto de tertiary a propósito" },
+    { "role": "surface", "light": "#FFF8F2", "note": "Papel cálido" }
+  ],
+  "gates": [
+    { "id": "m3Canonical", "when": "Antes de cerrar cualquier UI", "blocking": true },
+    { "id": "semanticTokenOnlyConsumption", "when": "Cada PR de UI", "blocking": false },
+    { "id": "showcaseDocComplete", "when": "Cada componente nuevo o modificado", "blocking": true },
+    { "id": "a11yCheck", "when": "Cada pantalla", "blocking": false },
+    { "id": "figmaAliasChainValid", "when": "Cambio en la librería Figma", "blocking": false },
+    { "id": "visualRegression", "when": "Tras un cambio visual grande", "blocking": false }
+  ]
+}

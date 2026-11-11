@@ -1,0 +1,160 @@
+---
+import { Aside } from "@astrojs/starlight/components";
+import { fuentes } from "../lib/fuentes";
+import { pesosDeclarados } from "../lib/tipografia";
+
+/**
+ * Qué archivo de fuente usa la app, con qué version, y que pesos trae con
+ * nombre. Todo leido de los .ttf y de Type.kt en cada build.
+ *
+ * Se pinta por secciones para que los encabezados los ponga la pagina: un
+ * encabezado dentro de un componente no aparece en el indice lateral.
+ */
+interface Props {
+  seccion: "tabla" | "pesos" | "ejes";
+}
+const { seccion } = Astro.props;
+
+const { lista, dir } = fuentes();
+const declarados = pesosDeclarados();
+
+/** Pesos que el codigo pide y la fuente no trae con nombre propio. */
+function sinNombre(archivo: string, instancias: { peso: number | null }[]) {
+  const familia = archivo.startsWith("fraunces") ? "Fraunces" : "Inter";
+  const nombrados = new Set(instancias.map((i) => i.peso));
+  return (declarados[familia] ?? []).filter((d) => !nombrados.has(d.peso));
+}
+
+function kb(bytes: number) {
+  return `${Math.round(bytes / 1024)} KB`;
+}
+---
+
+{
+  lista.length === 0 ? (
+    <p>
+      <strong>No se pudieron leer las fuentes</strong> en <code>{dir}</code>. Las versiones no se
+      muestran en lugar de arriesgarse a citar unas incorrectas.
+    </p>
+  ) : seccion === "tabla" ? (
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th>Archivo</th>
+            <th>Se identifica como</th>
+            <th>Versión</th>
+            <th>Peso</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lista.map((f) => (
+            <tr>
+              <td>
+                <code>{f.archivo}</code>
+              </td>
+              <td>{f.nombreCompleto}</td>
+              <td>
+                <code>{f.version}</code>
+              </td>
+              <td>{kb(f.bytes)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <Aside type="danger" title="Instálalas desde el repositorio, no desde Google Fonts">
+        Los archivos están en <code>{dir}</code> y son exactamente los que compila la app. Si cada
+        persona descarga la fuente por su cuenta, acabaréis con versiones distintas sin enteraros:
+        Inter va por la rama 4.x y cambia a menudo, y la 4 incorporó un eje óptico que las
+        anteriores no tenían.
+      </Aside>
+    </>
+  ) : seccion === "pesos" ? (
+    <>
+      <p>
+        Estos son los pesos que cada archivo trae <strong>con nombre propio</strong>: lo que aparece
+        en el desplegable de estilos al usar la fuente en Figma.
+      </p>
+
+      {lista.map((f) => {
+        const faltan = sinNombre(f.archivo, f.instancias);
+        return (
+          <>
+            <p class="fuente-archivo">
+              <code>{f.archivo}</code>
+            </p>
+            <ul>
+              {f.instancias.map((i) => (
+                <li>
+                  {i.nombre} {i.peso !== null && <code>{i.peso}</code>}
+                </li>
+              ))}
+            </ul>
+            {faltan.length > 0 && (
+              <Aside type="caution" title="Un peso que el código usa y la fuente no nombra">
+                <p>
+                  <code>Type.kt</code> declara{" "}
+                  {faltan.map((d, n) => (
+                    <>
+                      {n > 0 && ", "}
+                      <strong>
+                        {d.nombre} ({d.peso})
+                      </strong>
+                    </>
+                  ))}
+                  , que no está entre los pesos con nombre de este archivo.
+                </p>
+                <p>
+                  Compose lo resuelve interpolando el eje <code>wght</code> cuando se le pasan
+                  ajustes de variación. En Figma no hay un estilo con ese nombre que elegir, así que
+                  una pantalla que use ese peso no se puede reproducir eligiéndolo de la lista.
+                </p>
+              </Aside>
+            )}
+          </>
+        );
+      })}
+    </>
+  ) : (
+    <>
+      <p>
+        Las dos familias son fuentes variables. El valor <strong>por defecto</strong> de cada eje es
+        el que se aplica cuando una herramienta no lo fija explícitamente.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Archivo</th>
+            <th>Eje</th>
+            <th>Rango</th>
+            <th>Por defecto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lista.flatMap((f) =>
+            f.ejes.map((e, n) => (
+              <tr>
+                {n === 0 ? (
+                  <td rowspan={f.ejes.length}>
+                    <code>{f.archivo}</code>
+                  </td>
+                ) : null}
+                <td>
+                  <code>{e.tag}</code>
+                </td>
+                <td>
+                  {e.min} – {e.max}
+                </td>
+                <td>
+                  <strong>{e.def}</strong>
+                </td>
+              </tr>
+            )),
+          )}
+        </tbody>
+      </table>
+    </>
+  )
+}

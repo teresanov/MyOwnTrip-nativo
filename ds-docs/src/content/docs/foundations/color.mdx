@@ -1,0 +1,87 @@
+---
+title: Color
+description: Roles de color M3 del design system de MyOwnTrip, en tema claro y oscuro, generados desde el código.
+sidebar:
+  order: 1
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import Muestras from "../../../components/Muestras.astro";
+
+El sistema no tiene una capa semántica propia de color. Se consumen directamente los roles de
+Material 3 a través de `MaterialTheme.colorScheme`, y la identidad editorial se consigue eligiendo
+bien los valores de esos roles, no añadiendo nombres nuevos.
+
+La paleta es un gris azulado como color principal, neutros de papel cálido como superficies, y un
+ocre editorial reservado para el acento.
+
+<Aside type="caution" title="Nunca un color por estado">
+  No existen ni deben crearse tokens como `primary/hover` o `button/pressed`. Los estados se
+  comunican con las capas de estado (*state layers*) que Compose aplica en tiempo de ejecución sobre
+  el rol `on*` correspondiente.
+</Aside>
+
+## Principales
+
+El gris azulado se usa tanto en `primary` como en `secondary`: la jerarquía la marcan las variantes
+del componente, no un cambio de color.
+
+<Muestras
+  pares={[
+    ["primary", "onPrimary"],
+    ["primaryContainer", "onPrimaryContainer"],
+    ["secondary", "onSecondary"],
+    ["secondaryContainer", "onSecondaryContainer"],
+  ]}
+/>
+
+## Acento
+
+El ocre entra en `tertiary`. Es el color de marca y se usa con cuentagotas: una etiqueta sobre una
+imagen, un detalle de la cinta del logotipo. No es un color de acción.
+
+<Aside type="danger" title="El acento no sirve para destruir">
+  Una acción destructiva usa `error` más una confirmación explícita. Nunca `tertiary`.
+</Aside>
+
+<Muestras
+  pares={[
+    ["tertiary", "onTertiary"],
+    ["tertiaryContainer", "onTertiaryContainer"],
+  ]}
+/>
+
+## Superficies
+
+Los neutros tiran a papel cálido en claro y a tinta en oscuro. Es lo que da el aire editorial.
+
+<Muestras
+  pares={[
+    ["background", "onBackground"],
+    ["surface", "onSurface"],
+    ["surfaceVariant", "onSurfaceVariant"],
+  ]}
+/>
+
+## Error
+
+<Aside type="caution" title="Error = icono + texto">
+  El color nunca comunica un error por sí solo. Siempre acompañado de un icono y de un texto que
+  explique qué ha pasado.
+</Aside>
+
+<Muestras
+  pares={[
+    ["error", "onError"],
+    ["errorContainer", "onErrorContainer"],
+  ]}
+/>
+
+## De dónde salen estos valores
+
+Los hex de esta página no están escritos a mano: se leen de `tokens.json`, que se mantiene
+alineado con `Color.kt` en el módulo `designsystem`. Si el tema cambia en el código y esta página no
+cambia, es que el archivo de datos se quedó atrás.
+
+El flujo es Figma (variables, vía Desktop Bridge) → `variables.json` → Compose. Para los detalles
+del workflow y de las capas de estado, ver `docs/design-system/color.md` en el repositorio.

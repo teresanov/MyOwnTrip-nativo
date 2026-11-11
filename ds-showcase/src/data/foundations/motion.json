@@ -1,0 +1,58 @@
+{
+  "id": "motion",
+  "name": "Movimiento",
+  "eyebrow": "Foundations",
+  "lead": "Poco movimiento y con intención. La única animación con personalidad propia es la del botón; el resto son transiciones M3 estándar.",
+  "sourceOfTruth": "designsystem/.../ui/theme/Motion.kt → AppMotion",
+  "sections": [
+    {
+      "id": "duraciones",
+      "title": "Duraciones y curvas",
+      "table": {
+        "head": ["Constante", "Valor", "Uso"],
+        "rows": [
+          ["<code>DurationPressIn</code>", "120 ms", "Entrada de pulsación: el feedback al dedo debe ser casi inmediato"],
+          ["<code>DurationShort</code>", "200 ms", "Cambios pequeños de estado"],
+          ["<code>DurationMedium</code>", "300 ms", "Transiciones internas"],
+          ["<code>DurationLong</code>", "400 ms", "Entradas y salidas de superficie"],
+          ["<code>EmphasizedAccelerate</code>", "<code>cubic-bezier(0.3, 0, 0.8, 0.15)</code>", "Entrada rápida de pulsación"],
+          ["<code>EmphasizedDecelerate</code>", "<code>cubic-bezier(0.05, 0.7, 0.1, 1)</code>", "Salidas sin rebote"]
+        ]
+      }
+    },
+    {
+      "id": "muelle",
+      "title": "El muelle de liberación",
+      "lead": "Al soltar un botón, la forma no vuelve con una curva: vuelve con un muelle que rebasa ligeramente y asienta. Eso es lo que hace que el control se sienta físico.",
+      "table": {
+        "head": ["Parámetro", "Valor"],
+        "rows": [
+          ["<code>ReleaseSpringDamping</code>", "0.6 — por debajo de 1, así que rebasa"],
+          ["<code>ReleaseSpringStiffness</code>", "380"],
+          ["<code>PressedButtonScale</code>", "0.96 — el squish al presionar"]
+        ]
+      },
+      "notes": [
+        "La asimetría es intencionada: <strong>entrada</strong> con tween rápido, <strong>salida</strong> con muelle.",
+        "El rebase del muelle puede llevar el radio por debajo de 0 dp; el valor se recorta antes de construir la forma.",
+        "El squish solo se aplica en <em>pressed</em>, no en hover ni focus."
+      ]
+    },
+    {
+      "id": "reduce-motion",
+      "title": "Reducir movimiento",
+      "lead": "<code>LocalReduceMotion</code> es un <code>staticCompositionLocalOf</code> que se resuelve leyendo <code>TRANSITION_ANIMATION_SCALE</code> del sistema. Cuando está activo, las animaciones de forma y escala pasan a <code>snap()</code>: cambian de valor sin recorrido.",
+      "dos": [
+        "Respetar <code>LocalReduceMotion</code> en cualquier animación nueva.",
+        "En <code>@Preview</code>, usar <code>MyOwnTripPreviewTheme</code>, que ya lo fuerza a <code>true</code> para que la captura sea estable."
+      ],
+      "donts": [
+        "No animar sin comprobar el flag.",
+        "No usar movimiento como único indicador de un cambio de estado."
+      ]
+    }
+  ],
+  "refs": [
+    { "label": "ADR 004 — Button shape morph", "ref": "docs/decisions/004-button-shape-morph.md" }
+  ]
+}

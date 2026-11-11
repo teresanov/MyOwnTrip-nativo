@@ -1,0 +1,75 @@
+---
+import type { Ficha } from "../../lib/model";
+
+interface Props {
+  ficha: Ficha;
+}
+const { ficha } = Astro.props;
+const b = ficha.behavior;
+---
+
+<h2 id="anatomia">Anatomía y estados</h2>
+
+{
+  ficha.anatomy.length > 0 && (
+    <>
+      <h3 id="partes">Partes</h3>
+      <ol class="anatomia">
+        {ficha.anatomy.map((part) => (
+          <li set:html={part} />
+        ))}
+      </ol>
+    </>
+  )
+}
+
+{
+  b && (
+    <>
+      <h3 id="comportamiento">Comportamiento</h3>
+      {b.lead && <p set:html={b.lead} />}
+
+      {b.rows.length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Estado</th>
+              <th>Radio</th>
+              <th>Token en Figma</th>
+              <th>Además</th>
+            </tr>
+          </thead>
+          <tbody>
+            {b.rows.map((row: any) => (
+              <tr>
+                <td set:html={row.state} />
+                <td>{row.corner ?? "—"}</td>
+                <td>{row.figma ? <code>{row.figma}</code> : "—"}</td>
+                <td set:html={row.extra ?? ""} />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {b.notes.length > 0 && (
+        <ul>
+          {b.notes.map((n: string) => (
+            <li set:html={n} />
+          ))}
+        </ul>
+      )}
+
+      {b.exceptions.length > 0 && (
+        <>
+          <h3 id="excepciones">Excepciones</h3>
+          <ul>
+            {b.exceptions.map((e: string) => (
+              <li set:html={e} />
+            ))}
+          </ul>
+        </>
+      )}
+    </>
+  )
+}

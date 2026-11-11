@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Overview · MyOwnTrip DS</title>
+    <title>MyOwnTrip · Design System</title>
+    <meta name="description" content="Documentación del design system de MyOwnTrip: Material 3 nativo con identidad editorial, en Jetpack Compose." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -14,26 +15,8 @@
     <div class="shell">
       <nav class="rail" id="site-nav" aria-label="Navegación"></nav>
       <div class="content">
-        <header class="page-header">
-          <p class="page-header__eyebrow">Design System · MyOwnTrip Nativo</p>
-          <h1>Overview</h1>
-          <p class="page-header__lead">
-            Documentación de componentes y foundations. Figma = librería visual; este showcase = fuente de verdad para fichas.
-          </p>
-        </header>
-        <main id="contenido">
-          <div class="callout">
-            <strong>Pipeline:</strong> Figma (Bridge) → variables.json → Compose. Sin documentación en canvas de Figma.
-          </div>
-          <section class="section">
-            <h2>Foundations</h2>
-            <div class="card-grid" id="foundations-grid"></div>
-          </section>
-          <section class="section">
-            <h2>Componentes</h2>
-            <div id="components-grid"></div>
-          </section>
-        </main>
+        <header class="page-header" id="page-header"></header>
+        <main id="contenido"><div id="main"></div></main>
         <footer class="footer">
           <p><code>cd ds-showcase && npm run dev</code> · <code>npm run build</code> → <code>dist/</code></p>
         </footer>

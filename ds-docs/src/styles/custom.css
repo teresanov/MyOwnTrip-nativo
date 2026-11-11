@@ -1,0 +1,229 @@
+/* Ajustes propios sobre el tema de Starlight. Lo demas lo resuelve Starlight. */
+
+/* ---------------------------------------------------------------------------
+   Las fuentes REALES de la app, leidas del modulo designsystem. No se copian
+   aqui: si manana cambia el .ttf que usa la app, cambia esta web sola.
+
+   El rango `font-weight: 100 900` es obligatorio, no decorativo: le dice al
+   navegador que la fuente es variable y que use el eje wght. Sin el, el
+   navegador cae al peso por defecto del archivo, que en Fraunces es 900
+   (Black) — el mismo motivo por el que los pesos salian mal en Figma.
+   --------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../../designsystem/src/main/res/font/fraunces.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../../designsystem/src/main/res/font/fraunces_italic.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../../designsystem/src/main/res/font/inter.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Gris-azul del sistema como color de acento de la documentacion. */
+  --sl-color-accent-low: #23292f;
+  --sl-color-accent: #4a5864;
+  --sl-color-accent-high: #c3cad2;
+}
+
+:root[data-theme="light"] {
+  --sl-color-accent-low: #dfe3e8;
+  --sl-color-accent: #46535e;
+  --sl-color-accent-high: #23292f;
+}
+
+/* Primer parrafo de una ficha: algo mayor, como entradilla. */
+.lead {
+  font-size: var(--sl-text-lg);
+  color: var(--sl-color-white);
+}
+
+.ficha-resumen {
+  font-size: var(--sl-text-lg);
+}
+
+.ficha-estado {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Linea de procedencia: de donde sale una guia y cuando se consulto. */
+.fuente {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+}
+
+/* Do / Don't en dos columnas cuando hay sitio. */
+.dos-donts {
+  display: grid;
+  gap: 1.5rem;
+  margin-block: 1rem;
+}
+
+@media (min-width: 60rem) {
+  .dos-donts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.dos-donts__title {
+  font-weight: 600;
+  margin-block-end: 0.5rem;
+}
+
+.dos-donts__title--do {
+  color: var(--sl-color-green-high);
+}
+
+.dos-donts__title--dont {
+  color: var(--sl-color-red-high);
+}
+
+.lista-do,
+.lista-dont {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.lista-do li::marker {
+  color: var(--sl-color-green);
+}
+
+.lista-dont li::marker {
+  color: var(--sl-color-red);
+}
+
+.lista-do li,
+.lista-dont li {
+  margin-block: 0.4rem;
+}
+
+.anatomia li {
+  margin-block: 0.5rem;
+}
+
+.meta-lista {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+/* Las tablas de parametros y tokens son anchas. Ocupan el ancho disponible y
+   dejan que el texto y los nombres largos de token se partan, en lugar de
+   salirse del contenedor y quedar cortados. */
+.sl-markdown-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.sl-markdown-content td code,
+.sl-markdown-content th code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Escala tipografica: muestra a tamaño real + sus valores. */
+.escala {
+  margin-block: 1.5rem;
+}
+
+.escala__fila {
+  padding-block: 1rem;
+  border-top: 1px solid var(--sl-color-gray-5);
+}
+
+.escala__fila:last-child {
+  border-bottom: 1px solid var(--sl-color-gray-5);
+}
+
+.escala__muestra {
+  margin: 0 0 0.5rem;
+  color: var(--sl-color-white);
+  /* Un titular largo no debe romper el ancho de la pagina. */
+  overflow-wrap: anywhere;
+}
+
+/* El eje optico va fijado a 9, igual que en Compose. */
+.escala__muestra--fraunces {
+  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  font-variation-settings: "opsz" 9;
+}
+
+.escala__muestra--inter {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.escala__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-3);
+}
+
+.escala__meta code {
+  font-size: var(--sl-text-xs);
+}
+
+/* Nombre de archivo que encabeza una lista de pesos. No es un encabezado de
+   documento a proposito: solo etiqueta la lista que viene debajo. */
+.fuente-archivo {
+  margin-block: 1.25rem 0.5rem;
+  font-weight: 600;
+}
+
+/* Muestras de color de la pagina de Color. */
+.muestras {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  margin-block: 1.5rem;
+}
+
+.muestra {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.muestra__par {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.9rem 0.75rem;
+  font-size: var(--sl-text-xs);
+}
+
+.muestra__nombre {
+  font-weight: 600;
+}
+
+.muestra__hex {
+  font-family: var(--__sl-font-mono, monospace);
+  opacity: 0.75;
+}
+
+.muestra__modo {
+  padding: 0.3rem 0.75rem;
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-3);
+  border-top: 1px solid var(--sl-color-gray-5);
+}
