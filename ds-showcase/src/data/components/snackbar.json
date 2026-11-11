@@ -25,7 +25,7 @@
     {
       "id": "two-lines",
       "label": "Two lines",
-      "usage": "Mensaje largo; gap `mot/spacing/snackbar/gap` (12)."
+      "usage": "Obligatoria cuando el mensaje ocupa dos líneas (p. ej. Wallet cap 1i «archivado» + Deshacer). No forzar One line y dejar que el texto se corte o desborde."
     }
   ],
   "properties": [
@@ -42,24 +42,56 @@
     "mot/spacing/snackbar/gap (12)",
     "mot/spacing/snackbar/gap-sm · gap-xs"
   ],
+  "guidelines": {
+    "label": "Material Design 3 · Snackbar",
+    "url": "https://m3.material.io/components/snackbar/guidelines",
+    "consulted": "2026-11-10"
+  },
   "dos": [
-    "Un snackbar a la vez; duración corta M3.",
-    "Acción opcional con verbo claro (Deshacer, Ver).",
-    "Mismo inverse scheme Light/Dark vía colorScheme."
+    "Úsalo para mensajes de baja prioridad que no requieren acción: informar de un proceso que la app ha hecho o hará.",
+    "Muestra un solo snackbar a la vez; uno con información actualizada puede reemplazar al anterior.",
+    "Texto breve, de una línea si es posible; en móvil, hasta dos líneas.",
+    "Incluye como máximo una acción, con botón de texto; ofrece «Deshacer» para que se pueda corregir la elección.",
+    "Los snackbars sin acción desaparecen solos (4–10 s según la plataforma); los que tienen acción permanecen hasta que se actúa o se descartan.",
+    "Colócalo abajo, delante del contenido principal y por encima de un FAB."
   ],
   "donts": [
-    "No usar snackbar para errores críticos — preferir dialog o inline error con icono.",
-    "No sustituir confirmaciones H7 Wallet.",
-    "No tokens snackbar/hover."
+    "No lo uses para información crítica o que exige acción inmediata: ahí va un diálogo.",
+    "No añadas iconos; si el mensaje necesita un icono, usa otro componente, como un diálogo.",
+    "No uses texto con estilos ni enlaces en línea: si hace falta un enlace, usa un botón.",
+    "No uses botones Filled ni Elevated en un snackbar: atraen demasiada atención.",
+    "No lo coloques delante de la navegación, de elementos de uso frecuente ni delante o detrás de un FAB.",
+    "No apiles snackbars ni los pongas uno junto a otro.",
+    "No hagas del snackbar la única vía para acceder a un caso de uso esencial."
   ],
+  "productRules": {
+    "dos": [
+      "Un snackbar a la vez; duración corta M3.",
+      "Acción opcional con verbo claro (Deshacer, Ver).",
+      "Copy de dos líneas → variante Figma `# of lines=Two lines` (cap 1i). One line solo si el mensaje cabe en una.",
+      "Mismo inverse scheme Light/Dark vía colorScheme."
+    ],
+    "donts": [
+      "No usar snackbar para errores críticos — preferir dialog o inline error con icono.",
+      "No sustituir confirmaciones H7 Wallet.",
+      "No tokens snackbar/hover.",
+      "No usar One line si el texto del preview/cap es de dos líneas."
+    ]
+  },
   "a11y": [
     "`SnackbarHostState` anuncia mensaje; acción focusable.",
     "No depender solo del color inverse para significado.",
     "Alternativa por tap si el gesto de dismiss no es obvio."
   ],
   "compose": "val snackbarHostState = remember { SnackbarHostState() }\n// …\nScaffold(\n    snackbarHost = { SnackbarHost(snackbarHostState) },\n) { /* … */ }\n// scope.launch { snackbarHostState.showSnackbar(\"Gasto guardado\") }",
+  "decisions": {
+    "source": "Figma node 53977-33575 · Compose `Snackbar` (M3)",
+    "why": "Confirmar una acción completada u ofrecer deshacer sin sacar al usuario de la pantalla.",
+    "layer": "M3 directo dentro de `SnackbarHost` del `Scaffold`"
+  },
   "changelog": [
     { "date": "2026-10-29", "note": "Fase B.3: Inverse + Extra-small + mot/padding|spacing/snackbar/*; gap longer-action fix." },
-    { "date": "2026-10-30", "note": "Playground con acción Deshacer y auto-ocultado." }
+    { "date": "2026-10-30", "note": "Playground con acción Deshacer y auto-ocultado." },
+    { "date": "2026-11-11", "note": "Two lines si el copy ocupa dos líneas (cap 1i); no apañar con One line." }
   ]
 }

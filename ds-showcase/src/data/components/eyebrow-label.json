@@ -53,19 +53,21 @@
     "Corner/Small (8dp)",
     "labelMedium / labelSmall (Inter Medium)"
   ],
-  "dos": [
-    "Usar para fase o contexto («Próximo viaje», «En destino», «Recuerdo»).",
-    "Color=Tertiary sobre fotos y scrims.",
-    "Color=Surface o Secondary en superficies planas.",
-    "Property Label text en instancia — no duplicar capas de texto sueltas.",
-    "Sizing HUG: el ancho crece con el copy; no FILL del contenedor padre."
-  ],
-  "donts": [
-    "No usar como sustituto de Filter chip ni Assist chip interactivo.",
-    "No añadir sombra Elevated ni borde Outlined — no es chip.",
-    "No hacer clickable en producto.",
-    "No usar Assist chip Elevated (CUT) para este patrón."
-  ],
+  "productRules": {
+    "dos": [
+      "Usar para fase o contexto («Próximo viaje», «En destino», «Recuerdo»).",
+      "Color=Tertiary sobre fotos y scrims.",
+      "Color=Surface o Secondary en superficies planas.",
+      "Property Label text en instancia — no duplicar capas de texto sueltas.",
+      "Sizing HUG: el ancho crece con el copy; no FILL del contenedor padre."
+    ],
+    "donts": [
+      "No usar como sustituto de Filter chip ni Assist chip interactivo.",
+      "No añadir sombra Elevated ni borde Outlined — no es chip.",
+      "No hacer clickable en producto.",
+      "No usar Assist chip Elevated (CUT) para este patrón."
+    ]
+  },
   "a11y": [
     "Decorativo en sí: el texto se anuncia en el bloque padre (card o sección).",
     "Modifier.semantics { invisibleToUser() } si el padre ya incluye la fase en contentDescription.",
@@ -73,6 +75,11 @@
     "Contraste mínimo 4.5:1 entre label y container en todos los pares Color."
   ],
   "compose": "com.myowntrip.app.ui.components.EyebrowLabel(text, color = EyebrowLabelColor.Tertiary)",
+  "decisions": {
+    "source": "Figma node 61202-16834 · Compose `EyebrowLabel` (MOT)",
+    "why": "Etiqueta no interactiva para fondos variables (fotos, scrims), donde Assist chip y Outlined no garantizan contraste.",
+    "layer": "Componente MOT (`EyebrowLabel`)"
+  },
   "changelog": [
     {
       "date": "2026-06-17",

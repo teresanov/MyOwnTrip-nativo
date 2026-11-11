@@ -66,17 +66,55 @@ export function renderAnatomy(anatomy) {
 `;
 }
 
+function guidelineList(items, cls = "list-dos") {
+  return `<ul class="${cls}">${items.map((i) => `<li>${i}</li>`).join("")}</ul>`;
+}
+
+function formatConsulted(iso) {
+  const [y, m, d] = String(iso || "").split("-");
+  return y && m && d ? `${d}/${m}/${y}` : iso;
+}
+
+/**
+ * Do / Don't de la guía oficial de M3 (si el componente existe en M3) y,
+ * aparte, las reglas del equipo MyOwnTrip. Los componentes propios no tienen guía M3.
+ */
 export function renderGuidelines(data) {
-  return `
+  const g = data.guidelines;
+  const rules = data.productRules;
+  const dos = data.dos || [];
+  const donts = data.donts || [];
+  let html = "";
+
+  if (g && (dos.length || donts.length)) {
+    const links = (g.links || [{ label: g.label, url: g.url }])
+      .map((l) => `<a href="${l.url}" target="_blank" rel="noopener">${l.label} ↗</a>`)
+      .join(" · ");
+    html += `
   <section class="section">
-    <h2>Directrices</h2>
-    <p class="section-lead">Patrones que el equipo ya acordó para MyOwnTrip; no sustituyen la revisión de pantalla concreta.</p>
-    <h3 class="subsection-title">Hacer</h3>
-    <ul class="list-dos">${data.dos.map((d) => `<li>${d}</li>`).join("")}</ul>
-    <h3 class="subsection-title">Evitar</h3>
-    <ul class="list-dos list-dos--dont">${data.donts.map((d) => `<li>${d}</li>`).join("")}</ul>
+    <h2>Do y Don't</h2>
+    <p class="section-lead">Guía oficial de Material Design 3 para este componente: ${links} (consultada el ${formatConsulted(g.consulted)}).</p>
+    ${dos.length ? `<h3 class="subsection-title">Do</h3>${guidelineList(dos)}` : ""}
+    ${donts.length ? `<h3 class="subsection-title">Don't</h3>${guidelineList(donts, "list-dos list-dos--dont")}` : `<p class="section-lead">En las fuentes consultadas, M3 no lista «Don't» explícitos para este componente.</p>`}
   </section>
 `;
+  }
+
+  if (rules && ((rules.dos || []).length || (rules.donts || []).length)) {
+    const lead = g
+      ? "Acuerdos del equipo sobre cómo usamos el componente en MyOwnTrip; complementan la guía de M3."
+      : "Componente propio de MyOwnTrip: no existe una guía de M3 equivalente, así que estas son las reglas del equipo.";
+    html += `
+  <section class="section">
+    <h2>Reglas MyOwnTrip</h2>
+    <p class="section-lead">${lead}</p>
+    ${(rules.dos || []).length ? `<h3 class="subsection-title">Do</h3>${guidelineList(rules.dos)}` : ""}
+    ${(rules.donts || []).length ? `<h3 class="subsection-title">Don't</h3>${guidelineList(rules.donts, "list-dos list-dos--dont")}` : ""}
+  </section>
+`;
+  }
+
+  return html;
 }
 
 export function renderTokenSection(tokens) {

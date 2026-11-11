@@ -31,18 +31,20 @@
     "error (texto e icono en menú Eliminar)",
     "SwipeToDismissBox (Material 3)"
   ],
-  "dos": [
-    "Siempre ofrecer la misma acción por menú ⋮ que por swipe (política android-compose-ux).",
-    "Registrar customActions de TalkBack: «Archivar viaje» / «Restaurar viaje» y «Eliminar viaje» (o equivalente documento).",
-    "Snackbar con Deshacer tras archivar cuando el producto lo permita.",
-    "Eliminar siempre con diálogo de confirmación — el swipe solo abre el diálogo."
-  ],
-  "donts": [
-    "No envolver el viaje destacado (TripHeroCard) ni filas del carrusel Wallet «Próximos».",
-    "No usar swipe como única vía para eliminar sin alternativa por tap.",
-    "No colores primitivos en fondos de swipe — solo roles M3 del colorScheme.",
-    "No crear component set en Figma para este patrón; documentar en showcase + referencia Compose."
-  ],
+  "productRules": {
+    "dos": [
+      "Siempre ofrecer la misma acción por menú ⋮ que por swipe (política android-compose-ux).",
+      "Registrar customActions de TalkBack: «Archivar viaje» / «Restaurar viaje» y «Eliminar viaje» (o equivalente documento).",
+      "Snackbar con Deshacer tras archivar cuando el producto lo permita.",
+      "Eliminar siempre con diálogo de confirmación — el swipe solo abre el diálogo."
+    ],
+    "donts": [
+      "No envolver el viaje destacado (TripHeroCard) ni filas del carrusel Wallet «Próximos».",
+      "No usar swipe como única vía para eliminar sin alternativa por tap.",
+      "No colores primitivos en fondos de swipe — solo roles M3 del colorScheme.",
+      "No crear component set en Figma para este patrón; documentar en showcase + referencia Compose."
+    ]
+  },
   "a11y": [
     "customActions en semantics de la fila (TalkBack: acciones personalizadas).",
     "Iconos de fondo con contentDescription («Archivar», «Eliminar», «Restaurar»).",
@@ -51,6 +53,11 @@
     "Ver checklist manual: docs/ux/talkback-checklist-swipe.md"
   ],
   "compose": "// Home — lista «Más viajes»\nSwipeableTripListRow(\n    trip = trip,\n    today = today,\n    showArchivedActions = filterPhase == Archived,\n    onClick = { onTripClick(trip.id) },\n    onArchive = { onArchiveTrip(trip.id) },\n    onUnarchive = { onUnarchiveTrip(trip.id) },\n    onDeleteRequest = { requestDelete(trip.id) },\n)\n\n// Wallet — lista plana\nSwipeableWalletDocumentRow(\n    entry = entry,\n    showArchivedActions = showArchived,\n    onClick = { onEntryClick(entry.id) },\n    onArchive = { onArchive(entry.id) },\n    onUnarchive = { onUnarchive(entry.id) },\n    onDeleteRequest = { requestDelete(entry) },\n)",
+  "decisions": {
+    "source": "Pendiente",
+    "why": "Acciones laterales (archivar, eliminar) con alternativa por tap (menú ⋮) para accesibilidad.",
+    "layer": "Patrón Compose compartido (Home «Más viajes», Wallet)"
+  },
   "changelog": [
     {
       "date": "2026-06-18",

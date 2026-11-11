@@ -24,9 +24,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Ámbito | Tarea |
 |--------|--------|
-| Wallet · design-file | **Gate captura:** versionar `docs/samples/wallet/caps/cap-*.png` · ejecutar `figma-design-file-wallet-cap1.js` (Bridge) · diff caps 10/2/10b/10c/13 vs PNG · caps 3–9 · Part C automatización |
-| Wallet · design-file | Gaps DS: icono **wifi_off** offline · **Wallet QR card** creado (`61403:27255`) pendiente de publicar para instanciar · **Wallet highlight card** (carrusel Próximos en cap 1b) aún frames bindeados, no COMPONENT |
-| — | R6 / P1 resto (menu, swipe, tabs…) |
+| Home swipe revelado | Cap 2 Home sigue en **Horizontal card** (`TripListCard`); no hay cap List Item-Swipe Revealed en «Más viajes». Compose `SwipeableTripListRow` envuelve esa card. |
 
 ---
 
@@ -34,6 +32,19 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-11 | Snackbar | Copy de **dos líneas** → variante `# of lines=Two lines`. Cap 1i corregido en Figma; no usar One line. | `534:8881` · bindings · showcase | Hecho |
+| 2026-11-11 | R6.2 | Wallet cap 1g: `List Item - Swipe` Revealed, copy IB 3254, leading `flight`+círculo, 2 acciones `archive`/`delete` (SVG locales `_library imports`). Home: sin cap swipe revelado (Horizontal card). | `534:12667` · `534:13012` | Hecho |
+| 2026-11-11 | R6.3 | Página `03 · Detalle de viaje`: 4 phones con set **Tabs** Scrollable Primary (Wallet/Plan/Diario/Gastos/Sitios). Cap 1 clona Wallet cap 1. Cap 2–4 chrome + tab selected; cuerpo Plan/Gastos/Sitios **gap** (no Day Hub). Day hub Plan\|Diario ya en `05` `477:2043`. | `261:937` | Hecho (cuerpo 2–4 pendiente) |
+| 2026-11-11 | R6.4 | List items Wallet: 0 `Icon` → MotWallet 40. Cap 1e ocultos IB/Hotel/AVE → glifos tipo + círculo. Leftover `544:8181` hidden. | `04 · Wallet` | Hecho |
+| 2026-11-11 | R6.1 | Fila **Home · Search + Menu** en bindings (cap 2/3). Tabs y swipe documentados; instancias Figma = R6.2–.4. | `figma-compose-bindings.md` | Hecho |
+| 2026-11-11 | Wallet · SoT | Casuística = Compose `@Preview` + `WalletPreviewData`, no capturas de dispositivo. Gate PNG **retirado**. Si preview ≠ captura, gana el preview. | README caps · bindings · §7.1 | Hecho |
+| 2026-11-10 | Wallet · design-file | List items: `Icon` swap por tipo (`flight`/`hotel`/`directions_car`/`confirmation_number`) + `Show circle`. Ya no MotWallet 40 (avión en todas las filas). | `04 · Wallet` caps 1/1b/1d/1e/1g/1h/1i/14 | Hecho |
+| 2026-11-10 | Wallet · DS | **flight_drift:** el `Drift dot` del glifo 24 debe quedar **visible** (ojito abierto). Si el layer está hidden, el swap no pinta el punto. | `zrGAL4v6` `61433:3879` | Hecho |
+| 2026-11-10 | Wallet · DS | **List item Leading=Icon:** property `Leading icon` (swap) en 40 variantes. Preferidos: `MotWalletListLeadingIcon` (set) + `person` + glifos MOT. Default sigue `person`. | `zrGAL4v6` `51964:63037` · `Leading icon#61423:7` | Hecho (falta publicar) |
+| 2026-11-10 | Wallet · design-file | **Highlight instanciado:** 20 frames → `Wallet highlight card` (5 tiras Próximos). Cap 8 banner → `Wallet parse error card`. | `04 · Wallet` · keys `3f17b985…` / `84816aa6…` | Hecho |
+| 2026-11-10 | Wallet · DS | **Opción B:** Highlight/QR/Error/Switch fuera de Stacked card. Stacked = 8 layouts publicados. Nuevos COMPONENT: Wallet highlight card `61419:27164`, Wallet parse error card `61419:27178`. QR y Switch siguen siendo Wallet QR card / offline storage. | `zrGAL4v6` Cards | Hecho |
+| 2026-11-10 | Wallet · design-file | **QR card instanciado:** 10 frames gap → instancias Default/Compact (caps 5/7b/10/10c y clones). `wifi_off` en filas «Sin conexión» (PDF). «QR sin conexión» sigue `qr_code` (= Compose). Leading Drift no inyectable en List item. Stacked Highlight sigue sin publicar. | `04 · Wallet` · import keys QR card | Hecho |
+| 2026-11-10 | Wallet · DS publish | **Paso 1.1 live:** QR card, leading Drift, MotDateField, MotTimeField, offline storage y `wifi_off` **sí importan** en design-file. Stacked **Highlight/QR/Error/Switch** no (set publicado = 8 layouts, archivo DS = 12). Design-file: 0 instancias QR card / leading. | `importComponentByKeyAsync` · `04 · Wallet` | Hecho (check) |
 | 2026-11-06 | Wallet · design-file | **13c** foto de entrada maquetada (Teresa) · `cap-13c.png`. | `534:12865` | Hecho |
 | 2026-11-06 | Wallet · design-file | **7b** Switch Añadir al plan + MotTimeField · **13c** visor imagen = slot (no PDF). | `534:10017` · `534:12865` | Hecho |
 | 2026-11-06 | Wallet · design-file | Casuística restante: 1e–1i, 5b, 7b–7d, 9c–9f, 10d, 12b, 13c–13d, 14/14b. Previews Compose añadidos. Copy viaje pasado quitado de 1b/1c/1d. | `04 · Wallet` · bindings | Hecho |

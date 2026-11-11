@@ -132,7 +132,7 @@ Gate: cada control trazable a línea Compose ([figma-instances-only.mdc](../../.
 
 **Regla de flujo:** copy, fechas, PDFs y previews = fuente Compose (`WalletPreviewData`, `@Preview`, `DebugPastTripsSeeder`); Figma solo instancias DS publicadas. Si falta componente en librería → **gap de paridad**, no UI inventada.
 
-**Gate visual (2026-11-05):** paridad cerrada solo con diff **captura app** ↔ screenshot `phone` 360×800. Inventario PNG: [`docs/samples/wallet/caps/README.md`](../../samples/wallet/caps/README.md). Si preview ≠ captura → design-file sigue la captura (gap documentado).
+**SoT visual (2026-11-11):** paridad = `@Preview` Compose ↔ `phone` Figma. Las capturas de dispositivo no son gate: no recogen la matriz (sin viajes, un viaje, próximo, con/sin tickets…). Si preview ≠ captura, gana el preview. Mapa: [`docs/samples/wallet/caps/README.md`](../../samples/wallet/caps/README.md).
 
 | Capture | Composable(s) | Cap Figma | Script / datos Compose |
 |---------|---------------|-----------|-------------------------|
@@ -158,12 +158,14 @@ Auditoría puntual: grep en plugin / reporte «frames con LEGACY» en design-fil
 
 ## 9. R6 — Otros gaps P1 (después de date)
 
-Del [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md) §4 P1:
+Del [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md) §4 P1. SoT = Compose `@Preview`.
 
-1. Fila **Search bar + Menu** en bindings (Home)
-2. **List Item - Swipe** ↔ `SwipeableTripListRow`
-3. **Tabs** ↔ `MOTTab` / Trip detail
-4. Revisar caps Wallet ya auditados vs instancias actuales
+| # | Pieza | Estado |
+|---|--------|--------|
+| R6.1 | Fila **Home · Search + Menu** en bindings | Hecho 2026-11-11 · [figma-compose-bindings.md](../figma-compose-bindings.md) |
+| R6.2 | **List Item - Swipe** en design-file: Home `SwipeableTripListRow` + Wallet cap 1g (quitar MotWallet del leading) | Wallet 1g hecho (`534:12667` archive/delete). Home revelado **no** (Horizontal card). |
+| R6.3 | **Tabs** en `03 · Detalle de viaje` y `05 · Día & itinerario` = instancias del set Tabs (`MOTTab`) | Tabs instanciados. `03` caps 2–4 cuerpo vacío (gap `TripPlanTab` / Gastos / Sitios). Day hub `477:2043` Plan\|Diario. |
+| R6.4 | Caps Wallet vs instancias actuales (post-iconos) | Hecho: list items tipo-glifo; MotWallet leftover oculto. |
 
 ---
 

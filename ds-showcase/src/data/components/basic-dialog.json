@@ -42,18 +42,40 @@
     "mot/spacing/dialog/section-gap (16)",
     "mot/spacing/dialog/actions-gap (8)"
   ],
+  "guidelines": {
+    "label": "Material Design 3 · Dialogs",
+    "url": "https://m3.material.io/components/dialogs/guidelines",
+    "consulted": "2026-11-10"
+  },
   "dos": [
-    "Instancia `Basic dialog` en design-file; properties TEXT del set.",
-    "Icono + texto en errores; confirm destructivo con color `error` en label.",
-    "Wallet caps 7/11/12 alineados a `WalletConfirmDialog` / `WalletDeleteEntryDialog` / `WalletDiscardDialog`.",
-    "`BackHandler` + diálogo descartable solo con cambios sin guardar."
+    "Úsalo con moderación, para avisos que bloquean el funcionamiento normal o información crítica que requiere una decisión, una tarea o una confirmación.",
+    "Titular breve y claro: una afirmación o pregunta concreta que explique qué implica la petición.",
+    "Como máximo dos acciones: si hay una sola, debe ser una confirmación de lectura; si hay dos, una confirma y la otra descarta.",
+    "Alinea los botones al borde final del diálogo: la acción de confirmar, más cerca del borde, y la de descartar a su izquierda.",
+    "Deshabilita la acción de confirmar hasta que se haya hecho una elección; las acciones de descartar nunca se deshabilitan.",
+    "Muestra dos botones de texto, uno junto a otro."
   ],
   "donts": [
-    "No BODY con TEXT suelto encima del dialog en Figma.",
-    "No mezclar `Corner/Medium` de cards — dialog = Extra-large.",
-    "No añadir Switch suelto en cap Figma si no existe en la variante del set.",
-    "No bloquear dismiss sin copy claro (Seguir editando / Cancelar)."
+    "No uses un diálogo para información de prioridad baja o media: usa un snackbar.",
+    "No empieces el titular con disculpas («Perdona la interrupción»), alarma («¡Atención!») ni ambigüedad («¿Estás seguro?»).",
+    "No coloques las acciones de descarte a la derecha de las de confirmación.",
+    "Evita opciones poco claras: «Cancelar» no tiene sentido si no se propone una acción concreta.",
+    "No añadas una tercera acción como «Más información»: saca al usuario del diálogo y deja la tarea sin terminar."
   ],
+  "productRules": {
+    "dos": [
+      "Instancia `Basic dialog` en design-file; properties TEXT del set.",
+      "Icono + texto en errores; confirm destructivo con color `error` en label.",
+      "Wallet caps 7/11/12 alineados a `WalletConfirmDialog` / `WalletDeleteEntryDialog` / `WalletDiscardDialog`.",
+      "`BackHandler` + diálogo descartable solo con cambios sin guardar."
+    ],
+    "donts": [
+      "No BODY con TEXT suelto encima del dialog en Figma.",
+      "No mezclar `Corner/Medium` de cards — dialog = Extra-large.",
+      "No añadir Switch suelto en cap Figma si no existe en la variante del set.",
+      "No bloquear dismiss sin copy claro (Seguir editando / Cancelar)."
+    ]
+  },
   "a11y": [
     "Foco atrapado en dialog; dismiss con back donde aplique.",
     "Headline leído antes que supporting text.",
@@ -66,6 +88,11 @@
     { "cap": "11 · eliminar", "figma": "492:3372", "icon": true, "ctas": "Cancelar / Eliminar" },
     { "cap": "12 · descartar", "figma": "492:3414", "icon": true, "ctas": "Seguir editando / Descartar" }
   ],
+  "decisions": {
+    "source": "Figma node 50723-10929 · Compose `AlertDialog` (M3)",
+    "why": "Interrumpir la tarea solo para confirmar o advertir de pérdida de datos: guardar en Wallet (H7), eliminar, descartar cambios.",
+    "layer": "M3 `AlertDialog` con `MOTTextButton` en las acciones"
+  },
   "changelog": [
     { "date": "2026-10-29", "note": "Fase B.3: Extra-large + mot/padding|spacing/dialog/*; Wallet caps instanciados." },
     { "date": "2026-10-30", "note": "Playground modal con Escape y scrim; copy ampliado." }

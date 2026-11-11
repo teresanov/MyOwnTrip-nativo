@@ -1,8 +1,10 @@
-# Wallet · capturas SoT (app real)
+# Wallet · matriz de caps
 
-**Gate de paridad design-file:** screenshot del frame `phone` (360×800) ≈ PNG de esta carpeta. Si `@Preview` y captura difieren, gana la **captura** ([§7.1](../../design-system/audits/disparity-remediation-plan-2026-11-03.md)).
+**SoT de casuística:** Compose — `@Preview` nombrados + `WalletPreviewData` (vacío, un viaje, en curso, pasado, con/sin documentos, import, drift, visor…). Una captura de dispositivo es **un instante** de la app, no el catálogo: no cubre todos los casos y **no gana** al preview.
 
-**Media mientras no hay PNG:** en Figma dejar **slot** (no inventar foto). Avisar al cerrar el cap. Teresa rellena la imagen después. Los PNG de esta carpeta siguen siendo el SoT cuando existan.
+Figma espeja esos previews (instancias DS). PNG en esta carpeta = referencia opcional, no gate de paridad.
+
+**Media:** en Figma, slot hasta que haya asset de producto; no inventar foto.
 
 ## Convención de nombres
 
@@ -16,7 +18,7 @@
 | `cap-01f.png` | `533:8406` | `WalletScreenActiveEmptyPreview` | Activos vacío |
 | `cap-01g.png` | `534:13012` | swipe Archivar | List Item - Swipe |
 | `cap-01h.png` | `534:9746` | menú ⋮ | Archivar / Eliminar |
-| `cap-01i.png` | `534:8881` | snackbar archivado | Deshacer |
+| `cap-01i.png` | `534:8881` | snackbar archivado | Deshacer · Figma **Two lines** |
 | `cap-02.png` | `491:13915` | `WalletScreenEmptyPreview` | Vacío «Tu maleta digital» |
 | `cap-03.png` | `491:13928` | `WalletAwaitingPickerPreview` | Importar · selector del sistema abierto · Rellenar → cap 9 |
 | `cap-04.png` … `cap-08.png` | (crear/actualizar) | `WalletFormScreen.kt` previews | Analizar / revisar / parse fail |
@@ -40,10 +42,8 @@
 | `cap-14.png` | `534:13526` | `WalletLinkDialog` | Desde el plan |
 | `cap-14b.png` | `534:14423` | vincular vacío | Añadir documento a Wallet |
 
-## Cómo añadir PNG al repo
+## PNG opcionales
 
-1. Exportar desde dispositivo/emulador (360×800 lógico o crop centrado).
-2. Guardar con el nombre de la tabla (`cap-NN.png`).
-3. Actualizar columna `capture:` en [`figma-compose-bindings.md`](../../design-system/figma-compose-bindings.md) § Wallet.
+Si se guarda una foto de dispositivo, usar el nombre de la tabla. No sustituye al preview ni cierra paridad.
 
 Los PDFs de demo siguen en [`../`](../) (misma escena Barcelona).

@@ -57,18 +57,44 @@
     "mot/padding/text-field/vertical (4)",
     "mot/spacing/component-xs"
   ],
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Text fields",
+        "url": "https://m3.material.io/components/text-fields/overview"
+      },
+      {
+        "label": "Material Web · Text field",
+        "url": "https://material-web.dev/components/text-field/"
+      }
+    ],
+    "consulted": "2026-11-10"
+  },
   "dos": [
-    "Declara un campo por dato y dale ancho completo en columnas de formulario (`Modifier.fillMaxWidth()`).",
-    "Comunica errores con `isError`, texto de apoyo y el icono que aporta Material cuando corresponda — nunca solo color.",
-    "Centraliza labels y mensajes en los strings de producto (CreateTrip, Wallet, Expenses).",
-    "Respeta `MaterialTheme.shapes.extraSmall` (4 dp), alineado a `Corner/Extra-small` en Figma."
+    "Haz que los campos parezcan interactivos.",
+    "Elige Outlined en formularios largos (su menor énfasis simplifica el layout) y Filled en diálogos y formularios cortos (llama más la atención).",
+    "Haz visible el estado del campo (vacío, con texto, error…) de un vistazo.",
+    "Mantén las etiquetas y los mensajes de error breves y fáciles de accionar.",
+    "Etiqueta cada campo —label flotante, placeholder o etiqueta externa— para que se entienda qué dato se espera.",
+    "Usa el texto de apoyo para explicar cómo se usará el dato; al validar, sustitúyelo por el texto de error.",
+    "Usa iconos para indicar el método de entrada (buscar), añadir una función (borrar) o expresar un error.",
+    "Elige el teclado y el tipo de entrada adecuados al dato (email, número, teléfono…)."
   ],
-  "donts": [
-    "No añadas TextField Filled en flujos nuevos salvo que documentes un gap explícito.",
-    "No inventes tokens por estado (`hover`, `pressed`) ni primitivos legacy en UI.",
-    "No uses Fraunces en label ni en el texto del input.",
-    "No simules campos con rectángulos sueltos en Figma: instancia el set Outlined."
-  ],
+  "donts": [],
+  "productRules": {
+    "dos": [
+      "Declara un campo por dato y dale ancho completo en columnas de formulario (`Modifier.fillMaxWidth()`).",
+      "Comunica errores con `isError`, texto de apoyo y el icono que aporta Material cuando corresponda — nunca solo color.",
+      "Centraliza labels y mensajes en los strings de producto (CreateTrip, Wallet, Expenses).",
+      "Respeta `MaterialTheme.shapes.extraSmall` (4 dp), alineado a `Corner/Extra-small` en Figma."
+    ],
+    "donts": [
+      "No añadas TextField Filled en flujos nuevos salvo que documentes un gap explícito.",
+      "No inventes tokens por estado (`hover`, `pressed`) ni primitivos legacy en UI.",
+      "No uses Fraunces en label ni en el texto del input.",
+      "No simules campos con rectángulos sueltos en Figma: instancia el set Outlined."
+    ]
+  },
   "a11y": [
     "Label asociado al campo (TalkBack lee label + valor + error).",
     "Supporting text de error en `liveRegion` cuando cambia tras submit.",
@@ -81,6 +107,11 @@
     { "screen": "WalletFormScreen", "fields": "Título, notas, metadatos adjunto" },
     { "screen": "ExpenseFormScreen", "fields": "Importe, concepto, categoría" }
   ],
+  "decisions": {
+    "source": "Figma node 52798-24373 · Compose `OutlinedTextField` (M3)",
+    "why": "Recoger texto del usuario en formularios; en pantallas nuevas, Outlined de M3 enlazada al tema.",
+    "layer": "M3 directo, enlazado al tema"
+  },
   "changelog": [
     { "date": "2026-10-29", "note": "Fase B.3: set Outlined → Corner/Extra-small + mot/padding/text-field/*; 0 LEGACY." },
     { "date": "2026-10-30", "note": "Playground editable + toggle de error; copy orientado a diseño." }

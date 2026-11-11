@@ -42,22 +42,46 @@
     "surfaceContainerHigh (avatar)",
     "shapes.medium"
   ],
+  "guidelines": {
+    "label": "Material Design 3 · Cards",
+    "url": "https://m3.material.io/components/cards/guidelines",
+    "consulted": "2026-11-10"
+  },
   "dos": [
-    "Outlined en feeds; Elevated en promos destacadas.",
-    "Mapear properties Figma 1:1 a MotStackedCard.",
-    "Home vacío: HomeEmptyStackedCard (instancia documentada)."
+    "Usa una card para mostrar contenido y acciones sobre un único tema.",
+    "Facilita el escaneo: la jerarquía de texto e imágenes debe ser clara (titular, subtítulo, texto de apoyo).",
+    "Elige la variante (Elevated, Filled u Outlined) por estilo: ofrecen la misma legibilidad y funcionalidad; Outlined aporta más énfasis y Filled menos.",
+    "Muestra las cards en colecciones (grid, lista vertical o carrusel); en una colección comparten la misma elevación en reposo.",
+    "Coloca los filtros y el orden fuera de la colección de cards; el filtro debe aplicarse a todas.",
+    "Si pones texto o iconos sobre una imagen, asegura el contraste con un scrim translúcido o una forma contenedora."
   ],
   "donts": [
-    "No Filled (CUT).",
-    "No OutlinedCard ad hoc en pantallas si encaja un layout de este set.",
-    "No icono decorativo arbitrario en Text only — copy + dismiss si aplica."
+    "No fuerces contenido en cards cuando el espaciado, los titulares o los divisores darían una jerarquía más simple.",
+    "Evita poner texto o iconos sobre imágenes si no es necesario."
   ],
+  "productRules": {
+    "dos": [
+      "Outlined en feeds; Elevated en promos destacadas.",
+      "Mapear properties Figma 1:1 a MotStackedCard.",
+      "Home vacío: HomeEmptyStackedCard (instancia documentada)."
+    ],
+    "donts": [
+      "No Filled (CUT).",
+      "No OutlinedCard ad hoc en pantallas si encaja un layout de este set.",
+      "No icono decorativo arbitrario en Text only — copy + dismiss si aplica."
+    ]
+  },
   "a11y": [
     "Dismiss con contentDescription.",
     "Imagen media con alt cuando es informativa.",
     "Avatar decorativo si el header ya se anuncia."
   ],
   "compose": "MotStackedCard(style, headerText, subheadText, …)\nHomeEmptyStackedCard()",
+  "decisions": {
+    "source": "Figma node 52346-27573 · Compose `MotStackedCard` (MOT)",
+    "why": "Card editorial: Outlined en listas y feeds, Elevated en destacados.",
+    "layer": "Componente MOT (`MotStackedCard`)"
+  },
   "changelog": [
     {
       "date": "2026-06-19",

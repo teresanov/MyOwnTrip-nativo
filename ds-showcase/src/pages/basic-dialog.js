@@ -1,5 +1,6 @@
 import { initShowcasePage } from "../lib/bootstrap.js";
 import data from "../data/components/basic-dialog.json";
+import { mountDecisions } from "../lib/decisions.js";
 import {
   renderA11ySection,
   renderChangelog,
@@ -12,6 +13,8 @@ import {
 } from "../lib/component-page.js";
 
 initShowcasePage("components", { componentId: "basic-dialog" });
+
+mountDecisions(data);
 
 document.getElementById("component-header").innerHTML = renderComponentHeader(
   data,

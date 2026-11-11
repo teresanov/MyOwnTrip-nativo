@@ -1,7 +1,11 @@
 import { initShowcasePage, statusChip } from "../lib/bootstrap.js";
 import data from "../data/components/trip-hero-card.json";
+import { mountDecisions } from "../lib/decisions.js";
+import { renderGuidelines } from "../lib/component-page.js";
 
 initShowcasePage("components", { componentId: "trip-hero-card" });
+
+mountDecisions(data);
 
 document.getElementById("component-header").innerHTML = `
   <p class="page-header__eyebrow">Component · Cards · ${data.priority || "P1"}</p>
@@ -43,15 +47,7 @@ document.getElementById("component-main").innerHTML = `
     <p><code>${data.tokens.join("</code>, <code>")}</code></p>
   </section>
 
-  <section class="section">
-    <h2>Do</h2>
-    <ul class="list-dos">${data.dos.map((d) => `<li>${d}</li>`).join("")}</ul>
-  </section>
-
-  <section class="section">
-    <h2>Don't</h2>
-    <ul class="list-dos list-dos--dont">${data.donts.map((d) => `<li>${d}</li>`).join("")}</ul>
-  </section>
+  ${renderGuidelines(data)}
 
   <section class="section">
     <h2>Accesibilidad</h2>

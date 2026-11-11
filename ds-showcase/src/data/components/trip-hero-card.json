@@ -44,20 +44,22 @@
     "headlineSmall-emphasized / titleMedium / bodyMedium",
     "shapes.medium (12dp)"
   ],
-  "dos": [
-    "Una TripHeroCard por Home (viaje destacado).",
-    "Image fill en Background — se adapta al ancho del card con padding de pantalla.",
-    "Eyebrow label Color=Tertiary según fase del viaje.",
-    "CTA «Ver detalles» como única acción interactiva.",
-    "Instanciar desde librería DS publicada."
-  ],
-  "donts": [
-    "No usar Stacked · Media only para este patrón.",
-    "No Assist chip ni Filter chip en la portada.",
-    "No hacer clickable la portada ni el eyebrow.",
-    "No duplicar el saludo/displaySmall del hero de página.",
-    "No avatar ni menú en la portada."
-  ],
+  "productRules": {
+    "dos": [
+      "Una TripHeroCard por Home (viaje destacado).",
+      "Image fill en Background — se adapta al ancho del card con padding de pantalla.",
+      "Eyebrow label Color=Tertiary según fase del viaje.",
+      "CTA «Ver detalles» como única acción interactiva.",
+      "Instanciar desde librería DS publicada."
+    ],
+    "donts": [
+      "No usar Stacked · Media only para este patrón.",
+      "No Assist chip ni Filter chip en la portada.",
+      "No hacer clickable la portada ni el eyebrow.",
+      "No duplicar el saludo/displaySmall del hero de página.",
+      "No avatar ni menú en la portada."
+    ]
+  },
   "a11y": [
     "Único control interactivo: CTA «Ver detalles» (48dp).",
     "Eyebrow y textos de portada: incluir fase y countdown en contentDescription del bloque o del CTA según implementación.",
@@ -66,6 +68,11 @@
     "Show countdown=false oculta la línea de countdown."
   ],
   "compose": "com.myowntrip.app.ui.components.TripHeroCard(trip, today, onClick)",
+  "decisions": {
+    "source": "Figma node 61199-7862 · Compose `TripHeroCard` (MOT)",
+    "why": "Portada del viaje destacado en Home: imagen, fase y un único CTA.",
+    "layer": "Patrón de producto MyOwnTrip"
+  },
   "changelog": [
     {
       "date": "2026-06-17",

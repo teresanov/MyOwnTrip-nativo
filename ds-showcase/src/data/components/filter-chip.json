@@ -37,18 +37,41 @@
     "mot/spacing/chip/gap (8) — gap entre chips en fila",
     "MOTSpacing.componentSm — gap entre chips en Compose (Wallet)"
   ],
+  "guidelines": {
+    "label": "Material Design 3 · Chips",
+    "url": "https://m3.material.io/components/chips/guidelines",
+    "consulted": "2026-11-10"
+  },
   "dos": [
-    "Agrupa los chips en una fila con scroll horizontal y separación `MOTSpacing.componentSm` entre elementos.",
-    "Mantén una sola opción seleccionada por eje de filtro (como Activos / Archivados / Todos).",
-    "Usa copy corto y claro en español; en Figma ajusta la propiedad Label de la instancia, no texto suelto encima.",
-    "Reserva AssistChip para los pocos flujos que ya lo tienen; no lo uses donde corresponde Eyebrow label."
+    "Usa chips para presentar opciones contextuales y complementarias.",
+    "Muestra los chips siempre en un conjunto; pueden desplazarse horizontalmente.",
+    "Etiquetas cortas (20 caracteres o menos), con la misma tipografía que los botones.",
+    "Redacta los filter chips con sustantivos que describan la categoría que se incluye en los resultados.",
+    "Al tocar un filter chip se activa y aparece un check al inicio de la etiqueta; puede permitirse selección múltiple o de un solo chip.",
+    "Define el borde del chip con un contorno (outline) sobre fondos normales; la elevación solo si va sobre una imagen."
   ],
   "donts": [
-    "No reintroduzcas la variante Elevated del set (fue eliminada en la Fase D de la librería).",
-    "No uses esquinas Extra-small en chips: ese radio pertenece al Text field.",
-    "No dibujes chips con frames sueltos en el design-file; instancia siempre el set publicado.",
-    "No sustituyas el menú de filtro de Home por FilterChip: el patrón acordado es Menu."
+    "No sustituyas acciones principales por chips: las acciones que avanzan o retroceden en un paso van siempre como botones.",
+    "No uses chips para terminar o avanzar una tarea; el último paso de una tarea es un botón.",
+    "No muestres un chip suelto: deben aparecer en un conjunto.",
+    "No mezcles selección única y múltiple entre los conjuntos de chips de una misma pantalla.",
+    "No eleves los chips cuando están directamente sobre la página, ni uses la elevación para indicar el estado pulsado (usa el ripple).",
+    "Evita frases negativas en los filter chips, como «Excluir imágenes»."
   ],
+  "productRules": {
+    "dos": [
+      "Agrupa los chips en una fila con scroll horizontal y separación `MOTSpacing.componentSm` entre elementos.",
+      "Mantén una sola opción seleccionada por eje de filtro (como Activos / Archivados / Todos).",
+      "Usa copy corto y claro en español; en Figma ajusta la propiedad Label de la instancia, no texto suelto encima.",
+      "Reserva AssistChip para los pocos flujos que ya lo tienen; no lo uses donde corresponde Eyebrow label."
+    ],
+    "donts": [
+      "No reintroduzcas la variante Elevated del set (fue eliminada en la Fase D de la librería).",
+      "No uses esquinas Extra-small en chips: ese radio pertenece al Text field.",
+      "No dibujes chips con frames sueltos en el design-file; instancia siempre el set publicado.",
+      "No sustituyas el menú de filtro de Home por FilterChip: el patrón acordado es Menu."
+    ]
+  },
   "a11y": [
     "Cada chip: rol toggleable; anunciar selected/unselected.",
     "Alternativa sin scroll horizontal forzado: mismo filtro accesible vía Menu donde aplique.",
@@ -60,6 +83,11 @@
     { "screen": "ExpenseFormScreen", "pattern": "Categoría y método de pago" },
     { "screen": "JournalAddScreen", "pattern": "Tipo de entrada" }
   ],
+  "decisions": {
+    "source": "Figma node 53923-28270 · Compose `FilterChip` (M3)",
+    "why": "Elegir una opción dentro de un conjunto pequeño con un toque (Wallet, formularios).",
+    "layer": "M3 directo, sin wrapper"
+  },
   "changelog": [
     { "date": "2026-10-29", "note": "Fase B.3: Corner/Small + mot/padding/chip/*; Wallet 6 instancias; 0 LEGACY." },
     { "date": "2026-10-30", "note": "Ficha showcase: playgrounds interactivos + copy legible (estilo Material)." }

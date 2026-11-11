@@ -128,13 +128,13 @@ Inventario de poda KEEP/CUT/LATER: [figma-prune-inventory.md](../figma-prune-inv
 
 | Tema | Notas |
 |------|-------|
-| Menu + Search (filtros Home) | Patrón documentado; completar fila “Search bar + Menu” en bindings |
+| Menu + Search (filtros Home) | Fila **Home · Search + Menu** en bindings (R6.1, 2026-11-11) |
 | Bottom sheets | Muy usados; set Bottom sheet — auditar instancias en design-file |
 | Date/time | MotDate* vs sets Figma — matriz estados |
-| List item / swipe | Compose usa poco `ListItem`; Home tiene `SwipeableTripListRow` ↔ List Item - Swipe |
+| List item / swipe | Wallet cap 1g Revealed (`534:12667` archive/delete). Home sigue Horizontal card; revelado Home no maquetado. |
 | Document attachment | Compose + set Figma Cards — añadir a bindings |
 | Icon button | MOTIconButton vs 4 familias Figma — Square reposo 0 |
-| Tabs | Trip detail tabs ↔ Tabs set |
+| Tabs | `MOTTab` · `03` `261:937` 5 tabs; Day hub `477:2043` Plan\|Diario. Cuerpo Plan/Gastos/Sitios en `03` aún gap. |
 | Dividers | `MOTHorizontalDivider` ↔ Dividers · audit [C](figma-dividers-phase-c-2026-10-29.md) |
 
 ### P2 — En Figma KEEP / Should, poco o nada en Compose MVP

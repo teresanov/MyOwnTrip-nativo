@@ -1,5 +1,6 @@
 import { initShowcasePage } from "../lib/bootstrap.js";
 import data from "../data/components/snackbar.json";
+import { mountDecisions } from "../lib/decisions.js";
 import {
   renderA11ySection,
   renderAnatomy,
@@ -13,6 +14,8 @@ import {
 } from "../lib/component-page.js";
 
 initShowcasePage("components", { componentId: "snackbar" });
+
+mountDecisions(data);
 
 document.getElementById("component-header").innerHTML = renderComponentHeader(
   data,
