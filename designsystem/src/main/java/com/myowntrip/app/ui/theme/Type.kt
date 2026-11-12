@@ -181,3 +181,10 @@ val AppTypography = Typography(
     letterSpacing = 0.5.sp,
   ),
 )
+
+/**
+ * Figma `M3/headline/small-emphasized`: mismo cuerpo que [Typography.headlineSmall]
+ * (Fraunces 24 / lineHeight 32) con peso Black. M3 Typography no trae slot emphasized.
+ */
+val Typography.headlineSmallEmphasized: TextStyle
+  get() = headlineSmall.copy(fontWeight = FontWeight.Black)

@@ -40,6 +40,7 @@ import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
+import com.myowntrip.app.ui.theme.headlineSmallEmphasized
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -121,7 +122,7 @@ fun SpreadCaptionSheetContent(
       .padding(bottom = MOTSpacing.layoutLg),
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
   ) {
-    Text(text = title, style = MaterialTheme.typography.headlineSmall)
+    Text(text = title, style = MaterialTheme.typography.headlineSmallEmphasized)
     if (pieceType == JournalPieceType.TEXT) {
       Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         FilterChip(
@@ -256,7 +257,7 @@ fun EventBookmarkPickerContent(
       .padding(bottom = MOTSpacing.layoutLg),
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
   ) {
-    Text(text = "¿Qué evento marcas?", style = MaterialTheme.typography.headlineSmall)
+    Text(text = "¿Qué evento marcas?", style = MaterialTheme.typography.headlineSmallEmphasized)
     if (blocks.isEmpty()) {
       Text(
         text = "No hay actividades en el plan de hoy. Añade una en la pestaña Plan.",
@@ -356,7 +357,7 @@ fun EventBookmarkCaptureContent(
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
   ) {
     EyebrowLabel(text = eventTitle)
-    Text(text = "Recuerdo del evento", style = MaterialTheme.typography.headlineSmall)
+    Text(text = "Recuerdo del evento", style = MaterialTheme.typography.headlineSmallEmphasized)
     BasicTextField(
       value = caption,
       onValueChange = onCaptionChange,

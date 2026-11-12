@@ -32,6 +32,7 @@ import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
+import com.myowntrip.app.ui.theme.headlineSmallEmphasized
 
 enum class HomeFabAddMode {
   Document,
@@ -77,7 +78,7 @@ fun HomeFabAddSheet(
           HomeFabAddMode.Document -> "Añadir documento"
           HomeFabAddMode.Souvenir -> "Añadir recuerdo"
         },
-        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.headlineSmallEmphasized,
       )
       Text(
         text = when (mode) {

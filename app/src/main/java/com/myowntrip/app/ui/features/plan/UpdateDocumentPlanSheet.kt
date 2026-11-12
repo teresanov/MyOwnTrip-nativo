@@ -29,6 +29,7 @@ import com.myowntrip.app.ui.components.date.MotTimeTextField
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
+import com.myowntrip.app.ui.theme.headlineSmallEmphasized
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -65,7 +66,7 @@ fun UpdateDocumentPlanSheet(
         .padding(bottom = MOTSpacing.screenContentBottom),
       verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
     ) {
-      Text("Corregir horario", style = MaterialTheme.typography.titleLarge)
+      Text("Corregir horario", style = MaterialTheme.typography.headlineSmallEmphasized)
       Text(
         text = blockTitle,
         style = MaterialTheme.typography.titleMedium,
