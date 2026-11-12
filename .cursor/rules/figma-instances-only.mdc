@@ -45,6 +45,7 @@ Si no has leído el composable del flujo → **no construyas la pantalla**.
 3. Todo control = `INSTANCE` (o hijo de instancia); sets complejos en el **DS**.
 4. Tipografía/iconos/copy = los del SoT (Fraunces/Inter, iconos nombrados, strings exactos).
 5. Bindings: `ds-binding-governance.mdc` + `icon-color-consumption.mdc`.
+6. **Pantallas:** padding y `itemSpacing` del Body y stacks de producto **enlazados** a `mot/spacing/*` (ver `figma-app-flows.mdc`). Cero literales de margen entre pantallas.
 
 ## Don't
 

@@ -55,8 +55,8 @@
       "summary": "Feedback breve tras guardar, con opción de deshacer."
     },
     {
-      "id": "card",
-      "name": "Card",
+      "id": "stacked-card",
+      "name": "Stacked card",
       "status": "ready",
       "priority": "P1",
       "category": "contenido",

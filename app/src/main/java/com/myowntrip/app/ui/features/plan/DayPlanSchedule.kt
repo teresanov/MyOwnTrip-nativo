@@ -2,8 +2,6 @@ package com.myowntrip.app.ui.features.plan
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,11 +13,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -44,7 +39,6 @@ import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -56,7 +50,6 @@ import com.myowntrip.app.domain.plan.DayPlanScheduleLogic
 import com.myowntrip.app.domain.plan.PlanPlacementDriftLogic
 import com.myowntrip.app.domain.plan.PlanPlacementLogic
 import com.myowntrip.app.domain.plan.TimelineBlockLayout
-import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 import kotlin.math.roundToInt
 
@@ -289,12 +282,6 @@ private fun TimelineGridEvent(
     append(timeLabel)
     sourceLabel?.let { append(" · ").append(it) }
   }
-  val shape = RoundedCornerShape(8.dp)
-  val borderColor = if (isWalletLinked) {
-    MaterialTheme.colorScheme.tertiary
-  } else {
-    MaterialTheme.colorScheme.outline
-  }
 
   val dragModifier = if (canDrag) {
     Modifier.pointerInput(block.id, layout.startMinutes, block.timeLabel) {
@@ -367,12 +354,17 @@ private fun TimelineGridEvent(
     )
   }
 
-  Card(
+  PlanTimelineBlock(
+    title = block.title,
+    meta = scheduleMetaLabel,
+    wallet = isWalletLinked,
+    dragging = isDragging,
+    showOverflow = !readOnly,
+    copyModifier = interactionModifier,
     modifier = modifier
       .padding(horizontal = 4.dp)
       .offset { IntOffset(0, displayTopPx.roundToInt()) }
       .height(blockHeight)
-      .fillMaxWidth()
       .semantics {
         contentDescription = buildString {
           append("${block.title}, $timeLabel")
@@ -415,110 +407,59 @@ private fun TimelineGridEvent(
           customActions = actions
         }
       },
-    shape = shape,
-    colors = CardDefaults.cardColors(
-      containerColor = if (isDragging) {
-        MaterialTheme.colorScheme.secondaryContainer
-      } else {
-        MaterialTheme.colorScheme.surfaceContainerHigh
-      },
-    ),
-    elevation = CardDefaults.cardElevation(
-      defaultElevation = if (isDragging) 6.dp else 1.dp,
-    ),
-  ) {
-    Row(
-      modifier = Modifier
-        .fillMaxSize()
-        .border(1.dp, borderColor, shape)
-        .padding(horizontal = MOTSpacing.componentSm, vertical = 6.dp),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      Column(
-        modifier = Modifier
-          .weight(1f)
-          .then(interactionModifier),
+    overflowMenu = {
+      PlanTimelineBlockOverflowButton(onClick = { menuExpanded = true })
+      DropdownMenu(
+        expanded = menuExpanded,
+        onDismissRequest = { menuExpanded = false },
       ) {
-        Text(
-          text = block.title,
-          style = MaterialTheme.typography.titleSmall,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-        )
-        Text(
-          text = scheduleMetaLabel,
-          style = MaterialTheme.typography.labelSmall,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          modifier = Modifier.padding(top = 2.dp),
-        )
-      }
-      if (!readOnly) {
-        Box {
-          MOTIconButton(
-            onClick = { menuExpanded = true },
-            modifier = Modifier.semantics { contentDescription = "Opciones de actividad" },
-          ) {
-            Icon(
-              imageVector = MOTIcons.MoreVert,
-              contentDescription = null,
-              tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-          }
-          DropdownMenu(
-            expanded = menuExpanded,
-            onDismissRequest = { menuExpanded = false },
-          ) {
-            if (isWalletLinked) {
-              DropdownMenuItem(
-                text = { Text("Corregir horario") },
-                leadingIcon = {
-                  Icon(MOTIcons.Schedule, contentDescription = null)
-                },
-                onClick = {
-                  menuExpanded = false
-                  onRequestUpdatePlan()
-                },
-              )
-            } else {
-              DropdownMenuItem(
-                text = { Text("Editar hora") },
-                leadingIcon = {
-                  Icon(MOTIcons.Schedule, contentDescription = null)
-                },
-                onClick = {
-                  menuExpanded = false
-                  editTimeValue = timeLabel
-                  showTimeDialog = true
-                },
-              )
-              if (tripDays.isNotEmpty()) {
-                DropdownMenuItem(
-                  text = { Text("Mover a otro día") },
-                  leadingIcon = {
-                    Icon(MOTIcons.Today, contentDescription = null)
-                  },
-                  onClick = {
-                    menuExpanded = false
-                    onMoveToDay()
-                  },
-                )
-              }
-            }
+        if (isWalletLinked) {
+          DropdownMenuItem(
+            text = { Text("Corregir horario") },
+            leadingIcon = {
+              Icon(MOTIcons.Schedule, contentDescription = null)
+            },
+            onClick = {
+              menuExpanded = false
+              onRequestUpdatePlan()
+            },
+          )
+        } else {
+          DropdownMenuItem(
+            text = { Text("Editar hora") },
+            leadingIcon = {
+              Icon(MOTIcons.Schedule, contentDescription = null)
+            },
+            onClick = {
+              menuExpanded = false
+              editTimeValue = timeLabel
+              showTimeDialog = true
+            },
+          )
+          if (tripDays.isNotEmpty()) {
             DropdownMenuItem(
-              text = { Text("Vincular documento de Wallet") },
+              text = { Text("Mover a otro día") },
               leadingIcon = {
-                Icon(MOTIcons.ConfirmationNumber, contentDescription = null)
+                Icon(MOTIcons.Today, contentDescription = null)
               },
               onClick = {
                 menuExpanded = false
-                onLinkWallet()
+                onMoveToDay()
               },
             )
           }
         }
+        DropdownMenuItem(
+          text = { Text("Vincular documento de Wallet") },
+          leadingIcon = {
+            Icon(MOTIcons.ConfirmationNumber, contentDescription = null)
+          },
+          onClick = {
+            menuExpanded = false
+            onLinkWallet()
+          },
+        )
       }
-    }
-  }
+    },
+  )
 }

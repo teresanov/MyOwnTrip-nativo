@@ -15,6 +15,8 @@ alwaysApply: true
 
 Si la propiedad admite binding y **no** existe token/estilo → **gap del sistema**: crearlo (o importar desde Figma) y enlazar; no dejar el literal “temporal” sin reportar.
 
+**Pantallas (design-file):** el mismo gate aplica a frames de layout **dentro de `phone`**. Padding horizontal = `mot/spacing/screen-horizontal`; gaps de bloque = `layout-md` / `component-sm|xs`; colchón inferior = `screen-content-bottom` (o `…-with-fab`). No montar una cap con 16/8/24 escritos a mano.
+
 ## Proceso
 
 - En tareas de Design System, el binding de variables es un gate de salida, no una limpieza opcional.

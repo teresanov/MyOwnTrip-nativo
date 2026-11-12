@@ -31,7 +31,7 @@ Sin aviso, **no** hay paridad inversa: Figma sigue al código.
 | Paso | Dónde | Qué se hace | Salida |
 |------|-------|-------------|--------|
 | **1. Compose** (SoT) | `designsystem/`, `ui/components/` | Crear o ajustar el composable con tokens del tema: `colorScheme`, `MaterialTheme.shapes`, `MOTSpacing`, `AppTypography`. Añadir `@Preview` claro y oscuro. | Código compilando |
-| **2. Figma** (espejo) | Librería `zrGAL4v6` | Component set con los mismos roles M3, variantes y estados. Bindings a variables y text styles. Pantallas solo con instancias en `Vf2tNMXy`. | Set publicado |
+| **2. Figma** (espejo) | Librería `zrGAL4v6` | Component set con los mismos roles M3, variantes y estados. Bindings a variables y text styles. Pantallas en `Vf2tNMXy`: solo instancias **y** paddings/gaps del `phone` enlazados a `mot/spacing/*`. | Set publicado |
 | **3. Paridad** | Compose ↔ Figma | Comprobar paridad. **Append** en [parity-log.md](../parity-log.md). No crear audit nuevo por discrepancia. | Entrada en bitácora; contrato solo si cambia el spec |
 | **4. Showcase** (documentación) | `ds-showcase/` | Ficha del componente: variantes, estados, accesibilidad, ejemplos, versión y cambios. | `src/data/components/<id>.json` + página |
 | **5. Notion** (registro) | Changelog DS / Diario del proyecto | Entrada con la decisión, el motivo y los enlaces a código, Figma y ficha. | Entrada fechada |
@@ -42,16 +42,47 @@ Sin aviso, **no** hay paridad inversa: Figma sigue al código.
 
 ### Documentación para personas (ficha de componente)
 
-En **Figma · descripción del COMPONENT** (y en el **showcase** cuando exista ficha), usar una **ficha de producto** con esta estructura:
+**Dónde vive:** los datos en `ds-showcase/src/data/components/<id>.json`; la web que los publica es
+`ds-docs/` (Astro + Starlight), que sustituye al showcase anterior. En **Figma · descripción del
+COMPONENT** basta un resumen y el enlace a la ficha.
 
-1. **Título** — emoji opcional + nombre EN + nombre ES entre paréntesis.  
-2. **Anatomía** — bloques visibles (contenedor, cabecera, navegación, grid, acciones…).  
-3. **Estados** — reposo, selección, disabled, demo en lámina vs app.  
-4. **Comportamiento / UX** — toques, validaciones reales del producto (lo que hace Compose), no el catálogo M3 genérico si difiere.
+Una ficha se lee de arriba abajo en este orden, y el orden es deliberado: primero se decide **si**
+se usa el componente, y solo después de qué está hecho y cómo se implementa.
 
-Escribir para **diseño y producto** (español). Una línea al final puede enlazar al contrato técnico del repo.
+**1. Uso** — para qué sirve, cuándo usarlo, **cuándo no** (con el componente alternativo), qué
+variante elegir, y Do/Don't separando la guía de M3 de los acuerdos del equipo. Es el bloque más
+importante: es el único que responde a la pregunta con la que llega alguien que está diseñando una
+pantalla.
 
-**No** sustituir la ficha por listas de `mot/*`, node-ids ni jerga de agente. Eso va en `parity-log`, bindings y contratos.
+**2. Anatomía y estados** — las partes que lo componen y cómo se llaman, más su comportamiento
+(reposo, selección, foco, pulsado, deshabilitado).
+
+> La anatomía fija el vocabulario: que diseño y desarrollo digan «la capa de estado» y entiendan lo
+> mismo es lo que hace posible un traspaso sin negociación.
+>
+> **Diagrama:** se añade cuando las partes no son evidentes a simple vista — una capa de estado, un
+> área táctil mayor que el contenedor, un slot reservado. No es obligatorio en todos los
+> componentes. Si se genera desde Figma con un plugin de specs, se exporta **solo el diagrama de
+> anatomía**: el volcado de propiedades y de layout no va en la ficha.
+
+**3. Accesibilidad** — área táctil, foco visible, contraste, lectura con TalkBack, y la regla de
+que un error se comunica con icono y texto.
+
+**4. Código** — el composable, su módulo y archivo, los parámetros y los tokens que consume. Un
+fragmento representativo, no la implementación entera.
+
+**5. Procedencia** — estado de publicación, nodo de Figma, por qué existe el componente, qué
+decisión lo respalda y qué ha cambiado.
+
+Escribir para **diseño y producto** (español), en prosa. Una línea al final puede enlazar al
+contrato técnico del repo.
+
+**No** sustituir la ficha por listas de `mot/*`, node-ids, volcados de propiedades ni jerga de
+agente. Eso va en `parity-log`, bindings y contratos.
+
+**Lo mismo vale para los patrones.** Un patrón explica qué problema resuelve, qué se decidió, por
+qué, y qué no se hace. Las variantes de instancia, los ids de nodo y las rutas de scripts son
+material de montaje y viven en el repo, no en la documentación.
 
 ---
 

@@ -182,6 +182,21 @@
   font-size: var(--sl-text-xs);
 }
 
+/* Fila del indice de un componente que existe pero aun no tiene ficha.
+   Se ve, pero se ve que esta pendiente. */
+.sin-ficha td {
+  color: var(--sl-color-gray-4);
+}
+
+.pendiente {
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-3);
+  border: 1px dashed var(--sl-color-gray-5);
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+}
+
 /* Nombre de archivo que encabeza una lista de pesos. No es un encabezado de
    documento a proposito: solo etiqueta la lista que viene debajo. */
 .fuente-archivo {

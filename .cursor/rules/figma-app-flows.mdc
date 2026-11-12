@@ -96,7 +96,20 @@ Cada `phone` del happy path debe poder presentarse como pantalla final del MVP.
 | **Flow exterior** | Autolayout **vertical**, hug, `itemSpacing = 16` |
 | **Captions** | Incluir **ruta Compose** en la caption para trazabilidad diseño → código |
 | **Componentes** | Instanciar DS; no duplicar component sets en design-file |
-| **Contenido en `phone`** | Frame cuerpo (lista, form, empty con scroll): `paddingBottom` = **`spacing-layout-lg`** (24) — colchón de seguridad ante barra inferior / gestos; no variar por pantalla |
+| **Contenido en `phone`** | Frame cuerpo (lista, form, empty con scroll): `paddingBottom` = **`mot/spacing/screen-content-bottom`** (24) o **`screen-content-bottom-with-fab`** (88) si hay FAB — colchón de seguridad; no variar por pantalla |
+| **Bindings de pantalla (obligatorio)** | Todo frame de **layout de producto** dentro de `phone` (Body, listas, stacks, headers de bloque) debe tener **padding y itemSpacing enlazados** a `mot/spacing/*` (o `mot/padding/*` si es pad de patrón). Nunca literales 8/16/24 sueltos. El wrap `Screens` / captions de tablero no es producto. |
+
+### Tokens de pantalla (no improvisar)
+
+| Uso en el `phone` | Variable Figma | Compose |
+|---|---|---|
+| Padding horizontal del Body | `mot/spacing/screen-horizontal` | `MOTSpacing.screenHorizontal` |
+| Padding superior / gap entre bloques | `mot/spacing/layout-md` | `MOTSpacing.layoutMd` |
+| Gap de lista / bloques compactos | `mot/spacing/component-sm` \| `component-xs` | `MOTSpacing.componentSm` / `componentXs` |
+| Colchón inferior | `mot/spacing/screen-content-bottom` | `MOTSpacing.screenContentBottom` |
+| Colchón con FAB | `mot/spacing/screen-content-bottom-with-fab` | `MOTSpacing.screenContentBottomWithFab` |
+
+Si el valor no tiene token `mot/*` → **gap del sistema** (crearlo en Figma + `MOTSpacing`); no dejar el número.
 
 ## Objetivo
 
@@ -110,3 +123,4 @@ Seleccionar `Screens` o el frame de flujo y mover **todo el bloque** sin desalin
 - `layoutSizing FILL` antes de `appendChild` al padre autolayout.
 - Crear componentes reutilizables en design-file (solo en la librería DS).
 - Llamar «wireframes» a las pantallas hi-fi de este archivo.
+- Padding o `itemSpacing` de producto con número suelto (16, 8, 24…) sin variable `mot/spacing/*`.
