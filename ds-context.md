@@ -1,6 +1,6 @@
 # MyOwnTrip · Design System — contexto para agentes
 
-> Generado el 2026-11-11 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
+> Generado el 2026-11-12 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
 > Fuente de verdad del comportamiento: el código de `designsystem/` y `app/`.
 
 ## Principios
@@ -246,6 +246,32 @@ MOTButton(
 - No depender solo del color inverse para significado.
 - Alternativa por tap si el gesto de dismiss no es obvio.
 
+## Stacked card
+
+- Estado: ready · P1
+- Para qué: Card vertical editorial: Outlined en listas/feeds, Elevated en destacados. Layouts Media & text (avatar + media + copy) y Text only (header + supporting + dismiss). Filled está CUT.
+- Composable: sin documentar en la ficha
+
+### Variantes
+
+- **Outlined · Media & text**: Home vacío, cards editoriales en feed.
+- **Elevated · Text only**: Avisos descartables o mensajes destacados (si el producto los necesita).
+- **Outlined · Text only**: Mensajes inline en listas (filtro vacío).
+
+### Prohibido en este componente
+
+- No fuerces contenido en cards cuando el espaciado, los titulares o los divisores darían una jerarquía más simple.
+- Evita poner texto o iconos sobre imágenes si no es necesario.
+- No Filled (CUT).
+- No OutlinedCard ad hoc en pantallas si encaja un layout de este set.
+- No icono decorativo arbitrario en Text only — copy + dismiss si aplica.
+
+### Accesibilidad
+
+- Dismiss con contentDescription.
+- Imagen media con alt cuando es informativa.
+- Avatar decorativo si el header ya se anuncia.
+
 ## TripHeroCard
 
 - Estado: ready · P1
@@ -334,5 +360,4 @@ Existen en Figma o en código, pero nadie ha escrito cuándo usarlos.
 No inventes criterios de uso para estos: pregunta o consulta el código.
 
 - **Icon button** (draft): Acciones compactas en top app bar y formularios.
-- **Card** (ready): Stacked y Horizontal — contenedor de viaje, gasto o entrada.
 - **List item** (draft): Filas en listas de viajes, wallet y restaurantes.

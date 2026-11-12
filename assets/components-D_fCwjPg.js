@@ -1,4 +1,4 @@
-import{i as c,c as e,s as i,a as r,b as p}from"./bootstrap-C_ZQ7Ieu.js";c("components");const m=n=>e.components.filter(o=>o.category===n),t=e.components.filter(n=>!i.categories.some(o=>o.id===n.category));function a(n){const o=n.href!=="components.html",s=`
+import{i as c,c as e,s as i,a as r,b as p}from"./bootstrap-Cqc7PUA6.js";c("components");const m=n=>e.components.filter(o=>o.category===n),t=e.components.filter(n=>!i.categories.some(o=>o.id===n.category));function a(n){const o=n.href!=="components.html",s=`
     <span class="component-link__meta">${r(n.status)}<span class="component-link__priority">${n.priority}</span></span>
     <h3>${n.name}</h3>
     <p>${n.summary}</p>
