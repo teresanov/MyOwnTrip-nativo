@@ -24,8 +24,8 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Ámbito | Tarea |
 |--------|--------|
-| Home swipe revelado | Cap 2 Home sigue en **Horizontal card** (`TripListCard`); no hay cap List Item-Swipe Revealed en «Más viajes». Compose `SwipeableTripListRow` envuelve esa card. |
-| Sitios · pin Maps | Share desde Google Maps guarda el sitio, pero **no resuelve bien lat/lng**. Figma: **4d** = fallo (sin coordenadas). **4e** = éxito con pin / «Ubicación detectada»: no montar hasta arreglar el código. |
+| Sitios · pin Maps | Share desde Google Maps a menudo **no resuelve lat/lng**. Caps: **4d** fallo · **4e** UI de éxito (`hasLocation`). Falta el arreglo en `PlaceCoordinateResolver`. |
+| Sitios · mini mapa tab | Figma **4b** = solo cards. Compose `RestaurantsTab` aún pinta `PlacesMiniMap` 160dp. |
 
 ---
 
@@ -33,6 +33,9 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-13 | Home · R6.2 | Cap **2b** swipe revelado. Wrap sin fill blanco. | `642:31056` · `642:31159` | Hecho |
+| 2026-11-13 | List Item - Swipe | Eje **Content** = List item \| Horizontal card (4 estados). Home cap 2b → instancia tras **publicar** DS. | `zrGAL4v6` `59106:13321` · Revealed card `61510:28168` | Hecho |
+| 2026-11-13 | Sitios · 4d/4e | Body FILL pack-start: CTA hug tras campos (`layout-md`), no spacer/footer. Secciones Categoría / Viaje `component-sm`. | `581:15447` · `642:31174` | Hecho |
 | 2026-11-11 | IA Figma | Páginas: `05 · Plan` · `06 · Diario` · `07 · Gastos` · `08 · Sitios` · `09 · Transversal`. Mapa `00` actualizado. | `00` `261:920` | Hecho |
 | 2026-11-11 | IA Figma | `03` solo ficha de viaje. Plan/Diario → `05`; Gastos → `06`; Sitios → `07`; Wallet ya en `04`. | `583:16744` · `583:16747` · `261:1087` · `261:1247` | Hecho |
 | 2026-11-11 | R6.3 · Sitios | Caps **4f/4g/4h** detalle al pulsar card (`RestaurantDetailScreen` + diálogo borrar). | `583:15790` · `583:15942` · `583:16095` | Hecho |

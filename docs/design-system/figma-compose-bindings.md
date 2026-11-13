@@ -73,7 +73,7 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **Time · field** | [61348:29337](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29337) | Outlined + trailing schedule | `MotTimeField` | Wallet · plan |
 | **Time · dialog** | [61348:29338](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61348-29338) | TimeInput 24h + toggle + acciones | `MotTimePickerDialog` | ↑ |
 | ~~Modal / Input date picker~~ | [51954:18136](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18136) / [51954:18540](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51954-18540) | **ARCHIVE · M3 kit** | — | No design-file; ver [disparity-remediation-plan-2026-11-03.md](audits/disparity-remediation-plan-2026-11-03.md) |
-| **List Item - Swipe** | [59106:13321](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=59106-13321) | Swipe states | `SwipeableTripListRow` / `SwipeableWalletDocumentRow` | `MOTSpacing.ListItem.*`; audit [C](audits/figma-list-swipe-phase-c-2026-10-29.md) · página **Lists** |
+| **List Item - Swipe** | [59106:13321](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=59106-13321) | `Content` List item \| **Horizontal card** · `Swipe state` Default/Initiate/Revealed/Swipe Action | `SwipeableWalletDocumentRow` / `SwipeableTripListRow` | Home usa **Horizontal card**; Wallet **List item**. Raíz sin fill. **Publicar** el set para cap 2b. |
 | **✳️ MyOwnTrip/Icon/Slot_master** | [61426:27443](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61426-27443) | `Size` sm/md · `Circle` False/True · **Icon** swap | Botones y consumo genérico | En **List item** Leading=Icon el well 40 y el glifo 24 viven en el list item (`Show circle` + `Icon`), no en Slot_master. |
 | **List item** (Wallet rows) | [51964:63037](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51964-63037) | Leading=Icon · `Show circle` · `Show drift` · **Icon** swap | `WalletDocumentRow` / `WalletPlanDriftLeadingIcon` | Glifo por `entryTypeIcon` (`flight`/`hotel`/`directions_car`/`confirmation_number`). Círculo 40 + icono 24. Puntito Warning 10 en la esquina del well (`Show drift`), no dentro del glifo 24. **Publicar** List item para que `Show drift` llegue al design-file. |
 | **flight_drift** | [61433:3879](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61433-3879) | Glifo 24 (`flight` + `Drift dot`) | `WalletPlanDriftLeadingIcon(showDriftDot=true)` | El layer `Drift dot` tiene que estar **visible** en el maestro. List item → **Icon** swap a este componente (cap 1 IB con drift). |
@@ -104,7 +104,8 @@ Plan de auditoría P0→P1: [audits/compose-figma-parity-plan-2026-10-29.md](aud
 | Cap Figma | Node | Composable(s) | Figma DS |
 |-----------|------|---------------|----------|
 | cap 1 · vacío | [205:816](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-816) | `HomeEmptyState` → `HomePageHero` + `HomeEmptyStackedCard` + `MOTButton` | Stacked Outlined Media&text · Button · **Media asset:** `res/drawable-nodpi/home_empty_map.jpg` |
-| cap 2 · con viajes | [205:1018](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-1018) | `HomeHeroHeader` + `HomeSearchBar` + `TripHeroCard` + `SwipeableTripListRow` (`TripListCard`) | TripHeroCard · Horizontal Outlined · Search bar. Swipe Compose envuelve la card; **no** hay cap List Item-Swipe Revealed en Home. |
+| cap 2 · con viajes | [205:1018](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=205-1018) | `HomeHeroHeader` + `HomeSearchBar` + `TripHeroCard` + `SwipeableTripListRow` (`TripListCard`) | TripHeroCard · Horizontal Outlined · Search bar. Reposo: card sin revelar. |
+| cap 2b · swipe revelado | [642:31056](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=642-31056) | `SwipeableTripListRow` | Instancia **List Item - Swipe** `643:34361` · `Content=Horizontal card` · `Swipe state=Revealed`. Sin fill en la raíz. |
 | cap 3 · filtros | [228:8161](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=228-8161) | cap 2 + `HomeFilterMenuPanel` / `HomeFilterDropdownMenu` | Search Pressed/overlay + Menu Groups=2 `55141:14250` |
 
 Previews: `HomeEmptyStatePreview`, `TripListWithTripsPreview`, `TripListFilterMenuPreview`, `HomeFlowReviewPreview`.
@@ -122,7 +123,7 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 | `05 · Plan` | [`583:16744`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16744) | **2** `261:941` · **2b** `573:13289` · **2c** `573:13390` · **2d** `573:13443` |
 | `06 · Diario` | [`583:16747`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16747) | **5** `574:13966` · **5b** `574:14129` · **5c** `574:14292` |
 | `07 · Gastos` | [`261:1087`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1087) | **3** `261:944` · **3b** `576:14844` |
-| `08 · Sitios` | [`261:1247`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1247) | **4** `261:947` · **4b** `576:15050` · **4c** `581:15264` · **4d** `581:15447` · **4f** `583:15790` · **4g** `583:15942` · **4h** `583:16095` · **4e** pin pendiente |
+| `08 · Sitios` | [`261:1247`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1247) | **4** `261:947` · **4b** `576:15050` · **4c** `581:15264` · **4d** `581:15447` · **4e** `642:31174` · **4f** `583:15790` · **4g** `583:15942` · **4h** `583:16095` |
 
 ### `08 · Sitios` — casuísticas
 
@@ -131,8 +132,8 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 | **4** sitios · vacío | `261:947` | `EmptyPlacesState` | 2 líneas + FAB + |
 | **4b** sitios · lista | `576:15050` | `RestaurantsTab` cards | Solo cards Text only + FAB. **Sin mapa** en el tab. |
 | **4c** Nuevo sitio | `581:15264` | `RestaurantFormScreen` | Outline Fill «Buscar en Google Maps» + location. Alta a mano. |
-| **4d** Guardar sitio · sin pin | `581:15447` | `PlaceImportScreen` | Chips de **todos** los viajes no archivados. |
-| **4e** *(pendiente)* | — | `hasLocation` | No montar hasta arreglar el pin. |
+| **4d** Guardar sitio · sin pin | `581:15447` | `PlaceImportScreen` | Body FILL + pack start (`spacedBy` `layout-md`). CTA es último hijo hug, no footer anclado. Copy: «Sin coordenadas, pero podrás abrirlo en Maps.» |
+| **4e** Guardar sitio · ubicación detectada | `642:31174` | `PlaceImportScreen` `hasLocation` | Igual que 4d. `LocationStatus`: `Slot_master` sm `location_on` (tertiary) + `body/medium`. Resolver de share = gap de código. |
 | **4f** detalle · restaurante | `583:15790` | `RestaurantDetailScreen` | Cal Pep · Reservado · Abrir Maps · delete. |
 | **4g** detalle · sin reserva | `583:15942` | mirador | Bunkers · Por ir / Visitado. |
 | **4h** detalle · borrar | `583:16095` | `AlertDialog` | Borrar sitio. |
