@@ -1,6 +1,8 @@
 # Follow-up — Spread Piece polaroid + tirita (2026-11-13)
 
-Pendiente para la siguiente sesión de Diario / Figma. **Compose es SoT**; no aproximar con cards genéricas.
+Hecho 2026-11-13 (DS): `Spread piece` Type=Photo = polaroid 150 + `Spread/Washi tape`. Publicar librería para que las caps de Diario actualicen instancias.
+
+Pendiente original: **Compose es SoT**; no aproximar con cards genéricas.
 
 ## Qué falta en Figma
 

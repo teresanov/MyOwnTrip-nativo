@@ -21,7 +21,7 @@ No hay escala M3 “stock” (Roboto) en el DS. Se eliminó el 2026-10-29.
 | `displaySmall` | `M3/display/small` | Fraunces | 36 Regular |
 | `headlineLarge` | `M3/headline/large` | Fraunces | 32 Regular |
 | `headlineMedium` | `M3/headline/medium` | Fraunces | 28 Regular |
-| `headlineSmall` | `M3/headline/small` | Fraunces | 24 Regular |
+| `headlineSmall` | `M3/headline/small` | Fraunces | 24 Bold |
 | `headlineSmallEmphasized` | `M3/headline/small-emphasized` | Fraunces | 24 Black |
 | `titleLarge` | `M3/title/large` | Inter | 22 Regular |
 | `titleMedium` | `M3/title/medium` | Inter | 16 Medium |
@@ -31,9 +31,11 @@ No hay escala M3 “stock” (Roboto) en el DS. Se eliminó el 2026-10-29.
 | `bodySmall` | `M3/body/small` | Inter | 12 Regular |
 | `labelLarge` | `M3/label/large` | Inter | 14 Medium |
 | `labelMedium` | `M3/label/medium` | Inter | 12 Medium |
-| `labelSmall` | `M3/label/small` | Inter | 11 Medium |
+| `labelSmall` | `M3/label/small` | Inter | 11 Regular |
+| `labelSmallEmphasized` | `M3/label/small-emphasized` | Inter | 11 Bold |
+| `AlbumDayKicker` | `MOT/album/day-kicker` | Fraunces | 11 Bold, tracking 1.8 |
 
-**16 estilos UI.** `headlineSmallEmphasized` es el corte Black de `headlineSmall` (destino en Wallet embebida y título del vacío). Sin `button-*`.
+**18 estilos UI.** `headlineSmallEmphasized` (Fraunces 24 Black) y `labelSmallEmphasized` (Inter 11 Bold) son los cortes emphasized. `AlbumDayKicker` es excepción editorial del masthead (no es label). Sin `button-*`.
 
 ## Variables (cadena de binds)
 
@@ -44,8 +46,13 @@ Text style M3/{role}
 ```
 
 Cada uno de los 15 estilos tiene las **5 props** bindeadas a su rol Typescale (no literales).  
-`Static/Title Large/Weight` → `Font theme / Static/Weight/Regular`, alineado a Compose `titleLarge`.  
-`Static/Headline Small/Weight-emphasized` → `Font theme / Static/Weight/Black`, alineado a Compose `headlineSmallEmphasized`.
+`Font theme / Static/Weight/Bold` = **`Bold`** (Inter y Fraunces). No mezclar con Semi Bold.  
+`Font theme / Static/Weight/SemiBold` = **`Semi Bold`** (nombre de estilo de Inter).  
+`Static/Headline Small/Weight` → `Weight/Bold`.  
+`Static/Headline Small/Weight-emphasized` → `Weight/Black` (`headlineSmallEmphasized`).  
+`Static/Label Small/Weight` → `Weight/Regular` (`labelSmall`).  
+`Static/Label Small/Weight-emphasized` → `Weight/Bold` (`labelSmallEmphasized`).  
+`Static/Day kicker/*` → `MOT/album/day-kicker` (`AlbumDayKicker`; Fraunces Bold 11, tracking 1.8).
 
 ## Brand page (excepción)
 

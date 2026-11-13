@@ -112,7 +112,7 @@ val AppTypography = Typography(
   ),
   headlineSmall = TextStyle(
     fontFamily = FrauncesFamily,
-    fontWeight = FontWeight.Normal,
+    fontWeight = FontWeight.Bold,
     fontSize = 24.sp,
     lineHeight = 32.sp,
     letterSpacing = 0.sp,
@@ -175,7 +175,7 @@ val AppTypography = Typography(
   ),
   labelSmall = TextStyle(
     fontFamily = InterFamily,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Normal,
     fontSize = 11.sp,
     lineHeight = 16.sp,
     letterSpacing = 0.5.sp,
@@ -183,8 +183,25 @@ val AppTypography = Typography(
 )
 
 /**
- * Figma `M3/headline/small-emphasized`: mismo cuerpo que [Typography.headlineSmall]
- * (Fraunces 24 / lineHeight 32) con peso Black. M3 Typography no trae slot emphasized.
+ * Cortes emphasized: mismo cuerpo que el rol base, peso más alto.
+ * Figma `M3/{role}/small-emphasized` · Typescale `Static/{Role}/Weight-emphasized`.
+ * M3 Typography 1.5 trae slots emphasized; hasta declararlos en [AppTypography]
+ * se exponen como extensiones para no caer al Roboto de defecto.
  */
 val Typography.headlineSmallEmphasized: TextStyle
   get() = headlineSmall.copy(fontWeight = FontWeight.Black)
+
+val Typography.labelSmallEmphasized: TextStyle
+  get() = labelSmall.copy(fontWeight = FontWeight.Bold)
+
+/**
+ * Figma `MOT/album/day-kicker`: Fraunces Bold 11 / lh 16 / tracking 1.8.
+ * Excepción editorial del masthead del álbum; no es un rol label.
+ */
+val AlbumDayKicker = TextStyle(
+  fontFamily = FrauncesFamily,
+  fontWeight = FontWeight.Bold,
+  fontSize = 11.sp,
+  lineHeight = 16.sp,
+  letterSpacing = 1.8.sp,
+)

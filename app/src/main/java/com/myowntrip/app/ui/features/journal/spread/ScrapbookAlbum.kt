@@ -78,6 +78,7 @@ import com.myowntrip.app.ui.brand.BrandColors
 import com.myowntrip.app.ui.brand.BrandRibbon
 import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.components.EyebrowLabelSize
+import com.myowntrip.app.ui.theme.AlbumDayKicker
 import com.myowntrip.app.ui.theme.FrauncesFamily
 import com.myowntrip.app.ui.theme.HandFamily
 import com.myowntrip.app.ui.theme.InterFamily
@@ -329,14 +330,15 @@ private fun AlbumMasthead(page: AlbumPageUi) {
   val day = page.day
   Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 8.dp)) {
     if (page.isChapterStart) {
-      EyebrowLabel(
+      Text(
         text = "DÍA ${day.dayNumber}",
-        size = EyebrowLabelSize.Small,
+        style = AlbumDayKicker,
+        color = BrandColors.AccentOcre,
       )
       Text(
-        day.title?.takeIf { it.isNotBlank() } ?: day.date.format(SpanishSheetDate),
-        fontFamily = FrauncesFamily, fontWeight = FontWeight.SemiBold,
-        fontSize = 26.sp, color = BrandColors.Ink,
+        day.date.format(SpanishSheetDate),
+        style = MaterialTheme.typography.headlineSmall,
+        color = BrandColors.Ink,
       )
       Text(
         day.date.format(SpanishSheetDate),
@@ -344,9 +346,8 @@ private fun AlbumMasthead(page: AlbumPageUi) {
         color = BrandColors.Ink.copy(alpha = 0.75f),
       )
     } else {
-      val place = day.title?.takeIf { it.isNotBlank() } ?: "Día ${day.dayNumber}"
       Text(
-        "$place · hoja ${page.pageIndexInDay + 1}",
+        "Día ${day.dayNumber} · hoja ${page.pageIndexInDay + 1}",
         fontFamily = FrauncesFamily, fontStyle = FontStyle.Italic,
         fontSize = 16.sp, color = BrandColors.Ink.copy(alpha = 0.7f),
       )
