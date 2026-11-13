@@ -32,8 +32,6 @@ import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
-import com.myowntrip.app.ui.theme.headlineSmallEmphasized
-
 enum class HomeFabAddMode {
   Document,
   Souvenir,

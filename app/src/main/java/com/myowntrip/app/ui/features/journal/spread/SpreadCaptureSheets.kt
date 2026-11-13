@@ -40,8 +40,6 @@ import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
-import com.myowntrip.app.ui.theme.headlineSmallEmphasized
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpreadCaptionSheet(
