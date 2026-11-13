@@ -34,6 +34,7 @@ No hay escala M3 “stock” (Roboto) en el DS. Se eliminó el 2026-10-29.
 | `labelSmall` | `M3/label/small` | Inter | 11 Regular |
 | `labelSmallEmphasized` | `M3/label/small-emphasized` | Inter | 11 Bold |
 | `AlbumDayKicker` | `MOT/album/day-kicker` | Fraunces | 11 Bold, tracking 1.8 |
+| `AlbumHandNote` | `MOT/album/hand-note` | Shantell Sans (`HandFamily`) | 17 Medium / 22 |
 
 **18 estilos UI.** `headlineSmallEmphasized` (Fraunces 24 Black) y `labelSmallEmphasized` (Inter 11 Bold) son los cortes emphasized. `AlbumDayKicker` es excepción editorial del masthead (no es label). Sin `button-*`.
 
@@ -52,7 +53,8 @@ Cada uno de los 15 estilos tiene las **5 props** bindeadas a su rol Typescale (n
 `Static/Headline Small/Weight-emphasized` → `Weight/Black` (`headlineSmallEmphasized`).  
 `Static/Label Small/Weight` → `Weight/Regular` (`labelSmall`).  
 `Static/Label Small/Weight-emphasized` → `Weight/Bold` (`labelSmallEmphasized`).  
-`Static/Day kicker/*` → `MOT/album/day-kicker` (`AlbumDayKicker`; Fraunces Bold 11, tracking 1.8).
+`Static/Day kicker/*` → `MOT/album/day-kicker` (`AlbumDayKicker`; Fraunces Bold 11, tracking 1.8).  
+`Static/Font/Hand` → Shantell Sans. `MOT/album/hand-note` (`AlbumHandNote`).
 
 ## Brand page (excepción)
 

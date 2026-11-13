@@ -69,13 +69,23 @@ val InterFamily = FontFamily(
   interFont(FontWeight.Bold),
 )
 
+private fun shantellFont(weight: FontWeight) = Font(
+  resId = R.font.shantell_sans,
+  weight = weight,
+  variationSettings = FontVariation.Settings(
+    FontVariation.weight(weight.weight),
+  ),
+)
+
 /**
- * "Pluma" del Diario: tipografía manuscrita, scopeada SOLO a notas a mano del álbum
- * (≥16sp), nunca en UI funcional. TODO: bundlear Shantell Sans en res/font/ y
- * apuntar aquí; de momento usa Fraunces itálica como sustituta (único punto de cambio).
+ * Pluma del Diario: Shantell Sans, solo notas a mano del álbum (≥16sp),
+ * nunca en UI funcional. Figma `MOT/album/hand-note` · `Static/Font/Hand`.
  */
 val HandFamily = FontFamily(
-  frauncesItalicFont(FontWeight.Medium),
+  shantellFont(FontWeight.Normal),
+  shantellFont(FontWeight.Medium),
+  shantellFont(FontWeight.SemiBold),
+  shantellFont(FontWeight.Bold),
 )
 
 val AppTypography = Typography(
@@ -210,4 +220,15 @@ val AlbumDayKicker = TextStyle(
   fontSize = 11.sp,
   lineHeight = 16.sp,
   letterSpacing = 1.8.sp,
+)
+
+/**
+ * Figma `MOT/album/hand-note`: pluma del diario (HandFamily, Shantell Sans Medium 17/22).
+ * Solo notas `JournalTextStyle.HAND`, nunca UI funcional.
+ */
+val AlbumHandNote = TextStyle(
+  fontFamily = HandFamily,
+  fontWeight = FontWeight.Medium,
+  fontSize = 17.sp,
+  lineHeight = 22.sp,
 )

@@ -16,7 +16,7 @@ Archivo: `app/src/main/java/com/myowntrip/app/ui/features/journal/spread/Scrapbo
 
 Anatomía (no es una card M3):
 
-1. **Marco polaroid** — `Column` 150 dp, `Print` `#FCFBF7`, `RoundedCornerShape(2.dp)`, sombra 7 dp. Padding 8 / 8 / 8 / **26** (borde inferior ancho). Foto 112 dp crop, radio 1 dp. Caption opcional: `HandFamily` itálica 16, centrada.
+1. **Marco polaroid** — `Column` 150 dp, `Print` `#FCFBF7`, `RoundedCornerShape(2.dp)`, sombra 7 dp. Padding 8 / 8 / 8 / **26** (borde inferior ancho). Foto 112 dp crop, radio 1 dp. Caption opcional: `bodyLarge` (Inter 16), centrada. `HandFamily` es la pluma de notas `HAND`, no el pie de polaroid.
 2. **Tirita** — `Box` 54×18 dp, offset (−8, −6), rotación **−32°**, fill `BrandColors.AccentOcre` @ 42 % alfa. Va **encima** del marco, esquina superior izquierda.
 
 Instancias en caps 5 / 5c / sheets: sustituir el `Spread piece` tipo Photo “plano” por esta composición.

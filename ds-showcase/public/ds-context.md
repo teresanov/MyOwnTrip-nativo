@@ -19,7 +19,7 @@
 - Errores: icono y texto, nunca solo color.
 - Iconos de UI: Material Symbols Sharp peso 300, vía MOTIcons.
 - Espaciado de pantalla: MOTSpacing. El padding interno de los componentes M3 se deja en sus defaults.
-- Botones: usar los wrappers MOT (MOTButton, MOTTonalButton, MOTOutlinedButton, MOTTextButton, MOTIconButton), que aplican el morph de forma del ADR 004.
+- Botones: usar los wrappers MOT (MOTButton, MOTTonalButton, MOTOutlinedButton, MOTTextButton, MOTIconButton), que aplican el morph de forma del ADR 004. FAB es el único círculo.
 - Respetar LocalReduceMotion en cualquier animación.
 
 ## Prohibido

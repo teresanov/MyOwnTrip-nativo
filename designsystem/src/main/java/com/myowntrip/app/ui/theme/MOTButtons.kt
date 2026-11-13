@@ -130,6 +130,10 @@ fun MOTTextButton(
   )
 }
 
+/**
+ * Figma: **Icon button** Type=Square · reposo `Corner/None` · interacción `Corner/Large-increased`.
+ * Misma regla que Button (ADR 004). No círculo: el squircle queda solo en FAB.
+ */
 @Composable
 fun MOTIconButton(
   onClick: () -> Unit,

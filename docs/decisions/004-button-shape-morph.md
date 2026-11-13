@@ -32,10 +32,10 @@ En móvil no hay hover; el morph aplica en **pressed**, **focus** y **selected**
 
 | Componente | Shape | Motivo |
 |------------|-------|--------|
-| **FAB / Extended FAB** | Circular (`Corner/Full` o círculo) | Patrón M3; no aplica morph 0→20 |
+| **FAB / Extended FAB** | Circular (`Corner/Full` o círculo) | Único squircle; no aplica morph 0→20 |
 | **Cards** | **12dp** fijo (`Corner/Medium`) | Contenedor editorial; sin morph |
 | **Chips** | **8dp** fijo (`Corner/Small`) | Densidad; selected usa color, no morph de radio obligatorio |
-| **Icon button** Square | 0 → 20 en interacción | Misma regla que Button |
+| **Icon button** Square | 0 → 20 en interacción | Misma regla que Button. Round en Figma = destino del morph (20dp), no círculo. |
 | **Toggle / Segmented** | Square reposo + variante **Round** a 20dp como destino del morph | KEEP en Figma (ver inventario) |
 
 ### Figma

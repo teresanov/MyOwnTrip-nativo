@@ -31,8 +31,10 @@ import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.JournalNote
 import com.myowntrip.app.domain.model.JournalPieceType
+import com.myowntrip.app.domain.model.JournalTextStyle
 import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.components.EyebrowLabelSize
+import com.myowntrip.app.ui.theme.AlbumHandNote
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import java.io.File
@@ -96,7 +98,11 @@ private fun PhotoSpreadPiece(note: JournalNote) {
 private fun TextSpreadPiece(note: JournalNote) {
   Text(
     text = note.text,
-    style = MaterialTheme.typography.bodyLarge,
+    style = if (note.textStyle == JournalTextStyle.HAND) {
+      AlbumHandNote
+    } else {
+      MaterialTheme.typography.bodyLarge
+    },
     modifier = Modifier.padding(top = MOTSpacing.componentSm),
   )
   SpreadMetaRow(note)
@@ -265,7 +271,8 @@ private fun pieceEyebrow(note: JournalNote): String {
   val typeLabel = when (effectivePieceType(note)) {
     JournalPieceType.PHOTO -> "Foto"
     JournalPieceType.AUDIO -> "Voz"
-    JournalPieceType.TEXT -> "Nota"
+    JournalPieceType.TEXT ->
+      if (note.textStyle == JournalTextStyle.HAND) "A mano" else "Nota"
     JournalPieceType.SKETCH -> "Boceto"
     JournalPieceType.STICKER -> "Sticker"
     JournalPieceType.EVENT_BOOKMARK -> "Evento"

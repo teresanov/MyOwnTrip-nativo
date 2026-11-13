@@ -79,8 +79,8 @@ import com.myowntrip.app.ui.brand.BrandRibbon
 import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.components.EyebrowLabelSize
 import com.myowntrip.app.ui.theme.AlbumDayKicker
+import com.myowntrip.app.ui.theme.AlbumHandNote
 import com.myowntrip.app.ui.theme.FrauncesFamily
-import com.myowntrip.app.ui.theme.HandFamily
 import com.myowntrip.app.ui.theme.InterFamily
 import com.myowntrip.app.ui.theme.MOTIcons
 import kotlinx.coroutines.launch
@@ -556,7 +556,7 @@ private fun Polaroid(note: JournalNote) {
       if (note.text.isNotBlank()) {
         Text(
           note.text,
-          fontFamily = HandFamily, fontStyle = FontStyle.Italic, fontSize = 16.sp,
+          style = MaterialTheme.typography.bodyLarge,
           color = BrandColors.Ink,
           modifier = Modifier.padding(top = 6.dp).align(Alignment.CenterHorizontally),
         )
@@ -607,8 +607,8 @@ private fun HandNote(text: String) {
   Box(Modifier.width(160.dp)) {
     Text(
       text,
-      fontFamily = HandFamily, fontStyle = FontStyle.Italic, fontSize = 17.sp,
-      color = BrandColors.Ink, lineHeight = 22.sp,
+      style = AlbumHandNote,
+      color = BrandColors.Ink,
     )
   }
 }
@@ -651,8 +651,9 @@ private fun AudioChip(note: JournalNote) {
     if (note.text.isNotBlank()) {
       Text(
         note.text,
-        fontFamily = HandFamily, fontStyle = FontStyle.Italic, fontSize = 16.sp,
-        color = BrandColors.Ink, modifier = Modifier.padding(top = 4.dp),
+        style = AlbumHandNote,
+        color = BrandColors.Ink,
+        modifier = Modifier.padding(top = 4.dp),
       )
     }
   }
@@ -715,8 +716,9 @@ private fun EventPiece(note: JournalNote, block: ItineraryBlock?) {
       if (note.photoUri != null && note.text.isNotBlank()) {
         Text(
           note.text,
-          fontFamily = HandFamily, fontStyle = FontStyle.Italic, fontSize = 15.sp,
-          color = BrandColors.Ink, modifier = Modifier.padding(top = 6.dp),
+          style = AlbumHandNote,
+          color = BrandColors.Ink,
+          modifier = Modifier.padding(top = 6.dp),
         )
       }
     }

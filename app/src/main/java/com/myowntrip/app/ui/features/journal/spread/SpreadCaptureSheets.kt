@@ -11,16 +11,15 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -145,29 +144,43 @@ fun SpreadCaptionSheetContent(
         )
       }
     }
-    BasicTextField(
-      value = caption,
-      onValueChange = onCaptionChange,
-      textStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = MaterialTheme.colorScheme.onSurface,
-      ),
-      modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 120.dp)
-        .semantics { contentDescription = "Escribir en la página" },
-      decorationBox = { inner ->
-        if (caption.isEmpty()) {
-          Text(
-            text = placeholderFor(pieceType),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-          )
-        }
-        inner()
-      },
-    )
-    captionError?.let {
-      Text(text = it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+    when (pieceType) {
+      JournalPieceType.PHOTO -> {
+        Text(
+          text = "¿Qué capturas?",
+          style = MaterialTheme.typography.bodyLarge,
+          color = MaterialTheme.colorScheme.onSurface,
+        )
+      }
+      JournalPieceType.AUDIO -> {
+        Text(
+          text = "Caption opcional…",
+          style = MaterialTheme.typography.bodyLarge,
+          color = MaterialTheme.colorScheme.onSurface,
+        )
+      }
+      JournalPieceType.TEXT, JournalPieceType.STICKER -> {
+        val field = fieldCopyFor(pieceType)
+        OutlinedTextField(
+          value = caption,
+          onValueChange = onCaptionChange,
+          label = { Text(field.label) },
+          placeholder = { Text(field.placeholder) },
+          supportingText = {
+            Text(captionError ?: field.supporting)
+          },
+          isError = captionError != null,
+          modifier = Modifier
+            .fillMaxWidth()
+            .semantics { contentDescription = field.contentDescription },
+        )
+      }
+      else -> Unit
+    }
+    if (pieceType != JournalPieceType.TEXT && pieceType != JournalPieceType.STICKER) {
+      captionError?.let {
+        Text(text = it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+      }
     }
 
     if (pieceType == JournalPieceType.PHOTO || pieceType == JournalPieceType.STICKER) {
@@ -356,27 +369,17 @@ fun EventBookmarkCaptureContent(
   ) {
     EyebrowLabel(text = eventTitle)
     Text(text = "Recuerdo del evento", style = MaterialTheme.typography.headlineSmallEmphasized)
-    BasicTextField(
+    OutlinedTextField(
       value = caption,
       onValueChange = onCaptionChange,
-      textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
-      modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 80.dp),
-      decorationBox = { inner ->
-        if (caption.isEmpty()) {
-          Text(
-            "¿Qué pasó aquí?",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-          )
-        }
-        inner()
+      label = { Text("¿Qué pasó aquí?") },
+      placeholder = { Text("La colección permanente del Prado…") },
+      supportingText = {
+        Text(captionError ?: "Escribe tu nota")
       },
+      isError = captionError != null,
+      modifier = Modifier.fillMaxWidth(),
     )
-    captionError?.let {
-      Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
-    }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
       FilterChip(
         selected = photoAttached,
@@ -503,20 +506,63 @@ private fun stickerComposeShape(shape: StickerShape): androidx.compose.ui.graphi
     StickerShape.PHOTO_FRAME -> RoundedCornerShape(4.dp)
   }
 
-private fun placeholderFor(pieceType: JournalPieceType): String = when (pieceType) {
-  JournalPieceType.PHOTO -> "¿Qué capturas?"
-  JournalPieceType.STICKER -> "Caption opcional para tu sticker…"
-  JournalPieceType.AUDIO -> "Caption opcional…"
-  else -> "¿Qué pasó?"
+private data class CaptionFieldCopy(
+  val label: String,
+  val placeholder: String,
+  val supporting: String,
+  val contentDescription: String,
+)
+
+private fun fieldCopyFor(pieceType: JournalPieceType): CaptionFieldCopy = when (pieceType) {
+  JournalPieceType.STICKER -> CaptionFieldCopy(
+    label = "Pie (opcional)",
+    placeholder = "Un detalle de la calle…",
+    supporting = "Opcional",
+    contentDescription = "Pie del sticker",
+  )
+  else -> CaptionFieldCopy(
+    label = "¿Qué pasó?",
+    placeholder = "Hoy he visto la luz de Goya…",
+    supporting = "Escribe tu nota",
+    contentDescription = "Escribir en la página",
+  )
 }
 
-@Preview(name = "Sheet · Caption foto", showBackground = true, widthDp = 360, heightDp = 420)
+@Preview(name = "Sheet · Foto compacta", showBackground = true, widthDp = 360)
+@Composable
+private fun SpreadCaptionPhotoSheetPreview() {
+  JournalSpreadPreviewTheme {
+    SpreadCaptionSheetContent(
+      title = "Añadir foto",
+      caption = "",
+      captionError = null,
+      pieceType = JournalPieceType.PHOTO,
+      textStyle = JournalTextStyle.HAND,
+      stickerShape = StickerShape.CIRCLE,
+      photoAttached = false,
+      photoPath = null,
+      audioAttached = false,
+      isRecording = false,
+      isSaving = false,
+      onCaptionChange = {},
+      onTextStyleChange = {},
+      onStickerShapeChange = {},
+      onRequestCamera = {},
+      onRequestGallery = {},
+      onStartRecording = {},
+      onStopRecording = {},
+      onSave = {},
+    )
+  }
+}
+
+@Preview(name = "Sheet · Escribir", showBackground = true, widthDp = 360)
 @Composable
 private fun SpreadCaptionSheetPreview() {
   JournalSpreadPreviewTheme {
     SpreadCaptionSheetContent(
       title = "Escribir en la página",
-      caption = "La luz en la sala de Goya.",
+      caption = "",
       captionError = null,
       pieceType = JournalPieceType.TEXT,
       textStyle = JournalTextStyle.HAND,
