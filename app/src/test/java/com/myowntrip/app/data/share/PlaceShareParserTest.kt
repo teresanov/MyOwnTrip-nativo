@@ -129,4 +129,53 @@ class PlaceShareParserTest {
     val result = PlaceShareParser.parseShared(text)
     assertEquals("https://maps.app.goo.gl/AbCdEf123", result.url)
   }
+
+  @Test
+  fun extractLatLng_decodesPercentEncodedBangPin() {
+    val url = "https://www.google.com/maps/place/X/data=%218m2%213d41.4036299%214d2.1743558"
+    val latlng = PlaceShareParser.extractLatLng(url)
+    assertNotNull(latlng)
+    assertEquals(41.4036299, latlng!!.first, 1e-6)
+    assertEquals(2.1743558, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun extractLatLng_bangLngLatCamera() {
+    val url = "https://www.google.com/maps/place/X/data=!2d2.1743558!3d41.4036299"
+    val latlng = PlaceShareParser.extractLatLng(url)
+    assertNotNull(latlng)
+    assertEquals(41.4036299, latlng!!.first, 1e-6)
+    assertEquals(2.1743558, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun extractLatLng_geoUri() {
+    val latlng = PlaceShareParser.extractLatLngFromText("geo:41.4036299,2.1743558?q=Sagrada")
+    assertNotNull(latlng)
+    assertEquals(41.4036299, latlng!!.first, 1e-6)
+    assertEquals(2.1743558, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun extractLatLng_destinationQuery() {
+    val url = "https://www.google.com/maps/dir/?api=1&destination=40.4167754,-3.7037902"
+    val latlng = PlaceShareParser.extractLatLng(url)
+    assertNotNull(latlng)
+    assertEquals(40.4167754, latlng!!.first, 1e-6)
+    assertEquals(-3.7037902, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun extractLatLngFromText_jsonInitArray() {
+    val html = """window.APP=[null,null,52.5162746,13.3777041]"""
+    val latlng = PlaceShareParser.extractLatLngFromText(html)
+    assertNotNull(latlng)
+    assertEquals(52.5162746, latlng!!.first, 1e-6)
+    assertEquals(13.3777041, latlng.second, 1e-6)
+  }
+
+  @Test
+  fun extractLatLng_rejectsZeroZeroViewport() {
+    assertNull(PlaceShareParser.extractLatLng("https://www.google.com/maps/place/X/@0.0,0.0,17z"))
+  }
 }

@@ -39,9 +39,18 @@ class PlaceLinkResolver @Inject constructor() {
         current = next
         return@repeat
       }
-      val body = hop.body
-      if (body.isNullOrBlank()) {
-        return@withContext ResolvedMapsLink(seen.expanded(), bodies)
+      var body = hop.body?.takeIf { it.isNotBlank() }
+        ?: return@withContext ResolvedMapsLink(seen.expanded(), bodies)
+      if (PlaceShareParser.extractLatLngFromText(body) == null) {
+        val desktop = runCatching { fetchHop(current, DESKTOP_USER_AGENT) }.getOrNull()
+        desktop?.location?.let { location ->
+          val next = absoluteUrl(current, location)
+          if (seen.add(next)) {
+            current = next
+            return@repeat
+          }
+        }
+        desktop?.body?.takeIf { it.isNotBlank() }?.let { body = it }
       }
       bodies += body
       if (PlaceShareParser.extractLatLngFromText(body) != null) {
@@ -60,13 +69,13 @@ class PlaceLinkResolver @Inject constructor() {
     ResolvedMapsLink(seen.expanded(), bodies)
   }
 
-  private fun fetchHop(url: String): Hop {
+  private fun fetchHop(url: String, userAgent: String = USER_AGENT): Hop {
     val conn = (URL(url).openConnection() as HttpURLConnection).apply {
       instanceFollowRedirects = false
       requestMethod = "GET"
       connectTimeout = TIMEOUT_MS
       readTimeout = TIMEOUT_MS
-      setRequestProperty("User-Agent", USER_AGENT)
+      setRequestProperty("User-Agent", userAgent)
       setRequestProperty("Accept-Language", "es-ES,es;q=0.9,en;q=0.8")
     }
     return try {
@@ -137,6 +146,8 @@ class PlaceLinkResolver @Inject constructor() {
     const val SCAN_EVERY_CHARS = 24_000
     const val USER_AGENT =
       "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+    const val DESKTOP_USER_AGENT =
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     val CONTINUE_PARAM = Regex("""(?:\?|&|&amp;)continue=([^&"'\\]+)""")
     val META_REFRESH = Regex("""url=['"]?([^'"\s>]+)""", RegexOption.IGNORE_CASE)
     val PREVIEW_PLACE_URL = Regex("""https://(?:www\.)?google\.[^/\s"']+/maps/preview/place/[^\s"'\\]+""")

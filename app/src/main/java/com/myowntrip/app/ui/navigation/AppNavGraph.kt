@@ -123,7 +123,6 @@ fun AppNavGraph(
         onRestaurantClick = { restaurantId ->
           navController.navigate(Routes.restaurantDetail(restaurantId))
         },
-        onOpenPlacesMap = { navController.navigate(Routes.placesMap(tripId)) },
         onViewDocument = { source, title ->
           navController.navigate(Routes.documentViewer(source, title))
         },

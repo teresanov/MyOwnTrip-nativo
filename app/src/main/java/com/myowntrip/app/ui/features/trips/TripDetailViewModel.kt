@@ -143,7 +143,11 @@ class TripDetailViewModel @Inject constructor(
         }.forEach { place ->
           attempted += place.id
           val uri = place.googleMapsUri ?: return@forEach
-          val coords = placeCoordinateResolver.resolveFromMapsLink(uri) ?: return@forEach
+          val coords = placeCoordinateResolver.resolve(
+            url = uri,
+            name = place.name,
+            destinationHint = null,
+          ) ?: return@forEach
           val lat = place.latitude
           val lng = place.longitude
           val samePin = lat != null &&

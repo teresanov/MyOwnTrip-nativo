@@ -13,10 +13,17 @@ object PlaceShareParser {
   // Patrones de lat,lng. De más preciso (pin del POI) a menos (viewport).
   private val PLACE_PIN = Regex("""!8m2!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)""")
   private val BANG_LATLNG = Regex("""!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)""")
+  /** Cámara Maps: !2d = lng, !3d = lat. */
+  private val BANG_LNG_LAT = Regex("""!2d(-?\d+\.\d+)!3d(-?\d+\.\d+)""")
   private val PREVIEW_AT = Regex("""/maps/preview/place/[^"'\\]+/@(-?\d+\.\d+),(-?\d+\.\d+)""")
   private val AT_LATLNG = Regex("""@(-?\d+\.\d+),(-?\d+\.\d+)""")
   private val SEARCH_PATH = Regex("""/maps/search/(-?\d+\.\d+)\s*,\s*\+?(-?\d+\.\d+)""")
-  private val Q_LATLNG = Regex("""[?&](?:q|query|ll|center)=(-?\d+\.\d+),(-?\d+\.\d+)""")
+  private val Q_LATLNG =
+    Regex("""[?&](?:q|query|ll|center|destination|origin)=(-?\d+\.\d+)\s*,\s*\+?(-?\d+\.\d+)""")
+  private val GEO_LATLNG = Regex("""geo:(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)""", RegexOption.IGNORE_CASE)
+  private val JSON_NULL_PAIR = Regex("""\[null,null,(-?\d+\.\d+),(-?\d+\.\d+)\]""")
+  private val JSON_LAT_LNG =
+    Regex(""""lat(?:itude)?"\s*:\s*(-?\d+\.\d+)\s*,\s*"(?:lng|lon|longitude)"\s*:\s*(-?\d+\.\d+)""")
   private val UNICODE_ESCAPE = Regex("""\\u([0-9a-fA-F]{4})""")
 
   data class SharedPlace(val name: String?, val url: String?)
@@ -39,7 +46,7 @@ object PlaceShareParser {
   /** Intenta extraer (lat, lng) de cualquiera de las URLs candidatas. null si no hay. */
   fun extractLatLng(urls: List<String>): Pair<Double, Double>? {
     urls.forEach { url ->
-      matchCoords(url)?.let { return it }
+      matchCoords(unescapeMapsPayload(url))?.let { return it }
     }
     return null
   }
@@ -70,19 +77,32 @@ object PlaceShareParser {
   }
 
   private fun matchCoords(source: String): Pair<Double, Double>? {
-    val match = PLACE_PIN.find(source)
-      ?: PREVIEW_AT.find(source)
-      ?: SEARCH_PATH.find(source)
-      ?: BANG_LATLNG.find(source)
-      ?: AT_LATLNG.find(source)
-      ?: Q_LATLNG.find(source)
-    return match?.let { coordsOf(it) }
+    PLACE_PIN.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    PREVIEW_AT.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    SEARCH_PATH.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    BANG_LATLNG.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    BANG_LNG_LAT.find(source)?.let { match ->
+      val lng = match.groupValues[1].toDoubleOrNull() ?: return@let
+      val lat = match.groupValues[2].toDoubleOrNull() ?: return@let
+      validCoords(lat, lng)?.let { return it }
+    }
+    AT_LATLNG.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    Q_LATLNG.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    GEO_LATLNG.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    JSON_NULL_PAIR.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    JSON_LAT_LNG.find(source)?.let { coordsOf(it)?.let { pair -> return pair } }
+    return null
   }
 
   private fun coordsOf(match: MatchResult): Pair<Double, Double>? {
     val lat = match.groupValues[1].toDoubleOrNull() ?: return null
     val lng = match.groupValues[2].toDoubleOrNull() ?: return null
+    return validCoords(lat, lng)
+  }
+
+  private fun validCoords(lat: Double, lng: Double): Pair<Double, Double>? {
     if (lat !in -90.0..90.0 || lng !in -180.0..180.0) return null
+    if (lat == 0.0 && lng == 0.0) return null
     return lat to lng
   }
 

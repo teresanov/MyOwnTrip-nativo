@@ -51,8 +51,10 @@ class PlaceImportViewModel @Inject constructor(
     started = true
 
     val parsed = PlaceShareParser.parseShared(sharedText, subject)
-    // Si Maps compartió la URL larga, las coordenadas ya vienen dentro: úsalas sin red.
+    // URL larga, geo: o texto compartido con @lat,lng / !3d!4d: pin sin red.
     val inlineLatLng = PlaceShareParser.extractLatLng(parsed.url)
+      ?: PlaceShareParser.extractLatLngFromText(sharedText.orEmpty())
+      ?: subject?.let { PlaceShareParser.extractLatLngFromText(it) }
     _uiState.update {
       it.copy(
         name = parsed.name.orEmpty(),

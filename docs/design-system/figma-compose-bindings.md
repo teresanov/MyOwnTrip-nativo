@@ -133,7 +133,7 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 | **4b** sitios · lista | `576:15050` | `RestaurantsTab` cards | Solo cards Text only + FAB. **Sin mapa** en el tab. |
 | **4c** Nuevo sitio | `581:15264` | `RestaurantFormScreen` | Outline Fill «Buscar en Google Maps» + location. Alta a mano. |
 | **4d** Guardar sitio · sin pin | `581:15447` | `PlaceImportScreen` | Body FILL + pack start (`spacedBy` `layout-md`). CTA es último hijo hug, no footer anclado. Copy: «Sin coordenadas, pero podrás abrirlo en Maps.» |
-| **4e** Guardar sitio · ubicación detectada | `642:31174` | `PlaceImportScreen` `hasLocation` | Igual que 4d. `LocationStatus`: `Slot_master` sm `location_on` (tertiary) + `body/medium`. Resolver de share = gap de código. |
+| **4e** Guardar sitio · ubicación detectada | `642:31174` | `PlaceImportScreen` `hasLocation` | Igual que 4d. `LocationStatus`: `Slot_master` sm `location_on` (tertiary) + `body/medium`. Pin: URL/HTML o geocode del nombre (no destino del viaje). |
 | **4f** detalle · restaurante | `583:15790` | `RestaurantDetailScreen` | Cal Pep · Reservado · Abrir Maps · delete. |
 | **4g** detalle · sin reserva | `583:15942` | mirador | Bunkers · Por ir / Visitado. |
 | **4h** detalle · borrar | `583:16095` | `AlertDialog` | Borrar sitio. |

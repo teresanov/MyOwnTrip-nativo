@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -53,7 +50,6 @@ import com.myowntrip.app.ui.features.journal.spread.AlbumPageUi
 import com.myowntrip.app.ui.features.journal.spread.JournalCaptureFabMenu
 import com.myowntrip.app.ui.features.journal.spread.JournalCaptureHost
 import com.myowntrip.app.ui.features.journal.spread.SpreadCaptureViewModel
-import com.myowntrip.app.ui.features.places.PlacesMiniMap
 import com.myowntrip.app.ui.features.restaurants.categoryLabel
 import com.myowntrip.app.ui.features.restaurants.statusLabel
 import com.myowntrip.app.ui.features.dayhub.WalletLinkDialog
@@ -87,7 +83,6 @@ fun TripDetailScreen(
   onDayMemoriesClick: (String) -> Unit = onDayClick,
   onJournalNoteClick: (String) -> Unit,
   onRestaurantClick: (String) -> Unit,
-  onOpenPlacesMap: () -> Unit = {},
   onViewDocument: (source: String, title: String?) -> Unit = { _, _ -> },
   viewModel: TripDetailViewModel = hiltViewModel(),
 ) {
@@ -267,7 +262,6 @@ fun TripDetailScreen(
         4 -> RestaurantsTab(
           restaurants = state.restaurants,
           onRestaurantClick = onRestaurantClick,
-          onOpenMap = onOpenPlacesMap,
         )
       }
     }
@@ -405,7 +399,6 @@ private fun ExpenseCard(expense: Expense, onClick: () -> Unit) {
 private fun RestaurantsTab(
   restaurants: List<Restaurant>,
   onRestaurantClick: (String) -> Unit,
-  onOpenMap: () -> Unit,
 ) {
   if (restaurants.isEmpty()) {
     EmptyPlacesState()
@@ -414,29 +407,6 @@ private fun RestaurantsTab(
       contentPadding = PaddingValues(16.dp),
       verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-      if (restaurants.any { it.hasLocation }) {
-        item {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth()
-              .height(160.dp)
-              .clip(RoundedCornerShape(12.dp)),
-          ) {
-            PlacesMiniMap(
-              places = restaurants,
-              interactive = false,
-              modifier = Modifier.fillMaxSize(),
-            )
-            // Overlay transparente: el AndroidView de abajo se queda con el touch,
-            // así que el tap para abrir el mapa completo lo captura este Box de encima.
-            Box(
-              modifier = Modifier
-                .matchParentSize()
-                .clickable(onClick = onOpenMap),
-            )
-          }
-        }
-      }
       items(restaurants, key = { it.id }) { restaurant ->
         Card(
           modifier = Modifier

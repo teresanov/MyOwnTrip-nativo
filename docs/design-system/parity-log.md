@@ -22,12 +22,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 ## Pendiente
 
-Cola **siguiente sprint** (no bloquea el cierre de Home + Sitios):
-
-| Ámbito | Tarea |
-|--------|--------|
-| Sitios · pin Maps | Share desde Google Maps a menudo **no resuelve lat/lng**. Caps: **4d** fallo · **4e** UI de éxito (`hasLocation`). Falta el arreglo en `PlaceCoordinateResolver`. |
-| Sitios · mini mapa tab | Figma **4b** = solo cards. Compose `RestaurantsTab` aún pinta `PlacesMiniMap` 160dp. |
+Ninguna cola de Sitios / Home. Plan / Diario / Gastos siguen como módulos aparte (cuerpos R6.3 en el registro).
 
 ---
 
@@ -35,6 +30,7 @@ Cola **siguiente sprint** (no bloquea el cierre de Home + Sitios):
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-13 | Sitios · código | Pin Maps: más patrones URL/HTML + geocode **solo del nombre** si el enlace no trae pin. Tab **4b**: sin `PlacesMiniMap`. | `PlaceShareParser` · `PlaceCoordinateResolver` · `RestaurantsTab` | Hecho |
 | 2026-11-13 | Sprint | **Cerrado** Home **2b** + Sitios **4–4h** (CTA pack-start, `Slot_master` 4e, swipe Horizontal card). Caps Figma de esta cola: 0 abiertas. | `642:31056` · `08 · Sitios` | Cerrado |
 | 2026-11-13 | Home · R6.2 | Cap **2b** swipe revelado. Wrap sin fill blanco. | `642:31056` · `642:31159` | Hecho |
 | 2026-11-13 | List Item - Swipe | Eje **Content** = List item \| Horizontal card (4 estados). Home cap 2b → instancia tras **publicar** DS. | `zrGAL4v6` `59106:13321` · Revealed card `61510:28168` | Hecho |
