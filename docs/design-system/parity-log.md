@@ -22,6 +22,8 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 ## Pendiente
 
+Cola **siguiente sprint** (no bloquea el cierre de Home + Sitios):
+
 | Ámbito | Tarea |
 |--------|--------|
 | Sitios · pin Maps | Share desde Google Maps a menudo **no resuelve lat/lng**. Caps: **4d** fallo · **4e** UI de éxito (`hasLocation`). Falta el arreglo en `PlaceCoordinateResolver`. |
@@ -33,6 +35,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-13 | Sprint | **Cerrado** Home **2b** + Sitios **4–4h** (CTA pack-start, `Slot_master` 4e, swipe Horizontal card). Caps Figma de esta cola: 0 abiertas. | `642:31056` · `08 · Sitios` | Cerrado |
 | 2026-11-13 | Home · R6.2 | Cap **2b** swipe revelado. Wrap sin fill blanco. | `642:31056` · `642:31159` | Hecho |
 | 2026-11-13 | List Item - Swipe | Eje **Content** = List item \| Horizontal card (4 estados). Home cap 2b → instancia tras **publicar** DS. | `zrGAL4v6` `59106:13321` · Revealed card `61510:28168` | Hecho |
 | 2026-11-13 | Sitios · 4d/4e | Body FILL pack-start: CTA hug tras campos (`layout-md`), no spacer/footer. Secciones Categoría / Viaje `component-sm`. | `581:15447` · `642:31174` | Hecho |
