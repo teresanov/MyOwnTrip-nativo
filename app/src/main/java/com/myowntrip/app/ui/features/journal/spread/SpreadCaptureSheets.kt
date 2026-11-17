@@ -152,14 +152,7 @@ fun SpreadCaptionSheetContent(
           color = MaterialTheme.colorScheme.onSurface,
         )
       }
-      JournalPieceType.AUDIO -> {
-        Text(
-          text = "Caption opcional…",
-          style = MaterialTheme.typography.bodyLarge,
-          color = MaterialTheme.colorScheme.onSurface,
-        )
-      }
-      JournalPieceType.TEXT, JournalPieceType.STICKER -> {
+      JournalPieceType.TEXT, JournalPieceType.STICKER, JournalPieceType.AUDIO -> {
         val field = fieldCopyFor(pieceType)
         OutlinedTextField(
           value = caption,
@@ -177,7 +170,7 @@ fun SpreadCaptionSheetContent(
       }
       else -> Unit
     }
-    if (pieceType != JournalPieceType.TEXT && pieceType != JournalPieceType.STICKER) {
+    if (pieceType == JournalPieceType.PHOTO) {
       captionError?.let {
         Text(text = it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
       }
@@ -225,19 +218,24 @@ fun SpreadCaptionSheetContent(
 
     if (pieceType == JournalPieceType.AUDIO) {
       MOTButton(
-        onClick = if (isRecording) onStopRecording else onStartRecording,
+        onClick = onStartRecording,
+        enabled = !isSaving && !isRecording,
         modifier = Modifier.fillMaxWidth(),
       ) {
-        Text(if (isRecording) "Detener grabación" else if (audioAttached) "Volver a grabar" else "Grabar voz")
+        Icon(MOTIcons.Mic, contentDescription = null)
+        Text(
+          text = if (audioAttached) "Volver a grabar" else "Grabar voz",
+          modifier = Modifier.padding(start = MOTSpacing.componentSm),
+        )
       }
-    }
-
-    MOTButton(
-      onClick = onSave,
-      enabled = !isSaving && !isRecording,
-      modifier = Modifier.fillMaxWidth(),
-    ) {
-      Text("Pegar en la página")
+    } else {
+      MOTButton(
+        onClick = onSave,
+        enabled = !isSaving && !isRecording,
+        modifier = Modifier.fillMaxWidth(),
+      ) {
+        Text("Pegar en la página")
+      }
     }
   }
 }
@@ -395,16 +393,18 @@ fun EventBookmarkCaptureContent(
       )
     }
     MOTButton(
-      onClick = if (isRecording) onStopRecording else onStartRecording,
+      onClick = onStartRecording,
+      enabled = !isSaving && !isRecording,
       modifier = Modifier.fillMaxWidth(),
     ) {
-      Text(if (isRecording) "Detener" else "Grabar voz")
+      Icon(MOTIcons.Mic, contentDescription = null)
+      Text(
+        text = "Grabar voz",
+        modifier = Modifier.padding(start = MOTSpacing.componentSm),
+      )
     }
     MOTButton(onClick = onSavePhoto, enabled = !isSaving && photoAttached, modifier = Modifier.fillMaxWidth()) {
       Text("Pegar foto del evento")
-    }
-    MOTButton(onClick = onSaveAudio, enabled = !isSaving && audioAttached, modifier = Modifier.fillMaxWidth()) {
-      Text("Pegar voz del evento")
     }
     MOTButton(onClick = onSaveText, enabled = !isSaving && caption.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
       Text("Pegar nota del evento")
@@ -520,6 +520,12 @@ private fun fieldCopyFor(pieceType: JournalPieceType): CaptionFieldCopy = when (
     supporting = "Opcional",
     contentDescription = "Pie del sticker",
   )
+  JournalPieceType.AUDIO -> CaptionFieldCopy(
+    label = "Nota (opcional)",
+    placeholder = "Un detalle de la feria…",
+    supporting = "Opcional",
+    contentDescription = "Nota de la grabación",
+  )
   else -> CaptionFieldCopy(
     label = "¿Qué pasó?",
     placeholder = "Hoy he visto la luz de Goya…",
@@ -537,6 +543,34 @@ private fun SpreadCaptionPhotoSheetPreview() {
       caption = "",
       captionError = null,
       pieceType = JournalPieceType.PHOTO,
+      textStyle = JournalTextStyle.HAND,
+      stickerShape = StickerShape.CIRCLE,
+      photoAttached = false,
+      photoPath = null,
+      audioAttached = false,
+      isRecording = false,
+      isSaving = false,
+      onCaptionChange = {},
+      onTextStyleChange = {},
+      onStickerShapeChange = {},
+      onRequestCamera = {},
+      onRequestGallery = {},
+      onStartRecording = {},
+      onStopRecording = {},
+      onSave = {},
+    )
+  }
+}
+
+@Preview(name = "Sheet · Voz", showBackground = true, widthDp = 360)
+@Composable
+private fun SpreadCaptionAudioSheetPreview() {
+  JournalSpreadPreviewTheme {
+    SpreadCaptionSheetContent(
+      title = "Nota de voz",
+      caption = "",
+      captionError = null,
+      pieceType = JournalPieceType.AUDIO,
       textStyle = JournalTextStyle.HAND,
       stickerShape = StickerShape.CIRCLE,
       photoAttached = false,

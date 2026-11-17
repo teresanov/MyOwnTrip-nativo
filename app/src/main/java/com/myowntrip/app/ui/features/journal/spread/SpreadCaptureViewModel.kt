@@ -10,6 +10,7 @@ import com.myowntrip.app.domain.model.ItineraryBlock
 import com.myowntrip.app.domain.model.JournalPieceType
 import com.myowntrip.app.domain.model.JournalTextStyle
 import com.myowntrip.app.platform.location.LocationCapture
+import com.myowntrip.app.platform.media.AudioNotePlayer
 import com.myowntrip.app.platform.media.AudioNoteRecorder
 import com.myowntrip.app.platform.media.JournalMediaStorage
 import com.myowntrip.app.platform.media.StickerShape
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
+import kotlin.math.ln
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -49,6 +51,11 @@ data class SpreadCaptureUiState(
   val photoPath: String? = null,
   val audioPath: String? = null,
   val isRecording: Boolean = false,
+  val showAudioReview: Boolean = false,
+  val isPlayingPreview: Boolean = false,
+  val previewProgress: Float = 0f,
+  val previewPositionMs: Int = 0,
+  val previewDurationMs: Int = 0,
   val recordingLevels: List<Float> = emptyList(),
   val showCamera: Boolean = false,
   val pendingPhotoFile: File? = null,
@@ -66,6 +73,7 @@ class SpreadCaptureViewModel @Inject constructor(
   private val itineraryRepository: ItineraryRepository,
   private val mediaStorage: JournalMediaStorage,
   private val audioRecorder: AudioNoteRecorder,
+  private val audioPlayer: AudioNotePlayer,
   private val locationCapture: LocationCapture,
 ) : ViewModel() {
   // Día destino de la captura. En el Day Hub viene fijado por la ruta; en el Diario
@@ -77,6 +85,7 @@ class SpreadCaptureViewModel @Inject constructor(
   val uiState: StateFlow<SpreadCaptureUiState> = _uiState.asStateFlow()
 
   private var amplitudeJob: Job? = null
+  private var previewJob: Job? = null
   private var pendingAudioPath: String? = null
 
   /** Hoja activa del álbum donde caerá la pieza. La fija el host antes de guardar. */
@@ -108,6 +117,7 @@ class SpreadCaptureViewModel @Inject constructor(
   fun dismissFlow() {
     cancelCamera()
     if (audioRecorder.isRecording) stopRecording()
+    stopPreview()
     discardPendingMedia()
     _uiState.update {
       SpreadCaptureUiState(dayBlocks = it.dayBlocks)
@@ -246,8 +256,27 @@ class SpreadCaptureViewModel @Inject constructor(
     pendingAudioPath?.let { File(it).delete() }
     pendingAudioPath = null
     val file = mediaStorage.createAudioFile()
-    audioRecorder.start(file)
-    _uiState.update { it.copy(isRecording = true, recordingLevels = emptyList()) }
+    if (!audioRecorder.start(file)) {
+      _uiState.update {
+        it.copy(
+          isRecording = false,
+          showAudioReview = false,
+          audioPath = null,
+          recordingLevels = emptyList(),
+          captionError = "No se pudo iniciar la grabación. Comprueba el permiso del micrófono.",
+        )
+      }
+      return
+    }
+    stopPreview()
+    _uiState.update {
+      it.copy(
+        isRecording = true,
+        showAudioReview = false,
+        recordingLevels = emptyList(),
+        captionError = null,
+      )
+    }
     startAmplitudePolling()
   }
 
@@ -260,6 +289,41 @@ class SpreadCaptureViewModel @Inject constructor(
       it.copy(
         isRecording = false,
         audioPath = path,
+        showAudioReview = path != null,
+        captionError = if (path == null) "No se pudo guardar la nota de voz" else null,
+      )
+    }
+  }
+
+  fun toggleAudioPreview() {
+    val path = _uiState.value.audioPath ?: return
+    if (audioPlayer.isPlaying() && audioPlayer.currentPath == path) {
+      audioPlayer.pause()
+      _uiState.update { it.copy(isPlayingPreview = false) }
+      return
+    }
+    audioPlayer.play(path) { onPreviewComplete() }
+    startPreviewPolling()
+    _uiState.update {
+      it.copy(
+        isPlayingPreview = true,
+        previewDurationMs = audioPlayer.durationMs(),
+      )
+    }
+  }
+
+  fun discardAudioReview() {
+    stopPreview()
+    pendingAudioPath?.let { File(it).delete() }
+    pendingAudioPath = null
+    _uiState.update {
+      it.copy(
+        audioPath = null,
+        showAudioReview = false,
+        isPlayingPreview = false,
+        previewProgress = 0f,
+        previewPositionMs = 0,
+        previewDurationMs = 0,
         recordingLevels = emptyList(),
       )
     }
@@ -301,6 +365,7 @@ class SpreadCaptureViewModel @Inject constructor(
         _uiState.update { it.copy(captionError = "No se pudo determinar el día") }
         return@launch
       }
+      stopPreview()
       _uiState.update { it.copy(isSaving = true) }
       val location = if (hasLocationPermission) locationCapture.getCurrentLocation() else null
       journalRepository.addNote(
@@ -354,6 +419,7 @@ class SpreadCaptureViewModel @Inject constructor(
         _uiState.update { it.copy(captionError = "No se pudo determinar el día") }
         return@launch
       }
+      stopPreview()
       _uiState.update { it.copy(isSaving = true) }
       val location = if (hasLocationPermission) locationCapture.getCurrentLocation() else null
       journalRepository.addNote(
@@ -430,7 +496,7 @@ class SpreadCaptureViewModel @Inject constructor(
     amplitudeJob = viewModelScope.launch {
       while (isActive && audioRecorder.isRecording) {
         val amplitude = audioRecorder.readMaxAmplitude()
-        val normalized = (amplitude / 32767f).coerceIn(0.08f, 1f)
+        val normalized = (ln(1.0 + amplitude) / ln(1.0 + 32_767.0)).toFloat()
         _uiState.update { state ->
           state.copy(recordingLevels = (state.recordingLevels + normalized).takeLast(24))
         }
@@ -439,8 +505,45 @@ class SpreadCaptureViewModel @Inject constructor(
     }
   }
 
+  private fun startPreviewPolling() {
+    previewJob?.cancel()
+    previewJob = viewModelScope.launch {
+      while (isActive && audioPlayer.currentPath != null) {
+        val duration = audioPlayer.durationMs().coerceAtLeast(1)
+        val position = audioPlayer.currentPositionMs()
+        _uiState.update {
+          it.copy(
+            isPlayingPreview = audioPlayer.isPlaying(),
+            previewPositionMs = position,
+            previewDurationMs = duration,
+            previewProgress = position.toFloat() / duration.toFloat(),
+          )
+        }
+        if (!audioPlayer.isPlaying() && position == 0) break
+        delay(if (audioPlayer.isPlaying()) 80 else 200)
+      }
+    }
+  }
+
+  private fun onPreviewComplete() {
+    previewJob?.cancel()
+    _uiState.update {
+      it.copy(isPlayingPreview = false, previewProgress = 0f, previewPositionMs = 0)
+    }
+  }
+
+  private fun stopPreview() {
+    previewJob?.cancel()
+    audioPlayer.stop()
+    _uiState.update {
+      it.copy(isPlayingPreview = false, previewProgress = 0f, previewPositionMs = 0)
+    }
+  }
+
   override fun onCleared() {
     amplitudeJob?.cancel()
+    previewJob?.cancel()
+    stopPreview()
     if (audioRecorder.isRecording) audioRecorder.stop()
     super.onCleared()
   }

@@ -19,9 +19,9 @@ import com.myowntrip.app.ui.features.journal.spread.buildAlbumPages
 import java.time.LocalDate
 
 /**
- * Pestaña Diario del viaje: el álbum completo en una pasada continua. Editable salvo en
- * viajes pasados (arrastrar piezas, nueva hoja, capturar desde el Speed Dial). La pieza
- * nueva cae en la hoja/día que se esté viendo.
+ * Pestaña Diario del viaje: el álbum completo en una pasada continua (una hoja por día).
+ * Editable salvo en viajes pasados (arrastrar piezas, capturar desde el Speed Dial).
+ * La pieza nueva cae en el día que se esté viendo.
  */
 @Composable
 fun TripJournalTab(
@@ -32,7 +32,6 @@ fun TripJournalTab(
   modifier: Modifier = Modifier,
   readOnly: Boolean = true,
   onPersistTransform: OnPersistTransform = { _, _, _, _, _, _ -> },
-  onAddSheet: (dayId: String) -> Unit = {},
   onActivePageChange: (AlbumPageUi) -> Unit = {},
 ) {
   val albumPages = remember(days, pages, notes) {
@@ -44,7 +43,6 @@ fun TripJournalTab(
     readOnly = readOnly,
     onPersistTransform = onPersistTransform,
     onPieceClick = onNoteClick,
-    onAddSheet = onAddSheet,
     onActivePageChange = onActivePageChange,
   )
 }

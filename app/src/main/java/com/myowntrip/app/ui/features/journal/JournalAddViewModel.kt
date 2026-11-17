@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.myowntrip.app.data.repository.JournalRepository
 import com.myowntrip.app.domain.model.JournalNote
 import com.myowntrip.app.platform.location.LocationCapture
+import com.myowntrip.app.platform.media.AudioNotePlayer
 import com.myowntrip.app.platform.media.AudioNoteRecorder
 import com.myowntrip.app.platform.media.JournalMediaStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
+import kotlin.math.ln
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,6 +31,11 @@ data class JournalAddUiState(
   val photoPath: String? = null,
   val audioPath: String? = null,
   val isRecording: Boolean = false,
+  val showAudioReview: Boolean = false,
+  val isPlayingPreview: Boolean = false,
+  val previewProgress: Float = 0f,
+  val previewPositionMs: Int = 0,
+  val previewDurationMs: Int = 0,
   val recordingLevels: List<Float> = emptyList(),
   val attachLocation: Boolean = true,
   val isSaving: Boolean = false,
@@ -45,12 +52,14 @@ class JournalAddViewModel @Inject constructor(
   private val journalRepository: JournalRepository,
   private val mediaStorage: JournalMediaStorage,
   private val audioRecorder: AudioNoteRecorder,
+  private val audioPlayer: AudioNotePlayer,
   private val locationCapture: LocationCapture,
 ) : ViewModel() {
   private val dayId: String? = savedStateHandle.get<String>("dayId")
   private val noteId: String? = savedStateHandle.get<String>("noteId")
   private var loadedNote: JournalNote? = null
   private var amplitudeJob: Job? = null
+  private var previewJob: Job? = null
 
   val isEditMode: Boolean = noteId != null
 
@@ -140,8 +149,26 @@ class JournalAddViewModel @Inject constructor(
     if (audioRecorder.isRecording) return
     replaceAudio(_uiState.value.audioPath, null)
     val file = mediaStorage.createAudioFile()
-    audioRecorder.start(file)
-    _uiState.update { it.copy(isRecording = true, audioPath = null, recordingLevels = emptyList()) }
+    if (!audioRecorder.start(file)) {
+      _uiState.update {
+        it.copy(
+          isRecording = false,
+          audioPath = null,
+          recordingLevels = emptyList(),
+          infoMessage = "No se pudo iniciar la grabación. Comprueba el permiso del micrófono.",
+        )
+      }
+      return
+    }
+    stopPreview()
+    _uiState.update {
+      it.copy(
+        isRecording = true,
+        showAudioReview = false,
+        audioPath = null,
+        recordingLevels = emptyList(),
+      )
+    }
     startAmplitudePolling()
   }
 
@@ -153,19 +180,57 @@ class JournalAddViewModel @Inject constructor(
       it.copy(
         isRecording = false,
         audioPath = path,
+        showAudioReview = path != null,
+        infoMessage = if (path == null) "No se pudo guardar la nota de voz" else null,
+      )
+    }
+  }
+
+  fun toggleAudioPreview() {
+    val path = _uiState.value.audioPath ?: return
+    if (audioPlayer.isPlaying() && audioPlayer.currentPath == path) {
+      audioPlayer.pause()
+      _uiState.update { it.copy(isPlayingPreview = false) }
+      return
+    }
+    audioPlayer.play(path) { onPreviewComplete() }
+    startPreviewPolling()
+    _uiState.update {
+      it.copy(isPlayingPreview = true, previewDurationMs = audioPlayer.durationMs())
+    }
+  }
+
+  fun acceptAudioPreview() {
+    stopPreview()
+    _uiState.update {
+      it.copy(
+        showAudioReview = false,
+        isPlayingPreview = false,
+        infoMessage = "Nota de voz adjunta",
+      )
+    }
+  }
+
+  fun discardAudioReview() {
+    stopPreview()
+    replaceAudio(_uiState.value.audioPath, null)
+    _uiState.update {
+      it.copy(
+        audioPath = null,
+        showAudioReview = false,
+        isPlayingPreview = false,
+        previewProgress = 0f,
+        previewPositionMs = 0,
+        previewDurationMs = 0,
         recordingLevels = emptyList(),
-        infoMessage = if (path != null) {
-          "Nota de voz adjunta"
-        } else {
-          "No se pudo guardar la nota de voz"
-        },
       )
     }
   }
 
   fun removeAudio() {
+    stopPreview()
     replaceAudio(_uiState.value.audioPath, null)
-    _uiState.update { it.copy(audioPath = null) }
+    _uiState.update { it.copy(audioPath = null, showAudioReview = false) }
   }
 
   fun toggleAttachLocation(enabled: Boolean) {
@@ -239,7 +304,7 @@ class JournalAddViewModel @Inject constructor(
     amplitudeJob = viewModelScope.launch {
       while (isActive && audioRecorder.isRecording) {
         val amplitude = audioRecorder.readMaxAmplitude()
-        val normalized = (amplitude / 32767f).coerceIn(0.08f, 1f)
+        val normalized = (ln(1.0 + amplitude) / ln(1.0 + 32_767.0)).toFloat()
         _uiState.update { state ->
           state.copy(
             recordingLevels = (state.recordingLevels + normalized).takeLast(24),
@@ -262,8 +327,45 @@ class JournalAddViewModel @Inject constructor(
     }
   }
 
+  private fun startPreviewPolling() {
+    previewJob?.cancel()
+    previewJob = viewModelScope.launch {
+      while (isActive && audioPlayer.currentPath != null) {
+        val duration = audioPlayer.durationMs().coerceAtLeast(1)
+        val position = audioPlayer.currentPositionMs()
+        _uiState.update {
+          it.copy(
+            isPlayingPreview = audioPlayer.isPlaying(),
+            previewPositionMs = position,
+            previewDurationMs = duration,
+            previewProgress = position.toFloat() / duration.toFloat(),
+          )
+        }
+        if (!audioPlayer.isPlaying() && position == 0) break
+        delay(if (audioPlayer.isPlaying()) 80 else 200)
+      }
+    }
+  }
+
+  private fun onPreviewComplete() {
+    previewJob?.cancel()
+    _uiState.update {
+      it.copy(isPlayingPreview = false, previewProgress = 0f, previewPositionMs = 0)
+    }
+  }
+
+  private fun stopPreview() {
+    previewJob?.cancel()
+    audioPlayer.stop()
+    _uiState.update {
+      it.copy(isPlayingPreview = false, previewProgress = 0f, previewPositionMs = 0)
+    }
+  }
+
   override fun onCleared() {
     amplitudeJob?.cancel()
+    previewJob?.cancel()
+    stopPreview()
     if (audioRecorder.isRecording) {
       audioRecorder.stop()
     }

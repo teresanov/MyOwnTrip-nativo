@@ -105,10 +105,19 @@ fun JournalAddScreen(
     return
   }
 
-  if (state.isRecording) {
+  if (state.isRecording || state.showAudioReview) {
     JournalRecordingDialog(
       recordingLevels = state.recordingLevels,
+      isReviewing = state.showAudioReview,
+      isPlaying = state.isPlayingPreview,
+      previewProgress = state.previewProgress,
+      previewPositionMs = state.previewPositionMs,
+      previewDurationMs = state.previewDurationMs,
       onStop = viewModel::stopRecording,
+      onTogglePlayback = viewModel::toggleAudioPreview,
+      onConfirm = viewModel::acceptAudioPreview,
+      onDiscard = viewModel::discardAudioReview,
+      confirmLabel = "Usar esta grabación",
     )
   }
 
@@ -216,7 +225,7 @@ fun JournalAddScreen(
           selected = state.isRecording || state.audioPath != null,
           onClick = {
             when {
-              state.isRecording -> viewModel.stopRecording()
+              state.isRecording || state.showAudioReview -> Unit
               state.audioPath != null -> viewModel.removeAudio()
               else -> requestAudio()
             }

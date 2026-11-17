@@ -119,7 +119,6 @@ fun ScrapbookAlbum(
   initialPageId: String? = null,
   onPersistTransform: OnPersistTransform = { _, _, _, _, _, _ -> },
   onPieceClick: (String) -> Unit = {},
-  onAddSheet: (dayId: String) -> Unit = {},
   onActivePageChange: (AlbumPageUi) -> Unit = {},
 ) {
   if (pages.isEmpty()) {
@@ -173,13 +172,10 @@ fun ScrapbookAlbum(
       AlbumChrome(
         pages = pages,
         current = current,
-        readOnly = readOnly,
         onJumpToDay = { dayId ->
           val target = pages.indexOfFirst { it.day.id == dayId }
           if (target >= 0) scope.launch { pagerState.animateScrollToPage(target) }
         },
-        onOpenReading = { readingPageId = current.pageId },
-        onAddSheet = { onAddSheet(current.day.id) },
       )
     }
 
@@ -260,7 +256,7 @@ private fun AlbumCoachOverlay(onDismiss: () -> Unit) {
       )
       CoachLine("Toca", "un recuerdo para abrirlo o editarlo.")
       CoachLine("Mantén pulsado", "y arrastra para moverlo por la hoja.")
-      CoachLine("Pulsa +", "para añadir recuerdos o una hoja nueva.")
+      CoachLine("Pulsa +", "para pegar recuerdos en el día que estás viendo.")
       Box(
         Modifier
           .align(Alignment.End)
@@ -809,10 +805,7 @@ private fun DoodleArrow(modifier: Modifier) {
 private fun AlbumChrome(
   pages: List<AlbumPageUi>,
   current: AlbumPageUi,
-  readOnly: Boolean,
   onJumpToDay: (String) -> Unit,
-  onOpenReading: () -> Unit,
-  onAddSheet: () -> Unit,
 ) {
   val days = remember(pages) { pages.map { it.day }.distinctBy { it.id }.sortedBy { it.dayNumber } }
   Row(
@@ -847,39 +840,6 @@ private fun AlbumChrome(
       }
     }
     Spacer(Modifier.weight(1f))
-    Box(
-      Modifier
-        .size(40.dp)
-        .clip(CircleShape)
-        .border(1.dp, BrandColors.Ink.copy(alpha = 0.35f), CircleShape)
-        .clickable { onOpenReading() },
-      contentAlignment = Alignment.Center,
-    ) {
-      Icon(
-        imageVector = MOTIcons.Menu,
-        contentDescription = "Ordenar y leer la hoja",
-        modifier = Modifier.size(20.dp),
-        tint = BrandColors.Ink,
-      )
-    }
-    if (!readOnly) {
-      Spacer(Modifier.width(8.dp))
-      Box(
-        Modifier
-          .size(48.dp)
-          .shadow(6.dp, CircleShape)
-          .background(BrandColors.Ink, CircleShape)
-          .clickable { onAddSheet() },
-        contentAlignment = Alignment.Center,
-      ) {
-        Icon(
-          imageVector = MOTIcons.Add,
-          contentDescription = "Nueva hoja",
-          modifier = Modifier.size(24.dp),
-          tint = Color.White,
-        )
-      }
-    }
   }
 }
 

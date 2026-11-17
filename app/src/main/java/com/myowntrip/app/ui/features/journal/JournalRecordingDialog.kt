@@ -20,6 +20,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIcons
+import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.ui.theme.MOTSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,8 +28,18 @@ import com.myowntrip.app.ui.theme.MOTSpacing
 fun JournalRecordingDialog(
   recordingLevels: List<Float>,
   onStop: () -> Unit,
+  isReviewing: Boolean = false,
+  isPlaying: Boolean = false,
+  previewProgress: Float = 0f,
+  previewPositionMs: Int = 0,
+  previewDurationMs: Int = 0,
+  isSaving: Boolean = false,
+  onTogglePlayback: () -> Unit = {},
+  onConfirm: () -> Unit = {},
+  onDiscard: () -> Unit = {},
+  confirmLabel: String = "Pegar en la página",
 ) {
-  BasicAlertDialog(onDismissRequest = {}) {
+  BasicAlertDialog(onDismissRequest = { if (isReviewing) onDiscard() }) {
     Surface(
       shape = MaterialTheme.shapes.extraLarge,
       tonalElevation = 6.dp,
@@ -36,7 +47,11 @@ fun JournalRecordingDialog(
         .fillMaxWidth()
         .semantics {
           liveRegion = LiveRegionMode.Polite
-          contentDescription = "Grabando nota de voz"
+          contentDescription = if (isReviewing) {
+            "Nota de voz grabada. Puedes escucharla, pegarla o descartarla."
+          } else {
+            "Grabando nota de voz"
+          }
         },
     ) {
       Column(
@@ -44,28 +59,57 @@ fun JournalRecordingDialog(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MOTSpacing.layoutMd),
       ) {
-        AudioWaveformBars(
-          levels = recordingLevels,
-          modifier = Modifier.padding(vertical = MOTSpacing.componentSm),
-        )
-        Text(
-          text = "Grabando audio",
-          style = MaterialTheme.typography.titleMedium,
-        )
-        Text(
-          text = "Habla con normalidad. Pulsa Detener cuando hayas terminado.",
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        MOTButton(
-          onClick = onStop,
-          modifier = Modifier.fillMaxWidth(),
-        ) {
-          Icon(MOTIcons.Stop, contentDescription = null)
+        if (isReviewing) {
           Text(
-            text = "Detener",
-            modifier = Modifier.padding(start = MOTSpacing.componentSm),
+            text = "¿Te gusta esta nota?",
+            style = MaterialTheme.typography.titleMedium,
           )
+          JournalAudioPlayerBar(
+            isPlaying = isPlaying,
+            progress = previewProgress,
+            positionLabel = formatAudioTime(previewPositionMs),
+            durationLabel = formatAudioTime(previewDurationMs),
+            waveformLevels = recordingLevels,
+            onTogglePlayback = onTogglePlayback,
+          )
+          MOTButton(
+            onClick = onConfirm,
+            enabled = !isSaving,
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            Text(confirmLabel)
+          }
+          MOTOutlinedButton(
+            onClick = onDiscard,
+            enabled = !isSaving,
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            Text("Descartar")
+          }
+        } else {
+          AudioWaveformBars(
+            levels = recordingLevels,
+            modifier = Modifier.padding(vertical = MOTSpacing.componentSm),
+          )
+          Text(
+            text = "Grabando audio",
+            style = MaterialTheme.typography.titleMedium,
+          )
+          Text(
+            text = "Habla con normalidad. Pulsa Detener cuando hayas terminado.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+          )
+          MOTButton(
+            onClick = onStop,
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            Icon(MOTIcons.Stop, contentDescription = null)
+            Text(
+              text = "Detener",
+              modifier = Modifier.padding(start = MOTSpacing.componentSm),
+            )
+          }
         }
       }
     }

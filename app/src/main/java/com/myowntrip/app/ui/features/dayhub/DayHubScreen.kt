@@ -157,7 +157,6 @@ fun DayHubScreen(
               readOnly = false,
               onPersistTransform = viewModel::persistPieceTransform,
               onPieceClick = onNoteClick,
-              onAddSheet = { viewModel.addJournalSheet() },
               onActivePageChange = { activeAlbumPage = it },
             )
           }

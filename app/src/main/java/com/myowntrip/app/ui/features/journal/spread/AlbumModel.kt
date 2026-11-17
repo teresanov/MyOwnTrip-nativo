@@ -30,45 +30,42 @@ private fun virtualPageId(dayId: String): String = "virtual-$dayId"
 fun isVirtualPageId(pageId: String): Boolean = pageId.startsWith("virtual-")
 
 /**
- * Construye la pasada continua del álbum (días ordenados, hojas por día).
+ * Construye la pasada continua del álbum: **una hoja por día de viaje**.
  * Días sin hoja persistida muestran UNA hoja virtual en blanco para empezar a pegar.
+ * Si hubiera varias filas en BD, se usa la primera y todas las piezas del día van ahí.
  */
 fun buildAlbumPages(
   days: List<Day>,
   pages: List<JournalPage>,
   notes: List<JournalNote>,
 ): List<AlbumPageUi> {
-  val notesByPage = notes.groupBy { it.pageId }
   val pagesByDay = pages.groupBy { it.dayId }
   return days
     .sortedBy { it.dayNumber }
-    .flatMap { day ->
+    .map { day ->
       val dayPages = pagesByDay[day.id].orEmpty().sortedBy { it.pageIndex }
-      if (dayPages.isEmpty()) {
-        listOf(
-          AlbumPageUi(
-            pageId = virtualPageId(day.id),
-            isPersisted = false,
-            day = day,
-            tripId = day.tripId,
-            pageIndexInDay = 0,
-            pageCountInDay = 1,
-            notes = notesByPage[null].orEmpty().filter { it.dayId == day.id }
-              .sortedBy { it.createdAt },
-          ),
+      val dayNotes = notes.filter { it.dayId == day.id }.sortedBy { it.createdAt }
+      val page = dayPages.firstOrNull()
+      if (page == null) {
+        AlbumPageUi(
+          pageId = virtualPageId(day.id),
+          isPersisted = false,
+          day = day,
+          tripId = day.tripId,
+          pageIndexInDay = 0,
+          pageCountInDay = 1,
+          notes = dayNotes,
         )
       } else {
-        dayPages.mapIndexed { index, page ->
-          AlbumPageUi(
-            pageId = page.id,
-            isPersisted = true,
-            day = day,
-            tripId = page.tripId,
-            pageIndexInDay = index,
-            pageCountInDay = dayPages.size,
-            notes = notesByPage[page.id].orEmpty().sortedBy { it.createdAt },
-          )
-        }
+        AlbumPageUi(
+          pageId = page.id,
+          isPersisted = true,
+          day = day,
+          tripId = page.tripId,
+          pageIndexInDay = 0,
+          pageCountInDay = 1,
+          notes = dayNotes,
+        )
       }
     }
 }

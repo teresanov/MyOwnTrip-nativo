@@ -39,8 +39,9 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 
 | Figma component set | Node DS | Layout / variante | Compose | Showcase / notas |
 |---------------------|---------|-------------------|---------|------------------|
-| **Plan day card** | [61457:28212](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61457-28212) | Content Empty\|Filled\|Unplaced · Trip Current\|Past | `PlanDaySection` + `UnplacedWalletSection` | Misma Card. Unplaced = Current (Compose no lista sin colocar en viaje pasado). Booleanas `Show day title`, `Show document`. TEXT `Doc title` / `Meta`. CTA Unplaced: Button - text + `account_balance_wallet`. **Publicar** y reimportar cap 2c. |
+| **Plan day card** | [61457:28212](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61457-28212) | Content Empty\|Filled\|Unplaced · Trip Current\|Past | `PlanDaySection` + `UnplacedWalletSection` | Misma Card. Unplaced = Current (Compose no lista sin colocar en viaje pasado). Booleanas `Show day title`, `Show document`. TEXT `Doc title` / `Meta`. CTA Unplaced: Button - text + `account_balance_wallet`. Cap **2c** instanciado. |
 | **Plan activity** | [61457:28304](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61457-28304) | Wallet True\|False · Show action | `PlanActivityCard(embeddedInDay)` | Time/Title/Wallet TEXT props. |
+| **Plan timeline block** | [61465:28416](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61465-28416) | Wallet True\|False · Dragging · Show overflow | `PlanTimelineBlock` | Cuadrante day hub. Celda 56dp; min Wallet 68 / libre 44. Cap **3**. **Publicar** tras rename (quitado «local»). |
 | **Stacked card** | [52346:27573](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52346-27573) | Outlined · Media & text | `MotStackedCard` + `HomeEmptyStackedCard` | [stacked-card](https://teresanov.github.io/MyOwnTrip-nativo/components/stacked-card.html) |
 | | | Elevated · Text only | `MotStackedCard` | ↑ |
 | | | Outlined · Text only | `MotStackedCard` (filtro vacío Home) | ↑ |
@@ -64,6 +65,7 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **Filter chip** | [53923:28270](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28270) | Outlined only | `FilterChip` (`shapes.small`=8) | [filter-chip](../ds-showcase/components/filter-chip.html) · audit [B.3](audits/figma-filterchip-phase-b3-2026-10-29.md) · Elevated CUT Fase D |
 | **Assistive chip** | [53923:28089](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28089) | Outlined \| **Warning** | `AssistChip` / `PlanPlacementSourceChip` | Warning = `warning` fill 14% + borde 35% · cap 10c · hug, no fill |
 | **Basic dialog** | [50723:10929](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=50723-10929) | Icon True/False | `AlertDialog` (`shapes.extraLarge`=28) | [basic-dialog](../ds-showcase/components/basic-dialog.html) · audit [B.3](audits/figma-dialog-phase-b3-2026-10-29.md) |
+| **Journal recording dialog** | [61531:34355](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61531-34355) | State Recording\|Review | `JournalRecordingDialog` | Copy por variante. Instanciado en **6c1**/ **6c2**. |
 | **Snackbar** | [53977:33575](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53977-33575) | Text / action / close · `# of lines` | `SnackbarHost` | Si el copy ocupa **dos líneas**, variante **Two lines** (no One line). Cap 1i = referencia. [snackbar](../ds-showcase/components/snackbar.html) · audit [B.3](audits/figma-snackbar-phase-b3-2026-10-29.md) |
 | **App bar** | [58114:20565](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58114-20565) | Small / Small-centered (+ KEEP Medium/Large/Search) | `TopAppBar` / `CenterAlignedTopAppBar` | pads `mot/spacing/component-*`; audit [B.3](audits/figma-appbar-phase-b3-2026-10-29.md) |
 | **FAB** / Extended / menu | [57998:43426](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57998-43426) | Circular | `FloatingActionButton` (+ menu Home) | Sin morph 0→20 |
@@ -130,11 +132,54 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 |-----|------|----------------------|--------|
 | **2** en curso · días vacíos | `261:941` | `TripPlanTab` Current | Instancias **Plan day card** Empty/Current. CTA «Añadir actividades». FAB +. |
 | **2b** sin días | `573:13289` | `TripPlanTab` `days.isEmpty()` | Copy bodyLarge/bodyMedium. FAB + (snackbar en **2f**). |
-| **2c** actividades + sin colocar | `573:13390` | `TripPlanTab` + `UnplacedWalletSection` | Día 1 Filled + **Plan day card** Content=Unplaced. **Publicar** DS y swap si la cap aún apunta al set suelto. |
-| **2d** viaje pasado | `573:13443` | `TripPlanTab` `isPastTrip` | Empty/Past · «Ver recuerdos del día». Sin FAB. |
-| `06 · Diario` | [`583:16747`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16747) | **5** `574:13966` · **5b** `574:14129` · **5c** `574:14292` |
+| **2c** actividades + sin colocar | `573:13390` | `TripPlanTab` + `UnplacedWalletSection` | Día 1 Filled + **Plan day card** Content=Unplaced (`649:7280`). |
+| **2d** viaje pasado | `573:13443` | `TripPlanTab` `isPastTrip` | Empty/Past · «Ver recuerdos del día». Header **Ver documentos**. Sin FAB. |
+| **2e** pasado · Lisboa | `593:16826` | `TripPlanTab` `[Demo] Lisboa pasado` | Filled/Past (días 1–4 seed) + Empty/Past (5–7). Sin colocar no aplica. |
+| **2f** FAB sin días | `599:19969` | `TripDetailScreen` FAB Plan | Cuerpo = **2b**. Snackbar «Este viaje aún no tiene días» (One line). |
+
+### `05 · Plan` — day hub `DayHubScreen`
+
+| Cap | Node | Preview / composable | Notas |
+|-----|------|----------------------|--------|
+| **3** cuadrante | `593:14790` | `DayHubScreen` + `DayPlanSchedule` | Tabs Plan\|Diario. Hint Wallet. Grid 09–16 · 56dp. **Plan timeline block** Museo (Wallet) 11:00 + Café 14:30. FAB +. Sin Navigation bar. |
+| **3b** añadir actividad | `593:14876` | `AddPlanActivitySheet` | Sheet: Outlined vacíos (Label text, sin fill `Surface`), fila Wallet «Vincular documento de Wallet» + «Billete, entrada o reserva (opcional)» + Elegir, MotTimeField vacío, Añadir / Cancelar. Grid = **3**. |
+| **3c** vacío | `593:14946` | `DayPlanSchedule` vacío | Copy centrado. FAB +. |
+| **3d** vincular Wallet | `593:15068` | `WalletLinkDialogPreview` | Basic dialog + lista radio (Sin documento + preview Wallet). Grid = **3**. |
+| **3e** vincular vacío | `593:15181` | `WalletLinkDialogEmptyPreview` | Dialog sin lista. Copy vacío. Grid = **3**. |
+| **3f** mover día | `593:15294` | `MoveBlockDayDialog` | Basic dialog Content=Day+time. Café · Día 2 · 14:30. Grid = **3**. Publicar DS para `Block title`. |
+| **3g** menú libre | `593:15660` | `DayPlanSchedule` overflow sin Wallet | Menu Standard · Editar hora · Mover a otro día · Vincular documento de Wallet. Sobre Café. Grid = **3**. |
+| **3h** menú Wallet | `593:15839` | overflow con Wallet | Menu: Corregir horario · Vincular documento de Wallet. Sobre Museo. Grid = **3**. |
+| **3i** arrastre | `593:16000` | drag Café | Café desplazada. `Dragging=True` exige publicar Plan timeline block. |
+| **3j** editar hora | `593:16126` | `AlertDialog` | Time field 14:30 · Cancelar / Guardar. Grid = **3**. |
+| **3k** corregir horario | `593:16257` | `UpdateDocumentPlanSheet` | Museo · copy Wallet 11:00 · Día del plan · Guardar cambio / Usar hora del documento. |
+| **3m** Lisboa pasado | `593:16390` | `DayHub` `isPastTrip` | Día 1 · 12 abr. AVE 08:30 + Hotel 14:00. Sin hint, sin ⋮, sin FAB. |
+| **3n** añadir con Wallet | `593:16516` | `AddPlanActivitySheet` linked | Documento vinculado · Museo del Prado · Cambiar. |
+| **3o** vacío pasado | `599:20120` | Plan vacío `readOnly` | Día 5 · 16 abr. «No había actividades…». Sin FAB. |
+| **3p** snackbar movida | `599:20223` | snackbar Two lines | Día 2. «Actividad movida al Día 2. El documento en Wallet no se ha modificado.» |
+| **3q** snackbar hora | `599:20359` | snackbar Two lines | «Hora actualizada en el plan. El documento en Wallet no se ha modificado.» |
+| **3r** solape | `599:20494` | misma hora | Museo + Café a las 11:00. Grid = **3**. |
+| `06 · Diario` | [`583:16747`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16747) | **5** `574:13966` · **5b** `574:14129` · **5c** `574:14292` · **6** `617:32975` · **6b** `618:33254` · **6c** `618:33462` · **6c1** `679:36634` · **6c2** `674:33110` · **6d** `620:35581` · **7** `620:39326` |
 | `07 · Gastos` | [`261:1087`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1087) | **3** `261:944` · **3b** `576:14844` |
 | `08 · Sitios` | [`261:1247`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1247) | **4** `261:947` · **4b** `576:15050` · **4c** `581:15264` · **4d** `581:15447` · **4e** `642:31174` · **4f** `583:15790` · **4g** `583:15942` · **4h** `583:16095` |
+
+### `06 · Diario` — casuísticas `TripJournalTab`
+
+Chrome trip detail: Status bar + TopAppBar + Tabs Scrollable (Diario). Body `mot/spacing` 8/16. FAB captura = **FAB menu**. Diario se edita también en viajes pasados.
+
+| Cap | Node | Preview / composable | Notas |
+|-----|------|----------------------|--------|
+| **5** álbum | `574:13966` | `TripJournalTabPreview` | Hint «Toca para abrir · mantén pulsado para mover». **Scrapbook page** Day 1 + **Spread piece** Photo + Text. **Spread album chrome**: contador `Día 1 · 1/1` + pills (una hoja por día). Sin hamburguesa ni 2.º FAB. FAB captura overlay. |
+| **5b** vacío | `574:14129` | `TripJournalTabEmptyPreview` | «Aún no hay diario.» / «Empieza a pegar recuerdos con +.» Sin chrome ni hoja. FAB +. |
+| **5c** FAB menú | `574:14292` | `JournalCaptureFabMenu` | Foto · Texto · Voz · Sticker · Boceto. Sin Evento: el Diario no da de alta el plan. |
+| **6** escribir | `617:32975` | `SpreadCaptionSheet` TEXT | Título «Escribir en la página». Chips **A mano** selected (default `JournalTextStyle.HAND`) · **A máquina**. Campo «¿Qué pasó?». CTA «Pegar en la página». |
+| **6b** foto | `618:33254` | `SpreadCaptionSheet` PHOTO | «Añadir foto» · «¿Qué capturas?» · Cámara / Galería · Pegar. |
+| **6c** voz | `618:33462` | `SpreadCaptionSheet` AUDIO | Hoja sola: Nota + **Grabar voz**. Sin modal. |
+| **6c1** grabando | `679:36634` | Recording overlay | Grabando / Detener. Entre 6c y 6c2. |
+| **6c2** revisar | `674:33110` | Review overlay | Player + Pegar filled + Descartar outline. |
+| **6d** sticker | `620:35581` | `SpreadCaptionSheet` STICKER | «Crear sticker» · Pie opcional · Cámara / Galería · Forma del recorte (Círculo selected) · Pegar. Estado sin foto. |
+| **7** boceto | `620:39326` | `SketchCanvasScreen` | TopAppBar Boceto + guardar. Canvas. Toolbar: pincel selected, goma (`MOTIcons.Delete`), undo/redo, borrar todo (`Delete` otra vez). Paleta 7 + grosores 2/4/8/16. |
+
+Gaps: Masthead duplica la fecha (`AlbumMasthead`). Event bookmark no se captura desde el +; si se ata al plan, será otro flujo.
 
 ### `08 · Sitios` — casuísticas
 
@@ -214,7 +259,7 @@ Previews: `CreateTripScreenPreview`, `EditTripScreenPreview`.
 
 Spec: [`journal-spread-design-spec.md`](journal-spread-design-spec.md)
 
-**Librería DS:** cards especiales en página **Cards** → marco [Spread · special cards](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61370-27708) (`61370:27708`): **Spread piece**, **Scrapbook page**. **No es card:** [Spread album chrome](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61262-28962) (`61262:28962`) → **App bars** (contador + **Day pill** [61261:28761](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61261-28761) en **Chips**). FAB captura = **FAB menu** (**Buttons**). Compose: `AlbumChrome` privado en `ScrapbookAlbum.kt`.
+**Librería DS:** cards especiales en página **Cards** → marco [Spread · special cards](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61370-27708) (`61370:27708`): **Spread piece**, **Scrapbook page**. **No es card:** [Spread album chrome](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61262-28962) (`61262:28962`) → **App bars** (contador + **Day pill** [61261:28761](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61261-28761)). SoT visual = dispositivo: chrome sin acciones extra; FAB captura = **FAB menu** overlay. Compose: `AlbumChrome` en `ScrapbookAlbum.kt`.
 
 | Cap / frame | Preview Compose | Ruta |
 |-------------|-----------------|------|

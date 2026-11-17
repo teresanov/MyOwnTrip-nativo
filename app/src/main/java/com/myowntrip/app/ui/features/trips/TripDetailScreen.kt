@@ -249,7 +249,6 @@ fun TripDetailScreen(
           onNoteClick = onJournalNoteClick,
           readOnly = false,
           onPersistTransform = viewModel::persistPieceTransform,
-          onAddSheet = { dayId -> viewModel.addJournalSheet(dayId) },
           onActivePageChange = { page ->
             activeAlbumPage = page
             captureViewModel.setActiveDay(page.day.id)

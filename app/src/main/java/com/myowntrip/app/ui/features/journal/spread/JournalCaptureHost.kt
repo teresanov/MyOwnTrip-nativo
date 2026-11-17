@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.FloatingActionButtonMenuItem
@@ -15,7 +17,9 @@ import androidx.compose.material3.ToggleFloatingActionButtonDefaults.animateIcon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
@@ -95,10 +99,30 @@ fun JournalCaptureHost(
     return
   }
 
-  if (captureState.isRecording) {
+  if (captureState.isRecording || captureState.showAudioReview) {
     JournalRecordingDialog(
       recordingLevels = captureState.recordingLevels,
+      isReviewing = captureState.showAudioReview,
+      isPlaying = captureState.isPlayingPreview,
+      previewProgress = captureState.previewProgress,
+      previewPositionMs = captureState.previewPositionMs,
+      previewDurationMs = captureState.previewDurationMs,
+      isSaving = captureState.isSaving,
       onStop = captureViewModel::stopRecording,
+      onTogglePlayback = captureViewModel::toggleAudioPreview,
+      onConfirm = {
+        saveOnActivePage {
+          if (captureState.step == SpreadCaptureStep.EventCapture) {
+            captureViewModel.saveEventBookmark(
+              JournalPieceType.AUDIO,
+              hasLocationPermission,
+            ) { closeAll() }
+          } else {
+            captureViewModel.saveCaptionPiece(hasLocationPermission) { closeAll() }
+          }
+        }
+      },
+      onDiscard = captureViewModel::discardAudioReview,
     )
   }
 
@@ -249,6 +273,25 @@ fun JournalCaptureFabMenu(
       text = { Text("Boceto") },
       icon = { Icon(MOTIcons.Brush, contentDescription = null) },
     )
+  }
+}
+
+@Preview(name = "cap 5c · FAB menú", showBackground = true, widthDp = 360, heightDp = 800)
+@Composable
+private fun JournalCaptureFabMenuPreview() {
+  JournalSpreadPreviewTheme {
+    Box(modifier = Modifier.fillMaxSize()) {
+      JournalCaptureFabMenu(
+        expanded = true,
+        onExpandedChange = {},
+        onPhoto = {},
+        onText = {},
+        onAudio = {},
+        onSticker = {},
+        onSketch = {},
+        modifier = Modifier.align(Alignment.BottomEnd),
+      )
+    }
   }
 }
 

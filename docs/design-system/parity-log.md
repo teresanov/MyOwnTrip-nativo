@@ -22,7 +22,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 ## Pendiente
 
-Ninguna cola de Sitios / Home. Plan / Diario / Gastos siguen como módulos aparte (cuerpos R6.3 en el registro).
+Cola de módulos cerrada. **Mañana · pulido:** masthead duplica fecha; Detener (glifo stop); chrome álbum Actions en librería vs caps; bindings Gastos 4–4g. Event bookmark no entra por el + del Diario.
 
 ---
 
@@ -30,7 +30,22 @@ Ninguna cola de Sitios / Home. Plan / Diario / Gastos siguen como módulos apart
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
-| 2026-11-17 | Plan · R6.3 | **Plan day card** Content=Unplaced (misma Card que Empty/Filled). Set suelto `Plan unplaced card` eliminado. | `61457:28212` · cap **2c** `573:13390` | Hecho |
+| 2026-11-17 | Diario · evento | Evento fuera del FAB y de caps 6e/6e2. El + solo pega recuerdos. | `JournalCaptureFabMenu` · `574:14292` | Hecho |
+| 2026-11-17 | Diario · voz | 6c1/6c2 instancian el set publicado `Journal recording dialog`. | `679:36634` · `674:33110` | Hecho |
+| 2026-11-17 | DS · publish | Unused properties: Icon button×8 sin `Show focus indicator`; Horizontal card sin TEXT duplicados; progress `Show track` bindeado al Track. | `zrGAL4v6` Buttons / Cards / Loading | Hecho |
+| 2026-11-17 | DS · voz | Journal recording dialog: quitados TEXT props no aplicados (bloqueaban publish). Queda State. | `zrGAL4v6` `61531:34355` | Hecho |
+| 2026-11-17 | Gastos · 4d/4e | Clip del phone: el scroll negativo ya no pinta Importe negro sobre el chrome. | `593:13678` · `593:13951` | Hecho |
+| 2026-11-17 | Diario · voz | **6c** hoja · **6c1** grabando · **6c2** revisar. Set DS `61531:34355` aún no importable por key. | `618:33462` · `679:36634` · `674:33110` | Hecho |
+| 2026-11-17 | R6.3 · Diario | Caps **6–7**: Write/Photo/Audio/Sticker + Boceto. Chip HAND; overlay audio 800; un Grabar voz. | `617:32975` · `618:33254` · `618:33462` · `620:35581` · `620:39326` | Hecho |
+| 2026-11-17 | Diario · hojas | Una hoja por día. Chrome caps: sin hamburguesa ni 2.º FAB (`Show reading`/`Show add sheet` false). | `buildAlbumPages` · `574:13966` | Hecho |
+| 2026-11-17 | R6.3 · Diario | Caps **5 / 5b / 5c**: álbum, vacío, FAB menú. Chrome `Día 1 · 1/2`. Body 5c = spacing 8/16 de **5**. | `574:13966` · `574:14129` · `574:14292` | Hecho |
+| 2026-11-17 | DS · invalid assets | 0 fuentes missing (Google Sans → Inter). Toggle tonal: 80 variantes. `flight_drift` reinstanciado. | `zrGAL4v6` `58653:17539` · `61433:3885` | Hecho |
+| 2026-11-17 | Plan · day hub | Caps **3i–3r** sobre cuadrante **3** (Lisboa **3m/3o**). | `593:16000` … `599:20494` | Hecho |
+| 2026-11-17 | Plan · day hub | Cap **3h** menú Wallet: Corregir horario · Vincular. Grid = **3**. | `593:15839` | Hecho |
+| 2026-11-17 | Plan · day hub | Cap **3g** menú actividad libre (3 ítems + iconos). Grid = **3**. | `593:15660` | Hecho |
+| 2026-11-17 | Plan · day hub | Cap **3f** `MoveBlockDayDialog` sobre cuadrante **3**. Day+time: chevron + schedule. | `593:15294` · DS `61470:28626` | Hecho |
+| 2026-11-17 | Plan · day hub | Cap **3b** = Compose: Outlined vacíos, copy Wallet completo, list item sin fill `Surface`. | `593:14876` · DS Content `61473:28744` | Hecho |
+| 2026-11-17 | Plan · day hub | Caps **3d/3e** `WalletLinkDialog` sobre cuadrante **3**. | `593:15068` · `593:15181` | Hecho |
 | 2026-11-13 | Sitios · código | Pin Maps: más patrones URL/HTML + geocode **solo del nombre** si el enlace no trae pin. Tab **4b**: sin `PlacesMiniMap`. | `PlaceShareParser` · `PlaceCoordinateResolver` · `RestaurantsTab` | Hecho |
 | 2026-11-13 | Sprint | **Cerrado** Home **2b** + Sitios **4–4h** (CTA pack-start, `Slot_master` 4e, swipe Horizontal card). Caps Figma de esta cola: 0 abiertas. | `642:31056` · `08 · Sitios` | Cerrado |
 | 2026-11-13 | Home · R6.2 | Cap **2b** swipe revelado. Wrap sin fill blanco. | `642:31056` · `642:31159` | Hecho |
@@ -43,7 +58,7 @@ Ninguna cola de Sitios / Home. Plan / Diario / Gastos siguen como módulos apart
 | 2026-11-11 | R6.3 · Sitios | Cap **4c**: icono del outline = location (no import); width **Fill**. Corrección en Figma. | `581:15264` | Hecho |
 | 2026-11-11 | R6.3 · Sitios | Caps **4c** Nuevo sitio y **4d** Guardar sitio (sin pin). Pin Maps a pendientes. | `581:15264` · `581:15447` | Hecho |
 | 2026-11-11 | R6.3 · Plan | Parte 1: caps 2 / 2b / 2c / 2d de `TripPlanTab` en `03`. | `261:941` · `573:13289` · `573:13390` · `573:13443` | En curso |
-| 2026-11-11 | R6.3 · Diario | Parte 2: caps 5 / 5b / 5c (`TripJournalTab` + FAB menú). | `574:13966` · `574:14129` · `574:14292` | En curso |
+| 2026-11-11 | R6.3 · Diario | Parte 2: caps 5 / 5b / 5c (`TripJournalTab` + FAB menú). | `574:13966` · `574:14129` · `574:14292` | Hecho |
 | 2026-11-11 | R6.3 · Gastos | Parte 3: caps 3 / 3b de `ExpensesTab`. | `261:944` · `576:14844` | En curso |
 | 2026-11-11 | R6.3 · Sitios | Parte 4: caps 4 / 4b de `RestaurantsTab`. | `261:947` · `576:15050` | En curso |
 | 2026-11-11 | R6.3 · Sitios | Cap 4b: quitar mini mapa; listado = cards. | `576:15050` | Hecho |
