@@ -30,6 +30,7 @@ Ninguna cola de Sitios / Home. Plan / Diario / Gastos siguen como módulos apart
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-17 | Plan · R6.3 | Caps **2/2b/2c/2d** con `Plan day card` publicado + `Plan unplaced card` en 2c. | `261:941` · `573:13390` | Hecho |
 | 2026-11-13 | Sitios · código | Pin Maps: más patrones URL/HTML + geocode **solo del nombre** si el enlace no trae pin. Tab **4b**: sin `PlacesMiniMap`. | `PlaceShareParser` · `PlaceCoordinateResolver` · `RestaurantsTab` | Hecho |
 | 2026-11-13 | Sprint | **Cerrado** Home **2b** + Sitios **4–4h** (CTA pack-start, `Slot_master` 4e, swipe Horizontal card). Caps Figma de esta cola: 0 abiertas. | `642:31056` · `08 · Sitios` | Cerrado |
 | 2026-11-13 | Home · R6.2 | Cap **2b** swipe revelado. Wrap sin fill blanco. | `642:31056` · `642:31159` | Hecho |

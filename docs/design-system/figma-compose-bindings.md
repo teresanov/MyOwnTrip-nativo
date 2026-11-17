@@ -39,6 +39,9 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 
 | Figma component set | Node DS | Layout / variante | Compose | Showcase / notas |
 |---------------------|---------|-------------------|---------|------------------|
+| **Plan day card** | [61457:28212](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61457-28212) | Content Empty\|Filled · Trip Current\|Past | `TripPlanTab` `PlanDaySection` | Anida **Plan activity** + **Button - text**. **Publicar** tras anidar instancias. |
+| **Plan activity** | [61457:28304](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61457-28304) | Wallet True\|False · Show action | `PlanActivityCard(embeddedInDay)` | Time/Title/Wallet TEXT props. |
+| **Plan unplaced card** | [61513:34197](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61513-34197) | — | `UnplacedWalletSection` | **Publicar**. Hasta entonces cap 2c usa Stacked Elevated Text only + Button - text. |
 | **Stacked card** | [52346:27573](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52346-27573) | Outlined · Media & text | `MotStackedCard` + `HomeEmptyStackedCard` | [stacked-card](https://teresanov.github.io/MyOwnTrip-nativo/components/stacked-card.html) |
 | | | Elevated · Text only | `MotStackedCard` | ↑ |
 | | | Outlined · Text only | `MotStackedCard` (filtro vacío Home) | ↑ |
@@ -120,7 +123,16 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 |--------|-------------|------|
 | `03 · Detalle de viaje` | `261:935` | Vacío de módulos. Pendiente: ficha del viaje si no es `trip_edit`. |
 | `04 · Wallet` | [`491:13870`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13870) | Entrada + import + alta + maleta |
-| `05 · Plan` | [`583:16744`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16744) | **2** `261:941` · **2b** `573:13289` · **2c** `573:13390` · **2d** `573:13443` |
+| `05 · Plan` | [`583:16744`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16744) | **2** `261:941` · **2b** `573:13289` · **2c** `573:13390` · **2d** `573:13443` · **2e** `593:16826` · **2f** `599:19969` · **3–3o** day hub |
+
+### `05 · Plan` — casuísticas `TripPlanTab`
+
+| Cap | Node | Preview / composable | Notas |
+|-----|------|----------------------|--------|
+| **2** en curso · días vacíos | `261:941` | `TripPlanTab` Current | Instancias **Plan day card** Empty/Current. CTA «Añadir actividades». FAB +. |
+| **2b** sin días | `573:13289` | `TripPlanTab` `days.isEmpty()` | Copy bodyLarge/bodyMedium. FAB + (snackbar en **2f**). |
+| **2c** actividades + sin colocar | `573:13390` | `TripPlanTab` + `UnplacedWalletSection` | Día 1 Filled (`Plan activity` anidado). **Plan unplaced card** instanciado. |
+| **2d** viaje pasado | `573:13443` | `TripPlanTab` `isPastTrip` | Empty/Past · «Ver recuerdos del día». Sin FAB. |
 | `06 · Diario` | [`583:16747`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16747) | **5** `574:13966` · **5b** `574:14129` · **5c** `574:14292` |
 | `07 · Gastos` | [`261:1087`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1087) | **3** `261:944` · **3b** `576:14844` |
 | `08 · Sitios` | [`261:1247`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1247) | **4** `261:947` · **4b** `576:15050` · **4c** `581:15264` · **4d** `581:15447` · **4e** `642:31174` · **4f** `583:15790` · **4g** `583:15942` · **4h** `583:16095` |
