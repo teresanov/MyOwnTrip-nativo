@@ -65,7 +65,7 @@ Si un frame de Figma usa una instancia del DS, **debe existir una fila aquí** a
 | **Filter chip** | [53923:28270](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28270) | Outlined only | `FilterChip` (`shapes.small`=8) | [filter-chip](../ds-showcase/components/filter-chip.html) · audit [B.3](audits/figma-filterchip-phase-b3-2026-10-29.md) · Elevated CUT Fase D |
 | **Assistive chip** | [53923:28089](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28089) | Outlined \| **Warning** | `AssistChip` / `PlanPlacementSourceChip` | Warning = `warning` fill 14% + borde 35% · cap 10c · hug, no fill |
 | **Basic dialog** | [50723:10929](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=50723-10929) | Icon True/False | `AlertDialog` (`shapes.extraLarge`=28) | [basic-dialog](../ds-showcase/components/basic-dialog.html) · audit [B.3](audits/figma-dialog-phase-b3-2026-10-29.md) |
-| **Journal recording dialog** | [61531:34355](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61531-34355) | State Recording\|Review | `JournalRecordingDialog` | Copy por variante. Instanciado en **6c1**/ **6c2**. |
+| **Journal recording dialog** | [61531:34355](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61531-34355) | State Recording\|Review | `JournalRecordingDialog` | Recording: Detener + glifo `stop` fill1. Instanciado en **6c1**/ **6c2**. |
 | **Snackbar** | [53977:33575](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53977-33575) | Text / action / close · `# of lines` | `SnackbarHost` | Si el copy ocupa **dos líneas**, variante **Two lines** (no One line). Cap 1i = referencia. [snackbar](../ds-showcase/components/snackbar.html) · audit [B.3](audits/figma-snackbar-phase-b3-2026-10-29.md) |
 | **App bar** | [58114:20565](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58114-20565) | Small / Small-centered (+ KEEP Medium/Large/Search) | `TopAppBar` / `CenterAlignedTopAppBar` | pads `mot/spacing/component-*`; audit [B.3](audits/figma-appbar-phase-b3-2026-10-29.md) |
 | **FAB** / Extended / menu | [57998:43426](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57998-43426) | Circular | `FloatingActionButton` (+ menu Home) | Sin morph 0→20 |
@@ -159,7 +159,7 @@ Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spaci
 | **3q** snackbar hora | `599:20359` | snackbar Two lines | «Hora actualizada en el plan. El documento en Wallet no se ha modificado.» |
 | **3r** solape | `599:20494` | misma hora | Museo + Café a las 11:00. Grid = **3**. |
 | `06 · Diario` | [`583:16747`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16747) | **5** `574:13966` · **5b** `574:14129` · **5c** `574:14292` · **6** `617:32975` · **6b** `618:33254` · **6c** `618:33462` · **6c1** `679:36634` · **6c2** `674:33110` · **6d** `620:35581` · **7** `620:39326` |
-| `07 · Gastos` | [`261:1087`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1087) | **3** `261:944` · **3b** `576:14844` |
+| `07 · Gastos` | [`261:1087`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1087) | **3** `261:944` · **3b** `576:14844` · **4** `593:12952` · **4b** `593:13224` · **4c** `593:13526` · **4d** `593:13678` · **4e** `593:13951` · **4f** `593:14219` · **4g** `593:14490` |
 | `08 · Sitios` | [`261:1247`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-1247) | **4** `261:947` · **4b** `576:15050` · **4c** `581:15264` · **4d** `581:15447` · **4e** `642:31174` · **4f** `583:15790` · **4g** `583:15942` · **4h** `583:16095` |
 
 ### `06 · Diario` — casuísticas `TripJournalTab`
@@ -174,12 +174,30 @@ Chrome trip detail: Status bar + TopAppBar + Tabs Scrollable (Diario). Body `mot
 | **6** escribir | `617:32975` | `SpreadCaptionSheet` TEXT | Título «Escribir en la página». Chips **A mano** selected (default `JournalTextStyle.HAND`) · **A máquina**. Campo «¿Qué pasó?». CTA «Pegar en la página». |
 | **6b** foto | `618:33254` | `SpreadCaptionSheet` PHOTO | «Añadir foto» · «¿Qué capturas?» · Cámara / Galería · Pegar. |
 | **6c** voz | `618:33462` | `SpreadCaptionSheet` AUDIO | Hoja sola: Nota + **Grabar voz**. Sin modal. |
-| **6c1** grabando | `679:36634` | Recording overlay | Grabando / Detener. Entre 6c y 6c2. |
+| **6c1** grabando | `679:36634` | Recording overlay | Grabando / Detener + `stop` fill1. Entre 6c y 6c2. |
 | **6c2** revisar | `674:33110` | Review overlay | Player + Pegar filled + Descartar outline. |
 | **6d** sticker | `620:35581` | `SpreadCaptionSheet` STICKER | «Crear sticker» · Pie opcional · Cámara / Galería · Forma del recorte (Círculo selected) · Pegar. Estado sin foto. |
 | **7** boceto | `620:39326` | `SketchCanvasScreen` | TopAppBar Boceto + guardar. Canvas. Toolbar: pincel selected, goma (`MOTIcons.Delete`), undo/redo, borrar todo (`Delete` otra vez). Paleta 7 + grosores 2/4/8/16. |
 
-Gaps: Masthead duplica la fecha (`AlbumMasthead`). Event bookmark no se captura desde el +; si se ata al plan, será otro flujo.
+Gaps: Event bookmark no se captura desde el +; si se ata al plan, será otro flujo.
+
+### `07 · Gastos` — casuísticas `ExpensesTab` / `ExpenseFormScreen`
+
+Chrome trip detail: Status bar + TopAppBar + Tabs (Gastos). Tab **3/3b**. Formulario **4–4g** es pantalla propia (`ExpenseFormScreen`), no tab. Sin `@Preview` nombrado aún: el SoT es el composable.
+
+| Cap | Node | Preview / composable | Notas |
+|-----|------|----------------------|--------|
+| **3** vacío | `261:944` | `ExpensesTab` vacío | «Aún no hay gastos.» FAB +. |
+| **3b** lista | `576:14844` | `ExpensesTab` con datos | Total por moneda. Secciones **Reservas** (Wallet) / **En viaje**. Cards concepto + importe. |
+| **4** añadir | `593:12952` | `ExpenseFormScreen` alta | Intro «Registra el gasto en el momento…». TopAppBar «Añadir gasto». Importe · chips EUR/USD/GBP/Otra · Concepto · Categoría (Comida…Otro) · Ticket Hacer foto / Galería · Guardar gasto. |
+| **4b** validación + otra moneda | `593:13224` | mismo · error + `Otra` | Importe inválido + «Introduce un importe válido». Chip Otra · Código de moneda (MAD). |
+| **4c** hacer foto | `593:13526` | `TakePhotoScreen` | Cámara a pantalla completa. Mismo composable que Diario/Wallet. |
+| **4d** leyendo ticket | `593:13678` | `isScanningReceipt` | Foto adjunta + «Leyendo el ticket…». Phone `clipsContent` para que el scroll no pinte Importe sobre el chrome. |
+| **4e** ticket adjunto | `593:13951` | `receiptPath` sin scan | Miniatura + «Toca la imagen…» · Quitar foto · Guardar gasto. Mismo clip que **4d**. |
+| **4f** editar | `593:14219` | `isEditMode` | TopAppBar «Editar gasto» + delete. CTA «Guardar cambios». |
+| **4g** borrar | `593:14490` | `AlertDialog` | Sobre **4f**. «Borrar gasto» · no se puede deshacer · Cancelar / Borrar. |
+
+El copy de intro («Registra el gasto en el momento. Puedes fotografiar el ticket del TPV o de la cafetería.») está en todas las caps de formulario (**4, 4b, 4d–4g**). **4c** es cámara a pantalla completa y no lo lleva, igual que Compose.
 
 ### `08 · Sitios` — casuísticas
 
@@ -259,7 +277,7 @@ Previews: `CreateTripScreenPreview`, `EditTripScreenPreview`.
 
 Spec: [`journal-spread-design-spec.md`](journal-spread-design-spec.md)
 
-**Librería DS:** cards especiales en página **Cards** → marco [Spread · special cards](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61370-27708) (`61370:27708`): **Spread piece**, **Scrapbook page**. **No es card:** [Spread album chrome](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61262-28962) (`61262:28962`) → **App bars** (contador + **Day pill** [61261:28761](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61261-28761)). SoT visual = dispositivo: chrome sin acciones extra; FAB captura = **FAB menu** overlay. Compose: `AlbumChrome` en `ScrapbookAlbum.kt`.
+**Librería DS:** cards especiales en página **Cards** → marco [Spread · special cards](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61370-27708) (`61370:27708`): **Spread piece**, **Scrapbook page**. **No es card:** [Spread album chrome](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61262-28962) (`61262:28962`) → **App bars** (contador + **Day pill** [61261:28761](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61261-28761)). Maestro y caps: solo contador + pills; sin hamburguesa ni 2.º FAB. FAB captura = overlay de `TripDetailScreen`. Compose: `AlbumChrome` en `ScrapbookAlbum.kt`.
 
 | Cap / frame | Preview Compose | Ruta |
 |-------------|-----------------|------|

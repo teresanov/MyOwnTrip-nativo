@@ -22,7 +22,7 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 ## Pendiente
 
-Cola de módulos cerrada. **Mañana · pulido:** masthead duplica fecha; Detener (glifo stop); chrome álbum Actions en librería vs caps; bindings Gastos 4–4g. Event bookmark no entra por el + del Diario.
+Cola de módulos cerrada. Event bookmark no entra por el + del Diario.
 
 ---
 
@@ -30,6 +30,10 @@ Cola de módulos cerrada. **Mañana · pulido:** masthead duplica fecha; Detener
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-18 | Gastos · bindings | Caps **4–4g** listadas (`ExpenseFormScreen` / `TakePhotoScreen`). Índice `07` ya no se queda en 3/3b. | `figma-compose-bindings.md` · `593:12952`…`593:14490` | Hecho |
+| 2026-11-18 | Diario · chrome | Spread album chrome = contador + pills. Sin Actions en maestro ni caps. FAB captura es overlay. | DS `61262:28962` · cap 5 `622:49969` · `AlbumChrome` | Hecho |
+| 2026-11-18 | Diario · voz | Detener usa `stop` w300 fill1 (cuadrado sólido). Outline no se leía en el filled. | `MOTIcons.Stop` · DS `stop` `61337:28727` · 6c1 `679:36634` | Hecho |
+| 2026-11-18 | Diario · masthead | Fecha una sola vez: kicker DÍA N + `headlineSmall`. Sin `Date subtitle`. | `AlbumMasthead` · DS `61265:29035` · cap 5 `574:13966` | Hecho |
 | 2026-11-17 | Diario · evento | Evento fuera del FAB y de caps 6e/6e2. El + solo pega recuerdos. | `JournalCaptureFabMenu` · `574:14292` | Hecho |
 | 2026-11-17 | Diario · voz | 6c1/6c2 instancian el set publicado `Journal recording dialog`. | `679:36634` · `674:33110` | Hecho |
 | 2026-11-17 | DS · publish | Unused properties: Icon button×8 sin `Show focus indicator`; Horizontal card sin TEXT duplicados; progress `Show track` bindeado al Track. | `zrGAL4v6` Buttons / Cards / Loading | Hecho |

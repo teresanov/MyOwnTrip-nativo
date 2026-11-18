@@ -162,8 +162,8 @@ object MOTIcons {
   /** Material Symbols Sharp `sticky_note_2` (w300). */
   val StickyNote2: ImageVector by lazy { symbol("sticky_note_2", autoMirror = false, "M200-200h360v-200h200v-360H200v560Zm-60 60v-680h680v445.77L585.77-140H140Zm157.69-270.77v-60H480v60H297.69Zm0-159.23v-60h364.62v60H297.69ZM200-200v-560 560Z") }
 
-  /** Material Symbols Sharp `stop` (w300). */
-  val Stop: ImageVector by lazy { symbol("stop", autoMirror = false, "M320-640v320-320Zm-60 380v-440h440v440H260Zm60-60h320v-320H320v320Z") }
+  /** Material Symbols Sharp `stop` (w300 fill1). Outline a 300 no se lee en el CTA Detener. */
+  val Stop: ImageVector by lazy { symbol("stop", autoMirror = false, "M260-260v-440h440v440H260Z") }
 
   /** Material Symbols Sharp `today` (w300). */
   val Today: ImageVector by lazy { symbol("today", autoMirror = false, "M294.58-344.58q-26.89-26.88-26.89-65.42 0-38.54 26.89-65.42 26.88-26.89 65.42-26.89 38.54 0 65.42 26.89 26.89 26.88 26.89 65.42 0 38.54-26.89 65.42-26.88 26.89-65.42 26.89-38.54 0-65.42-26.89ZM140-100v-680h127.69v-84.61h61.54V-780h303.08v-84.61h60V-780H820v680H140Zm60-60h560v-387.69H200V-160Zm0-447.69h560V-720H200v112.31Zm0 0V-720v112.31Z") }

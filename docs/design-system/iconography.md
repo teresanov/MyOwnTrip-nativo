@@ -68,3 +68,4 @@ Auditoría: `docs/design-system/audits/figma-moticons-parity-2026-11-03.md`.
 | `ExposedDropdownMenuDefaults.TrailingIcon` | Chevron interno M3, no `MOTIcons` |
 | `InsertDriveFile` en Kotlin | Símbolo Material `draft` (nombre Figma `draft`) |
 | `CameraAlt` / `PhotoCamera` | Mismo glifo `photo_camera`; en Figma basta `photo_camera` |
+| `Stop` / Detener grabación | `stop` **wght300 fill1** (cuadrado sólido). El outline w300 se lee como recuadro vacío sobre el filled. |

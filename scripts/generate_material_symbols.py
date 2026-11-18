@@ -73,13 +73,19 @@ ICONS = {
 }
 
 URL = "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolssharp/{name}/wght300/24px.svg"
+# `stop` outline a peso 300 se lee como un recuadro vacío; el CTA Detener usa fill1, mismo peso.
+URL_FILL1 = (
+    "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolssharp/{name}/wght300fill1/24px.svg"
+)
+FILL1_SYMBOLS = {"stop"}
 OUT = pathlib.Path(__file__).resolve().parents[1] / (
     "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTIcons.kt"
 )
 
 
 def fetch_paths(symbol: str) -> list[str]:
-    with urllib.request.urlopen(URL.format(name=symbol), timeout=30) as resp:
+    url = URL_FILL1.format(name=symbol) if symbol in FILL1_SYMBOLS else URL.format(name=symbol)
+    with urllib.request.urlopen(url, timeout=30) as resp:
         svg = resp.read().decode("utf-8")
     paths = re.findall(r'<path[^>]*\sd="([^"]+)"', svg)
     if not paths:

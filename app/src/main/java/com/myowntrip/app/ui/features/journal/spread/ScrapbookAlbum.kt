@@ -336,11 +336,6 @@ private fun AlbumMasthead(page: AlbumPageUi) {
         style = MaterialTheme.typography.headlineSmall,
         color = BrandColors.Ink,
       )
-      Text(
-        day.date.format(SpanishSheetDate),
-        style = MaterialTheme.typography.bodySmall,
-        color = BrandColors.Ink.copy(alpha = 0.75f),
-      )
     } else {
       Text(
         "Día ${day.dayNumber} · hoja ${page.pageIndexInDay + 1}",
