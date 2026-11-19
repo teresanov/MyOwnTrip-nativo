@@ -1,4 +1,4 @@
-import{i as a,b as e,d as o}from"./bootstrap-B_nLe-G3.js";a("empezar");document.getElementById("page-header").innerHTML=`
+import{i as a,b as e,d as o}from"./bootstrap-CkAT-PS0.js";a("empezar");document.getElementById("page-header").innerHTML=`
   <p class="page-header__eyebrow">Empezar aquí</p>
   <h1>Cómo se usa este sistema</h1>
   <p class="page-header__lead">
