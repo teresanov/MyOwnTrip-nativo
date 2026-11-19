@@ -1,6 +1,6 @@
 # MyOwnTrip · Design System — contexto para agentes
 
-> Generado el 2026-11-13 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
+> Generado el 2026-11-19 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
 > Fuente de verdad del comportamiento: el código de `designsystem/` y `app/`.
 
 ## Principios
@@ -127,6 +127,67 @@ MOTButton(
 }
 ```
 
+## Icon button
+
+- Estado: in-review · P1
+- Para qué: Un icon button ejecuta una acción común y fácil de entender sin texto: volver, editar, borrar, abrir el menú de filtros. Es el control de la top app bar, de las filas de lista y de los campos con acción (calendario, borrar búsqueda).
+- Composable: `MOTIconButton` — `com.myowntrip.app.ui.theme.MOTIconButton`
+- Fuente: `designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTButtons.kt`
+
+### Variantes
+
+- **Standard · Square** → `MOTIconButton`: Único estilo con wrapper. App bars, filas, campos, cards.
+- **Filled / Tonal / Outlined**: Publicados en Figma (×4 con standard). Sin wrapper específico en Compose.
+- **Togglable (×4)**: Publicados en Figma. En Compose el estado activo se fuerza con forceActive en rememberMOTButtonShape.
+
+### Cuándo usarlo
+
+- La acción tiene un icono inequívoco (arrow_back, edit, delete, close, tune).
+- El espacio es escaso: top app bar, fila de lista, dentro de un campo o de una card.
+- Se usan pocos a la vez; más de tres en la misma barra es señal de que sobra alguno.
+
+### Cuándo NO usarlo
+
+- La acción necesita un verbo para entenderse («Guardar gasto») → Button
+- Elegir un filtro que se queda activo → Filter chip
+- Acción principal flotante de la pantalla → FAB (circular, sin morph)
+
+### Elegir variante
+
+- Acción común en app bar, fila o campo (todos los usos actuales) → `MOTIconButton` — Estilo standard: sin contenedor, bajo énfasis.
+- Necesitas separar el botón de una imagen o de un fondo variable → `Icon button Filled / Tonal / Outlined (set de Figma)` — Hoy sin wrapper propio en Compose: se pasa por el parámetro colors.
+- Representa un estado activable (favorito, marcador) → `Icon button togglable (set de Figma)` — Icono outline sin seleccionar y relleno al seleccionar.
+
+### Prohibido en este componente
+
+- No abuses del estilo Filled: úsalo con moderación en acciones de alto énfasis (descargar, eliminar).
+- No uses un icono ambiguo cuya acción no se entienda sin texto: en ese caso usa un Button.
+- No usar IconButton de M3 suelto: se pierde el morph de forma.
+- No dejar un icono como único contenido del botón sin nombre accesible en ningún sitio.
+- No usar Round en reposo: el Round de Figma es el destino del morph (20 dp), no un círculo.
+
+### Accesibilidad
+
+- Todo icon button necesita un nombre accesible: «Volver», «Editar viaje», «Borrar búsqueda». El icono suelto no se anuncia.
+- Área táctil mínima de 48 dp aunque el icono mida 24 dp.
+- El estado seleccionado de un toggle no puede depender solo del color: cambia también el relleno o el peso del icono.
+- El morph a 20 dp no es el indicador de foco; el foco necesita su propio anillo.
+
+### Uso típico
+
+```kotlin
+MOTIconButton(
+    onClick = { onFilterMenuExpandedChange(true) },
+    modifier = Modifier.semantics { contentDescription = "Filtros y ordenación" },
+) {
+    Icon(
+        imageVector = MOTIcons.Tune,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+}
+```
+
 ## Text field
 
 - Estado: ready · P0
@@ -153,6 +214,38 @@ MOTButton(
 - Supporting text de error en `liveRegion` cuando cambia tras submit.
 - Teclado: `ImeAction` coherente (Next / Done).
 - Contraste label/input ≥ 4.5:1 sobre surface.
+
+## Date & time pickers
+
+- Estado: ready · P0
+- Para qué: Entrada de fechas y horas en formularios de viaje, Wallet y plan. El producto usa composables propios en `ui/components/date/` (campos Outlined + modales M3 adaptados), no los sets M3 de catálogo archivados en Figma. El rango de viaje permite teclado `dd/MM/yyyy` y calendario acotado; Wallet usa fecha única y hora 24 h.
+- Composable: sin documentar en la ficha
+
+### Variantes
+
+- **MotDateRangeField**: Crear y editar viaje — fechas inicio/fin.
+- **MotDateRangePickerDialog · Surface**: Days (mes con flechas), Year, Month — selección rango.
+- **MotDateField**: Wallet — fecha del documento.
+- **MotDatePickerDialog**: Picker día único desde MotDateField.
+- **MotTimeField**: Wallet y plan — hora 24 h.
+- **MotTimePickerDialog**: Teclado horario por defecto; reloj opcional.
+
+### Prohibido en este componente
+
+- No uses el kit M3 «Input date picker» / «Modal date picker» del ARCHIVE en design-file.
+- No sustituyas el calendario de un mes por DateRangePicker de lista vertical.
+- No enlaces tokens kit-only (`header-gap`, `field-top`, `label-gap`, `time-input/*`) en láminas PRODUCT.
+- No documentes MotTripDatePickerDialog como patrón de producto hasta que una pantalla lo use.
+- No dibujar campos con frames sueltos: Text field Outlined + icon slot.
+- No promover Keyboard picker `52949:28053` como SoT de producto.
+- No ampliar MOTSpacing.DatePicker.* de kit sin acuerdo explícito.
+
+### Accesibilidad
+
+- Campos read-only: contentDescription con label + valor formateado.
+- Iconos trailing: descripción «Abrir calendario» / «Abrir selector de hora».
+- Errores de parseo anunciados en supporting text al perder foco.
+- Modales: dismiss con back; Aceptar deshabilitado hasta rango completo (fin sin elegir).
 
 ## Filter chip
 
@@ -354,10 +447,59 @@ MOTButton(
 - Eliminar en menú: icono + texto error — nunca solo color.
 - Ver checklist manual: docs/ux/talkback-checklist-swipe.md
 
-## Componentes sin ficha
+## List item
 
-Existen en Figma o en código, pero nadie ha escrito cuándo usarlos.
-No inventes criterios de uso para estos: pregunta o consulta el código.
+- Estado: in-review · P1
+- Para qué: Una fila de lista muestra un elemento discreto de una colección vertical: un documento del Wallet con su tipo, título, fecha y estado. La fila entera es el área pulsable y lleva a su detalle.
+- Composable: `WalletDocumentRow` — `com.myowntrip.app.ui.features.wallet.WalletDocumentRow`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt`
 
-- **Icon button** (draft): Acciones compactas en top app bar y formularios.
-- **List item** (draft): Filas en listas de viajes, wallet y restaurantes.
+### Variantes
+
+- **Leading=Icon** → `WalletDocumentRow`: Fila de documento con icono por tipo.
+- **Show drift = true** → `WalletPlanDriftLeadingIcon`: Icono con punto de aviso cuando el plan no coincide con el documento.
+- **List Item - Swipe** → `SwipeableWalletDocumentRow`: Fila con acciones de archivar y eliminar por swipe.
+
+### Cuándo usarlo
+
+- Hay una colección de elementos del mismo tipo que se recorre en vertical (documentos del Wallet).
+- Cada elemento tiene un titular y, como mucho, una o dos líneas de apoyo.
+- Se necesita un icono que ayude a escanear el tipo de elemento (vuelo, hotel, coche, entrada).
+
+### Cuándo NO usarlo
+
+- Elemento con portada o foto grande (viajes en Home) → Horizontal card
+- Destacar un solo elemento con imagen y CTA → TripHeroCard
+- Elegir una opción de un conjunto pequeño → Filter chip
+
+### Elegir variante
+
+- Fila de documento sin acciones laterales → `WalletDocumentRow` — ListItem de M3 con container surface.
+- La fila se archiva o elimina con swipe → `SwipeableWalletDocumentRow` — Envuelve WalletDocumentRow; ver Swipeable list row.
+- El plan ha cambiado respecto al documento → `WalletDocumentRow con planPlacement` — Borde izquierdo en warning y punto de drift en el icono.
+
+### Prohibido en este componente
+
+- No varíes la posición de los elementos dentro de una lista.
+- Evita colocar visuales en el centro de la fila: dificulta el escaneo.
+- No pintar el punto de drift dentro del glifo de 24 dp: va en la esquina del círculo.
+- No poner el color warning como único indicador de drift: va también el texto de apoyo.
+- No crear filas con Card y Text a mano que repliquen esta fila.
+
+### Accesibilidad
+
+- contentDescription de la fila: «tipo, título, fecha, drift, disponibilidad offline». TalkBack lo lee de una vez.
+- El punto de drift y el borde no son el único aviso: el texto de apoyo incluye la frase de drift.
+- Los iconos internos son decorativos (contentDescription = null); el significado va en la descripción de la fila.
+- La fila entera es el área táctil; el ListItem de M3 garantiza una altura mínima superior a 48 dp.
+
+### Uso típico
+
+```kotlin
+WalletDocumentRow(
+    entry = entry,
+    onClick = { onEntryClick(entry.id) },
+    planPlacement = placement,
+    trailingActions = { MOTIconButton(onClick = onMenu) { Icon(MOTIcons.MoreVert, contentDescription = "Acciones del documento") } },
+)
+```
