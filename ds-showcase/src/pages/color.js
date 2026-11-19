@@ -67,5 +67,36 @@ document.getElementById("state-layers-section").innerHTML = `
     <tbody>${stateRows}</tbody>
   </table>
   <p class="callout" style="margin-top:16px">${tokens.stateLayers.note}</p>
-  <p><strong>Regla:</strong> <code>tertiary</code> (${tokens.light.tertiary}) ≠ <code>error</code> (${tokens.light.error}).</p>
+
+  <h2 id="acento-y-error">Acento de marca y error</h2>
+  <p>
+    El sistema tiene dos colores cálidos de significado distinto. No se intercambian: cada uno comunica una
+    cosa y solo esa.
+  </p>
+  <table>
+    <thead><tr><th>Rol</th><th>Valor (claro)</th><th>Para qué sirve</th><th>No se usa para</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>tertiary</code></td>
+        <td><strong>${tokens.light.tertiary}</strong></td>
+        <td>Acento de marca, el ocre editorial. Botones y chips destacados, con moderación.</td>
+        <td>Errores, avisos o validación.</td>
+      </tr>
+      <tr>
+        <td><code>error</code></td>
+        <td><strong>${tokens.light.error}</strong></td>
+        <td>Errores y validación: campos inválidos y operaciones que han fallado.</td>
+        <td>Decoración ni énfasis de marca.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Los dos son tonos cálidos y de matiz cercano. Si se mezclaran, un acento de marca se leería como un problema
+    y un error pasaría por parte del estilo. Que los valores sean distintos a propósito es lo que permite
+    distinguirlos de un vistazo.
+  </p>
+  <p>
+    Un error nunca se comunica solo con el color: va siempre con icono y texto. El color refuerza el mensaje, pero
+    no puede ser lo único que lo transmita.
+  </p>
 `;

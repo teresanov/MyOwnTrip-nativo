@@ -39,7 +39,7 @@ export function slugify(s) {
     .replace(/^-|-$/g, "");
 }
 
-function sectionOpen(id, title, { lead = "", generated = false, tocLabel = "" } = {}) {
+export function sectionOpen(id, title, { lead = "", generated = false, tocLabel = "" } = {}) {
   const label = tocLabel ? ` data-toc-label="${tocLabel}"` : "";
   return `
   <section class="section">
@@ -51,7 +51,7 @@ function sectionOpen(id, title, { lead = "", generated = false, tocLabel = "" } 
     ${lead ? `<p class="section-lead">${lead}</p>` : ""}`;
 }
 
-function table(head, rows) {
+export function table(head, rows) {
   return `
     <table>
       <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
@@ -59,7 +59,7 @@ function table(head, rows) {
     </table>`;
 }
 
-function list(items, cls = "list-dos") {
+export function list(items, cls = "list-dos") {
   return `<ul class="${cls}">${items.map((i) => `<li>${i}</li>`).join("")}</ul>`;
 }
 
@@ -245,19 +245,19 @@ export function renderAnatomy(anatomy) {
 
 export function renderBehavior(behavior) {
   if (!behavior) return "";
-  const rows = (behavior.rows || []).map((r) => [
-    r.state,
-    `<strong>${r.corner}</strong>`,
-    `<code>${r.figma}</code>`,
-    r.extra || "",
-  ]);
+  const shapeRows = (behavior.rows || []).some((r) => r.corner);
+  const rows = (behavior.rows || []).map((r) =>
+    shapeRows
+      ? [r.state, `<strong>${r.corner}</strong>`, `<code>${r.figma}</code>`, r.extra || ""]
+      : [r.state, r.detail || ""]
+  );
 
   return (
     sectionOpen("comportamiento", "Comportamiento", { lead: behavior.lead }) +
-    (rows.length ? table(["Estado", "Radio", "Token Figma", "Escala"], rows) : "") +
+    (rows.length ? table(shapeRows ? ["Estado", "Radio", "Token Figma", "Escala"] : ["Estado", "Qué ocurre"], rows) : "") +
     (behavior.notes?.length ? `<h3 class="subsection-title">Detalles</h3>${list(behavior.notes)}` : "") +
     (behavior.exceptions?.length
-      ? `<h3 class="subsection-title">Qué no lleva morph</h3>${list(behavior.exceptions)}`
+      ? `<h3 class="subsection-title">${behavior.exceptionsTitle || "Qué no lleva morph"}</h3>${list(behavior.exceptions)}`
       : "") +
     "</section>"
   );

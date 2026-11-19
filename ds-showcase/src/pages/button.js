@@ -2,7 +2,6 @@ import { initShowcasePage, setupToc } from "../lib/bootstrap.js";
 import data from "../data/components/button.json";
 import {
   renderA11y,
-  renderAnatomy,
   renderBehavior,
   renderComponentHeader,
   renderDecisions,
@@ -14,6 +13,7 @@ import {
   renderUsage,
   renderVariantTable,
 } from "../lib/component-page.js";
+import { renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
 
 initShowcasePage("components", { componentId: "button" });
 
@@ -79,7 +79,8 @@ document.getElementById("component-main").innerHTML = [
   }),
   renderGuidelines(data),
   renderVariantTable(data.variants),
-  renderAnatomy(data.anatomy),
+  renderAnatomy(data.anatomy, data.anatomyDiagram),
+  renderMeasures(data.anatomyDiagram),
   renderBehavior(data.behavior),
   renderA11y(data.a11y),
   renderTokens(data.tokens),

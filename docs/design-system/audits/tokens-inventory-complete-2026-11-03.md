@@ -1,8 +1,8 @@
 # Inventario completo de tokens — Figma + Compose
 
-**Fecha:** 2026-11-03 · **Figma live:** Figwright `get_variable_defs` (plugin conectado)
+**Fecha:** 2026-11-03 (regenerado 2026-11-18) · **Figma live:** Figwright `get_variable_defs` (plugin conectado)
 
-> **Gobernanza:** contrato de producto date/time → [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md). Tokens «reserva» del kit M3 **no** obligan a la app; Figma debe alinearse a Compose.
+> **Gobernanza:** contrato date/time → [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md). Tokens listados como **ARCHIVE · kit M3** existen en `MOTSpacing.kt` para el kit importado; **no** son contrato de láminas PRODUCT (smoke 2026-11-18: 0 binds kit-only en 6 maestros). No etiquetar como «reserva producto».
 
 **Archivo:** MyOwnTrip_nativo - Design System
 **Compose SoT consumo UI:** `MaterialTheme.colorScheme` / `typography` / `shapes` + `MOTSpacing` + `LocalExtendedColors`
@@ -60,8 +60,8 @@
 | `mot/padding/chip/horizontal-lg` | `MOTSpacing.Chip.horizontalLg` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
 | `mot/padding/chip/horizontal-sm` | `MOTSpacing.Chip.horizontalSm` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
 | `mot/padding/chip/vertical` | `MOTSpacing.Chip.vertical` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
-| `mot/padding/date-picker/cell` | `MOTSpacing.DatePicker.cell` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
-| `mot/padding/date-picker/field-top` | `MOTSpacing.DatePicker.fieldTop` | **0** | Date Input · Date / Date return | **Reserva** (espejo sin uso app) |
+| `mot/padding/date-picker/cell` | `MOTSpacing.DatePicker.cell` | **0** | Kit M3 celdas; sin lectura directa en app | **Reserva** (espejo sin uso app) |
+| `mot/padding/date-picker/field-top` | `MOTSpacing.DatePicker.fieldTop` | **0** | ARCHIVE · Input date picker | **ARCHIVE · kit M3** (no producto) |
 | `mot/padding/dialog/container` | `MOTSpacing.Dialog.container` | **0** | Basic dialog · content/actions | **Reserva** (espejo sin uso app) |
 | `mot/padding/extended-fab/large-horizontal` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
 | `mot/padding/extended-fab/large-vertical` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
@@ -101,14 +101,14 @@
 | `mot/spacing/button-icon-gap-xsmall` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
 | `mot/spacing/chip/gap` | `MOTSpacing.Chip.gap` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
 | `mot/spacing/component-md` | `MOTSpacing.componentMd` | 1 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
-| `mot/spacing/component-sm` | `MOTSpacing.componentSm` | 29 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
-| `mot/spacing/component-xs` | `MOTSpacing.componentXs` | 16 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
-| `mot/spacing/date-picker/block-gap` | `MOTSpacing.DatePicker.blockGap` | **0** | Modal · Frame 2608508 | **Reserva** (espejo sin uso app) |
-| `mot/spacing/date-picker/cell` | `MOTSpacing.DatePicker.cell` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
-| `mot/spacing/date-picker/day-grid-gap` | `MOTSpacing.DatePicker.dayGridGap` | 2 archivos | Modal date picker `Type=Day`; sets Input grid | Activo |
-| `mot/spacing/date-picker/header-gap` | `MOTSpacing.DatePicker.headerGap` | **0** | Date Input set · Header | **Reserva** (espejo sin uso app) |
-| `mot/spacing/date-picker/label-gap` | `MOTSpacing.DatePicker.labelGap` | **0** | Modal date picker · Label and Date | **Reserva** (espejo sin uso app) |
-| `mot/spacing/date-picker/selection-row-gap` | `MOTSpacing.DatePicker.selectionRowGap` | **0** | Modal · Local Selection Row | **Reserva** (espejo sin uso app) |
+| `mot/spacing/component-sm` | `MOTSpacing.componentSm` | 32 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
+| `mot/spacing/component-xs` | `MOTSpacing.componentXs` | 17 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
+| `mot/spacing/date-picker/block-gap` | `MOTSpacing.DatePicker.blockGap` | **0** | ARCHIVE · Modal kit | **ARCHIVE · kit M3** (no producto) |
+| `mot/spacing/date-picker/cell` | `MOTSpacing.DatePicker.cell` | **0** | Celdas calendario M3 (Building Blocks); producto usa dayGridGap | **Reserva** (espejo sin uso app) |
+| `mot/spacing/date-picker/day-grid-gap` | `MOTSpacing.DatePicker.dayGridGap` | 2 archivos | PRODUCT · `MotBoundedMonthCalendar` / MotDateRangePickerDialog | Activo |
+| `mot/spacing/date-picker/header-gap` | `MOTSpacing.DatePicker.headerGap` | **0** | ARCHIVE · Input date picker `51954:18540` | **ARCHIVE · kit M3** (no producto) |
+| `mot/spacing/date-picker/label-gap` | `MOTSpacing.DatePicker.labelGap` | **0** | ARCHIVE · Modal date picker `51954:18136` | **ARCHIVE · kit M3** (no producto) |
+| `mot/spacing/date-picker/selection-row-gap` | `MOTSpacing.DatePicker.selectionRowGap` | **0** | ARCHIVE · Modal kit | **ARCHIVE · kit M3** (no producto) |
 | `mot/spacing/dialog/actions-gap` | `MOTSpacing.Dialog.actionsGap` | **0** | Basic dialog · acciones | **Reserva** (espejo sin uso app) |
 | `mot/spacing/dialog/divider-gap` | `MOTSpacing.Dialog.dividerGap` | **0** | Basic dialog · hueco divisor | **Reserva** (espejo sin uso app) |
 | `mot/spacing/dialog/section-gap` | `MOTSpacing.Dialog.sectionGap` | **0** | Basic dialog · título/cuerpo/divisor | **Reserva** (espejo sin uso app) |
@@ -116,24 +116,24 @@
 | `mot/spacing/extended-fab/gap-medium` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
 | `mot/spacing/extended-fab/gap-small` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
 | `mot/spacing/gutter-grid` | `MOTSpacing.gutterGrid` | 2 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
-| `mot/spacing/keyboard-picker/gap` | `MOTSpacing.KeyboardPicker.gap` | **0** | Keyboard picker · Format 12/24h itemSpacing 20 | **Reserva** (KDoc) |
+| `mot/spacing/keyboard-picker/gap` | `MOTSpacing.KeyboardPicker.gap` | **0** | ARCHIVE · Keyboard picker `52949:28053` | **ARCHIVE · kit M3** (no producto) |
 | `mot/spacing/layout-lg` | `MOTSpacing.layoutLg` | 8 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
-| `mot/spacing/layout-md` | `MOTSpacing.layoutMd` | 31 archivos | Stacks, cards, calendario modal (padding grid 16) | Activo |
+| `mot/spacing/layout-md` | `MOTSpacing.layoutMd` | 32 archivos | Stacks, cards, calendario modal (padding grid 16) | Activo |
 | `mot/spacing/list-item/gap` | `MOTSpacing.ListItem.gap` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
 | `mot/spacing/menu/group-gap` | `MOTSpacing.Menu.groupGap` | 1 archivos | Home · menú filtros (`HomeSearchAndFilter`) | Activo |
 | `mot/spacing/none` | `MOTSpacing.none` | 1 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
 | `mot/spacing/screen-content-bottom` | `MOTSpacing.screenContentBottom` | 11 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
-| `mot/spacing/screen-content-bottom-with-fab` | `MOTSpacing.screenContentBottomWithFab` | 2 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
+| `mot/spacing/screen-content-bottom-with-fab` | `MOTSpacing.screenContentBottomWithFab` | 3 archivos | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Activo |
 | `mot/spacing/screen-horizontal` | `MOTSpacing.screenHorizontal` | 27 archivos | Design-file / pantallas; márgenes columna producto | Activo |
 | `mot/spacing/segmented/gap` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
 | `mot/spacing/snackbar/gap` | `MOTSpacing.Snackbar.gap` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
 | `mot/spacing/snackbar/gap-sm` | `MOTSpacing.Snackbar.gapSm` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
 | `mot/spacing/snackbar/gap-xs` | `MOTSpacing.Snackbar.gapXs` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
 | `mot/spacing/tab/gap` | `MOTSpacing.Tab.gap` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | **Reserva** (espejo sin uso app) |
-| `mot/spacing/time-input/content-gap` | `MOTSpacing.TimeInput.contentGap` | **0** | Time Input · default gap 10 | **Reserva** (KDoc) |
-| `mot/spacing/time-input/field-gap` | `MOTSpacing.TimeInput.fieldGap` | **0** | Time Input · Input Field gap 1 | **Reserva** (KDoc) |
-| `mot/spacing/time-input/label-gap` | `MOTSpacing.TimeInput.labelGap` | **0** | Direct Input · gap a Time label | **Reserva** (KDoc) |
-| `mot/spacing/time-input/label-top` | `MOTSpacing.TimeInput.labelTop` | **0** | Sin nodo enlazado (reserva) | **Reserva** (KDoc) |
+| `mot/spacing/time-input/content-gap` | `MOTSpacing.TimeInput.contentGap` | **0** | ARCHIVE kit · Time Input | **ARCHIVE · kit M3** (no producto) |
+| `mot/spacing/time-input/field-gap` | `MOTSpacing.TimeInput.fieldGap` | **0** | ARCHIVE kit · Time Input (`61348:29338` usa layoutMd/componentSm) | **ARCHIVE · kit M3** (no producto) |
+| `mot/spacing/time-input/label-gap` | `MOTSpacing.TimeInput.labelGap` | **0** | ARCHIVE kit · Direct Input | **ARCHIVE · kit M3** (no producto) |
+| `mot/spacing/time-input/label-top` | `MOTSpacing.TimeInput.labelTop` | **0** | ARCHIVE kit · sin nodo PRODUCT | **ARCHIVE · kit M3** (no producto) |
 | `mot/stroke/emphasis` | `—` | **0** | Time Input Selected=True · stroke 2px | Figma-only (sin espejo Kotlin) |
 | `mot/stroke/focus` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
 | `mot/stroke/hairline` | `—` | **0** | Sets DS (Button, FAB, Dialog, …) — ver `spacing.md` | Figma-only (sin espejo Kotlin) |
@@ -142,17 +142,18 @@
 
 | Propiedad | Archivos | Figma |
 |-----------|----------|-------|
-| `MOTSpacing.layoutMd` | 31 | `mot/spacing/layout-md` |
-| `MOTSpacing.componentSm` | 29 | `mot/spacing/component-sm` |
+| `MOTSpacing.layoutMd` | 32 | `mot/spacing/layout-md` |
+| `MOTSpacing.componentSm` | 32 | `mot/spacing/component-sm` |
 | `MOTSpacing.screenHorizontal` | 27 | `mot/spacing/screen-horizontal` |
-| `MOTSpacing.componentXs` | 16 | `mot/spacing/component-xs` |
+| `MOTSpacing.componentXs` | 17 | `mot/spacing/component-xs` |
 | `MOTSpacing.screenContentBottom` | 11 | `mot/spacing/screen-content-bottom` |
 | `MOTSpacing.layoutLg` | 8 | `mot/spacing/layout-lg` |
+| `MOTSpacing.screenContentBottomWithFab` | 3 | `mot/spacing/screen-content-bottom-with-fab` |
 | `MOTSpacing.DatePicker.dayGridGap` | 2 | `mot/spacing/date-picker/day-grid-gap` |
-| `MOTSpacing.screenContentBottomWithFab` | 2 | `mot/spacing/screen-content-bottom-with-fab` |
 | `MOTSpacing.ListItem.horizontal` | 2 | `mot/padding/list-item/horizontal` |
 | `MOTSpacing.gutterGrid` | 2 | `mot/spacing/gutter-grid` |
 | `MOTSpacing.DocumentAttachment.previewHeight` | 1 | `—` |
+| `MOTSpacing.componentLg` | 1 | `mot/spacing/component-lg` |
 | `MOTSpacing.Menu` | 1 | `—` |
 | `MOTSpacing.Menu.groupGap` | 1 | `mot/spacing/menu/group-gap` |
 | `MOTSpacing.componentMd` | 1 | `mot/spacing/component-md` |
@@ -167,22 +168,38 @@
 | `MOTSpacing.Tab.horizontal` | 1 | `mot/padding/tab/horizontal` |
 | `MOTSpacing.Tab.vertical` | 1 | `mot/padding/tab/vertical` |
 
-## Apartado: tokens de reserva
+## Apartado: Date & time — ARCHIVE kit M3 (no producto)
 
-Definición pipeline: existen en **Figma** (y a menudo en nodos del kit) y en **`MOTSpacing`/`BrandColors`**, pero **ningún composable de `app/`** los lee. Cambiarlos en Figma no altera la app hasta conectar.
+Tras remediación R1–R4 y smoke PRODUCT (parity-log 2026-11-18). Variables siguen en Figma/`MOTSpacing.kt` para nodos **ARCHIVE** (`51954:18540`, `51954:18136`, `52949:28053`); **prohibido** enlazarlas en los 6 maestros PRODUCT.
+
+| Token | Compose | ¿Bind en kit ARCHIVE? | Motivo |
+|-------|---------|----------------------|--------|
+| `mot/spacing/time-input/label-top` | `MOTSpacing.TimeInput.labelTop` | No | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/time-input/field-gap` | `MOTSpacing.TimeInput.fieldGap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/time-input/content-gap` | `MOTSpacing.TimeInput.contentGap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/time-input/label-gap` | `MOTSpacing.TimeInput.labelGap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/date-picker/header-gap` | `MOTSpacing.DatePicker.headerGap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/padding/date-picker/field-top` | `MOTSpacing.DatePicker.fieldTop` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/date-picker/label-gap` | `MOTSpacing.DatePicker.labelGap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/date-picker/selection-row-gap` | `MOTSpacing.DatePicker.selectionRowGap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/date-picker/block-gap` | `MOTSpacing.DatePicker.blockGap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+| `mot/spacing/keyboard-picker/gap` | `MOTSpacing.KeyboardPicker.gap` | Sí | Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18) |
+
+### PRODUCT date/time — tokens activos en app
+
+| Token | Compose | Uso |
+|-------|---------|-----|
+| `mot/spacing/date-picker/day-grid-gap` | `MOTSpacing.DatePicker.dayGridGap` | `MotCalendarPicker.kt` · rejilla días |
+| `mot/spacing/screen-horizontal` | `MOTSpacing.screenHorizontal` | Modales Mot*Date/Time |
+| `mot/spacing/layout-md` / `component-sm` / `component-xs` | idem | Padding modales y nav mes |
+| `mot/spacing/component-sm` | `MOTSpacing.componentSm` | Gap fila `MotDateRangeField` |
+
+## Apartado: tokens de reserva (otros dominios)
+
+Existen en **Figma** y en **`MOTSpacing`/`BrandColors`**, pero **ningún composable de `app/`** los lee. Distinto de **ARCHIVE date/time**: estos son espejo kit genérico (chips, dialog, FAB…).
 
 | Token | Compose | ¿Enlazado en Figma? | Motivo reserva |
 |-------|---------|---------------------|----------------|
-| `mot/spacing/time-input/label-top` | `MOTSpacing.TimeInput.labelTop` | No | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/time-input/field-gap` | `MOTSpacing.TimeInput.fieldGap` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/time-input/content-gap` | `MOTSpacing.TimeInput.contentGap` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/time-input/label-gap` | `MOTSpacing.TimeInput.labelGap` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/date-picker/header-gap` | `MOTSpacing.DatePicker.headerGap` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/padding/date-picker/field-top` | `MOTSpacing.DatePicker.fieldTop` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/date-picker/label-gap` | `MOTSpacing.DatePicker.labelGap` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/date-picker/selection-row-gap` | `MOTSpacing.DatePicker.selectionRowGap` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/date-picker/block-gap` | `MOTSpacing.DatePicker.blockGap` | Sí | Sin consumidor Compose / kit ahead of app |
-| `mot/spacing/keyboard-picker/gap` | `MOTSpacing.KeyboardPicker.gap` | Sí | Sin consumidor Compose / kit ahead of app |
 | `mot/padding/chip/*` | `MOTSpacing.Chip.*` | Sí | Sin consumidor Compose / kit ahead of app |
 | `mot/padding/dialog/*` | `MOTSpacing.Dialog.*` | Sí | Sin consumidor Compose / kit ahead of app |
 | `mot/padding/fab/*` | `MOTSpacing.Fab.*` | Sí | Sin consumidor Compose / kit ahead of app |
@@ -192,12 +209,6 @@ Definición pipeline: existen en **Figma** (y a menudo en nodos del kit) y en **
 | `mot/padding/text-field/*` | `MOTSpacing.TextField.*` | Sí | Sin consumidor Compose / kit ahead of app |
 | `Brand `ink-deep`` | `BrandColors.InkDeep` | Sí | Sin consumidor Compose / kit ahead of app |
 
-### Detalle reserva Date & time (auditoría 2026-10-30 / 2026-11-03)
-
-- **Input date:** `header-gap`, `field-top` → sets Input; app usa `MotDateRangeField` (un solo `OutlinedTextField`).
-- **Modal date:** `label-gap`, `selection-row-gap`, `block-gap` → modal M3 kit; app usa `MotTripDatePickerDialog` con `dayGridGap` + `layoutMd` only.
-- **Time input:** gaps en sets Time Input; app usa `TimePicker` M3 (`MotTimePickerDialog`), no réplica Figma 1:1.
-- **Keyboard picker:** `keyboard-picker/gap` → Format 12/24h; Compose no implementa keyboard picker custom.
 - **Chip / Dialog / FAB / Snackbar / IconButton / TextField objects:** espejo para paridad kit; M3 aplica padding por defecto en app.
 - **`ink-deep`:** token Brand; lockups usan `ink` / `ocre` (`BrandColors.InkDeep` = alias de `Ink`).
 
@@ -227,4 +238,5 @@ Definición pipeline: existen en **Figma** (y a menudo en nodos del kit) y en **
 - `docs/design-system/spacing.md`
 - `docs/design-system/audits/backlog-tokens-inventory-2026-10-30.md`
 - `docs/design-system/audits/figma-datetime-matrix-2026-10-30.md`
+- `docs/design-system/audits/figma-date-product-contract-2026-11-03.md`
 - `designsystem/.../MOTSpacing.kt`, `Color.kt`, `Theme.kt`, `Shapes.kt`, `Type.kt`

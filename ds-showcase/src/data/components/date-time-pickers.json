@@ -1,0 +1,145 @@
+{
+  "id": "date-time-pickers",
+  "name": "Date & time pickers",
+  "status": "ready",
+  "priority": "P0",
+  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61340-8809",
+  "origin": {
+    "type": "M3",
+    "m3Version": "1.5.0-alpha12",
+    "fixedValues": [
+      "Rango: MotBoundedMonthCalendar (un mes), no DateRangePicker vertical",
+      "Hora: TimeInput 24 h por defecto + toggle a reloj M3"
+    ],
+    "pending": "Playground web = ilustración; paridad visual completa solo en Figma PRODUCT + Compose."
+  },
+  "purpose": "Entrada de fechas y horas en formularios de viaje, Wallet y plan. El producto usa composables propios en `ui/components/date/` (campos Outlined + modales M3 adaptados), no los sets M3 de catálogo archivados en Figma. El rango de viaje permite teclado `dd/MM/yyyy` y calendario acotado; Wallet usa fecha única y hora 24 h.",
+  "anatomy": [
+    "Campo rango — 2× OutlinedTextField editables + MOTIconButton calendario → MotDateRangePickerDialog",
+    "Campo fecha — OutlinedTextField read-only + trailing calendario → MotDatePickerDialog",
+    "Campo hora — OutlinedTextField read-only + trailing schedule → MotTimePickerDialog",
+    "Modal rango — DatePickerDialog + cabecera supporting/headline + MotBoundedMonthCalendar (Days · Year · Month)",
+    "Modal fecha — DatePickerDialog + DatePicker M3 (sin mode toggle)",
+    "Modal hora — Dialog + Surface extraLarge + TimeInput / TimePicker + acciones MOTTextButton"
+  ],
+  "variants": [
+    {
+      "id": "mot-date-range-field",
+      "label": "MotDateRangeField",
+      "usage": "Crear y editar viaje — fechas inicio/fin."
+    },
+    {
+      "id": "mot-date-range-dialog",
+      "label": "MotDateRangePickerDialog · Surface",
+      "usage": "Days (mes con flechas), Year, Month — selección rango."
+    },
+    {
+      "id": "mot-date-field",
+      "label": "MotDateField",
+      "usage": "Wallet — fecha del documento."
+    },
+    {
+      "id": "mot-date-dialog",
+      "label": "MotDatePickerDialog",
+      "usage": "Picker día único desde MotDateField."
+    },
+    {
+      "id": "mot-time-field",
+      "label": "MotTimeField",
+      "usage": "Wallet y plan — hora 24 h."
+    },
+    {
+      "id": "mot-time-dialog",
+      "label": "MotTimePickerDialog",
+      "usage": "Teclado horario por defecto; reloj opcional."
+    }
+  ],
+  "properties": [
+    { "name": "Surface", "type": "VARIANT", "example": "Days | Year | Month (solo MotDateRangePickerDialog)" },
+    { "name": "Labels / headlines", "type": "TEXT", "example": "Fecha inicio · Introduce las fechas · Introduce la hora" },
+    { "name": "Min / max date", "type": "BOOLEAN / logic", "example": "Teclado viaje: hoy → +10 años · calendario: hoy → +2 años" }
+  ],
+  "tokens": [
+    "surfaceContainerHigh (modales)",
+    "onSurface / onSurfaceVariant",
+    "primary (selección calendario)",
+    "mot/spacing/component-sm (gap fila campos)",
+    "mot/spacing/screen-horizontal (margen H diálogos)",
+    "mot/spacing/layout-md",
+    "mot/spacing/component-xs",
+    "mot/spacing/date-picker/day-grid-gap (2)",
+    "Corner/Extra-large (modales)"
+  ],
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Date pickers",
+        "url": "https://m3.material.io/components/date-pickers/overview"
+      },
+      {
+        "label": "Material Design 3 · Time pickers",
+        "url": "https://m3.material.io/components/time-pickers/overview"
+      }
+    ],
+    "consulted": "2026-11-18"
+  },
+  "dos": [
+    "Ofrece entrada por teclado cuando el usuario escribe fechas con frecuencia (rango de viaje).",
+    "Limita el rango seleccionable para evitar fechas absurdas.",
+    "Muestra errores con borde, supporting text e icono si aplica — nunca solo color.",
+    "En hora, usa formato 24 h coherente con el mercado español.",
+    "Cierra el modal con Cancelar sin mutar el valor, y confirma solo con Aceptar activo."
+  ],
+  "donts": [
+    "No uses el kit M3 «Input date picker» / «Modal date picker» del ARCHIVE en design-file.",
+    "No sustituyas el calendario de un mes por DateRangePicker de lista vertical.",
+    "No enlaces tokens kit-only (`header-gap`, `field-top`, `label-gap`, `time-input/*`) en láminas PRODUCT.",
+    "No documentes MotTripDatePickerDialog como patrón de producto hasta que una pantalla lo use."
+  ],
+  "productRules": {
+    "dos": [
+      "Instanciar los 6 COMPONENT_SET PRODUCT en Figma (`61340:8809` … `61348:29338`).",
+      "Design-file: Crear/editar viaje → MotDateRangeField; Wallet manual → MotDateField + MotTimeField.",
+      "Contrato vigente: audits/figma-date-product-contract-2026-11-03.md; smoke 2026-11-18 en parity-log.",
+      "Espaciado entre controles de fila = `MOTSpacing.componentSm`."
+    ],
+    "donts": [
+      "No dibujar campos con frames sueltos: Text field Outlined + icon slot.",
+      "No promover Keyboard picker `52949:28053` como SoT de producto.",
+      "No ampliar MOTSpacing.DatePicker.* de kit sin acuerdo explícito."
+    ]
+  },
+  "a11y": [
+    "Campos read-only: contentDescription con label + valor formateado.",
+    "Iconos trailing: descripción «Abrir calendario» / «Abrir selector de hora».",
+    "Errores de parseo anunciados en supporting text al perder foco.",
+    "Modales: dismiss con back; Aceptar deshabilitado hasta rango completo (fin sin elegir)."
+  ],
+  "compose": "MotDateRangeField(\n    startDate = state.start,\n    endDate = state.end,\n    onRangeChange = viewModel::onDatesChange,\n    modifier = Modifier.fillMaxWidth(),\n)\n\nMotDateField(\n    date = state.documentDate,\n    onDateChange = viewModel::onDateChange,\n    label = \"Fecha del documento\",\n)\n\nMotTimeField(\n    time = state.time,\n    onTimeChange = viewModel::onTimeChange,\n)",
+  "productExamples": [
+    { "screen": "CreateTripScreen / EditTripScreen", "fields": "MotDateRangeField" },
+    { "screen": "WalletFormScreen", "fields": "MotDateField · MotTimeField" },
+    { "screen": "AddPlanActivitySheet / UpdateDocumentPlanSheet", "fields": "MotTimeField / MotTimeTextField" }
+  ],
+  "productSets": [
+    { "compose": "MotDateRangeField", "figma": "61340:8809", "node": "61340-8809" },
+    { "compose": "MotDateRangePickerDialog", "figma": "61348:28897", "node": "61348-28897" },
+    { "compose": "MotDateField", "figma": "61348:29097", "node": "61348-29097" },
+    { "compose": "MotDatePickerDialog", "figma": "61348:29373", "node": "61348-29373" },
+    { "compose": "MotTimeField", "figma": "61348:29337", "node": "61348-29337" },
+    { "compose": "MotTimePickerDialog", "figma": "61348:29338", "node": "61348-29338" }
+  ],
+  "archiveSets": [
+    { "name": "Input date picker", "id": "51954:18540" },
+    { "name": "Modal date picker", "id": "51954:18136" },
+    { "name": "Keyboard picker set", "id": "52949:28053" }
+  ],
+  "decisions": {
+    "source": "Contrato figma-date-product-contract-2026-11-03.md · Compose `ui/components/date/*`",
+    "why": "Compose define interacción real (rango editable, un mes, hora 24 h); Figma es espejo PRODUCT.",
+    "layer": "M3 directo (OutlinedTextField, DatePickerDialog, TimeInput) + wrappers Mot* en app"
+  },
+  "changelog": [
+    { "date": "2026-11-18", "note": "Ficha showcase R0: 6 PRODUCT + tabla ARCHIVE; estado Ready tras smoke parity-log." }
+  ]
+}

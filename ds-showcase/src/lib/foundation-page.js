@@ -55,6 +55,7 @@ export function renderFoundationBody(data) {
       <section class="section">
         <h2 id="${s.id}">${s.title}</h2>
         ${s.lead ? `<p class="section-lead">${s.lead}</p>` : ""}
+        ${(s.paragraphs || []).map((p) => `<p>${p}</p>`).join("")}
         ${s.table ? table(s.table.head, s.table.rows) : ""}
         ${s.notes?.length ? `<h3 class="subsection-title">Notas</h3>${list(s.notes)}` : ""}
         ${guidelines}

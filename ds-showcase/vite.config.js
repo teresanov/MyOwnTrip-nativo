@@ -16,6 +16,7 @@ const PAGES = [
   ["components", "components.html"],
   ["button", "components/button.html"],
   ["text-field", "components/text-field.html"],
+  ["date-time-pickers", "components/date-time-pickers.html"],
   ["filter-chip", "components/filter-chip.html"],
   ["basic-dialog", "components/basic-dialog.html"],
   ["snackbar", "components/snackbar.html"],
@@ -23,6 +24,8 @@ const PAGES = [
   ["trip-hero-card", "components/trip-hero-card.html"],
   ["eyebrow-label", "components/eyebrow-label.html"],
   ["swipeable-list-row", "components/swipeable-list-row.html"],
+  ["list-item", "components/list-item.html"],
+  ["icon-button", "components/icon-button.html"],
   // Resto
   ["patterns", "patterns.html"],
   ["governance", "gobernanza.html"],
@@ -33,6 +36,12 @@ export default defineConfig(({ mode }) => {
 
   return {
     base,
+    // Windows: Vite por defecto puede escuchar solo en [::1]; host true → IPv4 + localhost.
+    server: {
+      host: true,
+      port: 5173,
+      strictPort: true,
+    },
     plugins: [
       {
         name: "inject-base",

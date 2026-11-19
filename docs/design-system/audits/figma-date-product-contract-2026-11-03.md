@@ -166,7 +166,7 @@ Primer día = inicio; segundo = fin. Mes+año → año → mes → vuelve al mes
 2. **Bindings:** en láminas PRODUCT, solo tokens listados en §2–4 (+ `colorScheme` / text styles). Quitar binds de `header-gap`, `field-top`, `label-gap`, `block-gap` en doc de producto.
 3. **`MOTSpacing`:** mantener en Kotlin solo tokens **§3–4**; propiedades `DatePicker.headerGap`, `fieldTop`, `labelGap`, … son **deuda de kit** — no ampliar; opcional eliminarlas cuando Figma archive el kit.
 4. **Design-file `Vf2tNMXy`:** Crear/editar viaje instancia **PRODUCT** (campo + modal), no Input date picker Range del archivo DS antiguo.
-5. **Showcase / bindings.md:** actualizar fila date/time a este contrato (no node-id del kit Input).
+5. **Showcase / bindings.md:** ficha [date-time-pickers](../../ds-showcase/components/date-time-pickers.html) (2026-11-18) + filas date/time en bindings (no node-id del kit Input).
 
 ---
 

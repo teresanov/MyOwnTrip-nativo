@@ -15,6 +15,28 @@ VAR_DEFS = Path(
 MOT_SPACING_KT = REPO / "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTSpacing.kt"
 OUT = REPO / "docs/design-system/audits/tokens-inventory-complete-2026-11-03.md"
 
+# Kit M3 importado (ARCHIVE). Smoke PRODUCT 2026-11-18: 0 binds en 6 maestros — ver contrato date-product.
+KIT_ARCHIVE_DATE_TIME: frozenset[str] = frozenset(
+    {
+        "mot/spacing/date-picker/header-gap",
+        "mot/padding/date-picker/field-top",
+        "mot/spacing/date-picker/label-gap",
+        "mot/spacing/date-picker/selection-row-gap",
+        "mot/spacing/date-picker/block-gap",
+        "mot/spacing/time-input/label-top",
+        "mot/spacing/time-input/field-gap",
+        "mot/spacing/time-input/content-gap",
+        "mot/spacing/time-input/label-gap",
+        "mot/spacing/keyboard-picker/gap",
+    }
+)
+
+PRODUCT_DATE_TIME_NOTES: dict[str, str] = {
+    "mot/spacing/date-picker/day-grid-gap": "PRODUCT · `MotBoundedMonthCalendar` / MotDateRangePickerDialog",
+    "mot/spacing/date-picker/cell": "Celdas calendario M3 (Building Blocks); producto usa dayGridGap",
+    "mot/padding/date-picker/cell": "Kit M3 celdas; sin lectura directa en app",
+}
+
 # Compose usage scan
 MOT_USAGE: dict[str, set[str]] = defaultdict(set)
 for kt in REPO.rglob("*.kt"):
@@ -122,23 +144,23 @@ FIGMA_APPLY_NOTES: dict[str, str] = {
     "mot/spacing/screen-horizontal": "Design-file / pantallas; márgenes columna producto",
     "mot/spacing/layout-md": "Stacks, cards, calendario modal (padding grid 16)",
     "mot/spacing/menu/group-gap": "Home · menú filtros (`HomeSearchAndFilter`)",
-    "mot/spacing/date-picker/day-grid-gap": "Modal date picker `Type=Day`; sets Input grid",
+    "mot/spacing/date-picker/day-grid-gap": PRODUCT_DATE_TIME_NOTES["mot/spacing/date-picker/day-grid-gap"],
     "mot/padding/button/xsmall-horizontal": "Button/Toggle XSmall; TextButton Small corregido",
     "mot/padding/button/small-horizontal": "Button SM State-layer (24, nov 2026)",
     "mot/padding/button/small-vertical": "Button SM (8)",
     "mot/padding/text-field/outlined-vertical": "Text field set · 252 nodos (60 variantes)",
     "mot/padding/text-field/horizontal": "Text field, Time Input field",
     "mot/padding/text-field/vertical": "Time Input (4), no Outlined producto",
-    "mot/spacing/time-input/field-gap": "Time Input · Input Field gap 1",
-    "mot/spacing/time-input/content-gap": "Time Input · default gap 10",
-    "mot/spacing/time-input/label-gap": "Direct Input · gap a Time label",
-    "mot/spacing/time-input/label-top": "Sin nodo enlazado (reserva)",
-    "mot/spacing/date-picker/header-gap": "Date Input set · Header",
-    "mot/padding/date-picker/field-top": "Date Input · Date / Date return",
-    "mot/spacing/date-picker/label-gap": "Modal date picker · Label and Date",
-    "mot/spacing/date-picker/selection-row-gap": "Modal · Local Selection Row",
-    "mot/spacing/date-picker/block-gap": "Modal · Frame 2608508",
-    "mot/spacing/keyboard-picker/gap": "Keyboard picker · Format 12/24h itemSpacing 20",
+    "mot/spacing/time-input/field-gap": "ARCHIVE kit · Time Input (`61348:29338` usa layoutMd/componentSm)",
+    "mot/spacing/time-input/content-gap": "ARCHIVE kit · Time Input",
+    "mot/spacing/time-input/label-gap": "ARCHIVE kit · Direct Input",
+    "mot/spacing/time-input/label-top": "ARCHIVE kit · sin nodo PRODUCT",
+    "mot/spacing/date-picker/header-gap": "ARCHIVE · Input date picker `51954:18540`",
+    "mot/padding/date-picker/field-top": "ARCHIVE · Input date picker",
+    "mot/spacing/date-picker/label-gap": "ARCHIVE · Modal date picker `51954:18136`",
+    "mot/spacing/date-picker/selection-row-gap": "ARCHIVE · Modal kit",
+    "mot/spacing/date-picker/block-gap": "ARCHIVE · Modal kit",
+    "mot/spacing/keyboard-picker/gap": "ARCHIVE · Keyboard picker `52949:28053`",
     "mot/padding/dialog/container": "Basic dialog · content/actions",
     "mot/spacing/dialog/section-gap": "Basic dialog · título/cuerpo/divisor",
     "mot/spacing/dialog/divider-gap": "Basic dialog · hueco divisor",
@@ -146,8 +168,8 @@ FIGMA_APPLY_NOTES: dict[str, str] = {
     "mot/stroke/emphasis": "Time Input Selected=True · stroke 2px",
 }
 
-RESERVE_TOKENS = [
-    # (figma path, compose, figma applied?, compose used?)
+ARCHIVE_KIT_TOKENS = [
+    # (figma path, compose, bound on ARCHIVE kit sets?, compose used in app?)
     ("mot/spacing/time-input/label-top", "MOTSpacing.TimeInput.labelTop", False, False),
     ("mot/spacing/time-input/field-gap", "MOTSpacing.TimeInput.fieldGap", True, False),
     ("mot/spacing/time-input/content-gap", "MOTSpacing.TimeInput.contentGap", True, False),
@@ -158,6 +180,10 @@ RESERVE_TOKENS = [
     ("mot/spacing/date-picker/selection-row-gap", "MOTSpacing.DatePicker.selectionRowGap", True, False),
     ("mot/spacing/date-picker/block-gap", "MOTSpacing.DatePicker.blockGap", True, False),
     ("mot/spacing/keyboard-picker/gap", "MOTSpacing.KeyboardPicker.gap", True, False),
+]
+
+RESERVE_TOKENS = [
+    # (figma path, compose, figma applied?, compose used?) — no date/time kit (ver ARCHIVE_KIT_TOKENS)
     ("mot/padding/chip/*", "MOTSpacing.Chip.*", True, False),
     ("mot/padding/dialog/*", "MOTSpacing.Dialog.*", True, False),
     ("mot/padding/fab/*", "MOTSpacing.Fab.*", True, False),
@@ -179,13 +205,15 @@ def compose_usage_count(compose: str) -> int:
     return len(MOT_USAGE.get(compose, set()))
 
 
-def token_estado(compose: str, uses: int) -> str:
+def token_estado(name: str, compose: str, uses: int) -> str:
     if compose == "—":
         return "Figma-only (sin espejo Kotlin)"
     if uses > 0:
         return "Activo"
+    if name in KIT_ARCHIVE_DATE_TIME:
+        return "**ARCHIVE · kit M3** (no producto)"
     if compose in RESERVED_COMPOSE:
-        return "**Reserva** (KDoc)"
+        return "**Reserva** (KDoc kit; no ampliar)"
     return "**Reserva** (espejo sin uso app)"
 
 
@@ -203,7 +231,14 @@ def main() -> None:
     lines: list[str] = []
     lines.append("# Inventario completo de tokens — Figma + Compose")
     lines.append("")
-    lines.append("**Fecha:** 2026-11-03 · **Figma live:** Figwright `get_variable_defs` (plugin conectado)")
+    lines.append("**Fecha:** 2026-11-03 (regenerado 2026-11-18) · **Figma live:** Figwright `get_variable_defs` (plugin conectado)")
+    lines.append("")
+    lines.append(
+        "> **Gobernanza:** contrato date/time → [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md). "
+        "Tokens listados como **ARCHIVE · kit M3** existen en `MOTSpacing.kt` para el kit importado; **no** son contrato de láminas PRODUCT "
+        "(smoke 2026-11-18: 0 binds kit-only en 6 maestros). No etiquetar como «reserva producto»."
+    )
+    lines.append("")
     lines.append("**Archivo:** MyOwnTrip_nativo - Design System")
     lines.append("**Compose SoT consumo UI:** `MaterialTheme.colorScheme` / `typography` / `shapes` + `MOTSpacing` + `LocalExtendedColors`")
     lines.append("")
@@ -266,8 +301,11 @@ def main() -> None:
         compose = figma_to_compose_path(name)
         uses = compose_usage_count(compose)
         use_str = f"{uses} archivos" if uses else "**0**"
-        estado = token_estado(compose, uses)
-        fig_note = FIGMA_APPLY_NOTES.get(name, "Sets DS (Button, FAB, Dialog, …) — ver `spacing.md`")
+        estado = token_estado(name, compose, uses)
+        fig_note = PRODUCT_DATE_TIME_NOTES.get(
+            name,
+            FIGMA_APPLY_NOTES.get(name, "Sets DS (Button, FAB, Dialog, …) — ver `spacing.md`"),
+        )
         lines.append(f"| `{name}` | `{compose}` | {use_str} | {fig_note} | {estado} |")
 
     lines.append("")
@@ -280,11 +318,34 @@ def main() -> None:
         lines.append(f"| `{tok}` | {len(files)} | `{fp}` |")
 
     lines.append("")
-    lines.append("## Apartado: tokens de reserva")
+    lines.append("## Apartado: Date & time — ARCHIVE kit M3 (no producto)")
     lines.append("")
     lines.append(
-        "Definición pipeline: existen en **Figma** (y a menudo en nodos del kit) y en **`MOTSpacing`/`BrandColors`**, "
-        "pero **ningún composable de `app/`** los lee. Cambiarlos en Figma no altera la app hasta conectar."
+        "Tras remediación R1–R4 y smoke PRODUCT (parity-log 2026-11-18). Variables siguen en Figma/`MOTSpacing.kt` "
+        "para nodos **ARCHIVE** (`51954:18540`, `51954:18136`, `52949:28053`); **prohibido** enlazarlas en los 6 maestros PRODUCT."
+    )
+    lines.append("")
+    lines.append("| Token | Compose | ¿Bind en kit ARCHIVE? | Motivo |")
+    lines.append("|-------|---------|----------------------|--------|")
+    archive_motivo = "Kit M3 importado; 0 uso app; 0 bind PRODUCT (smoke 2026-11-18)"
+    for row in ARCHIVE_KIT_TOKENS:
+        lines.append(f"| `{row[0]}` | `{row[1]}` | {'Sí' if row[2] else 'No'} | {archive_motivo} |")
+
+    lines.append("")
+    lines.append("### PRODUCT date/time — tokens activos en app")
+    lines.append("")
+    lines.append("| Token | Compose | Uso |")
+    lines.append("|-------|---------|-----|")
+    lines.append("| `mot/spacing/date-picker/day-grid-gap` | `MOTSpacing.DatePicker.dayGridGap` | `MotCalendarPicker.kt` · rejilla días |")
+    lines.append("| `mot/spacing/screen-horizontal` | `MOTSpacing.screenHorizontal` | Modales Mot*Date/Time |")
+    lines.append("| `mot/spacing/layout-md` / `component-sm` / `component-xs` | idem | Padding modales y nav mes |")
+    lines.append("| `mot/spacing/component-sm` | `MOTSpacing.componentSm` | Gap fila `MotDateRangeField` |")
+    lines.append("")
+    lines.append("## Apartado: tokens de reserva (otros dominios)")
+    lines.append("")
+    lines.append(
+        "Existen en **Figma** y en **`MOTSpacing`/`BrandColors`**, pero **ningún composable de `app/`** los lee. "
+        "Distinto de **ARCHIVE date/time**: estos son espejo kit genérico (chips, dialog, FAB…)."
     )
     lines.append("")
     lines.append("| Token | Compose | ¿Enlazado en Figma? | Motivo reserva |")
@@ -293,12 +354,6 @@ def main() -> None:
         lines.append(f"| `{row[0]}` | `{row[1]}` | {'Sí' if row[2] else 'No'} | Sin consumidor Compose / kit ahead of app |")
 
     lines.append("")
-    lines.append("### Detalle reserva Date & time (auditoría 2026-10-30 / 2026-11-03)")
-    lines.append("")
-    lines.append("- **Input date:** `header-gap`, `field-top` → sets Input; app usa `MotDateRangeField` (un solo `OutlinedTextField`).")
-    lines.append("- **Modal date:** `label-gap`, `selection-row-gap`, `block-gap` → modal M3 kit; app usa `MotTripDatePickerDialog` con `dayGridGap` + `layoutMd` only.")
-    lines.append("- **Time input:** gaps en sets Time Input; app usa `TimePicker` M3 (`MotTimePickerDialog`), no réplica Figma 1:1.")
-    lines.append("- **Keyboard picker:** `keyboard-picker/gap` → Format 12/24h; Compose no implementa keyboard picker custom.")
     lines.append("- **Chip / Dialog / FAB / Snackbar / IconButton / TextField objects:** espejo para paridad kit; M3 aplica padding por defecto en app.")
     lines.append("- **`ink-deep`:** token Brand; lockups usan `ink` / `ocre` (`BrandColors.InkDeep` = alias de `Ink`).")
     lines.append("")
@@ -332,6 +387,7 @@ def main() -> None:
     lines.append("- `docs/design-system/spacing.md`")
     lines.append("- `docs/design-system/audits/backlog-tokens-inventory-2026-10-30.md`")
     lines.append("- `docs/design-system/audits/figma-datetime-matrix-2026-10-30.md`")
+    lines.append("- `docs/design-system/audits/figma-date-product-contract-2026-11-03.md`")
     lines.append("- `designsystem/.../MOTSpacing.kt`, `Color.kt`, `Theme.kt`, `Shapes.kt`, `Type.kt`")
 
     OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")

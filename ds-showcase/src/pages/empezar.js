@@ -42,29 +42,98 @@ document.getElementById("main").innerHTML = `
 
   <section class="section">
     <h2 id="implementar">Implementar una pantalla</h2>
+    <p class="section-lead">
+      Una pantalla se construye con componentes del sistema y con las variables del tema. El diseño en Figma
+      y el código en Compose siguen la misma regla: cada elemento se define por el papel que cumple en la pantalla,
+      no por el valor que tiene hoy.
+    </p>
+
     <ol class="list-steps">
       <li>
-        <strong>Consume roles, no valores.</strong> <code>MaterialTheme.colorScheme</code> y
-        <code>MaterialTheme.typography</code>. Nunca un hex ni un dp suelto en una pantalla.
-      </li>
-      <li>
-        <strong>Comprueba si hay wrapper.</strong> La sección «Implementación» de cada ficha
-        dice el composable exacto. Los botones son <code>MOTButton</code> y familia, no los de M3:
-        el wrapper es lo que aplica el morph de forma.
-      </li>
-      <li>
-        <strong>Los estados se pintan en runtime</strong> con state layers (8 / 10 / 10 / 16 %),
-        nunca con un color guardado por estado.
-      </li>
-      <li>
-        <strong>Antes de cerrar</strong>, pasa los gates de
-        <a href="${assetUrl("gobernanza.html")}">Gobernanza</a>.
+        <strong>Variables semánticas, nunca primitivos.</strong>
+        Los colores, tipografías y espacios del sistema se organizan por el <em>rol</em> que desempeñan:
+        fondo, superficie, acción principal, texto secundario, título medio. El <em>primitivo</em> es el valor en
+        bruto que hay detrás en cada momento (un hex como <code>#4A5864</code>, un tamaño como 14 sp, una medida
+        como 24 dp) y no se usa directamente en ningún sitio.
+        <br>La regla se aplica en dos momentos, siempre al definir cada elemento. En Figma, al asignar la
+        variable de color o de texto al elemento. En código, al escribir el elemento, que declara su rol y deja que
+        el tema lo resuelva. Así un mismo rol cambia de valor con el modo oscuro, y un cambio de color en el
+        sistema llega a toda la app sin tocar ninguna pantalla.
+        <br>Ejemplos:
       </li>
     </ol>
+    <table>
+      <thead><tr><th>Elemento</th><th>Rol (correcto)</th><th>Primitivo (incorrecto)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Fondo de un botón principal</td>
+          <td><code>colorScheme.primary</code></td>
+          <td><code>#4A5864</code></td>
+        </tr>
+        <tr>
+          <td>Texto sobre ese botón</td>
+          <td><code>colorScheme.onPrimary</code></td>
+          <td><code>#FFFFFF</code></td>
+        </tr>
+        <tr>
+          <td>Título de una tarjeta</td>
+          <td><code>typography.titleMedium</code></td>
+          <td>Inter 16 sp, Medium</td>
+        </tr>
+        <tr>
+          <td>Espacio interno de un botón</td>
+          <td><code>MOTSpacing.ButtonSmall</code></td>
+          <td>24 dp × 8 dp</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ol class="list-steps" start="2">
+      <li>
+        <strong>Componente del sistema, con su wrapper.</strong>
+        Un <em>wrapper</em> es un componente propio que envuelve al de Material 3 y le añade lo que distingue a
+        MyOwnTrip. Los botones son un caso: <code>MOTButton</code> y su familia envuelven al botón de Material y
+        le dan la forma del sistema, rectangular en reposo y redondeada a 20 dp al interactuar. Usar el botón
+        de Material sin el wrapper funciona, pero pierde esa forma. La sección «Implementación» de cada ficha
+        indica el componente exacto que debe usarse.
+      </li>
+      <li>
+        <strong>Los estados cambian la opacidad, no el color del componente.</strong>
+        Hover, foco, pulsado y arrastrado no tienen un color propio. El componente conserva el color de su rol y,
+        encima, se superpone una capa del color del contenido (el rol <code>on*</code>) con una opacidad que depende
+        del estado: 8 % al pasar por encima, 10 % con foco, 10 % al pulsar y 16 % al arrastrar, según Material 3.
+        Un componente desactivado baja la opacidad del contenido al 38 % y la del contenedor al 12 %. Por eso el
+        sistema no incluye variables como <code>primary.hover</code> o <code>texto/desactivado</code>.
+        <br>La técnica es la misma en las dos herramientas, pero quien la aplica es distinto:
+        <ul>
+          <li>
+            <strong>En Figma</strong>, la colección de variables «State Layers» tiene una variable por rol y por
+            opacidad, nunca por estado. Por ejemplo, <code>State Layers / On Secondary Container / Opacity-08</code>
+            es el color del contenido de un botón tonal ya con un 8 % de opacidad; existen también las versiones
+            Opacity-10 y Opacity-16. Cada variante de estado del componente (Enabled, Hovered, Focused, Pressed,
+            Disabled) tiene una capa «State-layer» cuyo relleno se enlaza a una de esas variables: en un botón tonal,
+            Hovered usa Opacity-08 y Focused usa Opacity-10, y Enabled no lleva relleno. El color base del contenedor
+            no cambia entre variantes.
+          </li>
+          <li>
+            <strong>En código</strong>, el componente aplica esa misma capa automáticamente cuando detecta la
+            interacción (el cursor encima, el foco, el pulsado), con el mismo color y las mismas opacidades. No hay
+            variantes de estado que mantener: el estado se calcula al ejecutarse la app.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Gates antes de cerrar.</strong>
+        Un <em>gate</em> es una comprobación que debe cumplirse para aceptar un cambio: que no haya colores ni
+        tamaños escritos a mano, que el componente usado exista en la librería de Figma, que la ficha esté
+        al día. Los gates están descritos en <a href="${assetUrl("gobernanza.html")}">Gobernanza</a>.
+      </li>
+    </ol>
+
     <div class="callout">
-      El catálogo Compose (módulo <code>:catalog</code>) ejecuta los componentes reales en un
-      dispositivo o emulador. Para comprobar comportamiento —morph, squish, escala de fuente—
-      es más fiable que esta web, que lo reproduce en CSS.
+      Esta web reproduce el comportamiento (morph, compresión al pulsar) en CSS para poder verlo sin instalar
+      nada, pero es una aproximación. El comportamiento exacto se comprueba en las previews de Android Studio,
+      que dibujan el componente real.
     </div>
   </section>
 
@@ -92,23 +161,12 @@ document.getElementById("main").innerHTML = `
           <td>Criterios de uso y jerarquía</td>
         </tr>
         <tr>
-          <td><strong><code>:catalog</code></strong></td>
-          <td>Los componentes vivos, interactivos, en Android</td>
+          <td><strong>Previews de Android Studio</strong></td>
+          <td>El componente real dibujado, con datos de ejemplo</td>
           <td>Texto explicativo largo</td>
         </tr>
       </tbody>
     </table>
-  </section>
-
-  <section class="section">
-    <h2 id="no-hacemos">Lo que este sistema no hace</h2>
-    <ul class="list-dos list-dos--dont">
-      <li>No hay capa semántica propia de color: los roles son los de M3.</li>
-      <li>No hay tokens por estado (<code>primary.hover</code>, <code>text/disabled</code>).</li>
-      <li>No se documentan componentes dentro de Figma.</li>
-      <li>No se portan contratos del repo archivo (<code>SemanticColors</code>, <code>LayoutTokens</code>).</li>
-      <li>No hay un segundo set de iconos de UI.</li>
-    </ul>
   </section>
 `;
 

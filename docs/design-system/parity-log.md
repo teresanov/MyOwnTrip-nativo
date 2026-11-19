@@ -24,12 +24,30 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 Cola de módulos cerrada. Event bookmark no entra por el + del Diario.
 
+**Corregir en Figma · state layers de Button** (hallado 2026-11-19 en `Button - tonal` `58651:11237` · XSmall; revisar el resto de Button, Icon button y Chips antes de dar por buenos):
+- [ ] **Pressed** (`58651:11546`): la capa `State-layer` usa `State Layers/On Secondary Container/Opacity-08` y un vector `Ripple` (`58651:12062`) usa `Opacity-10`. Contrato (`governance.md` regla 2): pressed = **10 %**.
+- [ ] **Disabled** (`58651:11666`): el contenedor (`Content`) usa `State Layers/On Surface/Opacity-10`. Contrato: disabled contenedor = **12 %**. En la colección `State Layers` **no existe `Opacity-12`** (solo 08 · 10 · 16): crearla y enlazar.
+- [ ] **Disabled · contenido:** el 38 % está como opacidad de la capa `State-layer` (`opacity` 0,38 escrita en el nodo, sin variable). Contrato: 38 %. Decidir si se deja así o se resuelve con variable.
+- [ ] Repetir la comprobación en `Button` filled/outlined/text/elevated, `Icon button`, `Filter chip` y `Assistive chip` (mismos estados Enabled · Hovered · Focused · Pressed · Disabled).
+- [ ] Cuando se corrija: dejar fila en **Registro** y quitar este bloque.
+
+**Corregir en documentación · valor de `error`** (hallado 2026-11-19): Figma (`Schemes/Error` Light) y código (`Color.kt` `errorLight`) coinciden en **`#904A42`**; estos documentos siguen con **`#B3261E`**:
+- [ ] `docs/decisions/002-brand-editorial-m3.md` (líneas 18, 23 y 49)
+- [ ] `.cursor/rules/m3-native-ui.mdc` (regla 4)
+- [ ] `docs/design-system/brand.md` (línea 52 cita ambos valores; dejar solo `#904A42`)
+- [ ] Al cerrar: dejar fila en **Registro** y quitar este bloque.
+
 ---
 
 ## Registro (más reciente arriba)
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-19 | color · error | **Valor de `error` desactualizado en docs.** Light: Figma `Schemes/Error` = `#904A42` = `Color.kt` `errorLight`; `002-brand-editorial-m3.md`, `m3-native-ui.mdc` y `brand.md` mantienen `#B3261E`. Dark Figma `#FFB4AA` = `errorDark`. Figma y código **OK**; la discrepancia es solo documental. El showcase (`foundations/color`) ya muestra `#904A42` desde `tokens.json`. | Figwright `get_variable_defs` (`Schemes/Error`) · `Color.kt` L11/L61 | **Pendiente (corregir docs)** |
+| 2026-11-19 | button · state layers | **Discrepancia Figma ≠ contrato** en `Button - tonal` `58651:11237` (XSmall): Pressed = capa Opacity-08 + `Ripple` Opacity-10 (contrato 10 %); Disabled contenedor = `On Surface/Opacity-10` (contrato 12 %, falta variable `Opacity-12`); Disabled contenido 38 % como opacidad del nodo, no variable. Colección `State Layers` solo tiene Opacity-08/10/16, nombradas por rol y opacidad (no por estado: cumple regla 1). Estados Enabled/Hovered/Focused: **OK**. Showcase y `governance.md` documentan el contrato (8/10/10/16; 38/12); no se ajustan a Figma. | Figwright · `Button - tonal` `57994:2296` · `58651:11306` · `58651:11426` · `58651:11546` · `58651:11666`; `get_variable_defs` | **Pendiente (corregir en Figma)** |
+| 2026-11-18 | date/time · inventario T3 | `tokens-inventory-complete-2026-11-03.md` regenerado: 10 tokens kit date/time → **ARCHIVE · kit M3** (no «reserva producto»); apartado PRODUCT activos; script `generate_tokens_inventory.py`. | `scripts/generate_tokens_inventory.py` · parity-log smoke 2026-11-18 | Hecho |
+| 2026-11-18 | date/time · showcase T2 | Ficha **Ready** [date-time-pickers](../ds-showcase/components/date-time-pickers.html): 6 patrones PRODUCT + tabla ARCHIVE; índice `components.json` · `vite.config.js` · `npm run context`. Bindings filas date/time → enlace showcase + contrato. | `ds-showcase/src/data/components/date-time-pickers.json` · [figma-compose-bindings.md](figma-compose-bindings.md) | Hecho |
+| 2026-11-18 | date/time · smoke PRODUCT | **Cierre menor post contrato:** 6 maestros (`61340:8809`, `61348:28897`, `61348:29097`, `61348:29373`, `61348:29337`, `61348:29338`) → **0** binds kit-only (`header-gap`, `field-top`, `label-gap`, `selection-row-gap`, `block-gap`, `time-input/*`; 9 variables rastreadas). Spot tokens contrato §2–4: `component-sm`, `day-grid-gap`, `screen-horizontal`, `layout-md` presentes. **ARCHIVE** DS página `61337:28407`: kit `51954:18540` (Input) · `51954:18136` (Modal) · `52949:28053` (Keyboard picker set). **Design-file:** caps R4 `261:926`/`261:929` → instancia **MotDateRangeField**; `491:13980` → **MotDateField** + **MotTimeField**; 0 `Input date picker` en subárboles caps y en páginas `02 · Viajes` / `04 · Wallet`. | Figwright · `get_nodes_info` · contrato [§6](audits/figma-date-product-contract-2026-11-03.md) | **OK** |
 | 2026-11-18 | Gastos · bindings | Caps **4–4g** listadas (`ExpenseFormScreen` / `TakePhotoScreen`). Índice `07` ya no se queda en 3/3b. | `figma-compose-bindings.md` · `593:12952`…`593:14490` | Hecho |
 | 2026-11-18 | Diario · chrome | Spread album chrome = contador + pills. Sin Actions en maestro ni caps. FAB captura es overlay. | DS `61262:28962` · cap 5 `622:49969` · `AlbumChrome` | Hecho |
 | 2026-11-18 | Diario · voz | Detener usa `stop` w300 fill1 (cuadrado sólido). Outline no se leía en el filled. | `MOTIcons.Stop` · DS `stop` `61337:28727` · 6c1 `679:36634` | Hecho |

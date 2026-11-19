@@ -12,11 +12,11 @@
     {
       "id": "icon-button",
       "name": "Icon button",
-      "status": "draft",
+      "status": "in-review",
       "priority": "P1",
       "category": "acciones",
-      "href": "components.html",
-      "summary": "Acciones compactas en top app bar y formularios."
+      "href": "components/icon-button.html",
+      "summary": "Acción compacta solo con icono: volver, editar, borrar, filtrar."
     },
     {
       "id": "text-field",
@@ -26,6 +26,15 @@
       "category": "formularios",
       "href": "components/text-field.html",
       "summary": "Entrada de texto en formularios de viaje, wallet y gastos."
+    },
+    {
+      "id": "date-time-pickers",
+      "name": "Date & time pickers",
+      "status": "ready",
+      "priority": "P0",
+      "category": "formularios",
+      "href": "components/date-time-pickers.html",
+      "summary": "Fechas y hora: rango de viaje, Wallet y plan — campos Outlined + modales Mot*."
     },
     {
       "id": "filter-chip",
@@ -93,11 +102,11 @@
     {
       "id": "list-item",
       "name": "List item",
-      "status": "draft",
+      "status": "in-review",
       "priority": "P1",
       "category": "contenido",
-      "href": "components.html",
-      "summary": "Filas en listas de viajes, wallet y restaurantes."
+      "href": "components/list-item.html",
+      "summary": "Fila de lista con icono, titular, texto de apoyo y acciones al final (Wallet)."
     }
   ]
 }
