@@ -41,7 +41,7 @@
     {
       "id": "roles",
       "title": "Roles de superficie",
-      "lead": "UI y Figma hablan el mismo rol: en Compose <code>MaterialTheme.shapes.extraSmall</code>, en Figma <code>Corner/Extra-small</code>. Los dp solo viven dentro de <code>MOTThemeShapes</code>.",
+      "lead": "UI y Figma hablan el mismo rol: en Compose <code>MaterialTheme.shapes.extraSmall</code>, en Figma <code>Corner/Extra-small</code>. Los dp solo viven dentro de <code>MOTThemeShapes</code>. El ejemplo de cada rol es el componente que lo consume, no una pieza genérica.",
       "table": {
         "head": [
           "Figma",

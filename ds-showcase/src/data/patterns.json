@@ -6,7 +6,18 @@
       "name": "Home · menú de filtros y orden",
       "status": "ready",
       "problem": "Filtrar y ordenar la lista de viajes sin ocupar espacio permanente en una pantalla que ya tiene búsqueda.",
-      "solution": "Search bar con icono <code>tune</code>; al pulsarlo se abre un Menu con <code>Menu Groups = 2</code> (filtro y orden). La selección se marca con <code>check</code> leading en una caja reservada, y el trailing queda oculto.",
+      "solution": "Search bar con icono <code>tune</code>; al pulsarlo se abre un Menu con dos grupos (Mostrar y Ordenar). Pulsar una fila aplica el filtro y cierra el menú.",
+      "selection": {
+        "title": "Qué icono marca la opción activa",
+        "paragraphs": [
+          "En este menú la marca es <code>check</code>, a la izquierda. Todas las filas reservan la misma caja de 24 dp, también las que no están activas, para que los textos alineen.",
+          "<code>chevron_right</code> significaría que la fila abre un submenú. Aquí no hay submenú: pulsar cierra y aplica. Un radio (<code>radio_button_checked</code>) es el control de un formulario que sigue abierto; no es este patrón."
+        ],
+        "donts": [
+          "No poner <code>chevron_right</code> en una fila que no abre otro nivel.",
+          "No usar <code>radio_button_checked</code> para marcar la opción activa de este menú."
+        ]
+      },
       "components": ["Search bar", "Menu", "Filter chip (no se usa aquí)"],
       "ref": "docs/design-system/patterns/home-filter-menu.md"
     }

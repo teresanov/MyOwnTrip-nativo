@@ -5,60 +5,165 @@ import data from "../data/foundations/shape.json";
 initShowcasePage("shape");
 mountFoundation(data);
 
-const strip = (html) => html.replace(/<[^>]+>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 const main = document.getElementById("foundation-main");
 
-/* ---------- Ejemplo 1: los cinco roles de superficie, cada uno en su componente típico ---------- */
+/* ---------- Ejemplo 1: cada rol en el componente que lo consume ---------- */
 
-const rolesSection = data.sections.find((s) => s.id === "roles");
-const ROLES = rolesSection.table.rows.map(([figma, dp, compose, uso]) => ({
-  figma: strip(figma),
-  dp: Number(dp),
-  compose: strip(compose),
-  uso: strip(uso),
-}));
+const roleSectionEl = main?.querySelector("#roles")?.closest(".section");
 
-/** Maqueta mínima del componente que usa cada rol (1 dp = 1,5 px de dibujo). */
-const MOCKS = {
-  "Corner/Extra-small": () =>
-    `<div class="sd-mock sd-field"><span class="sd-field__label">Destino</span><span>Lisboa</span></div>`,
-  "Corner/Small": () =>
-    `<div class="sd-chips"><div class="sd-mock sd-chip sd-chip--on">✓ Vuelos</div><div class="sd-mock sd-chip">Hoteles</div></div>`,
-  "Corner/Medium": () =>
-    `<div class="sd-mock sd-card"><div class="sd-card__img"></div><div class="sd-card__body"><strong>Alfama</strong><span>3 noches · 14 mar</span></div></div>`,
-  "Corner/Large": () =>
-    `<div class="sd-mock sd-menu"><span>Ordenar por</span><span class="sd-menu__on">✓ Fecha</span><span>Precio</span></div>`,
-  "Corner/Extra-large": () =>
-    `<div class="sd-mock sd-dialog"><strong>¿Eliminar viaje?</strong><span>Se borrarán sus documentos.</span><div class="sd-dialog__actions"><span>Cancelar</span><span>Eliminar</span></div></div>`,
-};
-
-main?.querySelector("#roles")?.closest(".section")?.insertAdjacentHTML(
+roleSectionEl?.insertAdjacentHTML(
   "beforeend",
-  `<div class="sd-scale" role="list">
-     <div class="sd-scale__head" aria-hidden="true">
-       <span>Rol</span><span>Radio de la esquina</span><span>En un componente</span>
-     </div>
-     ${ROLES.map(
-       (r) => `
-       <div class="sd-row" role="listitem" style="--r:${r.dp}">
-         <div class="sd-row__name">
-           <strong>${r.figma.replace("Corner/", "")}</strong>
-           <span class="sd-row__dp">${r.dp} dp</span>
-           <code>${r.figma}</code>
-           <code>${r.compose}</code>
-         </div>
-         <div class="sd-row__sample">
-           <div class="sd-sample"><span class="sd-guide" aria-hidden="true"></span></div>
-         </div>
-         <div class="sd-row__mock">
-           ${(MOCKS[r.figma] || (() => ""))()}
-           <span class="sd-row__use">${r.uso}</span>
-         </div>
-       </div>`
-     ).join("")}
-   </div>
-   <p class="section-lead" style="margin-top:12px">Ejemplo en vivo. La columna central compara los cinco radios sobre la misma pieza; el círculo punteado es el radio de la esquina. La columna derecha muestra el componente que usa cada rol. Todo se dibuja a 1,5 px por dp. Los botones del diálogo no van redondeados porque su forma es el morph, no un rol.</p>`
+  `<div class="sd-catalog">
+    <article class="sd-role">
+      <header class="sd-role__head">
+        <h3 class="sd-role__title">Extra-small · 4 dp</h3>
+        <p class="sd-role__codes"><code>Corner/Extra-small</code> · <code>shapes.extraSmall</code></p>
+        <p class="sd-role__link">Espécimen de <a href="components/text-field.html">Text field</a> · <code>OutlinedTextField</code></p>
+      </header>
+      <div class="playground__frame">
+        <div class="playground__canvas">
+          <label class="mot-field">
+            <span class="mot-field__label">Nombre del viaje</span>
+            <input class="mot-field__input" type="text" value="Barcelona 2026" autocomplete="off" />
+          </label>
+        </div>
+      </div>
+    </article>
+
+    <article class="sd-role">
+      <header class="sd-role__head">
+        <h3 class="sd-role__title">Small · 8 dp</h3>
+        <p class="sd-role__codes"><code>Corner/Small</code> · <code>shapes.small</code></p>
+        <p class="sd-role__link">Espécimen de <a href="components/filter-chip.html">Filter chip</a> · <code>FilterChip</code>. Eyebrow label usa el mismo rol; su ficha no tiene playground.</p>
+      </header>
+      <div class="playground__frame">
+        <div class="playground__canvas">
+          <div class="filter-chip-row sd-chip-demo" role="group" aria-label="Filtro de documentos">
+            <button type="button" class="filter-chip filter-chip--selected" aria-pressed="true" data-value="Activos">Activos</button>
+            <button type="button" class="filter-chip" aria-pressed="false" data-value="Archivados">Archivados</button>
+            <button type="button" class="filter-chip" aria-pressed="false" data-value="Todos">Todos</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="sd-role">
+      <header class="sd-role__head">
+        <h3 class="sd-role__title">Medium · 12 dp</h3>
+        <p class="sd-role__codes"><code>Corner/Medium</code> · <code>shapes.medium</code></p>
+        <p class="sd-role__link">Espécimen de <a href="components/stacked-card.html">Stacked card</a> · <code>MotStackedCard</code>. TripHeroCard usa el mismo rol.</p>
+      </header>
+      <div class="playground__frame">
+        <div class="playground__canvas">
+          <figure class="card-demo card-demo--stacked">
+            <div class="card-demo__header">
+              <div>
+                <strong>Sin viajes todavía</strong>
+                <p>Planea tu primera aventura</p>
+              </div>
+            </div>
+            <img src="/assets/home_empty_map.jpg" alt="Mapa con chincheta de viaje" width="360" height="200" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </article>
+
+    <article class="sd-role">
+      <header class="sd-role__head">
+        <h3 class="sd-role__title">Large · 16 dp</h3>
+        <p class="sd-role__codes"><code>Corner/Large</code> · <code>shapes.large</code></p>
+        <p class="sd-role__link">Espécimen de <code>HomeFilterMenuPanel</code> (Home · tune). No hay ficha de Menu; el contenedor es 16 dp. La fila seleccionada usa <code>shapes.medium</code>.</p>
+      </header>
+      <div class="playground__frame">
+        <div class="playground__canvas">
+          <div class="home-filter-menu" style="width:min(100%,328px)">
+            <p class="home-filter-menu__label">Mostrar</p>
+            <button type="button" class="home-filter-menu__item" data-group="phase" data-value="all" aria-pressed="true">
+              <span class="home-filter-menu__check" aria-hidden="true">✓</span>
+              <span>Todos los viajes</span>
+            </button>
+            <button type="button" class="home-filter-menu__item" data-group="phase" data-value="current" aria-pressed="false">
+              <span class="home-filter-menu__check" aria-hidden="true"></span>
+              <span>En curso</span>
+            </button>
+            <button type="button" class="home-filter-menu__item" data-group="phase" data-value="upcoming" aria-pressed="false">
+              <span class="home-filter-menu__check" aria-hidden="true"></span>
+              <span>Próximos</span>
+            </button>
+            <button type="button" class="home-filter-menu__item" data-group="phase" data-value="past" aria-pressed="false">
+              <span class="home-filter-menu__check" aria-hidden="true"></span>
+              <span>Pasados</span>
+            </button>
+            <button type="button" class="home-filter-menu__item" data-group="phase" data-value="archived" aria-pressed="false">
+              <span class="home-filter-menu__check" aria-hidden="true"></span>
+              <span>Archivados</span>
+            </button>
+            <p class="home-filter-menu__label">Ordenar</p>
+            <button type="button" class="home-filter-menu__item" data-group="sort" data-value="date" aria-pressed="true">
+              <span class="home-filter-menu__check" aria-hidden="true">✓</span>
+              <span>Fecha — próximo primero</span>
+            </button>
+            <button type="button" class="home-filter-menu__item" data-group="sort" data-value="name" aria-pressed="false">
+              <span class="home-filter-menu__check" aria-hidden="true"></span>
+              <span>Nombre A—Z</span>
+            </button>
+            <button type="button" class="home-filter-menu__item" data-group="sort" data-value="dest" aria-pressed="false">
+              <span class="home-filter-menu__check" aria-hidden="true"></span>
+              <span>Destino A—Z</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="sd-role">
+      <header class="sd-role__head">
+        <h3 class="sd-role__title">Extra-large · 28 dp</h3>
+        <p class="sd-role__codes"><code>Corner/Extra-large</code> · <code>shapes.extraLarge</code></p>
+        <p class="sd-role__link">Espécimen de <a href="components/basic-dialog.html">Basic dialog</a> · <code>AlertDialog</code>. Las acciones son <code>MOTTextButton</code> (morph, no este rol). Las sheets de Home usan el mismo radio de contenedor.</p>
+      </header>
+      <div class="playground__frame">
+        <div class="playground__canvas">
+          <div class="dialog-demo" style="max-width:320px">
+            <div class="dialog-demo__icon" aria-hidden="true">!</div>
+            <p class="dialog-demo__title">¿Eliminar documento?</p>
+            <p class="dialog-demo__body">Se borrará el documento y su archivo del dispositivo. Esta acción no se puede deshacer.</p>
+            <div class="dialog-demo__actions">
+              <button type="button" class="mot-btn mot-btn--text">Cancelar</button>
+              <button type="button" class="mot-btn mot-btn--text dialog-demo__destructive">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+  <p class="section-lead" style="margin-top:12px">
+    El showcase no monta Compose. Cada bloque reutiliza el HTML de la ficha (el menú, el de <code>HomeFilterMenuPanel</code>). El radio es el que ya tiene ese componente, 1 px = 1 dp.
+  </p>`
 );
+
+const chipDemo = roleSectionEl?.querySelector(".sd-chip-demo");
+chipDemo?.querySelectorAll(".filter-chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    chipDemo.querySelectorAll(".filter-chip").forEach((other) => {
+      other.classList.remove("filter-chip--selected");
+      other.setAttribute("aria-pressed", "false");
+    });
+    chip.classList.add("filter-chip--selected");
+    chip.setAttribute("aria-pressed", "true");
+  });
+});
+
+roleSectionEl?.querySelectorAll(".home-filter-menu__item").forEach((item) => {
+  item.addEventListener("click", () => {
+    const group = item.dataset.group;
+    roleSectionEl.querySelectorAll(`.home-filter-menu__item[data-group="${group}"]`).forEach((other) => {
+      const on = other === item;
+      other.setAttribute("aria-pressed", on ? "true" : "false");
+      other.querySelector(".home-filter-menu__check").textContent = on ? "✓" : "";
+    });
+  });
+});
 
 /* ---------- Ejemplo 2: morph del botón con lectura del radio en tiempo real ---------- */
 

@@ -20,6 +20,18 @@ document.getElementById("main").innerHTML = `
       <p class="section-lead">${p.problem}</p>
       <h3 class="subsection-title">Solución</h3>
       <p class="section-lead">${p.solution}</p>
+      ${
+        p.selection
+          ? `
+      <h3 class="subsection-title">${p.selection.title}</h3>
+      ${(p.selection.paragraphs || []).map((para) => `<p class="section-lead">${para}</p>`).join("")}
+      ${
+        (p.selection.donts || []).length
+          ? `<div class="guideline-col guideline-col--dont"><h3 class="subsection-title">Don't</h3><ul class="list-dos list-dos--dont">${p.selection.donts.map((d) => `<li>${d}</li>`).join("")}</ul></div>`
+          : ""
+      }`
+          : ""
+      }
       <h3 class="subsection-title">Componentes implicados</h3>
       <ul class="list-dos">${p.components.map((c) => `<li>${c}</li>`).join("")}</ul>
       <p class="section-lead"><span class="header-meta">Detalle: <code>${p.ref}</code></span></p>

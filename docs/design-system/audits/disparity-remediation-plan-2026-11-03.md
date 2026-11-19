@@ -1,7 +1,7 @@
 # Plan de remediación — disparidades Compose ↔ Figma
 
 **Fecha:** 2026-11-03  
-**Relación con el plan general:** no sustituye [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md). Es la **cola activa** cuando el kit Figma (p. ej. date pickers M3) **no** coincide con Compose: prioriza **R1–R4 date/time PRODUCT**; **R6** retoma P1 del plan de paridad (Home menu, swipe, tabs…). Ejecución día a día → [parity-log.md](../parity-log.md).
+**Relación con el plan general:** no sustituye [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md). **R1–R4 date/time PRODUCT:** **cerrado · Resuelto** (parity-log 2026-11-19). Cola activa restante: **R6** y P1 del plan de paridad (Home menu, swipe, tabs…). Ejecución día a día → [parity-log.md](../parity-log.md).
 
 **Pipeline:** [design-pipeline.md](../governance/design-pipeline.md)  
 **Contrato date/time:** [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md)
@@ -12,7 +12,7 @@
 
 | Cubo | Síntoma | Dirección del arreglo |
 |------|---------|------------------------|
-| **A. Date/time** | Sets **Input / Modal / Keyboard** M3 ≠ `MotDateRangeField`, `MotDate*Dialog`, `MotTimePickerDialog` | **Figma** (láminas PRODUCT + archivar kit) |
+| **A. Date/time** | ~~Sets kit M3 ≠ producto~~ **Cerrado 2026-11-19:** 6 PRODUCT, ARCHIVE kit, design-file R4, showcase + inventario (parity-log). | Sin acción salvo regresión |
 | **B. Tokens huérfanos / kit** | `mot/date-picker/header-gap`, `field-top`, modal gaps 74/244 enlazados al kit; `MOTSpacing` con espejos sin uso en `app/` | **Figma** desenlazar de PRODUCT; opcional limpiar Kotlin más adelante |
 | **C. Resto P1** | Home Menu+Search, design-file caps, filas bindings incompletas | Mixto; mayoría **Figma** + auditoría instancias `Vf2tNMXy` |
 
@@ -41,7 +41,7 @@ Cada fase cierra con **auditoría** (`resolveVariables` false/true en subárbol)
 - [x] Pipeline § bidireccional acordado
 - [x] [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md)
 - [x] Actualizar fila date en [figma-compose-bindings.md](../figma-compose-bindings.md) (R3)
-- [ ] Showcase `mot-date-*` cuando existan láminas PRODUCT (opcional R3)
+- [x] Showcase `date-time-pickers` (R3 · 2026-11-18)
 
 ---
 
