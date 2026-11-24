@@ -37,9 +37,20 @@ Figma conserva la **librería** (variables + component sets para diseñar pantal
 | Ready | Figma publicado + ficha showcase + Compose alineado |
 | Deprecated | Marcado en showcase; no usar en pantallas nuevas |
 
-## Implementación
+## Canvas vivo (Storytale)
 
-**Carpeta:** [`ds-showcase/`](../../ds-showcase/) — web estática (Vite).
+Las demos interactivas **no** son HTML. Viven en [`gallery/`](../../gallery/): Compose Multiplatform + [Storytale](https://aryapreetam.github.io/storytale/) → Wasm (enlace de portfolio) o Desktop (compartir pantalla del PC).
+
+```bash
+./gradlew -p gallery wasmJsBrowserDevelopmentRun
+./gradlew -p gallery jvmStoriesRun
+```
+
+Kotlin 2.3 (exigido por Storytale) vs app Android 2.2: proyectos Gradle separados. Detalle: [`gallery/README.md`](../../gallery/README.md).
+
+## Implementación (ficha escrita)
+
+**Carpeta:** [`ds-showcase/`](../../ds-showcase/) — web estática (Vite) para uso, tokens y a11y. El canvas del componente es `gallery/`.
 
 ```bash
 cd ds-showcase && npm install && npm run dev
