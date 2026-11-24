@@ -20,7 +20,8 @@ App Android offline-first · libreta de viaje digital · **viajero urbano organi
 - Showcase: `docs/design-system/showcase.md`
 - Color: `docs/design-system/color.md` · Spacing: `docs/design-system/spacing.md`
 - Audits paridad: `docs/design-system/audits/`
-- Skills DS: `myowntrip-ds-audit/`, `ds-index/`, `ds-audit/`, `ds-semantic-pipeline/`
+- Skills DS: `myowntrip-ds-parity/` (rol Compose↔Figma), `myowntrip-ds-audit/`, `ds-index/`, `ds-audit/`, `ds-semantic-pipeline/`
+- Roles agente: `AGENTS.md` (DS Parity + subagentes)
 
 ## Documentación producto
 - JTBD: `docs/product/jtbd-flows.md`

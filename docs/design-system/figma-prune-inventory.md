@@ -7,7 +7,7 @@
 | **Archivo** | [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432) · `zrGAL4v6MEMc9hzZemU432` |
 | **Backup (CS, no tocar)** | `uWmxOSQfjOxlEJ8k1yzOSX` |
 | **Política** | Figma = librería visual · docs = showcase — [ADR 003](../decisions/003-figma-library-showcase-docs.md) |
-| **Última revisión** | 2026-10-29 · Fase D evidencia Compose — [audit](audits/figma-phase-d-prune-2026-10-29.md) |
+| **Última revisión** | 2026-10-29 · Fase D — cierre en [parity-log.md](parity-log.md) |
 
 **Leyenda:** **KEEP** · **CUT** · **LATER** (v1.1 o cuando una pantalla lo pida)
 
@@ -342,7 +342,7 @@ Ver pasos en [`figma-manual-prune-checklist.md`](figma-manual-prune-checklist.md
 |-----------|--------|
 | [`components.md`](components.md) | Prioridades P0–P2 |
 | [`ds-showcase/src/data/components.json`](../../ds-showcase/src/data/components.json) | Fichas KEEP |
-| [`audits/`](audits/) | Nota de trazabilidad tras cada bloque de poda |
+| [parity-log.md](parity-log.md) | Trazabilidad paridad / poda (no crear audits nuevos) |
 
 ## Estado librería
 

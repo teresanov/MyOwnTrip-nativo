@@ -1,18 +1,20 @@
-# Audits — índice
+# Audits — índice (nov 2026)
 
-**Cambios de paridad:** solo [parity-log.md](../parity-log.md). No crear audits nuevos por discrepancia.
+**Estado actual de paridad:** solo [`parity-log.md`](../parity-log.md) (§ Pendiente + Registro).
 
-## Contratos y planes vivos
+Los planes y snapshots de sesión (`compose-figma-parity-plan`, `disparity-remediation-plan`, `figma-*-phase-*`, etc.) **se eliminaron** al cerrar la cola (nov 2026). No recrearlos: cierre = fila en parity-log.
 
-| Documento | Uso |
-|-----------|-----|
-| [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md) | Date/time PRODUCT |
-| [disparity-remediation-plan-2026-11-03.md](disparity-remediation-plan-2026-11-03.md) | Mapa R0–R6 + gates |
-| [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md) | Fases A–D + P0/P1 |
-| [tokens-inventory-complete-2026-11-03.md](tokens-inventory-complete-2026-11-03.md) | Inventario tokens (PRODUCT / ARCHIVE kit) |
+## Documentos que quedan aquí
 
-## Historial cerrado
+| Archivo | Uso |
+|---------|-----|
+| [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md) | Spec date/time **PRODUCT** (sets DS + gates §6). Vivo hasta cambio de contrato. |
+| [scrapbook-album-tipografia-2026-11-11.md](scrapbook-album-tipografia-2026-11-11.md) | **Abierto (código):** tipografía álbum Diario — no es cola Figma; gap `m3Canonical` en `ScrapbookAlbum.kt`. |
 
-Ficheros `figma-*-phase-*`, `figma-*-2026-*`, matrices kit y redirects (`figma-date-product-figma-2026-11-03.md`) = **snapshot** de una sesión. Corregir solo errores factuales; estado actual → parity-log.
+## Mapa operativo (siempre)
 
-Banners «Obsoleto» / «ARCHIVE» en esos MD ya apuntan al contrato o a la bitácora.
+1. [`governance/design-pipeline.md`](../governance/design-pipeline.md)
+2. [`figma-compose-bindings.md`](../figma-compose-bindings.md)
+3. [`parity-log.md`](../parity-log.md)
+
+Inventario tokens (regenerable): `python scripts/generate_tokens_inventory.py` → escribe `tokens-inventory-complete-2026-11-03.md` solo si hace falta auditoría puntual; no forma parte del índice de lectura habitual.

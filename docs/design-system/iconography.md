@@ -59,7 +59,7 @@ python scripts/build_figma_icon_execute.py
 # pegar scripts/.tmp_figma_icon_execute.js en figma_execute (Figma Console MCP)
 ```
 
-Auditoría: `docs/design-system/audits/figma-moticons-parity-2026-11-03.md`.
+Cierre iconos: [parity-log.md](parity-log.md) (2026-11-24).
 
 ### Variante `stop` (grabación)
 

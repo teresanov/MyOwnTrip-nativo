@@ -145,7 +145,7 @@ Un componente solo pasa a **Ready** cuando cumple todo:
 
 **Regla:** este backlog se trata como cualquier otro cambio. Cada token o componente de Compose que falte en Figma se crea en Figma, y después se comprueba la paridad.
 
-**Espejo de tokens (plan de paridad, 29 oct 2026):** cada `mot/*` de Figma tiene su espejo en `MOTSpacing` (o `shapes.*`). Un `mot/*` sin espejo es huérfano. El backlog se trabaja **dentro de la fase en curso** de [compose-figma-parity-plan-2026-10-29.md](../audits/compose-figma-parity-plan-2026-10-29.md), no en paralelo: primero se define el objeto en Compose y después se enlaza en Figma.
+**Espejo de tokens:** cada `mot/*` de Figma tiene su espejo en `MOTSpacing` (o `shapes.*`). Un `mot/*` sin espejo es huérfano. Cola cerrada (nov 2026): regresiones y deltas → [parity-log.md](../parity-log.md).
 
 **Orden de trabajo:**
 1. **Inventario de tokens:** listar los tokens usados en `Color.kt`, `Theme.kt` y `MOTSpacing` que no existan como variables en `zrGAL4v6`. Crearlos en Figma como variables semánticas por alias a primitivos.

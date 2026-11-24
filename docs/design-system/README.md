@@ -20,6 +20,7 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | [spacing.md](spacing.md) | **`MOTSpacing`** / `MOT · Spacing` (producto); legado Semantic · Layout |
 | [figma-compose-bindings.md](figma-compose-bindings.md) | Mapa sets Figma ↔ Compose (P0) |
 | [parity-log.md](parity-log.md) | **Bitácora única** paridad Compose ↔ Figma (pendiente + registro) |
+| [AGENTS.md](../../AGENTS.md) | Rol **DS Parity** y subagentes Cursor |
 | [audits/README.md](audits/README.md) | Índice audits (vivos vs histórico) |
 | [governance/design-pipeline.md](governance/design-pipeline.md) | Flujo Compose → Figma → paridad → showcase |
 | [typography.md](typography.md) | Fraunces + Inter, mapeo a roles M3 |

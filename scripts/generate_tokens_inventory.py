@@ -383,8 +383,7 @@ def main() -> None:
     lines.append("## Referencias")
     lines.append("")
     lines.append("- `docs/design-system/spacing.md`")
-    lines.append("- `docs/design-system/audits/backlog-tokens-inventory-2026-10-30.md`")
-    lines.append("- `docs/design-system/audits/figma-datetime-matrix-2026-10-30.md`")
+    lines.append("- `docs/design-system/parity-log.md`")
     lines.append("- `docs/design-system/audits/figma-date-product-contract-2026-11-03.md`")
     lines.append("- `designsystem/.../MOTSpacing.kt`, `Color.kt`, `Theme.kt`, `Shapes.kt`, `Type.kt`")
 

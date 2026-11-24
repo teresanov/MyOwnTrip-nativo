@@ -1,0 +1,43 @@
+---
+description: Rol Agente paridad DS — Compose SoT, Figma espejo; lectura fija, gates y cierre en parity-log. Activar en trabajo Compose↔Figma o tokens export.
+globs: docs/design-system/**,scripts/export_figma_variables_json.py,scripts/figma-*.js,scripts/audit_*figma*.py
+alwaysApply: false
+---
+
+# Agente de paridad DS (MyOwnTrip nativo)
+
+Skill operativa: **`.cursor/skills/myowntrip-ds-parity/SKILL.md`**. Matriz de subagentes: **`AGENTS.md`** (rol DS Parity).
+
+## Principio
+
+**Compose es SoT** de componentes y pantallas; **Figma** espeja con instancias DS; **showcase** documenta. Cambios de paridad → **solo** append en [`parity-log.md`](../../docs/design-system/parity-log.md).
+
+## Antes de actuar (orden fijo)
+
+1. `docs/design-system/governance/design-pipeline.md`
+2. `docs/design-system/figma-compose-bindings.md`
+3. `docs/design-system/parity-log.md` (Pendiente vacío = sin cola salvo regresión)
+4. `docs/design-system/audits/README.md` (índice; no ampliar snapshots)
+
+## Estado nov 2026 (`6bf4f5f`)
+
+- Mapa **02 crear** / **03 editar** (caps 1–4) / **04–08** → bindings + `figma-app-flows.mdc`
+- `variables.json` vía `python scripts/export_figma_variables_json.py` (DS `zrGAL4v6`, Bridge)
+- **LEGACY · Semantic Layout:** ausente; **no** R5
+
+## Gates
+
+`figma-instances-only`, `ds-binding-governance`, `m3-native-ui`, `icon-color-consumption`. En sets Figma: auditoría `resolveVariables` false/true.
+
+## Al cerrar tanda
+
+Una fila **Registro** en parity-log (fecha, ámbito, cambio, evidencia, **Resuelto**). Si hubo cambio de variables → export + fila.
+
+## Figma
+
+- Librería: `zrGAL4v6`
+- design-file: `Vf2tNMXy`
+
+## Prohibido
+
+Audits fechados nuevos por delta; UI inventada en pantallas; commit/push sin pedido; scope producto (JTBD, features nuevas) dentro de este rol.

@@ -12,11 +12,9 @@
 | 1 | [design-pipeline.md](governance/design-pipeline.md) | Proceso y gates |
 | 2 | [figma-compose-bindings.md](figma-compose-bindings.md) | Sets Figma ↔ composables |
 | 3 | **Este archivo** | Pendiente + historial de cambios |
-| 4 | Contratos de dominio (solo spec, no bitácora) | p. ej. [figma-date-product-contract-2026-11-03.md](audits/figma-date-product-contract-2026-11-03.md) |
-| 5 | Plan global (mapa P0–P3, fases A/B/C) | [compose-figma-parity-plan-2026-10-29.md](audits/compose-figma-parity-plan-2026-10-29.md) |
-| 6 | Plan disparidades (histórico + gates; cola cerrada nov 2026) | [disparity-remediation-plan-2026-11-03.md](audits/disparity-remediation-plan-2026-11-03.md) |
+| 4 | Contrato dominio (solo si aplica) | [figma-date-product-contract-2026-11-03.md](audits/figma-date-product-contract-2026-11-03.md) (date/time PRODUCT) |
 
-Audits `audits/*` = historial o contratos; índice en [audits/README.md](audits/README.md). No ampliar snapshots salvo corrección puntual.
+Índice mínimo: [audits/README.md](audits/README.md). **No** recrear planes ni snapshots `figma-*-phase-*`; cierre = este Registro.
 
 ---
 
@@ -36,7 +34,8 @@ Audits `audits/*` = historial o contratos; índice en [audits/README.md](audits/
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
-| 2026-11-24 | design-file · 02/03 | Contrato páginas: **02 solo crear** · **03 solo editar** (caps 1–4). Bindings + `figma-app-flows` alineados a Figma live; texto guía pág. 03 corregido. | `Vf2tNMXy` · `figma-compose-bindings.md` | **Resuelto** |
+| 2026-11-24 | docs · audits | **Archivo cerrado:** eliminados planes y snapshots (`disparity-remediation-plan`, `compose-figma-parity-plan`, fases `figma-*`, inventarios históricos). Vivientes: **parity-log** + contrato date/time + gap scrapbook tipografía. | `audits/README.md` | **Resuelto** |
+| 2026-11-24 | design-file · 02/03 | **02 solo crear** · **03 solo editar** — **8 caps** (crear 1/1b/2/3 · editar 1–4); **MotDateRangeField** en formulario; tabla Viajes en bindings. | `Vf2tNMXy` · `figma-compose-bindings.md` · `figma-app-flows` | **Resuelto** |
 | 2026-11-24 | tokens · export | **`variables.json` regenerado** desde Figma DS (597 variables · 8 colecciones). Incluye `mot/opacity/disabled-content`, `*/Opacity-12` state layers nuevos. | `figma_execute` · `docs/design-system/variables.json` | **Resuelto** |
 | 2026-11-24 | tokens · Figma | **Verificado:** DS sin colección `LEGACY · Semantic Layout` (597 vars · M3 · MOT · Spacing · Shape · Typescale · Brand · Primitives). Ya no hay acción P1. | `figma_get_variables` · `zrGAL4v6` | **Resuelto** |
 | 2026-11-24 | gobernanza | **R5 descartado:** sin MVP no se conserva LEGACY (docs/repo sin migración). Publish DS cerrado (ya publicada). | `spacing.md` · `disparity-remediation-plan` | **Resuelto** |

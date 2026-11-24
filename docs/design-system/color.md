@@ -27,7 +27,7 @@ Script: [`scripts/export_figma_variables_json.py`](../../scripts/export_figma_va
 
 **No** usar Material Theme Builder como bucle principal de color: re-harmoniza `primary` a azul (`#276389`) y Dark a celeste (`#98CCF9`). MTB solo para exploración inicial o neutros; **bloquear ocre** `tertiary` `#825513` si generas.
 
-Script Bridge: `.cursor/skills/myowntrip-ds-audit/scripts/figma-fix-gris-azul-colors.js` · Auditoría: `docs/design-system/audits/figma-color-gris-azul-bridge-2026-06-11.md`
+Script Bridge: `.cursor/skills/myowntrip-ds-audit/scripts/figma-fix-gris-azul-colors.js` · Cierre histórico: [parity-log.md](parity-log.md)
 
 ## Material Theme Builder (parámetros)
 
