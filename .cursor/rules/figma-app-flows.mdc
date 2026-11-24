@@ -40,8 +40,8 @@ Aplica al montar o editar pantallas en **[MyOwnTrip_design-file](https://www.fig
 |--------|--------|---------------------------|
 | `00 · Mapa de la app` | Sitemap / índice de flujos | — · [FigJam MyOwnTrip_structure](https://www.figma.com/board/YxJIkp5I524S9wLxGxulK1/MyOwnTrip_structure?node-id=0-1) (SoT mapa; design-file puede mantener índice ligero) |
 | `01 · Home` | Lista de viajes, búsqueda, filtros | `trip_list` |
-| `02 · Viajes — crear y editar` | Alta y edición de viaje | `trip_create`, `trip_edit/{tripId}` |
-| `03 · Detalle de viaje` | Solo el **viaje** (ficha). No módulos. Editar: `02` | `trip_edit/{tripId}` |
+| `02 · Viajes — crear` | **Solo crear** viaje (`CreateTripScreen`, caps 1–3) | `trip_create` |
+| `03 · Detalle de viaje` | **Solo editar** viaje (`EditTripScreen`, caps 1–4). No tabs ni módulos aquí | `trip_edit/{tripId}` |
 | `04 · Wallet` | Maleta: entrada, import, alta, detalle, borrar | `wallet_add`, `wallet_detail`, `wallet_import` |
 | `05 · Plan` | Tab Plan del viaje + day hub Plan | `TripPlanTab`, `day_hub` |
 | `06 · Diario` | Tab Diario, álbum, captura | `TripJournalTab`, `journal_add` |

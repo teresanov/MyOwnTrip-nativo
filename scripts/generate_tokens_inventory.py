@@ -253,9 +253,11 @@ def main() -> None:
         ("Brand", "paper, ink, ocre, …", "`BrandColors` (logo)", "Lockups / apariencia marca"),
         ("Primitives · Space / Size", "spacing/*, size/*", "No directo (alias)", "Detrás de `mot/*` y semánticos legado"),
         ("MOT · Spacing", "mot/spacing/*, mot/padding/*, mot/stroke/*", "`MOTSpacing.kt`", "Sets M3 documentados + producto"),
-        ("LEGACY · Semantic Layout", "semantic/*", "**Prohibido**", "Migrar a `mot/*`; no ampliar"),
     ]
-    for cname, vars_list in sorted(by_collection.items(), key=lambda x: -len(x[1])):
+    for cname, vars_list in sorted(
+        ((c, v) for c, v in by_collection.items() if "LEGACY" not in c),
+        key=lambda x: -len(x[1]),
+    ):
         note = next((r[2] for r in summary_rows if r[0] in cname or cname.startswith(r[0][:3])), "Ver doc DS")
         fig = next((r[3] for r in summary_rows if r[0] in cname), "Variables panel + binds en sets")
         lines.append(f"| {cname} | {len(vars_list)} | {note} | {fig} |")
@@ -371,10 +373,6 @@ def main() -> None:
     ]
     for t in fonly:
         lines.append(f"| `{t}` | Sets Extended FAB, Segmented, Date cells | Sin objeto `MOTSpacing`; M3 o kit |")
-    lines.append("")
-    lines.append("## LEGACY · Semantic Layout (55)")
-    lines.append("")
-    lines.append("**No usar.** Sustituir binds por `mot/*` al tocar frames. Ver `docs/design-system/spacing.md`.")
     lines.append("")
     lines.append("## Limitaciones de este inventario")
     lines.append("")

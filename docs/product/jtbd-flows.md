@@ -200,7 +200,7 @@ Estructura del design-file: **secuencial por módulo** (`figma-app-flows.mdc`). 
 |--------------|------|----------|------|
 | `01 · Home` | `trip_list` | TripListScreen | Shell |
 | `02 · Viajes` | `trip_create` | CreateTripScreen | Shell |
-| `03 · Detalle de viaje` | ficha del viaje (`trip_edit` en `02`) | No monta módulos | — |
+| `03 · Detalle de viaje` | `trip_edit/{tripId}` | EditTripScreen | Shell |
 | `04 · Wallet` | `wallet_add/{tripId}` | WalletFormScreen | 1 |
 | `04 · Wallet` | `wallet_import` | WalletFormScreen / ImportActivity | 1 |
 | `04 · Wallet` | `wallet_detail/{entryId}` | WalletDetailScreen | 1 |

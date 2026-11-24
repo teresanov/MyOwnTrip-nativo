@@ -1,7 +1,7 @@
 # Color — roles M3 (MyOwnTrip Nativo)
 
 **Fuente canónica:** [`variables.json`](variables.json) (colección M3 · modos Light/Dark).  
-**Código:** `app/.../ui/theme/Color.kt` → `Theme.kt` (importado desde `variables.json`).  
+**Código:** `designsystem/.../ui/theme/Color.kt` → `Theme.kt` (importado desde `variables.json`).  
 ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 
 > **Figma:** [MyOwnTrip_nativo — Design System](https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=55141-14168) — misma colección M3 que `variables.json`.
@@ -11,6 +11,19 @@ ADR: [002-brand-editorial-m3.md](../decisions/002-brand-editorial-m3.md).
 ```
 Figma (Desktop Bridge fija variables) → export → variables.json → Color.kt
 ```
+
+### Export a `variables.json`
+
+Script: [`scripts/export_figma_variables_json.py`](../../scripts/export_figma_variables_json.py) · plugin: [`figma-export-variables-plugin.js`](../../scripts/figma-export-variables-plugin.js).
+
+| Paso | Acción |
+|------|--------|
+| 1 | Figma Desktop → Design System (`zrGAL4v6`). |
+| 2 | Desktop Bridge conectado en ese archivo. |
+| 3 | `python scripts/export_figma_variables_json.py` |
+| 4 | Alternativa: `python scripts/export_figma_variables_json.py --input resultado-mcp.json` |
+| 5 | Tras `Schemes/*` / Extended: alinear `designsystem/.../Color.kt` si hay drift. State Layers → solo Figma. |
+| 6 | [parity-log.md](parity-log.md) si cierra una tanda de tokens. |
 
 **No** usar Material Theme Builder como bucle principal de color: re-harmoniza `primary` a azul (`#276389`) y Dark a celeste (`#98CCF9`). MTB solo para exploración inicial o neutros; **bloquear ocre** `tertiary` `#825513` si generas.
 

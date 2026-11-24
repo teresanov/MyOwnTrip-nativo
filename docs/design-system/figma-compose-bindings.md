@@ -116,13 +116,13 @@ Previews: `HomeEmptyStatePreview`, `TripListWithTripsPreview`, `TripListFilterMe
 
 Spacing de página: `MOTSpacing.screenHorizontal` / `layoutMd|Lg` ↔ `mot/spacing/*`.
 
-## Páginas de módulo (Compose `TripDetailScreen` tiene 5 tabs; cada tab vive en su página Figma)
+## Páginas de módulo (Compose `TripDetailScreen` tiene 5 tabs; cada tab vive en su página Figma `04`–`08`)
 
-`03` **no** monta Wallet / Plan / Diario / Gastos / Sitios. Editar el viaje: `02`. Day hub Plan\|Diario: `05` (además del tab).
+`03` = **editar viaje** (`EditTripScreen`), no las pestañas del viaje. Entrar al viaje con tabs → tabs en `04`–`08` (previews de cada tab). Day hub Plan\|Diario: `05`.
 
 | Página | Flujo Figma | Caps |
 |--------|-------------|------|
-| `03 · Detalle de viaje` | `261:935` | Vacío de módulos. Pendiente: ficha del viaje si no es `trip_edit`. |
+| `03 · Detalle de viaje` | [`261:917`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-917) · flujo editar | Caps 1–4 · `EditTripScreen` · tabla **Viajes** abajo |
 | `04 · Wallet` | [`491:13870`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=491-13870) | Entrada + import + alta + maleta |
 | `05 · Plan` | [`583:16744`](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=583-16744) | **2** `261:941` · **2b** `573:13289` · **2c** `573:13390` · **2d** `573:13443` · **2e** `593:16826` · **2f** `599:19969` · **3–3o** day hub |
 
@@ -264,12 +264,13 @@ Flow review: `WalletFlowReviewPreview`.
 
 Scripts (Desktop Bridge · `Vf2tNMXyKAlJSV53A1v4Is`): `scripts/figma-design-file-wallet-cap1.js` (cap 1 · gate captura) · `scripts/figma-design-file-wallet-flows-parity-part-a.js` (cap 10 vuelo + cap 2 vacío) · `scripts/figma-design-file-wallet-flows-parity-part-b.js` (10b/10c/13) · `figma-design-file-wallet-flows-parity.js` (completo).
 
-## Viajes · crear y editar `02 · Viajes — crear y editar`
+## Viajes — `02` crear · `03` editar
 
-| Cap | Node Figma | Composable(s) | Figma DS |
-|-----|------------|---------------|----------|
-| Crear viaje | [261:926](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-926) | `CreateTripScreen` | **MotDateRangeField** `61340:8809` |
-| Editar viaje | [261:929](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-929) | `EditTripScreen` | ↑ |
+| Página | Cap | Node Figma | Composable(s) | Figma DS |
+|--------|-----|------------|---------------|----------|
+| **02** | Crear viaje | [261:926](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-926) | `CreateTripScreen` | **MotDateRangeField** `61340:8809` |
+| **03** | Editar viaje (ficha) | [261:927](https://www.figma.com/design/Vf2tNMXyKAlJSV53A1v4Is/MyOwnTrip_design-file?node-id=261-927) | `EditTripScreen` | ↑ |
+| **03** | Descartar / eliminar / acortar fechas | `585:16763` · `585:16805` · `585:17094` | Diálogos en `EditTripScreen` | Basic dialog |
 
 Previews: `CreateTripScreenPreview`, `EditTripScreenPreview`.
 

@@ -1,7 +1,6 @@
 # Spacing — MyOwnTrip Nativo
 
-**Decisión (2026-10-29):** el espaciado de **producto / pantallas** es **`MOTSpacing`** (Compose) ↔ colección Figma **`MOT · Spacing`**.  
-No usar la colección legado **`Semantic · Layout`** (paths `semantic/padding|spacing/…` del repo archivo) para pantallas ni para nuevos binds.
+**Decisión (2026-10-29, actualizada 2026-11-24):** espaciado de producto = **`MOTSpacing`** ↔ **`MOT · Spacing`**. La colección **`LEGACY · Semantic Layout`** (`semantic/*` del repo archivo) **se elimina** de Figma; no documentar ni migrar.
 
 ## Principio
 
@@ -64,14 +63,6 @@ Auditoría `paddingLeft`+`paddingTop` con valor > 0 en State-layer / raíz: **30
 
 Incluye Button×5, Toggle×4, Icon×8, FAB, Extended FAB, FAB menu + BB, Segmented + BB start/middle/end.
 
-## Colección legado `Semantic · Layout`
-
-- Origen: experimento / repo archivo (2026-10).
-- Incluye pads de componente (`padding/button/*`, radios `radius/button/square` = 8, etc.) **incompatibles** con ADR 004 y con M3 interno.
-- **No** bindear frames de producto ni sets canónicos nuevos a esa colección.
-- Migración: al tocar un frame, sustituir binds de inset/gutter de pantalla por `mot/spacing/*`. Pads internos de componentes → dejar M3 / Shape.
-- Borrar o archivar la colección cuando no queden binds (fase posterior; no bloquea Fase A).
-
 ## Do / Don't
 
 ### Do
@@ -81,5 +72,5 @@ Incluye Button×5, Toggle×4, Icon×8, FAB, Extended FAB, FAB menu + BB, Segment
 ### Don't
 - Bindear `spacing/12` (u otro primitivo) en un nodo de UI.
 - Enlazar botones a `semantic/radius/button/square` (8) — reposo es `Corner/None`.
-- Usar la colección **LEGACY · Semantic Layout**.
+- Bindear paths `semantic/*` (colección eliminada).
 - Confundir insets de pantalla (`mot/spacing/layout-md`) con padding del botón (`mot/padding/button/xsmall-*`).

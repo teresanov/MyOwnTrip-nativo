@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 /**
  * Ejecuta un .js de plugin Figma vía Desktop Bridge (puerto 9223).
- * Uso: node scripts/run-figma-bridge-execute.js scripts/figma-design-file-wallet-flows-parity-part-a.js
+ * Uso: node scripts/run-figma-bridge-execute.js <script.js> [figmaFileKey]
+ *      FIGMA_FILE_KEY=zrGAL4v6... node scripts/run-figma-bridge-execute.js scripts/figma-export-variables-plugin.js
  */
 const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
 
-const fileKey = 'Vf2tNMXyKAlJSV53A1v4Is';
+const fileKey =
+  process.env.FIGMA_FILE_KEY ||
+  process.argv[3] ||
+  'Vf2tNMXyKAlJSV53A1v4Is';
 const preferred = process.env.FIGMA_BRIDGE_PORT;
 const ports = preferred
   ? [preferred]

@@ -18,8 +18,6 @@
 | Brand | 1 | Marca |
 | Primitives · Space / Size | 1 | Escalas numéricas |
 | MOT · Spacing (`mot/*`) | 1 | Espaciado y relleno por componente |
-| LEGACY · Semantic Layout | 1 | **No usar** (decidido) |
-
 ## 2. Color
 
 | Situación | Estado |

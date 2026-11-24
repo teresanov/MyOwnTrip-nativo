@@ -1,7 +1,7 @@
 # Plan de remediación — disparidades Compose ↔ Figma
 
 **Fecha:** 2026-11-03  
-**Relación con el plan general:** no sustituye [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md). **R1–R4 date/time PRODUCT:** **cerrado · Resuelto** (parity-log 2026-11-19). Cola activa restante: **R6** y P1 del plan de paridad (Home menu, swipe, tabs…). Ejecución día a día → [parity-log.md](../parity-log.md).
+**Relación con el plan general:** no sustituye [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-29.md). **R1–R4** y **R6.1–R6.4** (núcleo): **cerrados** en parity-log (nov 2026). **Cola activa:** [parity-log.md](../parity-log.md) § Pendiente (vacía salvo regresión; nov 2026).
 
 **Pipeline:** [design-pipeline.md](../governance/design-pipeline.md)  
 **Contrato date/time:** [figma-date-product-contract-2026-11-03.md](figma-date-product-contract-2026-11-03.md)
@@ -28,8 +28,8 @@ R1  Date/time PRODUCT (Figma)   → mayor disparidad; página ya abierta
 R2  Tokens date en PRODUCT       → crear/enlazar solo § contrato
 R3  figma-compose-bindings      → filas PRODUCT date/time
 R4  Design-file pantallas        → Crear/Editar viaje, Wallet form
-R5  LEGACY Semantic Layout      → 0 binds en frames producto (al tocar)
-R6  P1 restante                 → Menu+Search fila, swipe row, tabs…
+~~R5  LEGACY Semantic Layout~~  → **Descartado nov 2026** (eliminar colección; ver parity-log)
+R6  P1 restante                 → **Cerrado**
 ```
 
 Cada fase cierra con **auditoría** (`resolveVariables` false/true en subárbol) + entrada en Notion si aplica.
@@ -149,10 +149,9 @@ Gate: cada control = instancia DS (`figma-instances-only.mdc`); tipografía = te
 
 ---
 
-## 8. R5 — LEGACY · Semantic Layout (55)
+## 8. ~~R5 — LEGACY · Semantic Layout~~ (descartado 2026-11-24)
 
-Política existente: al abrir un frame de producto, migrar binds a `mot/*` o M3.  
-Auditoría puntual: grep en plugin / reporte «frames con LEGACY» en design-file (tarea aparte).
+Sin MVP no se migra: **borrar** la colección en Figma y usar solo `MOT · Spacing`. Sin tarea de «al tocar frame».
 
 ---
 
@@ -164,7 +163,7 @@ Del [compose-figma-parity-plan-2026-10-29.md](compose-figma-parity-plan-2026-10-
 |---|--------|--------|
 | R6.1 | Fila **Home · Search + Menu** en bindings | Hecho 2026-11-11 · [figma-compose-bindings.md](../figma-compose-bindings.md) |
 | R6.2 | **List Item - Swipe** en design-file: Home `SwipeableTripListRow` + Wallet cap 1g (quitar MotWallet del leading) | Wallet 1g hecho (`534:12667` archive/delete). Home revelado **no** (Horizontal card). |
-| R6.3 | **Tabs** en `03 · Detalle de viaje` y `05 · Día & itinerario` = instancias del set Tabs (`MOTTab`) | Tabs instanciados. `03` caps 2–4 cuerpo vacío (gap `TripPlanTab` / Gastos / Sitios). Day hub `477:2043` Plan\|Diario. |
+| R6.3 | **Tabs** + módulos `05`–`08` (Plan / Diario / Gastos / Sitios) | Hecho nov 11–18. **02** solo crear · **03** solo editar (caps 1–4, nov 2026). Day hub `477:2043`. |
 | R6.4 | Caps Wallet vs instancias actuales (post-iconos) | Hecho: list items tipo-glifo; MotWallet leftover oculto. |
 
 ---

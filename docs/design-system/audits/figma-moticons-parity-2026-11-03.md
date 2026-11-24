@@ -11,9 +11,9 @@
 
 Todo glifo referenciado por `MOTIcons` en Compose debe existir como **COMPONENT** en Figma con el **nombre Material** canónico y fill del vector enlazado a variable (no hex suelto en el glifo de catálogo).
 
-## Estado previo
+## Estado previo (snapshot 2026-11-03)
 
-- **56** nombres Material únicos en `scripts/generate_material_symbols.py` (57 props Kotlin: `CameraAlt` + `PhotoCamera` → `photo_camera`).
+- **56** nombres Material únicos en `scripts/generate_material_symbols.py`; en Kotlin faltaba alinear alias duplicados (cerrado **2026-11-24** en [parity-log.md](../parity-log.md)).
 - **20** nombres usados en app **sin** componente homónimo en Icons.
 
 ## Acción
@@ -55,7 +55,7 @@ Ubicación: filas nuevas bajo el grid existente (y ≈ 1739–1795 en la secció
 
 | Comprobación | Resultado |
 |--------------|-----------|
-| Símbolos Material de app presentes en Icons | **0 missing** (lista de 55 nombres únicos; `photo_camera` cubre `CameraAlt`/`PhotoCamera`) |
+| Símbolos Material de app presentes en Icons | **0 missing** (script ↔ `MOTIcons` ↔ Figma; revalidado 2026-11-24) |
 | Vectores de esos componentes sin variable en fill | **0** (`unboundVectorIcons: []`) |
 | Componentes totales en página Icons | 176 |
 
@@ -66,5 +66,8 @@ Actualizado [`iconography.md`](../iconography.md): peso w300 en Compose, `MOTIco
 ## Pendiente (fuera de alcance)
 
 - Etiquetado visual en lámina Figma (filas “App catalog”) — opcional; los nombres de componente ya son el contrato.
-- Chevron de `ExposedDropdownMenu` — sigue siendo M3 interno, no `MOTIcons`.
 - Sustitutos kit (`wallet`, `done`, `calendar_today`) siguen en el archivo para otros contextos; **no** reemplazan los nombres Material de producto añadidos arriba.
+
+## Actualización 2026-11-24
+
+Contrato de nombres y menús expuestos en Compose: ver [`iconography.md`](../iconography.md) y fila **Resuelto** en parity-log (`icons · nombres`). Este informe solo conserva el inventario de iconos creados en la sesión del 2026-11-03.

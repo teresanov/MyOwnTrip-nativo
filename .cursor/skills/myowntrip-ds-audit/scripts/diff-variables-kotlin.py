@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 VARIABLES = ROOT / "docs/design-system/variables.json"
-COLOR_KT = ROOT / "app/src/main/java/com/myowntrip/app/ui/theme/Color.kt"
+COLOR_KT = ROOT / "designsystem/src/main/java/com/myowntrip/app/ui/theme/Color.kt"
 
 # Roles mapped in Theme.kt (extend when Theme.kt grows)
 SCHEME_ROLES = [

@@ -93,7 +93,7 @@ Un componente solo pasa a **Ready** cuando cumple todo:
 - **Compose:** compila (`./gradlew :app:compileDebugKotlin`) y tiene `@Preview` en claro y oscuro.
 - **Tokens:** la UI consume solo roles semánticos (`colorScheme`, `shapes.*`, `MOTSpacing`). Sin primitivos ni hex sueltos.
 - **Forma:** `shapes.*` o la regla de botones de [ADR 004](../../decisions/004-button-shape-morph.md).
-- **Paridad Figma:** 0 variables LEGACY · Semantic Layout, 0 literales bindables en el set, 0 inventos en pantallas (solo instancias). Verificación con `resolveVariables` en `false` y `true`.
+- **Paridad Figma:** 0 binds a `semantic/*` (colección LEGACY eliminada); 0 literales bindables en el set; 0 inventos en pantallas (solo instancias). Verificación con `resolveVariables` en `false` y `true`.
 - **Accesibilidad:** contraste AA, objetivo táctil de 48dp, foco visible (capa `Focus ring`), y en errores icono + texto, nunca solo color.
 - **Showcase:** ficha completa con versión `vX.Y.Z`, motivo del cambio y enlace a la auditoría.
 - **Notion:** entrada registrada.

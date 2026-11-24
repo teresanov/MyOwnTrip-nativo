@@ -14,7 +14,6 @@
 | M3 | 322 | `AppColors` → `colorScheme` | Todos los sets DS + láminas |
 | Typescale | 100 | `AppTypography` (Fraunces/Inter) | Variables panel + binds en sets |
 | MOT · Spacing | 88 | `MOTSpacing.kt` | Sets M3 documentados + producto |
-| LEGACY · Semantic Layout (no usar) | 55 | **Prohibido** | Migrar a `mot/*`; no ampliar |
 | Primitives · Space | 30 | No directo (alias) | Variables panel + binds en sets |
 | Primitives · Size | 13 | No directo (alias) | Variables panel + binds en sets |
 | Shape | 10 | `MOTThemeShapes` + ADR 004 botones | Componentes + morph botón |
@@ -222,10 +221,6 @@ Existen en **Figma** y en **`MOTSpacing`/`BrandColors`**, pero **ningún composa
 | `mot/spacing/segmented/gap` | Sets Extended FAB, Segmented, Date cells | Sin objeto `MOTSpacing`; M3 o kit |
 | `mot/spacing/button-icon-gap*` | Sets Extended FAB, Segmented, Date cells | Sin objeto `MOTSpacing`; M3 o kit |
 | `mot/padding/date-picker/cell` | Sets Extended FAB, Segmented, Date cells | Sin objeto `MOTSpacing`; M3 o kit |
-
-## LEGACY · Semantic Layout (55)
-
-**No usar.** Sustituir binds por `mot/*` al tocar frames. Ver `docs/design-system/spacing.md`.
 
 ## Limitaciones de este inventario
 

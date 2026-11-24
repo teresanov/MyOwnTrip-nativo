@@ -7,7 +7,7 @@
 
 Inventario para trabajar por fases: qué hay en Compose, cómo se enlaza a tokens, qué hay en Figma, qué falta.
 
-**Cola activa (nov 2026):** date/time producto ≠ kit M3 → seguir [disparity-remediation-plan-2026-11-03.md](disparity-remediation-plan-2026-11-03.md) (R1–R4) y registrar en [parity-log.md](../parity-log.md). La «Fase C ✅ Date/time» de abajo auditó **sets kit**; las láminas **PRODUCT** son trabajo posterior (R1).
+**Cola activa (nov 2026):** [parity-log.md](../parity-log.md) § Pendiente — vacía salvo regresión. R1–R4 y R6 cerrados.
 
 ---
 
@@ -21,7 +21,7 @@ No es el sistema del archivo (paths `semantic/padding/button/…`). Aquí el con
 | **Shape superficie** | `MaterialTheme.shapes.*` (`MOTThemeShapes`) | `extraSmall`↔`Corner/Extra-small` … `extraLarge`↔`Corner/Extra-large`; botón = `rememberMOTButtonShape` — [shape.md](../shape.md) |
 | **Shape botón** | `rememberMOTButtonShape()` vía `MOTButton*` | Reposo 0 → interactivo 20 (**ADR 004**) ↔ `Corner/None` / `Corner/Large-increased` |
 | **Type** | `Type.kt` → `AppTypography` | Text styles **Fraunces/Inter** (`M3/{display\|headline\|title\|body\|label}/*`) — sin Roboto; [typography.md](../typography.md) |
-| **Spacing de pantalla** | **`MOTSpacing`** | SoT producto (2026-10-29): Figma **`MOT · Spacing`** (`mot/spacing/*`). Colección **LEGACY · Semantic Layout** no usar — [spacing.md](../spacing.md) |
+| **Spacing de pantalla** | **`MOTSpacing`** | SoT: **`MOT · Spacing`** (`mot/spacing/*`). LEGACY eliminada (2026-11-24) — [spacing.md](../spacing.md) |
 | **Motion** | `Motion.kt` + `MotionScheme` | Morph ~520ms, squish |
 
 **Regla de consumo en UI:** pantallas usan `colorScheme` / wrappers `MOT*` / componentes de `ui/components`. No reintroducir `SemanticColors` del archivo ([components.md](../components.md)).
@@ -151,7 +151,7 @@ Segmented button, Chip groups, Sliders, Carousel, Toolbars, Side sheet, Suggesti
 | Specs del repo **archivo** | No portar contrato `MyOwnTrip*` | vigente |
 | `figma-compose-bindings.md` | Tabla P0 + ADR 004 + MOTSpacing | **Hecho** Fase A |
 | Showcase JSON | Text field, Filter chip, Basic dialog, Snackbar | **Hecho** 2026-10-30 · [showcase-p0-json-2026-10-30.md](showcase-p0-json-2026-10-30.md) |
-| Borrar binds a LEGACY · Semantic Layout | Al tocar frames | pendiente (Fase B+) |
+| ~~LEGACY · Semantic Layout~~ | Eliminar colección Figma | descartado 2026-11-24 |
 
 ---
 
@@ -160,7 +160,7 @@ Segmented button, Chip groups, Sliders, Carousel, Toolbars, Side sheet, Suggesti
 ### Fase A — Gobernanza ✅ (2026-10-29)
 1. Workspace SoT = **`MyOwnTrip_nativo`**.
 2. [figma-compose-bindings.md](../figma-compose-bindings.md) con P0 + ADR 004.
-3. Decisión: espaciado de pantalla = **`MOTSpacing` / `MOT · Spacing`** ([spacing.md](../spacing.md)); `Semantic · Layout` → **LEGACY · Semantic Layout (no usar)**.
+3. Espaciado = **`MOTSpacing` / `MOT · Spacing`** ([spacing.md](../spacing.md)); sin colección `semantic/*`.
 
 ### Fase B — Auditoría visual P0 (por set)
 Orden sugerido (producto en el Xiaomi primero):
@@ -211,7 +211,7 @@ Pass en sets de bindings: weights (`mot/stroke/*`), Outline Variant en dividers 
 
 - **Compose nativo** = M3 + wrappers MOT + cards/eyebrow/home; color por `colorScheme`, botones por morph 0→20.  
 - **Figma** tiene el kit completo KEEP; productizados y documentados del todo solo una franja (cards Home, button, menu patrón).  
-- **B.3 P0 cerrado** (FilterChip → Dialog/Snackbar → App bar/FAB/Search/Menu). LEGACY · Semantic Layout: borrar binds al tocar frames. **Showcase JSON P0** (Text field, Filter chip, Dialog, Snackbar) publicado 2026-10-30.  
+- **B.3 P0 cerrado** (FilterChip → Dialog/Snackbar → App bar/FAB/Search/Menu). **Showcase JSON P0** (Text field, Filter chip, Dialog, Snackbar) publicado 2026-10-30.  
 - **No falta** reinventar `MyOwnTripButton` del archivo.
 
 ### Fase B.2 — Cards Home ✅ (2026-10-29)
@@ -224,18 +224,6 @@ Detalle: [figma-home-cards-phase-b-2026-10-29.md](figma-home-cards-phase-b-2026-
 **B.3 FilterChip ✅:** Outlined · `Corner/Small` · pads `mot/padding/chip/*`; Wallet filas instancias. [figma-filterchip-phase-b3-2026-10-29.md](figma-filterchip-phase-b3-2026-10-29.md).  
 **B.3 Dialog + Snackbar ✅:** Dialog Extra-large; Wallet caps 7/11/12 = Basic dialog; Snackbar Inverse + gap fix. [dialog](figma-dialog-phase-b3-2026-10-29.md) · [snackbar](figma-snackbar-phase-b3-2026-10-29.md).  
 **B.3 App bar + FAB + Search/Menu ✅:** 0 LEGACY; FAB limpio; quirks kit documentados. [appbar](figma-appbar-phase-b3-2026-10-29.md) · [menu-search](figma-menu-search-phase-b3-2026-10-29.md).  
-**Re-entrada B.3 (post-TextField, misma fecha):** FilterChip / Dialog / Snackbar / App bar / FAB / Menu / Search re-audit live → **0 LEGACY** en sets P0; Wallet Filter chips + Dialog caps OK.
+**Confirm live (2026-10-29, B.3 cerrado):** FilterChip + Assistive + Dialog + Snackbar + App bar + FAB + Menu + Search bar → **0 LEGACY** en sets P0 (varias re-auditorías misma fecha). Wallet Filter chips + Dialog caps = instancias. `Search full-screen layout` no es SoT Compose — ver [menu-search](figma-menu-search-phase-b3-2026-10-29.md).
 
-**Confirm live (2026-10-29, sesión post-Wallet CTA):** FilterChip + Assistive + Dialog + Snackbar + App bar/FAB/Menu/`Search bar` → **0 LEGACY** contrato. Residual: `Search full-screen layout` (50 LEGACY list-item; no SoT Compose) — [menu-search](figma-menu-search-phase-b3-2026-10-29.md).
-
-**Confirm live (2026-10-29, continuación orden B.3 FilterChip→Dialog/Snackbar→App bar/FAB/Menu/Search):** re-audit Desktop Bridge — Filter 48 + Assistive 24 + Dialog + Snackbar + App bar Small + FAB + Menu + Search bar → **0 LEGACY** contrato; Wallet Filter chips 6× INSTANCE + Dialog caps 7/11/12 OK. Residual intacto: Search full-screen **50** (`semantic/padding|spacing/list-item|stack`).
-
-**Confirm live (2026-10-29, sesión post-Wallet CTA — reentrada B.3 orden):** Filter 48 + Assistive 24 + Dialog + Snackbar + App bar + FAB (72, 0 pads unbound) + Menu + Search bar → **0 LEGACY** contrato. Wallet Filter chips 6× + Dialog 7/11/12 INSTANCE OK. Residual: Search full-screen **50**.
-
-**Confirm live (2026-10-29, post-Wallet Import CTA — orden B.3 FilterChip→Dialog/Snackbar→App bar/FAB/Menu/Search):** Desktop Bridge — Filter **0** + Assistive **0** + Dialog **0** + Snackbar **0** + App bar **0** + FAB **0** (pads) + Menu **0** + Search bar **0** LEGACY contrato. Wallet Filter 6× INSTANCE + Dialog caps 7/11/12 INSTANCE · Home **0** FilterChip / **4** Menu. Residual: Search full-screen **50**.
-
-**Confirm live (2026-10-29, post-Wallet Import CTA reparado — reentrada B.3 orden):** Filter **0** + Assistive **0** + Dialog **0** + Snackbar **0** + App bar **0** + FAB **0** + Menu **0** + Search bar **0** LEGACY. Wallet Filter 6× + Dialog 7/11/12 INSTANCE · Home **0** FilterChip · **1** Menu · Search bar ×3. Residual: Search full-screen **50**.
-
-**Confirm live (2026-10-29, continuación B.3 orden FilterChip→Dialog/Snackbar→App bar/FAB/Menu/Search):** Desktop Bridge — Filter **0** + Assistive **0** + Dialog **0** + Snackbar **0** + App bar **0** + FAB **0** (pads) + Menu **0** + Search bar **0** LEGACY contrato. Wallet Filter 6× INSTANCE + Dialog 7/11/12 INSTANCE · Home **0** FilterChip · **1** Menu · Search bar ×3. Search full-screen: residual previo **50** → live actual **0** binds LEGACY (sigue no-SoT Compose).
-
-**Siguiente (fuera B.3):** Fichas P0 showcase (Text field, Filter chip, Dialog, Snackbar) en **Ready** + build Vite 2026-10-30 · P1 residual si aparece en Xiaomi · no productizar Search full-screen.
+**Siguiente (post-B.3):** Showcase P0 Ready 2026-10-30 · R1–R6 en [disparity-remediation-plan](disparity-remediation-plan-2026-11-03.md) · ejecución en [parity-log](../parity-log.md).

@@ -14,15 +14,21 @@
 | 3 | **Este archivo** | Pendiente + historial de cambios |
 | 4 | Contratos de dominio (solo spec, no bitácora) | p. ej. [figma-date-product-contract-2026-11-03.md](audits/figma-date-product-contract-2026-11-03.md) |
 | 5 | Plan global (mapa P0–P3, fases A/B/C) | [compose-figma-parity-plan-2026-10-29.md](audits/compose-figma-parity-plan-2026-10-29.md) |
-| 6 | Cola activa disparidades (**R6** resto P1; date/time **cerrado** 2026-11-19) | [disparity-remediation-plan-2026-11-03.md](audits/disparity-remediation-plan-2026-11-03.md) |
+| 6 | Plan disparidades (histórico + gates; cola cerrada nov 2026) | [disparity-remediation-plan-2026-11-03.md](audits/disparity-remediation-plan-2026-11-03.md) |
 
-Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampliar salvo corrección puntual.
+Audits `audits/*` = historial o contratos; índice en [audits/README.md](audits/README.md). No ampliar snapshots salvo corrección puntual.
 
 ---
 
-## Pendiente
+## Pendiente (paridad DS)
 
-Cola de módulos cerrada. Event bookmark no entra por el + del Diario.
+*Ningún ítem abierto.* Regresión o nuevo delta → nueva fila en Registro.
+
+**Hecho (no reabrir salvo regresión):** librería DS **publicada** (state layers nov 2026). Colección **`LEGACY · Semantic Layout`:** **ausente** en Figma live (8 colecciones; verificado 2026-11-24 vía Bridge).
+
+**Fuera de esta bitácora (producto):** event bookmark no entra por el + del Diario.
+
+**Registro:** filas **Resuelto** y posteriores a 2026-11-17 = trabajo cerrado salvo regresión. Hallazgos intermedios duplicados no se conservan; el cierre vive en la fila **Resuelto** del mismo ámbito.
 
 ---
 
@@ -30,14 +36,16 @@ Cola de módulos cerrada. Event bookmark no entra por el + del Diario.
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
-| 2026-11-24 | icons · nombres | **Resuelto (Compose):** `InsertDriveFile` → `MOTIcons.Draft` (`draft`); eliminado `CameraAlt` (solo `PhotoCamera`). Menús expuestos usan `MotExposedDropdownTrailingIcon` (`keyboard_arrow_down`). Script regenerado; `iconography.md` sin «Excepciones conocidas». | `generate_material_symbols.py` · `WalletScreen` · `DocumentAttachmentCard` · `TakePhotoScreen` · 4 dropdowns | **Resuelto** |
+| 2026-11-24 | design-file · 02/03 | Contrato páginas: **02 solo crear** · **03 solo editar** (caps 1–4). Bindings + `figma-app-flows` alineados a Figma live; texto guía pág. 03 corregido. | `Vf2tNMXy` · `figma-compose-bindings.md` | **Resuelto** |
+| 2026-11-24 | tokens · export | **`variables.json` regenerado** desde Figma DS (597 variables · 8 colecciones). Incluye `mot/opacity/disabled-content`, `*/Opacity-12` state layers nuevos. | `figma_execute` · `docs/design-system/variables.json` | **Resuelto** |
+| 2026-11-24 | tokens · Figma | **Verificado:** DS sin colección `LEGACY · Semantic Layout` (597 vars · M3 · MOT · Spacing · Shape · Typescale · Brand · Primitives). Ya no hay acción P1. | `figma_get_variables` · `zrGAL4v6` | **Resuelto** |
+| 2026-11-24 | gobernanza | **R5 descartado:** sin MVP no se conserva LEGACY (docs/repo sin migración). Publish DS cerrado (ya publicada). | `spacing.md` · `disparity-remediation-plan` | **Resuelto** |
+| 2026-11-24 | bitácora | Higiene: sección **Pendiente** actualizada; eliminadas filas hallazgo duplicadas; reconciliados `En curso`/`Abierto` de noviembre. | `parity-log.md` · `disparity-remediation-plan` · `compose-figma-parity-plan` | **Resuelto** |
+| 2026-11-24 | icons · nombres | **Resuelto (Compose):** alias iconos alineados (`Draft`, `PhotoCamera` único); menús expuestos → `MotExposedDropdownTrailingIcon`. Script regenerado; `iconography.md` actualizado. | `generate_material_symbols.py` · audits moticons · 4 dropdowns | **Resuelto** |
 | 2026-11-24 | color · error | **Resuelto (docs):** alineado hex canónico `error` Light **`#904A42`** (y Dark `#FFB4AA` en ADR/brand donde aplica) en `002-brand-editorial-m3.md`, `m3-native-ui.mdc` y `brand.md`. Sin cambio en Figma, `Color.kt` ni showcase. | `Color.kt` `errorLight` · `Schemes/Error` · `color.md` | **Resuelto** |
 | 2026-11-19 | chips · state layers | **Resuelto (Figma):** `Filter chip` + `Suggestion chip` disabled **selected** → `Secondary Container/Opacity-12` (antes `On Surface Variant/Opacity-10`). **Assistive chip** `Style=Warning` disabled → `State Layers/Warning/Opacity-12` (desde `Extended Colors/Warning`). Outlined disabled sin fill contenedor: solo contenido 38 % (ya enlazado). `Input chip` / `Day pill`: sin variante Disabled — sin cambio. | Figwright `55141:14174` · sets `53923:28270` · `28089` · `28679` | **Resuelto** |
 | 2026-11-19 | button · state layers | **Resuelto (Figma):** página `Buttons` — sets `Button` / tonal / outline / text / elevated, `Toggle button` (×4 estilos), `Icon button` (×4) y togglable (×4). Disabled contenedor **12 %** por rol (`Primary` / `Secondary Container` / `Secondary` / `Surface Container Low` / `On Surface` → `*/Opacity-12`); contenido **`mot/opacity/disabled-content` (38)** en `State-layer`. Variables nuevas: `Secondary/Opacity-12`, `Surface Container Low/Opacity-12`. ~640 enlaces Figwright (`batch`). Chips **fuera** de esta tanda. | Figwright `55141:14168` · `scripts/audit_button_disabled_figma.py` · smoke post-fix sin `On Surface/Opacity-10` en disabled | **Resuelto** |
 | 2026-11-19 | date/time · **cola cerrada** | **Resuelto:** remediación **R1–R4** (contrato 2026-11-03, gates §6) + post-cierre **T1** smoke PRODUCT, **T2** showcase `date-time-pickers`, **T3** inventario ARCHIVE vs producto; cambios en repo commit/push. Sin trabajo abierto en date/time salvo mantenimiento (regresión = nueva fila). Opcional T4 KDoc Kotlin **no** aplicado. | Contrato · bindings · showcase · `tokens-inventory-complete-2026-11-03.md` · filas 2026-11-18 smoke/T2/T3 · `disparity-remediation-plan` cubo A | **Resuelto** |
-| 2026-11-19 | icons · nombres | Hallazgo alias `InsertDriveFile` / `CameraAlt` y chevron M3 fuera de catálogo. | `MOTIcons.kt` · `iconography.md` | **Cerrado** → fila **Resuelto** 2026-11-24 |
-| 2026-11-19 | color · error | Hallazgo: docs citaban `#B3261E` (rojo M3 catálogo) frente a producto `#904A42`. | `get_variable_defs` · `Color.kt` | **Cerrado** → fila **Resuelto** 2026-11-24 |
-| 2026-11-19 | button · state layers | Hallazgo inicial tonal (Pressed 08 %; disabled `On Surface/10`; 38 % manual). | Figwright `58651:11237` | **Cerrado** → fila **Resuelto** arriba (2026-11-19) |
 | 2026-11-18 | date/time · inventario T3 | `tokens-inventory-complete-2026-11-03.md` regenerado: 10 tokens kit date/time → **ARCHIVE · kit M3** (no «reserva producto»); apartado PRODUCT activos; script `generate_tokens_inventory.py`. | `scripts/generate_tokens_inventory.py` · parity-log smoke 2026-11-18 | Resuelto (↑ cierre 2026-11-19) |
 | 2026-11-18 | date/time · showcase T2 | Ficha **Ready** [date-time-pickers](../ds-showcase/components/date-time-pickers.html): 6 patrones PRODUCT + tabla ARCHIVE; índice `components.json` · `vite.config.js` · `npm run context`. Bindings filas date/time → enlace showcase + contrato. | `ds-showcase/src/data/components/date-time-pickers.json` · [figma-compose-bindings.md](figma-compose-bindings.md) | Resuelto (↑ cierre 2026-11-19) |
 | 2026-11-18 | date/time · smoke PRODUCT | **Cierre menor post contrato:** 6 maestros (`61340:8809`, `61348:28897`, `61348:29097`, `61348:29373`, `61348:29337`, `61348:29338`) → **0** binds kit-only (`header-gap`, `field-top`, `label-gap`, `selection-row-gap`, `block-gap`, `time-input/*`; 9 variables rastreadas). Spot tokens contrato §2–4: `component-sm`, `day-grid-gap`, `screen-horizontal`, `layout-md` presentes. **ARCHIVE** DS página `61337:28407`: kit `51954:18540` (Input) · `51954:18136` (Modal) · `52949:28053` (Keyboard picker set). **Design-file:** caps R4 `261:926`/`261:929` → instancia **MotDateRangeField**; `491:13980` → **MotDateField** + **MotTimeField**; 0 `Input date picker` en subárboles caps y en páginas `02 · Viajes` / `04 · Wallet`. | Figwright · `get_nodes_info` · contrato [§6](audits/figma-date-product-contract-2026-11-03.md) | Resuelto (↑ cierre 2026-11-19) |
@@ -72,15 +80,15 @@ Cola de módulos cerrada. Event bookmark no entra por el + del Diario.
 | 2026-11-11 | R6.3 · Sitios | Cap **4d**: quitar `Viajes` duplicado; queda el caso sin pin. **4e** éxito+mapa pendiente. | `581:15447` | Hecho |
 | 2026-11-11 | R6.3 · Sitios | Cap **4c**: icono del outline = location (no import); width **Fill**. Corrección en Figma. | `581:15264` | Hecho |
 | 2026-11-11 | R6.3 · Sitios | Caps **4c** Nuevo sitio y **4d** Guardar sitio (sin pin). Pin Maps a pendientes. | `581:15264` · `581:15447` | Hecho |
-| 2026-11-11 | R6.3 · Plan | Parte 1: caps 2 / 2b / 2c / 2d de `TripPlanTab` en `03`. | `261:941` · `573:13289` · `573:13390` · `573:13443` | En curso |
+| 2026-11-11 | R6.3 · Plan | Parte 1: caps 2 / 2b / 2c / 2d de `TripPlanTab` en `03`. | `261:941` · `573:13289` · `573:13390` · `573:13443` | Hecho (↑ day hub `05` nov 17–18) |
 | 2026-11-11 | R6.3 · Diario | Parte 2: caps 5 / 5b / 5c (`TripJournalTab` + FAB menú). | `574:13966` · `574:14129` · `574:14292` | Hecho |
-| 2026-11-11 | R6.3 · Gastos | Parte 3: caps 3 / 3b de `ExpensesTab`. | `261:944` · `576:14844` | En curso |
-| 2026-11-11 | R6.3 · Sitios | Parte 4: caps 4 / 4b de `RestaurantsTab`. | `261:947` · `576:15050` | En curso |
+| 2026-11-11 | R6.3 · Gastos | Parte 3: caps 3 / 3b de `ExpensesTab`. | `261:944` · `576:14844` | Hecho (↑ caps 4–4g bindings 2026-11-18) |
+| 2026-11-11 | R6.3 · Sitios | Parte 4: caps 4 / 4b de `RestaurantsTab`. | `261:947` · `576:15050` | Hecho (↑ sprint 4–4h cerrado 2026-11-13) |
 | 2026-11-11 | R6.3 · Sitios | Cap 4b: quitar mini mapa; listado = cards. | `576:15050` | Hecho |
 | 2026-11-11 | R6.3 · Sitios | Producto: tab Sitios = cards; Maps en `RestaurantFormScreen` (FAB). | Compose `PlacesMiniMap` en `RestaurantsTab` | Disparidad código |
 | 2026-11-11 | Snackbar | Copy de **dos líneas** → variante `# of lines=Two lines`. Cap 1i corregido en Figma; no usar One line. | `534:8881` · bindings · showcase | Hecho |
 | 2026-11-11 | R6.2 | Wallet cap 1g: `List Item - Swipe` Revealed, copy IB 3254, leading `flight`+círculo, 2 acciones `archive`/`delete` (SVG locales `_library imports`). Home: sin cap swipe revelado (Horizontal card). | `534:12667` · `534:13012` | Hecho |
-| 2026-11-11 | R6.3 | Página `03 · Detalle de viaje`: 4 phones con set **Tabs** Scrollable Primary (Wallet/Plan/Diario/Gastos/Sitios). Cap 1 clona Wallet cap 1. Cap 2–4 chrome + tab selected; cuerpo Plan/Gastos/Sitios **gap** (no Day Hub). Day hub Plan\|Diario ya en `05` `477:2043`. | `261:937` | Hecho (cuerpo 2–4 pendiente) |
+| 2026-11-11 | R6.3 | Página `03 · Detalle de viaje`: 4 phones con set **Tabs** Scrollable Primary (Wallet/Plan/Diario/Gastos/Sitios). Cap 1 clona Wallet cap 1. Cap 2–4 chrome + tab selected; cuerpo Plan/Gastos/Sitios en módulos `05`–`08` (no Day Hub aquí). Day hub Plan\|Diario en `05` `477:2043`. | `261:937` | Hecho |
 | 2026-11-11 | R6.4 | List items Wallet: 0 `Icon` → MotWallet 40. Cap 1e ocultos IB/Hotel/AVE → glifos tipo + círculo. Leftover `544:8181` hidden. | `04 · Wallet` | Hecho |
 | 2026-11-11 | R6.1 | Fila **Home · Search + Menu** en bindings (cap 2/3). Tabs y swipe documentados; instancias Figma = R6.2–.4. | `figma-compose-bindings.md` | Hecho |
 | 2026-11-11 | Wallet · SoT | Casuística = Compose `@Preview` + `WalletPreviewData`, no capturas de dispositivo. Gate PNG **retirado**. Si preview ≠ captura, gana el preview. | README caps · bindings · §7.1 | Hecho |
@@ -96,12 +104,12 @@ Cola de módulos cerrada. Event bookmark no entra por el + del Diario.
 | 2026-11-06 | Wallet · design-file | Casuística restante: 1e–1i, 5b, 7b–7d, 9c–9f, 10d, 12b, 13c–13d, 14/14b. Previews Compose añadidos. Copy viaje pasado quitado de 1b/1c/1d. | `04 · Wallet` · bindings | Hecho |
 | 2026-11-06 | Wallet · design-file | Guía del tablero **sin flechas de conector**: overlay/huecos fuera; texto «Cómo leer» + tiras/caps. | `04 · Wallet` `491:13870` · bindings | Hecho |
 | 2026-11-06 | Wallet · design-file | Casuística listado: **cap 1b** viaje en curso (Próximos + chips) `532:6435` · **1c** Archivados `533:7343` · **1d** Todos `533:7746` · **9b** Escanear QR `533:7611`. Previews Compose `WalletScreenInProgressPreview` + `isPastTrip` en cap 1. | `04 · Wallet` tira Añadir · bindings | Hecho |
-| 2026-11-05 | Wallet · design-file | **Prep cap 1:** gate captura documentado · `docs/samples/wallet/caps/README.md` · `figma-design-file-wallet-cap1.js` (página `491:14473`, phone `491:13876`, chips clonados, 4 highlights, sin trailing delete) · bindings + §7.1 columna `capture:` | scripts/docs · Figma pendiente (Bridge off) | En curso |
+| 2026-11-05 | Wallet · design-file | **Prep cap 1:** gate captura documentado · `docs/samples/wallet/caps/README.md` · `figma-design-file-wallet-cap1.js` (página `491:14473`, phone `491:13876`, chips clonados, 4 highlights, sin trailing delete) · bindings + §7.1 columna `capture:` | scripts/docs · SoT = `@Preview` (sin gate PNG) | Histórico |
 | 2026-11-04 | date/time | **Year/Month autolayout (re-fix):** Surface/Calendar HUG · filas 52px · años 2021–2035 · meses 4×3 · acciones visibles · set sin clip `61348:28897` | Figma Console | Hecho |
 | 2026-11-04 | Wallet · design-file | **Part A hecho:** cap **10** detalle vuelo `491:13987` + cap **2** vacío `491:13915` vía `figma-design-file-wallet-flows-parity-part-a.js` (1× `figma_execute`, fileKey design-file) | Figma verify: cap10 hijos Status bar/App bar/Body · cap2 Status bar/Body · §7.1 | Hecho |
 | 2026-11-04 | Wallet · design-file | **Part B hecho:** caps **10b** hotel `503:6332`, **10c** Teatro/drift `503:6415`, **13** visor PDF `503:6745` (`figma-design-file-wallet-flows-parity-part-b.js` + troceos `.cursor/exec-b64-pb*`; fix find flow `/Wallet.*flujo de app/`) | Figma verify · §7.1 | Hecho |
 | 2026-11-04 | Wallet · design-file | Script completo `figma-design-file-wallet-flows-parity.js` alineado (find flow regex); Part A/B canónicos en `*-part-a.js` / `*-part-b.js` | scripts · §7.1 | Referencia |
-| 2026-11-04 | Wallet · auditoría | **Brecha app ↔ design-file** documentada (tipografía manual cap 10, sin Document attachment / visor PDF, cap 1 ≠ empty «Tu maleta digital») | capturas usuario · §7.1 disparity plan | Abierto |
+| 2026-11-04 | Wallet · auditoría | **Brecha app ↔ design-file** documentada (tipografía manual cap 10, sin Document attachment / visor PDF, cap 1 ≠ empty «Tu maleta digital») | capturas usuario · §7.1 disparity plan | Cerrado parcial (↑ caps 1–14 y part A/B nov 4–10; resto = regresión puntual) |
 | 2026-11-04 | date/time · R4 | Design-file **Crear/editar viaje** (`261:926`, `261:929`): formulario con instancia **MotDateRangeField** (+ Text fields, App bar). Wallet manual **bloqueado** hasta publish `MotDateField` / `MotTimeField` | `scripts/figma-design-file-r4-date-time-product.js` | Supersedido |
 | 2026-11-04 | date/time | **R1 + R2 cerrados:** 6 COMPONENT PRODUCT alineados a app; 0 instancias Input Range kit en secciones PRODUCT; 0 binds kit-only (`label-gap`, `selection-row-gap`, `time-input/*`, …) en maestros; `MotDatePickerDialog` hereda modo | Figma Console audit · contrato §6 | Hecho |
 | 2026-11-04 | date/time | **R3:** filas single date/time en `figma-compose-bindings.md` | docs | Hecho |

@@ -13,8 +13,8 @@
 | Pad card | `MOTSpacing.layoutMd` (16) |
 | Gap columna / file body | `componentSm` (8) · hint top `componentSm` · icon top `componentXs` |
 | Preview H | `MOTSpacing.DocumentAttachment.previewHeight` (180) |
-| Footer icon | `Icons.Default.Visibility` |
-| File leading | `Icons.AutoMirrored.Filled.InsertDriveFile` |
+| Footer icon | `MOTIcons.Visibility` |
+| File leading | `MOTIcons.Draft` |
 
 ## Figma (esta pasada)
 
