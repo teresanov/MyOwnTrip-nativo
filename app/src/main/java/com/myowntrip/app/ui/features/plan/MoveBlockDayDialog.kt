@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -20,6 +19,7 @@ import androidx.compose.ui.Modifier
 import com.myowntrip.app.domain.model.Day
 import com.myowntrip.app.domain.wallet.WalletDocumentParser
 import com.myowntrip.app.ui.components.date.MotTimeTextField
+import com.myowntrip.app.ui.theme.MotExposedDropdownTrailingIcon
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import java.time.format.DateTimeFormatter
@@ -70,7 +70,7 @@ fun MoveBlockDayDialog(
               onValueChange = {},
               readOnly = true,
               label = { Text("Día del plan") },
-              trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dayExpanded) },
+              trailingIcon = { MotExposedDropdownTrailingIcon(expanded = dayExpanded) },
               modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth(),

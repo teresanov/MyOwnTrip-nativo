@@ -24,24 +24,18 @@ Audits `audits/*-phase-*` y `*-2026-*` antiguos = **historial cerrado**; no ampl
 
 Cola de módulos cerrada. Event bookmark no entra por el + del Diario.
 
-**Corregir en Compose · nombres de iconos ≠ Material / Figma** (hallado 2026-11-19). Norma: el componente Figma y la propiedad de `MOTIcons` usan el **nombre Material**. Lo que hoy figura como «excepción conocida» en `iconography.md` es **fallo**, no regla. Showcase ya no las documenta.
-- [ ] `InsertDriveFile` → `Draft` (`draft`). Usos: `WalletScreen`, `DocumentAttachmentCard`. Mapa en `scripts/generate_material_symbols.py`; regenerar `MOTIcons.kt`.
-- [ ] `CameraAlt` duplica `PhotoCamera` (`photo_camera`). Dejar una sola propiedad `PhotoCamera`. Uso: `TakePhotoScreen`.
-- [ ] `ExposedDropdownMenuDefaults.TrailingIcon` (chevron interno M3, no catálogo). Sustituir por `MOTIcons` (`KeyboardArrowDown` o el símbolo que use el Text field / dropdown en Figma). Usos: `HomeFabAddSheet`, `UpdateDocumentPlanSheet`, `WalletFormScreen`, `MoveBlockDayDialog`.
-- [ ] Quitar el apartado **Excepciones conocidas** de `docs/design-system/iconography.md` (no recatalogar el fallo).
-- [ ] Al cerrar: dejar fila en **Registro** y quitar este bloque.
-
 ---
 
 ## Registro (más reciente arriba)
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-24 | icons · nombres | **Resuelto (Compose):** `InsertDriveFile` → `MOTIcons.Draft` (`draft`); eliminado `CameraAlt` (solo `PhotoCamera`). Menús expuestos usan `MotExposedDropdownTrailingIcon` (`keyboard_arrow_down`). Script regenerado; `iconography.md` sin «Excepciones conocidas». | `generate_material_symbols.py` · `WalletScreen` · `DocumentAttachmentCard` · `TakePhotoScreen` · 4 dropdowns | **Resuelto** |
 | 2026-11-24 | color · error | **Resuelto (docs):** alineado hex canónico `error` Light **`#904A42`** (y Dark `#FFB4AA` en ADR/brand donde aplica) en `002-brand-editorial-m3.md`, `m3-native-ui.mdc` y `brand.md`. Sin cambio en Figma, `Color.kt` ni showcase. | `Color.kt` `errorLight` · `Schemes/Error` · `color.md` | **Resuelto** |
 | 2026-11-19 | chips · state layers | **Resuelto (Figma):** `Filter chip` + `Suggestion chip` disabled **selected** → `Secondary Container/Opacity-12` (antes `On Surface Variant/Opacity-10`). **Assistive chip** `Style=Warning` disabled → `State Layers/Warning/Opacity-12` (desde `Extended Colors/Warning`). Outlined disabled sin fill contenedor: solo contenido 38 % (ya enlazado). `Input chip` / `Day pill`: sin variante Disabled — sin cambio. | Figwright `55141:14174` · sets `53923:28270` · `28089` · `28679` | **Resuelto** |
 | 2026-11-19 | button · state layers | **Resuelto (Figma):** página `Buttons` — sets `Button` / tonal / outline / text / elevated, `Toggle button` (×4 estilos), `Icon button` (×4) y togglable (×4). Disabled contenedor **12 %** por rol (`Primary` / `Secondary Container` / `Secondary` / `Surface Container Low` / `On Surface` → `*/Opacity-12`); contenido **`mot/opacity/disabled-content` (38)** en `State-layer`. Variables nuevas: `Secondary/Opacity-12`, `Surface Container Low/Opacity-12`. ~640 enlaces Figwright (`batch`). Chips **fuera** de esta tanda. | Figwright `55141:14168` · `scripts/audit_button_disabled_figma.py` · smoke post-fix sin `On Surface/Opacity-10` en disabled | **Resuelto** |
 | 2026-11-19 | date/time · **cola cerrada** | **Resuelto:** remediación **R1–R4** (contrato 2026-11-03, gates §6) + post-cierre **T1** smoke PRODUCT, **T2** showcase `date-time-pickers`, **T3** inventario ARCHIVE vs producto; cambios en repo commit/push. Sin trabajo abierto en date/time salvo mantenimiento (regresión = nueva fila). Opcional T4 KDoc Kotlin **no** aplicado. | Contrato · bindings · showcase · `tokens-inventory-complete-2026-11-03.md` · filas 2026-11-18 smoke/T2/T3 · `disparity-remediation-plan` cubo A | **Resuelto** |
-| 2026-11-19 | icons · nombres | **Alias Kotlin y chevron M3 ≠ nombre Material.** `MOTIcons.InsertDriveFile` es `draft`; `CameraAlt` duplica `PhotoCamera` (`photo_camera`); dropdowns usan `ExposedDropdownMenuDefaults.TrailingIcon` en vez del catálogo. Figma ya nombra `draft` / `photo_camera`. Showcase Iconografía ya no lista excepciones. | `generate_material_symbols.py` · `MOTIcons.kt` · `iconography.md` §Excepciones · `TakePhotoScreen` · `WalletScreen` · `HomeFabAddSheet` | **Pendiente (corregir en Compose)** |
+| 2026-11-19 | icons · nombres | Hallazgo alias `InsertDriveFile` / `CameraAlt` y chevron M3 fuera de catálogo. | `MOTIcons.kt` · `iconography.md` | **Cerrado** → fila **Resuelto** 2026-11-24 |
 | 2026-11-19 | color · error | Hallazgo: docs citaban `#B3261E` (rojo M3 catálogo) frente a producto `#904A42`. | `get_variable_defs` · `Color.kt` | **Cerrado** → fila **Resuelto** 2026-11-24 |
 | 2026-11-19 | button · state layers | Hallazgo inicial tonal (Pressed 08 %; disabled `On Surface/10`; 38 % manual). | Figwright `58651:11237` | **Cerrado** → fila **Resuelto** arriba (2026-11-19) |
 | 2026-11-18 | date/time · inventario T3 | `tokens-inventory-complete-2026-11-03.md` regenerado: 10 tokens kit date/time → **ARCHIVE · kit M3** (no «reserva producto»); apartado PRODUCT activos; script `generate_tokens_inventory.py`. | `scripts/generate_tokens_inventory.py` · parity-log smoke 2026-11-18 | Resuelto (↑ cierre 2026-11-19) |

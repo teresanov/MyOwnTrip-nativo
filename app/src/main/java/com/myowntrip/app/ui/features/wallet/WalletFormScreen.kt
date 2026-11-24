@@ -25,7 +25,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -66,6 +65,7 @@ import com.myowntrip.app.ui.features.journal.rememberJournalPermissionRequest
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTIcons
+import com.myowntrip.app.ui.theme.MotExposedDropdownTrailingIcon
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -643,7 +643,7 @@ internal fun WalletManualAddStep(
           onValueChange = {},
           readOnly = true,
           label = { Text("Viaje") },
-          trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = tripExpanded) },
+          trailingIcon = { MotExposedDropdownTrailingIcon(expanded = tripExpanded) },
           modifier = Modifier.menuAnchor().fillMaxWidth(),
         )
         ExposedDropdownMenu(expanded = tripExpanded, onDismissRequest = { onTripExpandedChange(false) }) {
@@ -872,7 +872,7 @@ internal fun WalletConfirmDialog(
                   onValueChange = {},
                   readOnly = true,
                   label = { Text("Día") },
-                  trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dayExpanded) },
+                  trailingIcon = { MotExposedDropdownTrailingIcon(expanded = dayExpanded) },
                   modifier = Modifier
                     .menuAnchor()
                     .fillMaxWidth(),

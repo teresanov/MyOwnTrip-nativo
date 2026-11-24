@@ -61,11 +61,8 @@ python scripts/build_figma_icon_execute.py
 
 Auditoría: `docs/design-system/audits/figma-moticons-parity-2026-11-03.md`.
 
-### Excepciones conocidas
+### Variante `stop` (grabación)
 
-| Contexto | Comportamiento |
-|----------|----------------|
-| `ExposedDropdownMenuDefaults.TrailingIcon` | Chevron interno M3, no `MOTIcons` |
-| `InsertDriveFile` en Kotlin | Símbolo Material `draft` (nombre Figma `draft`) |
-| `CameraAlt` / `PhotoCamera` | Mismo glifo `photo_camera`; en Figma basta `photo_camera` |
-| `Stop` / Detener grabación | `stop` **wght300 fill1** (cuadrado sólido). El outline w300 se lee como recuadro vacío sobre el filled. |
+`Stop` en el CTA **Detener** del diálogo de voz usa **`stop` wght300 fill1** (cuadrado sólido). El outline w300 se lee como recuadro vacío sobre contenedor filled; ver generador (`FILL1_SYMBOLS` en `scripts/generate_material_symbols.py`).
+
+Menús expuestos (`ExposedDropdownMenuBox`): chevron **`keyboard_arrow_down`** vía `MotExposedDropdownTrailingIcon` (catálogo `MOTIcons`, paridad con Figma).

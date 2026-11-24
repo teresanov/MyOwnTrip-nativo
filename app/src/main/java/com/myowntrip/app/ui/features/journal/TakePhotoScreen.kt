@@ -93,7 +93,7 @@ fun TakePhotoScreen(
         },
         modifier = Modifier.semantics { contentDescription = "Capturar foto" },
       ) {
-        Icon(MOTIcons.CameraAlt, contentDescription = null)
+        Icon(MOTIcons.PhotoCamera, contentDescription = null)
       }
     },
   ) { padding ->

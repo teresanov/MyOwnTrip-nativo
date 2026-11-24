@@ -36,9 +36,6 @@ object MOTIcons {
   /** Material Symbols Sharp `calendar_month` (w300). */
   val CalendarMonth: ImageVector by lazy { symbol("calendar_month", autoMirror = false, "M444.62-396.92v-70.77h70.76v70.77h-70.76Zm-160 0v-70.77h70.76v70.77h-70.76Zm320 0v-70.77h70.76v70.77h-70.76ZM444.62-240v-70.77h70.76V-240h-70.76Zm-160 0v-70.77h70.76V-240h-70.76Zm320 0v-70.77h70.76V-240h-70.76ZM140-100v-680h127.69v-84.61h61.54V-780h303.08v-84.61h60V-780H820v680H140Zm60-60h560v-387.69H200V-160Zm0-447.69h560V-720H200v112.31Zm0 0V-720v112.31Z") }
 
-  /** Material Symbols Sharp `photo_camera` (w300). */
-  val CameraAlt: ImageVector by lazy { symbol("photo_camera", autoMirror = false, "M480-275.39q68.85 0 116.73-47.88 47.88-47.88 47.88-116.73t-47.88-116.73Q548.85-604.61 480-604.61t-116.73 47.88Q315.39-508.85 315.39-440t47.88 116.73q47.88 47.88 116.73 47.88Zm0-59.99q-44.31 0-74.46-30.16-30.16-30.15-30.16-74.46 0-44.31 30.16-74.46 30.15-30.16 74.46-30.16 44.31 0 74.46 30.16 30.16 30.15 30.16 74.46 0 44.31-30.16 74.46-30.15 30.16-74.46 30.16ZM100-140v-600h194.46l74-80h223.08l74 80H860v600H100Zm60-60h640v-480H638.77l-73.39-80H394.62l-73.39 80H160v480Zm320-240Z") }
-
   /** Material Symbols Sharp `check` (w300). */
   val Check: ImageVector by lazy { symbol("check", autoMirror = false, "M382-253.85 168.62-467.23 211.38-510 382-339.38 748.62-706l42.76 42.77L382-253.85Z") }
 
@@ -82,7 +79,7 @@ object MOTIcons {
   val Hotel: ImageVector by lazy { symbol("hotel", autoMirror = false, "M60-220v-560h60v380h330v-300h450v480h-60v-120H120v120H60Zm147.5-267.55q-29.81-29.85-29.81-72.5 0-42.64 29.86-72.45 29.85-29.81 72.5-29.81 42.64 0 72.45 29.86 29.81 29.85 29.81 72.5 0 42.64-29.86 72.45-29.85 29.81-72.5 29.81-42.64 0-72.45-29.86ZM510-400h330v-240H510v240ZM310.04-529.96q12.27-12.27 12.27-30.04t-12.27-30.04q-12.27-12.27-30.04-12.27t-30.04 12.27q-12.27 12.27-12.27 30.04t12.27 30.04q12.27 12.27 30.04 12.27t30.04-12.27ZM280-560Zm230-80v240-240Z") }
 
   /** Material Symbols Sharp `draft` (w300). */
-  val InsertDriveFile: ImageVector by lazy { symbol("draft", autoMirror = true, "M180-100v-760h390l210 210v550H180Zm360-520v-180H240v640h480v-460H540ZM240-800v180-180 640-640Z") }
+  val Draft: ImageVector by lazy { symbol("draft", autoMirror = true, "M180-100v-760h390l210 210v550H180Zm360-520v-180H240v640h480v-460H540ZM240-800v180-180 640-640Z") }
 
   /** Material Symbols Sharp `keyboard` (w300). */
   val Keyboard: ImageVector by lazy { symbol("keyboard", autoMirror = false, "M100-220v-520h760v520H100Zm60-60h640v-400H160v400Zm164.62-44.62h310.76v-70.76H324.62v70.76Zm-120-120h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76Zm-480-120h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76Zm120 0h70.76v-70.76h-70.76v70.76ZM160-280v-400 400Z") }
@@ -162,7 +159,7 @@ object MOTIcons {
   /** Material Symbols Sharp `sticky_note_2` (w300). */
   val StickyNote2: ImageVector by lazy { symbol("sticky_note_2", autoMirror = false, "M200-200h360v-200h200v-360H200v560Zm-60 60v-680h680v445.77L585.77-140H140Zm157.69-270.77v-60H480v60H297.69Zm0-159.23v-60h364.62v60H297.69ZM200-200v-560 560Z") }
 
-  /** Material Symbols Sharp `stop` (w300 fill1). Outline a 300 no se lee en el CTA Detener. */
+  /** Material Symbols Sharp `stop` (w300). */
   val Stop: ImageVector by lazy { symbol("stop", autoMirror = false, "M260-260v-440h440v440H260Z") }
 
   /** Material Symbols Sharp `today` (w300). */

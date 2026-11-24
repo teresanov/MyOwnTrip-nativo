@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -30,6 +29,7 @@ import com.myowntrip.app.domain.model.Trip
 import com.myowntrip.app.ui.features.trips.previewHomeTrips
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTIcons
+import com.myowntrip.app.ui.theme.MotExposedDropdownTrailingIcon
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 enum class HomeFabAddMode {
@@ -125,7 +125,7 @@ fun HomeFabAddSheet(
           supportingText = selectedTrip?.let {
             { Text(it.destination) }
           },
-          trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = tripMenuExpanded) },
+          trailingIcon = { MotExposedDropdownTrailingIcon(expanded = tripMenuExpanded) },
           modifier = Modifier
             .menuAnchor()
             .fillMaxWidth(),

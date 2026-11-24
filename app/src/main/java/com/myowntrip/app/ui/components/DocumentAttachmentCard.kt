@@ -66,7 +66,7 @@ fun DocumentAttachmentCard(
             verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
           ) {
             Icon(
-              MOTIcons.InsertDriveFile,
+              MOTIcons.Draft,
               contentDescription = null,
               tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )

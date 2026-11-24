@@ -10,7 +10,7 @@ import pathlib
 import re
 import urllib.request
 
-# Nombre en Kotlin (igual que el antiguo Icons.*) -> (nombre Material Symbols, autoMirror)
+# Nombre Kotlin (PascalCase del símbolo Material en Figma) -> (nombre Material, autoMirror)
 ICONS = {
     "AccountBalanceWallet": ("account_balance_wallet", False),
     "Add": ("add", False),
@@ -19,7 +19,6 @@ ICONS = {
     "AttachFile": ("attach_file", False),
     "Brush": ("brush", False),
     "CalendarMonth": ("calendar_month", False),
-    "CameraAlt": ("photo_camera", False),
     "Check": ("check", False),
     "CheckCircle": ("check_circle", False),
     "Close": ("close", False),
@@ -34,7 +33,7 @@ ICONS = {
     "Error": ("error", False),
     "Flight": ("flight", False),
     "Hotel": ("hotel", False),
-    "InsertDriveFile": ("draft", True),
+    "Draft": ("draft", True),
     "Keyboard": ("keyboard", False),
     "KeyboardArrowDown": ("keyboard_arrow_down", False),
     "KeyboardArrowLeft": ("keyboard_arrow_left", True),

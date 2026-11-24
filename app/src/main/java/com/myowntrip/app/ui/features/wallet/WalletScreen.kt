@@ -675,7 +675,7 @@ private fun entryTypeIcon(type: EntryType): ImageVector = when (type) {
   EntryType.HOTEL -> MOTIcons.Hotel
   EntryType.ACTIVITY -> MOTIcons.ConfirmationNumber
   EntryType.TRANSPORT -> MOTIcons.DirectionsCar
-  EntryType.GENERIC -> MOTIcons.InsertDriveFile
+  EntryType.GENERIC -> MOTIcons.Draft
 }
 
 private fun entryScheduleLabel(entry: WalletEntry): String {
