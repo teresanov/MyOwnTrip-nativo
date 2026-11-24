@@ -1,78 +1,26 @@
-import { initShowcasePage, statusChip } from "../lib/bootstrap.js";
 import data from "../data/components/swipeable-list-row.json";
-import { mountDecisions } from "../lib/decisions.js";
-import { renderGuidelines } from "../lib/component-page.js";
+import { mountComponentPage } from "../lib/generic-component.js";
+import { listItemHtml } from "../lib/specimens.js";
 
-initShowcasePage("components", { componentId: "swipeable-list-row" });
+const swipe = `
+  <div class="swipe-demo">
+    <div class="swipe-demo__rail swipe-demo__rail--start">Archivar</div>
+    <div class="swipe-demo__row">${listItemHtml()}</div>
+    <div class="swipe-demo__rail swipe-demo__rail--end">Eliminar</div>
+  </div>`;
 
-mountDecisions(data);
-
-const figmaUrl = data.figma?.url || (typeof data.figma === "string" ? data.figma : null);
-const figmaLine = figmaUrl
-  ? `<p><a href="${figmaUrl}" target="_blank" rel="noopener">${data.figma?.label || "Referencia en Figma"} ↗</a></p>`
-  : "<p><em>Sin set publicado en Figma — patrón documentado en Compose y showcase.</em></p>";
-
-document.getElementById("component-header").innerHTML = `
-  <p class="page-header__eyebrow">Component · Patrones · ${data.priority || "P1"}</p>
-  <h1>${data.name} ${statusChip(data.status)}</h1>
-  <p class="page-header__lead">${data.purpose}</p>
-  ${figmaLine}
-`;
-
-document.getElementById("component-main").innerHTML = `
-  <section class="section">
-    <h2>Anatomía</h2>
-    <ol class="list-dos">
-      ${data.anatomy.map((a) => `<li>${a}</li>`).join("")}
-    </ol>
-  </section>
-
-  <section class="section">
-    <h2>Variantes</h2>
-    <table>
-      <thead><tr><th>Variante</th><th>Uso</th></tr></thead>
-      <tbody>
-        ${data.variants.map((v) => `<tr><td>${v.label}</td><td>${v.usage}</td></tr>`).join("")}
-      </tbody>
-    </table>
-  </section>
-
-  <section class="section">
-    <h2>Implementaciones</h2>
-    <ul class="list-dos">
-      <li><code>SwipeableTripListRow.kt</code> — Home, sección «Más viajes» y filtro Archivados</li>
-      <li><code>SwipeableWalletDocumentRow.kt</code> — Wallet, lista plana (chips Activos / Archivados / Todos)</li>
-    </ul>
-  </section>
-
-  <section class="section">
-    <h2>Tokens M3</h2>
-    <p><code>${data.tokens.join("</code>, <code>")}</code></p>
-  </section>
-
-  ${renderGuidelines(data)}
-
-  <section class="section">
-    <h2>Accesibilidad</h2>
-    <ul class="list-dos">${data.a11y.map((a) => `<li>${a}</li>`).join("")}</ul>
-  </section>
-
-  <section class="section">
-    <h2>Compose</h2>
-    <pre><code>${escapeHtml(data.compose)}</code></pre>
-  </section>
-
-  <section class="section">
-    <h2>Changelog</h2>
-    <table>
-      <thead><tr><th>Fecha</th><th>Nota</th></tr></thead>
-      <tbody>
-        ${data.changelog.map((e) => `<tr><td>${e.date}</td><td>${e.note}</td></tr>`).join("")}
-      </tbody>
-    </table>
-  </section>
-`;
-
-function escapeHtml(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
+mountComponentPage(data, {
+  specimenHtml: swipe,
+  playground: {
+    id: "ejemplo",
+    title: "Ejemplo",
+    hint: "Anatomía del gesto, no un swipe real. En Compose, el umbral es ~45 % y Eliminar abre el diálogo; no borra al soltar. El ⋮ hace lo mismo por tap.",
+    canvasHtml: swipe,
+  },
+  doDont: {
+    doHtml: swipe,
+    doCaption: "Fondos secondaryContainer / errorContainer y menú ⋮ equivalente.",
+    dontHtml: `<div class="mot-li-wrap">${listItemHtml({ more: false })}</div>`,
+    dontCaption: "Fila sin ⋮: el swipe quedaría como única vía. Prohibido por a11y.",
+  },
+});

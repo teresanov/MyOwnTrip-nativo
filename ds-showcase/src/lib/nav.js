@@ -48,7 +48,7 @@ export function mountNav(currentPageId, { componentId = null } = {}) {
     </div>
     <ul class="rail__list">${items}</ul>
     <div class="rail__footer">
-      <button type="button" class="btn btn--outlined" id="theme-toggle">Cambiar tema</button>
+      <button type="button" class="theme-toggle" id="theme-toggle">Tema oscuro</button>
       <p class="rail__meta">M3 nativo · Compose</p>
     </div>
   `;

@@ -1,99 +1,29 @@
-import { initShowcasePage, statusChip } from "../lib/bootstrap.js";
 import data from "../data/components/stacked-card.json";
-import { mountDecisions } from "../lib/decisions.js";
-import { renderGuidelines } from "../lib/component-page.js";
+import { mountComponentPage } from "../lib/generic-component.js";
 
-initShowcasePage("components", { componentId: "stacked-card" });
-
-mountDecisions(data);
-
-document.getElementById("component-header").innerHTML = `
-  <p class="page-header__eyebrow">Component · Cards · ${data.priority || "P1"}</p>
-  <h1>${data.name} ${statusChip(data.status)}</h1>
-  <p class="page-header__lead">${data.purpose}</p>
-  <p><a href="${data.figma}" target="_blank" rel="noopener">Stacked card en Figma ↗</a> · <a href="../../docs/design-system/figma-compose-bindings.md">Bindings Figma ↔ Compose</a></p>
-`;
-
-document.getElementById("component-main").innerHTML = `
-  <section class="section">
-    <h2>Home vacío · Media & text (205:816)</h2>
-    <figure class="card-demo card-demo--stacked">
-      <div class="card-demo__header">
-        <div>
-          <strong>Sin viajes todavía</strong>
-          <p>Planea tu primera aventura</p>
-        </div>
+const mediaCard = `
+  <figure class="card-demo card-demo--stacked">
+    <div class="card-demo__header">
+      <div>
+        <strong>Sin viajes todavía</strong>
+        <p>Planea tu primera aventura</p>
       </div>
-      <img src="/assets/home_empty_map.jpg" alt="Mapa con chincheta de viaje" width="360" height="200" loading="lazy" />
-    </figure>
-    <p class="lead">Imagen bundled en app: <code>res/drawable-nodpi/home_empty_map.jpg</code> → <code>imageRes</code> (sin red).</p>
-  </section>
+    </div>
+    <img src="/assets/home_empty_map.jpg" alt="" width="360" height="200" />
+  </figure>`;
 
-  <section class="section">
-    <h2>Anatomía</h2>
-    <ol class="list-dos">
-      ${data.anatomy.map((a) => `<li>${a}</li>`).join("")}
-    </ol>
-  </section>
-
-  <section class="section">
-    <h2>Variantes</h2>
-    <table>
-      <thead><tr><th>Variante</th><th>Uso</th></tr></thead>
-      <tbody>
-        ${data.variants.map((v) => `<tr><td>${v.label}</td><td>${v.usage}</td></tr>`).join("")}
-      </tbody>
-    </table>
-  </section>
-
-  <section class="section">
-    <h2>Properties → Compose</h2>
-    <table>
-      <thead><tr><th>Property Figma</th><th>Parámetro</th></tr></thead>
-      <tbody>
-        <tr><td><code>Header text</code></td><td><code>headerText</code></td></tr>
-        <tr><td><code>Subhead text</code></td><td><code>subheadText</code></td></tr>
-        <tr><td><code>Supporting text</code></td><td><code>supportingText</code></td></tr>
-        <tr><td><code>Show secondary action</code></td><td><code>onDismiss</code></td></tr>
-        <tr><td><code>Style</code></td><td><code>MotCardStyle</code></td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="section">
-    <h2>Instancias producto (Home)</h2>
-    <table>
-      <thead><tr><th>Frame</th><th>Composable</th></tr></thead>
-      <tbody>
-        <tr><td>205:816 vacío</td><td><code>HomeEmptyStackedCard</code></td></tr>
-        <tr><td>Filtro vacío</td><td><code>MotStackedCard(Outlined, …)</code></td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="section">
-    <h2>Tokens M3</h2>
-    <p><code>${data.tokens.join("</code>, <code>")}</code></p>
-  </section>
-
-  ${renderGuidelines(data)}
-
-  <section class="section">
-    <h2>Compose</h2>
-    <pre><code>${escapeHtml(data.compose)}</code></pre>
-  </section>
-
-  <section class="section">
-    <h2>Changelog</h2>
-    <table>
-      <thead><tr><th>Fecha</th><th>Nota</th></tr></thead>
-      <tbody>
-        ${data.changelog.map((e) => `<tr><td>${e.date}</td><td>${e.note}</td></tr>`).join("")}
-      </tbody>
-    </table>
-  </section>
-`;
-
-function escapeHtml(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
+mountComponentPage(data, {
+  specimenHtml: mediaCard,
+  playground: {
+    id: "ejemplo",
+    title: "Ejemplo",
+    hint: "Home vacío: Outlined · Media & text. La imagen es el mapa bundled (home_empty_map), no una URL.",
+    canvasHtml: mediaCard,
+  },
+  doDont: {
+    doHtml: mediaCard,
+    doCaption: "Un tema, header + media, Outlined.",
+    dontHtml: `<button type="button" class="mot-btn mot-btn--filled">Crear viaje</button>`,
+    dontCaption: "El empty state no es un botón suelto: es esta card (y el CTA va aparte, si lo hay).",
+  },
+});

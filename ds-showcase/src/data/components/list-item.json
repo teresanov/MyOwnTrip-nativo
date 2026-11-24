@@ -305,6 +305,10 @@
     {
       "date": "2026-11-18",
       "note": "Ficha en el showcase con el esquema Usage-first."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ejemplar vivo. Sin tabla de node-ids."
     }
   ],
   "anatomyDiagram": {

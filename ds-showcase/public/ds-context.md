@@ -250,62 +250,132 @@ MOTIconButton(
 ## Filter chip
 
 - Estado: ready · P0
-- Para qué: Los filter chips permiten elegir una opción dentro de un conjunto pequeño y cambiarla con un solo toque. En MyOwnTrip los usamos en filas horizontales con scroll —por ejemplo, Activos / Archivados / Todos en Wallet— y en formularios cuando hay pocas categorías. Implementamos el componente Material 3 `FilterChip` sin wrapper propio; en Home el filtro de viajes sigue el patrón Menu, no chips.
-- Composable: sin documentar en la ficha
+- Para qué: Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. El runtime es el FilterChip de Material 3, sin wrapper MOT.
+- Composable: `FilterChip` — `androidx.compose.material3.FilterChip`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt`
 
 ### Variantes
 
-- **Outlined · Selected=False**: Opciones no activas en la fila (p. ej. «Archivados»).
-- **Outlined · Selected=True**: Filtro activo (p. ej. «Activos» en Wallet).
+- **Outlined · Unselected** → `FilterChip`: Opciones no activas en la fila (p. ej. «Archivados»).
+- **Outlined · Selected** → `FilterChip`: Filtro activo. M3 pone el check al inicio; no hace falta un leadingIcon propio.
+
+### Cuándo usarlo
+
+- Hay un conjunto cerrado de categorías y la persona cambia de una a otra con un toque.
+- El valor se queda visible en la misma pantalla (no dispara una acción que cierra un flujo).
+- Las etiquetas caben en una fila: sustantivos cortos, en español, 20 caracteres o menos.
+
+### Cuándo NO usarlo
+
+- La acción confirma, guarda o cierra un flujo → Button
+- Filtro de viajes en Home → Menu — el patrón acordado no es chip
+- Una sola etiqueta de metadato (tipo, fecha, lugar) → Eyebrow label
+- Mensaje breve que no pide una decisión → Snackbar
+
+### Elegir variante
+
+- La opción no está activa → `FilterChip selected = false` — Outline sobre el fondo; label onSurface.
+- La opción está activa → `FilterChip selected = true` — Fill secondaryContainer y check leading de M3. En Wallet solo hay una seleccionada por eje.
 
 ### Prohibido en este componente
 
-- No sustituyas acciones principales por chips: las acciones que avanzan o retroceden en un paso van siempre como botones.
-- No uses chips para terminar o avanzar una tarea; el último paso de una tarea es un botón.
-- No muestres un chip suelto: deben aparecer en un conjunto.
-- No mezcles selección única y múltiple entre los conjuntos de chips de una misma pantalla.
-- No eleves los chips cuando están directamente sobre la página, ni uses la elevación para indicar el estado pulsado (usa el ripple).
-- Evita frases negativas en los filter chips, como «Excluir imágenes».
-- No reintroduzcas la variante Elevated del set (fue eliminada en la Fase D de la librería).
-- No uses esquinas Extra-small en chips: ese radio pertenece al Text field.
-- No dibujes chips con frames sueltos en el design-file; instancia siempre el set publicado.
-- No sustituyas el menú de filtro de Home por FilterChip: el patrón acordado es Menu.
+- No sustituyas acciones principales por chips: avanzar o retroceder va en botones.
+- No muestres un chip suelto.
+- No mezcles selección única y múltiple entre conjuntos de la misma pantalla.
+- No eleves los chips sobre la página ni uses la elevación para el pulsado.
+- No reintroduzcas Elevated.
+- No uses esquinas Extra-small.
+- No dibujes chips con frames sueltos en el design-file.
+- No sustituyas el menú de filtro de Home por FilterChip.
 
 ### Accesibilidad
 
-- Cada chip: rol toggleable; anunciar selected/unselected.
-- Alternativa sin scroll horizontal forzado: mismo filtro accesible vía Menu donde aplique.
-- Touch target ≥ 48dp vía padding M3.
+- Cada chip es un toggle: anunciar selected / unselected (aria-pressed en este HTML; estado de FilterChip en Compose).
+- La fila puede hacer scroll; el mismo filtro tiene que ser alcanzable sin gesto horizontal (p. ej. Menu en Home).
+- Área táctil ≥ 48 dp de alto vía padding M3, aunque el contenedor visible mida 32 dp.
+
+### Uso típico
+
+```kotlin
+Row(
+    modifier = Modifier.horizontalScroll(rememberScrollState()),
+    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
+) {
+    FilterChip(
+        selected = filterPhase == WalletDocumentFilterPhase.Active,
+        onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Active) },
+        label = { Text("Activos") },
+    )
+}
+```
 
 ## Basic dialog
 
 - Estado: ready · P0
-- Para qué: Los diálogos básicos interrumpen la tarea para pedir confirmación o advertir de una pérdida de datos. Los usamos al guardar documentos en Wallet (hipótesis H7), al eliminar entradas, al descartar cambios o al salir de un formulario sin guardar. En Compose combinamos `AlertDialog` de Material 3 con `MOTTextButton` en las acciones.
-- Composable: sin documentar en la ficha
+- Para qué: Un diálogo básico interrumpe la tarea para pedir confirmación o advertir de una pérdida de datos. En MyOwnTrip cubre guardar en Wallet, eliminar una entrada, descartar cambios y salir de un formulario sin guardar. El runtime es AlertDialog de Material 3 con MOTTextButton en las acciones.
+- Composable: `AlertDialog` — `androidx.compose.material3.AlertDialog`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletDialogs.kt`
 
 ### Variantes
 
-- **Icon=False**: Confirmación neutra — cap 7 Wallet «Confirmar guardado» (Figma resume copy; Compose puede incluir Switch plan).
-- **Icon=True**: Riesgo o pérdida — caps 11 eliminar, 12 descartar (glyph error).
+- **Sin icono** → `AlertDialog`: Confirmación neutra. Ejemplo: Confirmar guardado (Cancelar / Guardar).
+- **Con icono** → `AlertDialog`: Riesgo. Ejemplo: ¿Eliminar documento? con MOTIcons.Error y Eliminar en error.
+
+### Cuándo usarlo
+
+- Hay que confirmar una acción irreversible o que pierde datos.
+- La persona tiene que decidir ahora: no puede seguir con la pantalla de detrás hasta responder.
+- Bastan un titular, un texto de apoyo y como máximo dos acciones.
+
+### Cuándo NO usarlo
+
+- Aviso de prioridad baja o media que no bloquea → Snackbar
+- La persona tiene que rellenar campos, no solo confirmar → Quédate en la pantalla; no metas el formulario en el diálogo
+- Tres o más acciones, o «Más información» → Saca al usuario del diálogo y deja la tarea resuelta en la pantalla
+
+### Elegir variante
+
+- Confirmación neutra (guardar, continuar) → `AlertDialog sin icono` — WalletConfirmDialog: Cancelar / Guardar. El cuerpo puede llevar un Switch de «Añadir al plan» porque Compose lo tiene; no es un eje del set.
+- Riesgo o pérdida (eliminar, descartar) → `AlertDialog + icono error` — Confirm destructivo en color error. WalletDeleteEntryDialog, WalletDiscardDialog, DeleteTripDialog.
 
 ### Prohibido en este componente
 
-- No uses un diálogo para información de prioridad baja o media: usa un snackbar.
-- No empieces el titular con disculpas («Perdona la interrupción»), alarma («¡Atención!») ni ambigüedad («¿Estás seguro?»).
-- No coloques las acciones de descarte a la derecha de las de confirmación.
-- Evita opciones poco claras: «Cancelar» no tiene sentido si no se propone una acción concreta.
-- No añadas una tercera acción como «Más información»: saca al usuario del diálogo y deja la tarea sin terminar.
-- No BODY con TEXT suelto encima del dialog en Figma.
-- No mezclar `Corner/Medium` de cards — dialog = Extra-large.
-- No añadir Switch suelto en cap Figma si no existe en la variante del set.
-- No bloquear dismiss sin copy claro (Seguir editando / Cancelar).
+- No uses un diálogo para prioridad baja o media: usa un snackbar.
+- No empieces el titular con disculpas, alarma ni «¿Estás seguro?».
+- No coloques el descarte a la derecha de la confirmación.
+- No añadas una tercera acción como «Más información».
+- No mezclar el radio de cards (Medium) en el diálogo.
+- No bloquear el dismiss sin copy claro (Seguir editando / Cancelar).
+- No documentar el diálogo con node-ids de caps: la ficha vive aquí.
 
 ### Accesibilidad
 
-- Foco atrapado en dialog; dismiss con back donde aplique.
-- Headline leído antes que supporting text.
-- Botón destructivo anunciado con consecuencia en supporting text.
-- Icon decorativo: `contentDescription = null` si el título ya comunica el riesgo.
+- Foco atrapado; Escape / Back cierran cuando aplique.
+- Headline se lee antes que el supporting text (alertdialog + labelledby / describedby).
+- El icono es decorativo: contentDescription = null si el título ya nombra el riesgo.
+- El botón destructivo no se entiende solo por el color: el texto de apoyo lleva la consecuencia.
+
+### Uso típico
+
+```kotlin
+AlertDialog(
+    onDismissRequest = onDismiss,
+    icon = {
+        Icon(MOTIcons.Error, contentDescription = null,
+            tint = MaterialTheme.colorScheme.error)
+    },
+    title = { Text("¿Eliminar documento?") },
+    text = { Text("Se borrará «$entryTitle»…") },
+    confirmButton = {
+        MOTTextButton(onClick = onConfirmDelete) {
+            Text("Eliminar", color = MaterialTheme.colorScheme.error)
+        }
+    },
+    dismissButton = {
+        MOTTextButton(onClick = onDismiss) { Text("Cancelar") }
+    },
+)
+```
 
 ## Snackbar
 

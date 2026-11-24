@@ -5,6 +5,7 @@ import {
   renderBehavior,
   renderComponentHeader,
   renderDecisions,
+  renderDoDontPair,
   renderGuidelines,
   renderImplementation,
   renderPlayground,
@@ -13,7 +14,7 @@ import {
   renderUsage,
   renderVariantTable,
 } from "../lib/component-page.js";
-import { renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
+import { renderAnatomy, renderMeasures, STARS_ICON } from "../lib/anatomy-diagram.js";
 
 initShowcasePage("components", { componentId: "button" });
 
@@ -65,7 +66,14 @@ const playgroundControls = `
   </label>
 `;
 
-document.getElementById("component-header").innerHTML = renderComponentHeader(data);
+document.getElementById("component-header").innerHTML = renderComponentHeader({
+  ...data,
+  specimenHtml: `
+    <button type="button" class="mot-btn mot-btn--filled">${STARS_ICON}Abrir cuaderno</button>
+    <button type="button" class="mot-btn mot-btn--tonal">Siguiente</button>
+    <button type="button" class="mot-btn mot-btn--outlined">Cancelar</button>
+  `,
+});
 
 document.getElementById("component-main").innerHTML = [
   renderUsage(data),
@@ -77,7 +85,18 @@ document.getElementById("component-main").innerHTML = [
     canvasHtml: playgroundCanvas,
     controlsHtml: playgroundControls,
   }),
-  renderGuidelines(data),
+  renderGuidelines(data).replace(
+    "</section>",
+    `${renderDoDontPair({
+      doHtml: `
+        <button type="button" class="mot-btn mot-btn--filled">${STARS_ICON}Abrir cuaderno</button>
+        <button type="button" class="mot-btn mot-btn--outlined">Cancelar</button>
+      `,
+      doCaption: "La jerarquía la marca la variante (Filled / Outlined), no un color inventado.",
+      dontHtml: `<button type="button" class="fake-btn">Guardar</button>`,
+      dontCaption: "Un botón a mano con hex y radio de píldora. No es el sistema.",
+    })}</section>`
+  ),
   renderVariantTable(data.variants),
   renderAnatomy(data.anatomy, data.anatomyDiagram),
   renderMeasures(data.anatomyDiagram),

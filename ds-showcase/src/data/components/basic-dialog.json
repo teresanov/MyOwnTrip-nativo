@@ -3,98 +3,195 @@
   "name": "Basic dialog",
   "status": "ready",
   "priority": "P0",
-  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=50723-10929",
-  "purpose": "Los diálogos básicos interrumpen la tarea para pedir confirmación o advertir de una pérdida de datos. Los usamos al guardar documentos en Wallet (hipótesis H7), al eliminar entradas, al descartar cambios o al salir de un formulario sin guardar. En Compose combinamos `AlertDialog` de Material 3 con `MOTTextButton` en las acciones.",
-  "anatomy": [
-    "Scrim — overlay semitransparente (layout design-file, no componente suelto inventado)",
-    "Container — `Corner/Extra-large` (28dp) ↔ `MaterialTheme.shapes.extraLarge`",
-    "Icon — opcional (`Icon=True`); error tint en eliminar/descartar",
-    "Headline — Fraunces/Inter headline small",
-    "Supporting text — body medium",
-    "Actions — fila `MOTTextButton` (Cancelar / confirmar); destructivo en `error`"
-  ],
+  "category": "feedback",
+  "summary": "Interrumpe la tarea para pedir confirmación o advertir de una pérdida de datos.",
+  "figma": {
+    "label": "Basic dialog",
+    "node": "50723:10929",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=50723-10929"
+  },
+  "usage": {
+    "purpose": "Un diálogo básico interrumpe la tarea para pedir confirmación o advertir de una pérdida de datos. En MyOwnTrip cubre guardar en Wallet, eliminar una entrada, descartar cambios y salir de un formulario sin guardar. El runtime es AlertDialog de Material 3 con MOTTextButton en las acciones.",
+    "when": [
+      "Hay que confirmar una acción irreversible o que pierde datos.",
+      "La persona tiene que decidir ahora: no puede seguir con la pantalla de detrás hasta responder.",
+      "Bastan un titular, un texto de apoyo y como máximo dos acciones."
+    ],
+    "whenNot": [
+      {
+        "case": "Aviso de prioridad baja o media que no bloquea",
+        "use": "Snackbar",
+        "href": "components/snackbar.html"
+      },
+      {
+        "case": "La persona tiene que rellenar campos, no solo confirmar",
+        "use": "Quédate en la pantalla; no metas el formulario en el diálogo"
+      },
+      {
+        "case": "Tres o más acciones, o «Más información»",
+        "use": "Saca al usuario del diálogo y deja la tarea resuelta en la pantalla"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Confirmación neutra (guardar, continuar)",
+        "use": "AlertDialog sin icono",
+        "note": "WalletConfirmDialog: Cancelar / Guardar. El cuerpo puede llevar un Switch de «Añadir al plan» porque Compose lo tiene; no es un eje del set."
+      },
+      {
+        "if": "Riesgo o pérdida (eliminar, descartar)",
+        "use": "AlertDialog + icono error",
+        "note": "Confirm destructivo en color error. WalletDeleteEntryDialog, WalletDiscardDialog, DeleteTripDialog."
+      }
+    ],
+    "related": [
+      { "label": "Button", "href": "components/button.html" },
+      { "label": "Filter chip", "href": "components/filter-chip.html" },
+      { "label": "Snackbar", "href": "components/snackbar.html" }
+    ]
+  },
   "variants": [
     {
       "id": "icon-false",
-      "label": "Icon=False",
-      "usage": "Confirmación neutra — cap 7 Wallet «Confirmar guardado» (Figma resume copy; Compose puede incluir Switch plan)."
+      "label": "Sin icono",
+      "composable": "AlertDialog",
+      "usage": "Confirmación neutra. Ejemplo: Confirmar guardado (Cancelar / Guardar)."
     },
     {
       "id": "icon-true",
-      "label": "Icon=True",
-      "usage": "Riesgo o pérdida — caps 11 eliminar, 12 descartar (glyph error)."
+      "label": "Con icono",
+      "composable": "AlertDialog",
+      "usage": "Riesgo. Ejemplo: ¿Eliminar documento? con MOTIcons.Error y Eliminar en error."
     }
   ],
-  "properties": [
-    { "name": "Icon", "type": "VARIANT", "example": "True | False" },
-    { "name": "Headline", "type": "TEXT", "example": "¿Eliminar documento?" },
-    { "name": "Supporting text", "type": "TEXT", "example": "Esta acción no se puede deshacer." },
-    { "name": "Dismiss label", "type": "TEXT", "example": "Cancelar" },
-    { "name": "Confirm label", "type": "TEXT", "example": "Eliminar" }
+  "anatomy": [
+    "<strong>Scrim</strong> — overlay que bloquea la pantalla de detrás. Clic fuera o Back descartan si onDismissRequest lo permite.",
+    "<strong>Contenedor</strong> — surfaceContainerHigh, radio 28 dp (<code>Corner/Extra-large</code> ↔ <code>shapes.extraLarge</code>).",
+    "<strong>Icono</strong> — opcional; tint error cuando la acción destruye o descarta.",
+    "<strong>Headline</strong> — pregunta o afirmación concreta. Rol headline (Fraunces). Nunca «¿Estás seguro?» ni «¡Atención!».",
+    "<strong>Supporting text</strong> — body medium; explica la consecuencia.",
+    "<strong>Acciones</strong> — dos <code>MOTTextButton</code> alineados al final: descartar a la izquierda, confirmar a la derecha."
   ],
-  "tokens": [
-    "surfaceContainerHigh",
-    "onSurface / onSurfaceVariant",
-    "error (icon + confirm destructivo)",
-    "Corner/Extra-large (28dp)",
-    "mot/padding/dialog/container (24)",
-    "mot/spacing/dialog/divider-gap (12)",
-    "mot/spacing/dialog/section-gap (16)",
-    "mot/spacing/dialog/actions-gap (8)"
-  ],
-  "guidelines": {
-    "label": "Material Design 3 · Dialogs",
-    "url": "https://m3.material.io/components/dialogs/guidelines",
-    "consulted": "2026-11-10"
-  },
-  "dos": [
-    "Úsalo con moderación, para avisos que bloquean el funcionamiento normal o información crítica que requiere una decisión, una tarea o una confirmación.",
-    "Titular breve y claro: una afirmación o pregunta concreta que explique qué implica la petición.",
-    "Como máximo dos acciones: si hay una sola, debe ser una confirmación de lectura; si hay dos, una confirma y la otra descarta.",
-    "Alinea los botones al borde final del diálogo: la acción de confirmar, más cerca del borde, y la de descartar a su izquierda.",
-    "Deshabilita la acción de confirmar hasta que se haya hecho una elección; las acciones de descartar nunca se deshabilitan.",
-    "Muestra dos botones de texto, uno junto a otro."
-  ],
-  "donts": [
-    "No uses un diálogo para información de prioridad baja o media: usa un snackbar.",
-    "No empieces el titular con disculpas («Perdona la interrupción»), alarma («¡Atención!») ni ambigüedad («¿Estás seguro?»).",
-    "No coloques las acciones de descarte a la derecha de las de confirmación.",
-    "Evita opciones poco claras: «Cancelar» no tiene sentido si no se propone una acción concreta.",
-    "No añadas una tercera acción como «Más información»: saca al usuario del diálogo y deja la tarea sin terminar."
-  ],
-  "productRules": {
-    "dos": [
-      "Instancia `Basic dialog` en design-file; properties TEXT del set.",
-      "Icono + texto en errores; confirm destructivo con color `error` en label.",
-      "Wallet caps 7/11/12 alineados a `WalletConfirmDialog` / `WalletDeleteEntryDialog` / `WalletDiscardDialog`.",
-      "`BackHandler` + diálogo descartable solo con cambios sin guardar."
+  "behavior": {
+    "lead": "El diálogo atrapa el foco. No es un sitio para un tercer botón ni para un flujo largo.",
+    "rows": [
+      { "state": "Abrir", "detail": "Scrim + panel. Foco al botón de descartar (el seguro)." },
+      { "state": "Descartar", "detail": "Cancelar, clic en scrim o Back llaman onDismissRequest. Esa acción nunca se deshabilita." },
+      { "state": "Confirmar", "detail": "Cierra y ejecuta. Si es destructivo, el label va en error y el supporting text ya dijo la consecuencia." }
     ],
-    "donts": [
-      "No BODY con TEXT suelto encima del dialog en Figma.",
-      "No mezclar `Corner/Medium` de cards — dialog = Extra-large.",
-      "No añadir Switch suelto en cap Figma si no existe en la variante del set.",
-      "No bloquear dismiss sin copy claro (Seguir editando / Cancelar)."
+    "notes": [
+      "Como máximo dos acciones. Si hay una sola, es confirmar lectura.",
+      "Confirmar se puede deshabilitar hasta que haya una elección; descartar no.",
+      "WalletConfirmDialog mete un Switch y un selector de día en el texto de apoyo: es contenido de producto dentro del AlertDialog, no una variante del set.",
+      "BackHandler solo con cambios sin guardar, y el diálogo tiene que ser descartable."
     ]
   },
   "a11y": [
-    "Foco atrapado en dialog; dismiss con back donde aplique.",
-    "Headline leído antes que supporting text.",
-    "Botón destructivo anunciado con consecuencia en supporting text.",
-    "Icon decorativo: `contentDescription = null` si el título ya comunica el riesgo."
+    "Foco atrapado; Escape / Back cierran cuando aplique.",
+    "Headline se lee antes que el supporting text (alertdialog + labelledby / describedby).",
+    "El icono es decorativo: contentDescription = null si el título ya nombra el riesgo.",
+    "El botón destructivo no se entiende solo por el color: el texto de apoyo lleva la consecuencia."
   ],
-  "compose": "AlertDialog(\n    onDismissRequest = onDismiss,\n    icon = {\n        Icon(Icons.Default.Error, contentDescription = null,\n            tint = MaterialTheme.colorScheme.error)\n    },\n    title = { Text(\"¿Eliminar documento?\") },\n    text = { Text(\"Se borrará «$entryTitle»…\") },\n    confirmButton = {\n        MOTTextButton(onClick = onConfirmDelete) {\n            Text(\"Eliminar\", color = MaterialTheme.colorScheme.error)\n        }\n    },\n    dismissButton = {\n        MOTTextButton(onClick = onDismiss) { Text(\"Cancelar\") }\n    },\n)",
-  "walletCaps": [
-    { "cap": "7 · confirmar", "figma": "492:3332", "icon": false, "ctas": "Cancelar / Guardar" },
-    { "cap": "11 · eliminar", "figma": "492:3372", "icon": true, "ctas": "Cancelar / Eliminar" },
-    { "cap": "12 · descartar", "figma": "492:3414", "icon": true, "ctas": "Seguir editando / Descartar" }
+  "tokens": {
+    "color": [
+      { "token": "surfaceContainerHigh", "use": "Contenedor." },
+      { "token": "onSurface / onSurfaceVariant", "use": "Headline y supporting text." },
+      { "token": "error", "use": "Icono y confirm destructivo." },
+      { "token": "scrim", "use": "Overlay." }
+    ],
+    "shape": [
+      { "token": "shapes.extraLarge", "use": "28 dp. No mezclar con Corner/Medium de cards." }
+    ],
+    "spacing": [
+      { "token": "mot/padding/dialog/container", "use": "24 dp alrededor del panel." },
+      { "token": "mot/spacing/dialog/section-gap", "use": "16 dp entre bloques (icono–título, cuerpo–acciones)." },
+      { "token": "mot/spacing/dialog/divider-gap", "use": "12 dp alrededor de un divisor interno, si lo hay." },
+      { "token": "mot/spacing/dialog/actions-gap", "use": "8 dp entre los dos text buttons." }
+    ],
+    "type": [
+      { "token": "headlineSmall", "use": "Título. Fraunces (Display/Headline)." },
+      { "token": "bodyMedium", "use": "Supporting text. Inter." },
+      { "token": "labelLarge", "use": "Acciones vía MOTTextButton." }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Dialogs",
+        "url": "https://m3.material.io/components/dialogs/guidelines"
+      }
+    ],
+    "consulted": "2026-11-10"
+  },
+  "dos": [
+    "Úsalo con moderación, para avisos que bloquean o piden una decisión.",
+    "Titular breve: una afirmación o pregunta concreta.",
+    "Como máximo dos acciones; confirmar al borde final, descartar a su izquierda.",
+    "Dos botones de texto, uno junto a otro."
   ],
+  "donts": [
+    "No uses un diálogo para prioridad baja o media: usa un snackbar.",
+    "No empieces el titular con disculpas, alarma ni «¿Estás seguro?».",
+    "No coloques el descarte a la derecha de la confirmación.",
+    "No añadas una tercera acción como «Más información»."
+  ],
+  "productRules": {
+    "dos": [
+      "Icono + texto en errores; confirm destructivo con <code>colorScheme.error</code> en el label.",
+      "Trazar cada diálogo de producto a su composable: WalletConfirmDialog, WalletDeleteEntryDialog, WalletDiscardDialog.",
+      "BackHandler + diálogo descartable solo con cambios sin guardar."
+    ],
+    "donts": [
+      "No mezclar el radio de cards (Medium) en el diálogo.",
+      "No bloquear el dismiss sin copy claro (Seguir editando / Cancelar).",
+      "No documentar el diálogo con node-ids de caps: la ficha vive aquí."
+    ]
+  },
+  "implementation": {
+    "module": "material3 + designsystem",
+    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletDialogs.kt",
+    "import": "androidx.compose.material3.AlertDialog",
+    "composable": "AlertDialog",
+    "note": "Las acciones son MOTTextButton. No hay wrapper MOT del diálogo.",
+    "params": [
+      { "name": "onDismissRequest", "type": "() -> Unit", "default": "—", "note": "Scrim y Back." },
+      { "name": "icon", "type": "@Composable (() -> Unit)?", "default": "null", "note": "MOTIcons.Error + tint error en eliminar/descartar." },
+      { "name": "title", "type": "@Composable () -> Unit", "default": "—", "note": "Headline." },
+      { "name": "text", "type": "@Composable (() -> Unit)?", "default": "null", "note": "Supporting; puede anidar Switch en confirmar guardado." },
+      { "name": "confirmButton", "type": "@Composable () -> Unit", "default": "—", "note": "MOTTextButton." },
+      { "name": "dismissButton", "type": "@Composable (() -> Unit)?", "default": "null", "note": "MOTTextButton; nunca disabled." }
+    ],
+    "snippet": "AlertDialog(\n    onDismissRequest = onDismiss,\n    icon = {\n        Icon(MOTIcons.Error, contentDescription = null,\n            tint = MaterialTheme.colorScheme.error)\n    },\n    title = { Text(\"¿Eliminar documento?\") },\n    text = { Text(\"Se borrará «$entryTitle»…\") },\n    confirmButton = {\n        MOTTextButton(onClick = onConfirmDelete) {\n            Text(\"Eliminar\", color = MaterialTheme.colorScheme.error)\n        }\n    },\n    dismissButton = {\n        MOTTextButton(onClick = onDismiss) { Text(\"Cancelar\") }\n    },\n)"
+  },
   "decisions": {
-    "source": "Figma node 50723-10929 · Compose `AlertDialog` (M3)",
-    "why": "Interrumpir la tarea solo para confirmar o advertir de pérdida de datos: guardar en Wallet (H7), eliminar, descartar cambios.",
-    "layer": "M3 `AlertDialog` con `MOTTextButton` en las acciones"
+    "source": "Compose AlertDialog + MOTTextButton · set de librería 50723:10929",
+    "why": "Interrumpir solo para confirmar o advertir pérdida de datos.",
+    "layer": "M3 AlertDialog; acciones MOTTextButton"
   },
   "changelog": [
-    { "date": "2026-10-29", "note": "Fase B.3: Extra-large + mot/padding|spacing/dialog/*; Wallet caps instanciados." },
-    { "date": "2026-10-30", "note": "Playground modal con Escape y scrim; copy ampliado." }
-  ]
+    { "date": "2026-10-29", "note": "Extra-large + mot/padding|spacing/dialog/*." },
+    { "date": "2026-10-30", "note": "Playground modal con Escape y scrim." },
+    { "date": "2026-11-24", "note": "Ficha usage-first: anatomía, medidas y pantallas Compose. Se retira la tabla de node-ids de Wallet en Figma." }
+  ],
+  "screens": [
+    { "screen": "WalletConfirmDialog", "pattern": "Sin icono · Cancelar / Guardar · cuerpo puede llevar Switch de plan" },
+    { "screen": "WalletDeleteEntryDialog", "pattern": "Icono error · Cancelar / Eliminar" },
+    { "screen": "WalletDiscardDialog", "pattern": "Icono error · Seguir editando / Descartar" },
+    { "screen": "DeleteTripDialog", "pattern": "¿Eliminar viaje?" }
+  ],
+  "anatomyDiagram": {
+    "kind": "dialog",
+    "values": {
+      "pad": 24,
+      "section": 16,
+      "actions": 8,
+      "radius": 28
+    },
+    "measures": [
+      { "label": "Padding del contenedor", "value": "24 dp" },
+      { "label": "Hueco entre bloques", "value": "16 dp" },
+      { "label": "Hueco entre acciones", "value": "8 dp" },
+      { "label": "Radio", "value": "28 dp" }
+    ]
+  }
 }

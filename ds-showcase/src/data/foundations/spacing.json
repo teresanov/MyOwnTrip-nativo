@@ -2,84 +2,65 @@
   "id": "spacing",
   "name": "Espaciado",
   "eyebrow": "Foundations",
-  "lead": "El espaciado de pantalla es MOTSpacing. El padding interno de los componentes M3 no es espaciado de pantalla y no se sustituye.",
-  "sourceOfTruth": "designsystem/.../ui/theme/MOTSpacing.kt · Figma: colección MOT · Spacing (mot/spacing/*)",
+  "lead": "Las pantallas miden con <code>MOTSpacing</code>. El padding interno de un componente M3 es otra cosa: no se sustituye por un hueco de pantalla.",
+  "sourceOfTruth": "MOTSpacing.kt · variables mot/spacing/* y mot/padding/*",
   "sections": [
     {
       "id": "principio",
-      "title": "Principio",
-      "lead": "En UI, tanto en Figma como en Compose, solo semánticos. Los primitivos (<code>spacing/12</code>, <code>spacing/16</code>…) viven en <strong>Primitives · Space</strong> y solo existen como alias detrás de <code>mot/spacing/*</code>.",
-      "notes": [
-        "<strong>Gate Figma ↔ Compose:</strong> no se crea un <code>mot/*</code> en Figma sin espejo en Kotlin. El orden es Compose primero, luego el token, luego el bind en Figma.",
-        "Nunca bindear un primitivo directo en un frame de producto ni en el contrato de un componente."
+      "title": "Cómo se usa",
+      "paragraphs": [
+        "En UI se consume el nombre semántico: <code>MOTSpacing.screenHorizontal</code> es el mismo valor que la variable <code>mot/spacing/screen-horizontal</code>. Los primitivos (<code>spacing/12</code>, <code>spacing/16</code>…) solo existen como alias detrás de ese nombre. Nunca se usan en un frame de producto.",
+        "El orden es Compose primero, luego el token. No se crea un <code>mot/*</code> sin espejo en Kotlin."
+      ],
+      "dos": [
+        "Padding de página y columnas con <code>screen-horizontal</code>, <code>layout-md</code> / <code>layout-lg</code>, <code>component-sm</code> / <code>component-xs</code>.",
+        "En Compose: <code>Modifier.padding(horizontal = MOTSpacing.screenHorizontal)</code>."
+      ],
+      "donts": [
+        "Bindear un primitivo (<code>spacing/12</code>) en un nodo de UI.",
+        "Usar <code>LEGACY · Semantic Layout</code> ni portar <code>LayoutTokens</code> del repo archivo.",
+        "Confundir un inset de pantalla (<code>layout-md</code>) con el padding de un botón (<code>mot/padding/button/*</code>)."
       ]
+    },
+    {
+      "id": "escala",
+      "title": "Escala",
+      "lead": "Cada barra mide el valor real (1 px = 1 dp). Varios roles pueden compartir el mismo primitivo: el nombre dice para qué sirve, no el número."
     },
     {
       "id": "pantalla",
       "title": "Espaciado de pantalla",
-      "lead": "Márgenes, gutters y huecos entre bloques.",
+      "lead": "Márgenes del Body, gutters y huecos entre bloques. El dibujo es un cuerpo de 360 dp con los tokens de una pantalla MOT.",
       "table": {
-        "head": ["Compose", "Figma", "dp"],
+        "head": ["Compose", "Variable", "dp", "Uso"],
         "rows": [
-          ["<code>MOTSpacing.screenHorizontal</code>", "<code>mot/spacing/screen-horizontal</code>", "16"],
-          ["<code>MOTSpacing.screenContentBottom</code>", "<code>mot/spacing/screen-content-bottom</code>", "24"],
-          ["<code>MOTSpacing.screenContentBottomWithFab</code>", "<code>mot/spacing/screen-content-bottom-with-fab</code>", "88"],
-          ["<code>MOTSpacing.layoutMd</code>", "<code>mot/spacing/layout-md</code>", "16"],
-          ["<code>MOTSpacing.layoutLg</code>", "<code>mot/spacing/layout-lg</code>", "24"],
-          ["<code>MOTSpacing.gutterGrid</code>", "<code>mot/spacing/gutter-grid</code>", "16"]
+          ["<code>screenHorizontal</code>", "<code>mot/spacing/screen-horizontal</code>", "16", "Padding H del Body (a menudo también arriba)"],
+          ["<code>screenContentBottom</code>", "<code>mot/spacing/screen-content-bottom</code>", "24", "Colchón inferior sin FAB"],
+          ["<code>screenContentBottomWithFab</code>", "<code>mot/spacing/screen-content-bottom-with-fab</code>", "88", "Listas con FAB en la misma pantalla"],
+          ["<code>layoutMd</code>", "<code>mot/spacing/layout-md</code>", "16", "Hueco entre bloques"],
+          ["<code>layoutLg</code>", "<code>mot/spacing/layout-lg</code>", "24", "Hueco de sección"],
+          ["<code>gutterGrid</code>", "<code>mot/spacing/gutter-grid</code>", "16", "Gutter de grid"]
         ]
       }
     },
     {
       "id": "componente",
-      "title": "Huecos de componente",
-      "table": {
-        "head": ["Compose", "Figma", "dp"],
-        "rows": [
-          ["<code>MOTSpacing.componentXs</code>", "<code>mot/spacing/component-xs</code>", "4"],
-          ["<code>MOTSpacing.componentSm</code>", "<code>mot/spacing/component-sm</code>", "8"],
-          ["<code>MOTSpacing.componentMd</code>", "<code>mot/spacing/component-md</code>", "12"],
-          ["<code>MOTSpacing.componentLg</code>", "<code>mot/spacing/component-lg</code>", "16"]
-        ]
-      },
-      "notes": [
-        "Hueco icono–label: XS 4 · SM y MD 8 · LG 12."
-      ]
+      "title": "En vivo",
+      "lead": "Las tablas dicen qué tokens existen; aquí se ve en qué pieza se aplican. Son especímenes del kit (1 px = 1 dp). Verde es padding, ámbar es gap. Pasa el cursor por la pieza o por la fila."
     },
     {
       "id": "padding",
-      "title": "Padding interno documentado",
-      "lead": "Es <strong>padding</strong>, no espaciado de pantalla. Solo se documenta cuando el componente lo expone como parámetro.",
-      "table": {
-        "head": ["Compose", "Figma", "dp"],
-        "rows": [
-          ["<code>MOTSpacing.ButtonXSmall</code>", "<code>mot/padding/button/xsmall-*</code>", "12 × 6"],
-          ["<code>MOTSpacing.ButtonSmall</code>", "<code>mot/padding/button/small-*</code>", "24 × 8"],
-          ["<code>MOTSpacing.ButtonMedium</code>", "<code>mot/padding/button/medium-*</code>", "24 × 16"],
-          ["<code>MOTSpacing.ButtonLarge</code>", "<code>mot/padding/button/large-*</code>", "48 × 32"],
-          ["<code>MOTSpacing.Chip</code>", "<code>mot/padding/chip/*</code>", "8 o 16 × 6 · gap 8"],
-          ["<code>MOTSpacing.Dialog</code>", "<code>mot/padding/dialog/container</code>", "24 · gaps 16 / 12 / 8"],
-          ["<code>MOTSpacing.Snackbar</code>", "<code>mot/padding/snackbar/*</code>", "16 × 12 · gap 12"],
-          ["<code>MOTSpacing.ListItem</code>", "<code>mot/padding/list-item/*</code>", "16 × 12 · gap 12"],
-          ["<code>MOTSpacing.Tab</code>", "<code>mot/padding/tab/*</code>", "16 × 14 · gap 4"],
-          ["<code>MOTSpacing.TextField</code>", "<code>mot/padding/text-field/*</code>", "16 × 4 · outlined 16"]
-        ]
-      },
-      "notes": [
-        "<code>ButtonSmall</code> es 24 × 8 porque es el <code>ContentPadding</code> por defecto de M3, y el código manda. En date/time, <code>DatePicker.headerGap</code>, <code>TimeInput.*</code> y <code>KeyboardPicker.gap</code> son <strong>ARCHIVE kit M3</strong> (sin uso en app ni binds PRODUCT); producto usa <code>dayGridGap</code>, <code>screenHorizontal</code> y <code>layoutMd</code>/<code>componentSm</code>."
-      ]
-    },
-    {
-      "id": "legado",
-      "title": "Colección legado",
-      "lead": "<code>Semantic · Layout</code> viene del repo archivo. Incluye radios y pads de componente incompatibles con el morph del botón y con los defaults de M3.",
-      "donts": [
-        "No usar <code>Semantic · Layout</code> en pantallas ni en binds nuevos.",
-        "No portar <code>LayoutTokens</code> del repo archivo."
+      "title": "Padding interno",
+      "lead": "El padding es el colchón <strong>dentro</strong> del control: entre su borde y el icono o el texto. No es el margen de la pantalla ni el hueco entre dos piezas.",
+      "paragraphs": [
+        "Hay tres medidas distintas y no se intercambian. La pantalla usa <code>mot/spacing/screen-horizontal</code> (16). El hueco icono–label o entre chips usa <code>mot/spacing/component-*</code> o un gap del componente. El padding del control vive en <code>mot/padding/…</code> y en objetos anidados de <code>MOTSpacing</code> (<code>ButtonSmall</code>, <code>Chip</code>, <code>ListItem</code>…).",
+        "<code>MOTButton</code> (filled y outlined) mide 24 × 8: el padding por defecto de Material 3, en código <code>MOTSpacing.ButtonSmall</code>. <code>MOTTonalButton</code> es más compacto: 12 × 6 (<code>ButtonXSmall</code>). Medium (24 × 16) y Large (48 × 32) están en <code>MOTSpacing</code> y se dibujan abajo; no hay composable <code>MOTButton</code> para esas tallas.",
+        "Cada ficha es el control con su padding. El overlay verde es solo el padding; los huecos están en En vivo."
       ]
     }
   ],
   "refs": [
-    { "label": "docs/design-system/spacing.md", "ref": "docs/design-system/spacing.md" }
+    { "label": "docs/design-system/spacing.md", "ref": "docs/design-system/spacing.md" },
+    { "label": "MOTSpacing.kt", "ref": "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTSpacing.kt" }
   ]
 }

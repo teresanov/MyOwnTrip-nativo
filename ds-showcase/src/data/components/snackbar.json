@@ -3,95 +3,159 @@
   "name": "Snackbar",
   "status": "ready",
   "priority": "P0",
-  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53977-33575",
-  "purpose": "Las snackbars confirman que una acción se completó o ofrecen una vía rápida para deshacerla, sin sacar al usuario de la pantalla. Aparecen en Day Hub, Diario, Gastos y Documentos cuando guardamos o revertimos cambios menores. En Compose van dentro de un `SnackbarHost` en el `Scaffold`, usando el componente `Snackbar` de Material 3.",
-  "anatomy": [
-    "Container — Inverse surface, `Corner/Extra-small` (4dp)",
-    "Message — `bodyMedium`, inverse on surface",
-    "Action — `labelLarge`, inverse primary (opcional)",
-    "Close — icon button inverse (variantes con Show close=True)"
-  ],
-  "variants": [
-    {
-      "id": "text-only",
-      "label": "Text only",
-      "usage": "Ack simple sin acción."
-    },
-    {
-      "id": "text-action",
-      "label": "Text + action",
-      "usage": "Deshacer o reintentar."
-    },
-    {
-      "id": "two-lines",
-      "label": "Two lines",
-      "usage": "Obligatoria cuando el mensaje ocupa dos líneas (p. ej. Wallet cap 1i «archivado» + Deshacer). No forzar One line y dejar que el texto se corte o desborde."
-    }
-  ],
-  "properties": [
-    { "name": "Show close", "type": "VARIANT", "example": "True | False" },
-    { "name": "Lines", "type": "VARIANT", "example": "One | Two" },
-    { "name": "Message", "type": "TEXT", "example": "Gasto guardado" },
-    { "name": "Action label", "type": "TEXT", "example": "Deshacer" }
-  ],
-  "tokens": [
-    "inverseSurface / inverseOnSurface / inversePrimary",
-    "Corner/Extra-small (4dp)",
-    "mot/padding/snackbar/horizontal (16)",
-    "mot/padding/snackbar/vertical (12)",
-    "mot/spacing/snackbar/gap (12)",
-    "mot/spacing/snackbar/gap-sm · gap-xs"
-  ],
-  "guidelines": {
-    "label": "Material Design 3 · Snackbar",
-    "url": "https://m3.material.io/components/snackbar/guidelines",
-    "consulted": "2026-11-10"
+  "category": "feedback",
+  "summary": "Confirma una acción o ofrece deshacerla sin salir de la pantalla.",
+  "figma": {
+    "label": "Snackbar",
+    "node": "53977:33575",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53977-33575"
   },
-  "dos": [
-    "Úsalo para mensajes de baja prioridad que no requieren acción: informar de un proceso que la app ha hecho o hará.",
-    "Muestra un solo snackbar a la vez; uno con información actualizada puede reemplazar al anterior.",
-    "Texto breve, de una línea si es posible; en móvil, hasta dos líneas.",
-    "Incluye como máximo una acción, con botón de texto; ofrece «Deshacer» para que se pueda corregir la elección.",
-    "Los snackbars sin acción desaparecen solos (4–10 s según la plataforma); los que tienen acción permanecen hasta que se actúa o se descartan.",
-    "Colócalo abajo, delante del contenido principal y por encima de un FAB."
-  ],
-  "donts": [
-    "No lo uses para información crítica o que exige acción inmediata: ahí va un diálogo.",
-    "No añadas iconos; si el mensaje necesita un icono, usa otro componente, como un diálogo.",
-    "No uses texto con estilos ni enlaces en línea: si hace falta un enlace, usa un botón.",
-    "No uses botones Filled ni Elevated en un snackbar: atraen demasiada atención.",
-    "No lo coloques delante de la navegación, de elementos de uso frecuente ni delante o detrás de un FAB.",
-    "No apiles snackbars ni los pongas uno junto a otro.",
-    "No hagas del snackbar la única vía para acceder a un caso de uso esencial."
-  ],
-  "productRules": {
-    "dos": [
-      "Un snackbar a la vez; duración corta M3.",
-      "Acción opcional con verbo claro (Deshacer, Ver).",
-      "Copy de dos líneas → variante Figma `# of lines=Two lines` (cap 1i). One line solo si el mensaje cabe en una.",
-      "Mismo inverse scheme Light/Dark vía colorScheme."
+  "usage": {
+    "purpose": "Una snackbar confirma que una acción se completó o ofrece deshacerla, sin sacar a la persona de la pantalla. Aparece en Day Hub, Diario, Gastos y Documentos. En Compose vive en el SnackbarHost del Scaffold, con el Snackbar de Material 3.",
+    "when": [
+      "Hay que acusar un guardado, un archivo o un cambio menor.",
+      "Se puede deshacer en el momento, con un solo verbo (Deshacer, Ver).",
+      "El mensaje no bloquea: la persona sigue usando la pantalla de detrás."
     ],
-    "donts": [
-      "No usar snackbar para errores críticos — preferir dialog o inline error con icono.",
-      "No sustituir confirmaciones H7 Wallet.",
-      "No tokens snackbar/hover.",
-      "No usar One line si el texto del preview/cap es de dos líneas."
+    "whenNot": [
+      {
+        "case": "Hay que confirmar una pérdida de datos o una eliminación",
+        "use": "Basic dialog",
+        "href": "components/basic-dialog.html"
+      },
+      {
+        "case": "Un campo del formulario no valida",
+        "use": "Text field con isError + supporting text + icono",
+        "href": "components/text-field.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Ack simple (Gasto guardado)",
+        "use": "Snackbar sin acción",
+        "note": "Desaparece sola a los 4–10 s."
+      },
+      {
+        "if": "Se puede revertir (documento archivado)",
+        "use": "Snackbar + acción Deshacer",
+        "note": "Permanece hasta actuar o descartar."
+      },
+      {
+        "if": "El copy no cabe en una línea",
+        "use": "Two lines",
+        "note": "No recortes a One line."
+      }
+    ],
+    "related": [
+      { "label": "Basic dialog", "href": "components/basic-dialog.html" },
+      { "label": "Button", "href": "components/button.html" }
+    ]
+  },
+  "variants": [
+    { "id": "text-only", "label": "Solo texto", "composable": "Snackbar", "usage": "Ack sin acción." },
+    { "id": "text-action", "label": "Texto + acción", "composable": "Snackbar", "usage": "Deshacer o reintentar." },
+    { "id": "two-lines", "label": "Two lines", "composable": "Snackbar", "usage": "Cuando el mensaje ocupa dos líneas." }
+  ],
+  "anatomy": [
+    "<strong>Contenedor</strong> — inverseSurface, radio 4 dp (<code>Corner/Extra-small</code>).",
+    "<strong>Mensaje</strong> — bodyMedium, inverseOnSurface.",
+    "<strong>Acción</strong> — opcional, labelLarge, inversePrimary. Un solo verbo.",
+    "<strong>Cerrar</strong> — icon button inverse, si Show close."
+  ],
+  "behavior": {
+    "lead": "Un snackbar a la vez. El siguiente reemplaza al anterior.",
+    "rows": [
+      { "state": "Sin acción", "detail": "Se oculta sola (duración corta M3, ~4 s en este playground)." },
+      { "state": "Con acción", "detail": "Permanece hasta Deshacer, cerrar o timeout." },
+      { "state": "Posición", "detail": "Abajo, delante del contenido, por encima del FAB; nunca delante de la navegación." }
+    ],
+    "notes": [
+      "No hay icono en el snackbar. Si el mensaje necesita uno, es un diálogo.",
+      "No confirma H7 de Wallet: eso es Basic dialog."
     ]
   },
   "a11y": [
-    "`SnackbarHostState` anuncia mensaje; acción focusable.",
-    "No depender solo del color inverse para significado.",
-    "Alternativa por tap si el gesto de dismiss no es obvio."
+    "SnackbarHostState anuncia el mensaje; la acción es focusable.",
+    "No dependas solo del esquema inverse para el significado.",
+    "Si hay gesto de dismiss, tiene que haber tap equivalente."
   ],
-  "compose": "val snackbarHostState = remember { SnackbarHostState() }\n// …\nScaffold(\n    snackbarHost = { SnackbarHost(snackbarHostState) },\n) { /* … */ }\n// scope.launch { snackbarHostState.showSnackbar(\"Gasto guardado\") }",
+  "tokens": {
+    "color": [
+      { "token": "inverseSurface / inverseOnSurface", "use": "Contenedor y mensaje." },
+      { "token": "inversePrimary", "use": "Acción." }
+    ],
+    "shape": [{ "token": "shapes.extraSmall", "use": "4 dp." }],
+    "spacing": [
+      { "token": "mot/padding/snackbar/horizontal", "use": "16 dp." },
+      { "token": "mot/padding/snackbar/vertical", "use": "12 dp." },
+      { "token": "mot/spacing/snackbar/gap", "use": "12 dp entre mensaje y acción." }
+    ],
+    "type": [
+      { "token": "bodyMedium", "use": "Mensaje." },
+      { "token": "labelLarge", "use": "Acción." }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      { "label": "Material Design 3 · Snackbar", "url": "https://m3.material.io/components/snackbar/guidelines" }
+    ],
+    "consulted": "2026-11-10"
+  },
+  "dos": [
+    "Mensajes de baja prioridad que no exigen acción inmediata.",
+    "Un snackbar a la vez; texto breve, hasta dos líneas en móvil.",
+    "Como máximo una acción, con botón de texto: Deshacer.",
+    "Colócalo abajo, delante del contenido y por encima de un FAB."
+  ],
+  "donts": [
+    "No lo uses para información crítica: ahí va un diálogo.",
+    "No añadas iconos ni botones Filled.",
+    "No apiles snackbars ni los pongas delante de la navegación."
+  ],
+  "productRules": {
+    "dos": [
+      "Duración corta M3; acción con verbo claro.",
+      "Copy de dos líneas → Two lines."
+    ],
+    "donts": [
+      "No sustituir confirmaciones H7 Wallet.",
+      "No tokens snackbar/hover."
+    ]
+  },
+  "screens": [
+    { "screen": "ExpenseFormScreen", "uses": "Gasto guardado · Deshacer" },
+    { "screen": "WalletScreen", "uses": "Documento archivado · Deshacer" },
+    { "screen": "JournalAddScreen", "uses": "Recuerdo guardado" }
+  ],
+  "implementation": {
+    "module": "material3",
+    "sourceFile": "androidx.compose.material3.SnackbarHost",
+    "import": "androidx.compose.material3.SnackbarHost",
+    "composable": "SnackbarHost / Snackbar",
+    "note": "Sin wrapper MOT. Vive en el Scaffold.",
+    "params": [
+      { "name": "snackbarHostState", "type": "SnackbarHostState", "default": "remember { … }", "note": "Un host por pantalla." },
+      { "name": "message", "type": "String", "default": "—", "note": "showSnackbar(message, actionLabel)." }
+    ],
+    "snippet": "val snackbarHostState = remember { SnackbarHostState() }\nScaffold(\n    snackbarHost = { SnackbarHost(snackbarHostState) },\n) { /* … */ }\nscope.launch {\n    snackbarHostState.showSnackbar(\"Gasto guardado\", actionLabel = \"Deshacer\")\n}"
+  },
   "decisions": {
-    "source": "Figma node 53977-33575 · Compose `Snackbar` (M3)",
-    "why": "Confirmar una acción completada u ofrecer deshacer sin sacar al usuario de la pantalla.",
-    "layer": "M3 directo dentro de `SnackbarHost` del `Scaffold`"
+    "source": "Compose Snackbar (M3) · set de librería 53977:33575",
+    "why": "Confirmar o deshacer sin interrumpir la pantalla.",
+    "layer": "M3 directo en SnackbarHost"
   },
   "changelog": [
-    { "date": "2026-10-29", "note": "Fase B.3: Inverse + Extra-small + mot/padding|spacing/snackbar/*; gap longer-action fix." },
-    { "date": "2026-10-30", "note": "Playground con acción Deshacer y auto-ocultado." },
-    { "date": "2026-11-11", "note": "Two lines si el copy ocupa dos líneas (cap 1i); no apañar con One line." }
-  ]
+    { "date": "2026-10-29", "note": "Inverse + Extra-small + mot/padding|spacing/snackbar/*." },
+    { "date": "2026-11-24", "note": "Ficha usage-first en el showcase." }
+  ],
+  "anatomyDiagram": {
+    "kind": "snackbar",
+    "values": { "padH": 16, "padV": 12, "gap": 12 },
+    "measures": [
+      { "label": "Padding horizontal", "value": "16 dp" },
+      { "label": "Padding vertical", "value": "12 dp" },
+      { "label": "Hueco mensaje–acción", "value": "12 dp" },
+      { "label": "Radio", "value": "4 dp" }
+    ]
+  }
 }

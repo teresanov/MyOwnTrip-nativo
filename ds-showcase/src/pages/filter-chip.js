@@ -1,63 +1,88 @@
-import { initShowcasePage } from "../lib/bootstrap.js";
+import { initShowcasePage, setupToc } from "../lib/bootstrap.js";
 import data from "../data/components/filter-chip.json";
-import { mountDecisions } from "../lib/decisions.js";
 import {
-  renderA11ySection,
-  renderAnatomy,
-  renderChangelog,
+  renderA11y,
+  renderBehavior,
   renderComponentHeader,
-  renderComposeSection,
+  renderDecisions,
+  renderDoDontPair,
   renderGuidelines,
+  renderImplementation,
   renderPlayground,
-  renderTokenSection,
+  renderRelated,
+  renderTokens,
+  renderUsage,
   renderVariantTable,
+  sectionOpen,
+  table,
 } from "../lib/component-page.js";
+import { CHIP_CHECK, renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
 
 initShowcasePage("components", { componentId: "filter-chip" });
 
-mountDecisions(data);
+function chipButton(label, selected) {
+  return `<button type="button" class="filter-chip${
+    selected ? " filter-chip--selected" : ""
+  }" aria-pressed="${selected}" data-value="${label}">${selected ? CHIP_CHECK : ""}${label}</button>`;
+}
 
-document.getElementById("component-header").innerHTML = renderComponentHeader(
-  data,
-  "Abrir Filter chip en Figma",
-);
+document.getElementById("component-header").innerHTML = renderComponentHeader({
+  ...data,
+  specimenHtml: `
+    <div class="filter-chip-row">
+      ${chipButton("Activos", true)}
+      ${chipButton("Archivados", false)}
+      ${chipButton("Todos", false)}
+    </div>
+  `,
+});
 
-const examples = (data.productExamples || [])
-  .map((e) => `<tr><td><code>${e.screen}</code></td><td>${e.pattern}</td></tr>`)
-  .join("");
+const screens = (data.screens || []).map((e) => [`<code>${e.screen}</code>`, e.pattern]);
 
-document.getElementById("component-main").innerHTML = `
-  ${renderPlayground({
-    title: "Playground",
-    hint: "Pulsa un chip para cambiar el filtro activo. En la app, la fila es scroll horizontal y solo puede haber una opción seleccionada por eje.",
+document.getElementById("component-main").innerHTML = [
+  renderUsage(data),
+  screens.length
+    ? sectionOpen("en-la-app", "En la app", {
+        lead: "Pantallas Compose que ya usan FilterChip. Esta tabla es la ficha; no hace falta abrir Figma para saber dónde va.",
+      }) +
+      table(["Pantalla", "Patrón"], screens) +
+      "</section>"
+    : "",
+  renderPlayground({
+    id: "ejemplo",
+    title: "Ejemplo",
+    hint: "Pulsa un chip para cambiar el filtro. En Wallet la fila hace scroll horizontal y solo hay una opción seleccionada por eje.",
     canvasHtml: `
       <div class="filter-chip-row filter-chip-demo" role="group" aria-label="Filtro de documentos">
-        <button type="button" class="filter-chip filter-chip--selected" aria-pressed="true" data-value="Activos">Activos</button>
-        <button type="button" class="filter-chip" aria-pressed="false" data-value="Archivados">Archivados</button>
-        <button type="button" class="filter-chip" aria-pressed="false" data-value="Todos">Todos</button>
+        ${chipButton("Activos", true)}
+        ${chipButton("Archivados", false)}
+        ${chipButton("Todos", false)}
       </div>
       <p class="playground__status" id="filter-chip-status" aria-live="polite">Filtro activo: Activos</p>
     `,
-  })}
-
-  ${renderAnatomy(data.anatomy)}
-  ${renderVariantTable(data.variants)}
-
-  <section class="section">
-    <h2>Dónde aparece en la app</h2>
-    <p class="section-lead">Referencia rápida a pantallas que ya consumen este patrón en Compose.</p>
-    <table>
-      <thead><tr><th>Pantalla</th><th>Patrón</th></tr></thead>
-      <tbody>${examples}</tbody>
-    </table>
-  </section>
-
-  ${renderTokenSection(data.tokens)}
-  ${renderGuidelines(data)}
-  ${renderA11ySection(data.a11y)}
-  ${renderComposeSection(data.compose)}
-  ${renderChangelog(data.changelog)}
-`;
+  }),
+  renderGuidelines(data).replace(
+    "</section>",
+    `${renderDoDontPair({
+      doHtml: `<div class="filter-chip-row">${chipButton("Activos", true)}${chipButton(
+        "Archivados",
+        false,
+      )}${chipButton("Todos", false)}</div>`,
+      doCaption: "Un conjunto, una selección, copy de categoría.",
+      dontHtml: `<button type="button" class="filter-chip filter-chip--selected">${CHIP_CHECK}Guardar</button>`,
+      dontCaption: "Un chip suelto con un verbo de acción. Eso es un botón.",
+    })}</section>`,
+  ),
+  renderVariantTable(data.variants, "Variantes"),
+  renderAnatomy(data.anatomy, data.anatomyDiagram),
+  renderMeasures(data.anatomyDiagram),
+  renderBehavior(data.behavior),
+  renderA11y(data.a11y),
+  renderTokens(data.tokens),
+  renderImplementation(data.implementation),
+  renderDecisions(data),
+  renderRelated(data.usage?.related),
+].join("");
 
 const chips = document.querySelectorAll(".filter-chip-demo .filter-chip");
 const statusEl = document.getElementById("filter-chip-status");
@@ -67,9 +92,13 @@ chips.forEach((chip) => {
     chips.forEach((other) => {
       other.classList.remove("filter-chip--selected");
       other.setAttribute("aria-pressed", "false");
+      other.innerHTML = other.dataset.value;
     });
     chip.classList.add("filter-chip--selected");
     chip.setAttribute("aria-pressed", "true");
+    chip.innerHTML = CHIP_CHECK + chip.dataset.value;
     statusEl.textContent = `Filtro activo: ${chip.dataset.value}`;
   });
 });
+
+setupToc();

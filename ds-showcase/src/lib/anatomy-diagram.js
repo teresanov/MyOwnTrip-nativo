@@ -3,10 +3,11 @@
  * roles de color del tema y los valores reales de la ficha (`anatomyDiagram.values`, en dp).
  * Una sola fuente: si cambia un valor en el JSON, cambian el dibujo y la tabla de medidas.
  *
- * `anatomyDiagram` = { kind: "button" | "icon-button" | "list-item", values: {...}, measures: [{label, value}] }
+ * `anatomyDiagram` = { kind: "button" | "icon-button" | "list-item" | "filter-chip" | "dialog", values, measures }
  * Los marcadores 1..n siguen el orden de `anatomy[]`.
  */
 import { sectionOpen, table } from "./component-page.js";
+import { eyebrowHtml, fieldHtml, snackbarHtml } from "./specimens.js";
 
 const FONT = "Inter, system-ui, sans-serif";
 
@@ -19,7 +20,7 @@ const svg = (w, h, body, label) =>
 const marker = (n, cx, cy, tx, ty) =>
   `<line x1="${cx}" y1="${cy}" x2="${tx}" y2="${ty}" class="ad-leader"/>` +
   `<circle cx="${tx}" cy="${ty}" r="3" class="ad-dot"/>` +
-  `<circle cx="${cx}" cy="${cy}" r="13" class="ad-badge"/>` +
+  `<circle cx="${cx}" cy="${cy}" r="15" class="ad-badge"/>` +
   `<text x="${cx}" y="${cy + 5}" text-anchor="middle" class="ad-badge-text">${n}</text>`;
 
 /** Cota de medida: caja translúcida con su valor. */
@@ -31,53 +32,41 @@ const box = (x, y, w, h, text, cls = "ad-pad") =>
 
 const glyph = (x, y, s, color) =>
   // «add» de Material, escalado a s px
-  `<path d="M${x + s * 0.5} ${y + s * 0.15}v${s * 0.7}M${x + s * 0.15} ${y + s * 0.5}h${s * 0.7}" stroke="${color}" stroke-width="${s * 0.1}" fill="none"/>`;
+  `<path d="M${x + s * 0.5} ${y + s * 0.15}v${s * 0.7}M${x + s * 0.15} ${y + s * 0.5}h${s * 0.7}" stroke="${color}" stroke-width="${Math.max(1.5, s * 0.08)}" stroke-linecap="square" fill="none"/>`;
 
-/* ---------- Button ---------- */
+/* ---------- Button: el HTML del mot-btn, no un SVG inventado ---------- */
+
+export const STARS_ICON = `<svg class="mot-btn__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path fill="var(--primary)" d="M12 6.8 13.6 11h4.6l-3.7 2.7 1.4 4.3L12 15.2l-3.9 2.8 1.4-4.3L5.8 11h4.6L12 6.8z"/></svg>`;
+
+export const CHIP_CHECK = `<svg class="filter-chip__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M9.55 18 3.85 12.3l1.4-1.4 4.3 4.3 9.2-9.2 1.4 1.4z"/></svg>`;
+
+export const DIALOG_ERROR = `<svg class="dialog-demo__icon-svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 2 1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>`;
 
 function button(v) {
-  const s = 2; // 1 dp = 2 px de dibujo
-  const w = (v.padH * 2 + v.icon + v.gap + v.label) * s;
-  const h = v.height * s;
-  const x = (560 - w) / 2;
-  const y = 112;
-  const touchH = v.touch * s;
-  const ty = y - (touchH - h) / 2;
-  const ix = x + v.padH * s;
-  const lx = ix + (v.icon + v.gap) * s;
-  const base = y + h / 2 + 5;
+  const anatomy = `
+    <div class="ad-live">
+      <button type="button" class="mot-btn mot-btn--filled" tabindex="-1">
+        ${STARS_ICON}Abrir cuaderno
+      </button>
+    </div>`;
 
-  const piece = (extra) =>
-    `<rect x="${x}" y="${y}" width="${w}" height="${h}" class="ad-fill-primary"/>` +
-    glyph(ix, y + (h - v.icon * s) / 2, v.icon * s, "var(--on-primary)") +
-    `<text x="${lx}" y="${base}" font-family="${FONT}" font-weight="500" font-size="${14 * s}" fill="var(--on-primary)" textLength="${v.label * s}" lengthAdjust="spacingAndGlyphs">Guardar gasto</text>` +
-    (extra || "");
+  const pill = (n, kind) => `<span class="spec-n spec-n--${kind}">${n}</span>`;
 
-  const anatomy =
-    `<rect x="${x}" y="${ty}" width="${w}" height="${touchH}" class="ad-touch"/>` +
-    piece(`<rect x="${x + 5}" y="${y + 5}" width="${w - 10}" height="${h - 10}" class="ad-layer"/>`) +
-    marker(1, x - 58, y + 18, x, y + 18) +
-    marker(2, lx + (v.label * s) / 2, 48, lx + (v.label * s) / 2, y + 22) +
-    marker(3, ix + (v.icon * s) / 2, 48, ix + (v.icon * s) / 2, y + (h - v.icon * s) / 2) +
-    marker(4, x + w + 58, y + h - 18, x + w - 6, y + h - 18) +
-    marker(5, 280, ty + touchH + 50, 280, ty + touchH);
+  const measures = `
+    <div class="spec-stage">
+      <div class="spec-live" style="--spec-pad-x:${v.padH}px;--spec-pad-y:${v.padV}px;--spec-gap:${v.gap}px;--spec-icon:${v.icon}px">
+        <button type="button" class="mot-btn mot-btn--filled spec-ghost" tabindex="-1">${STARS_ICON}Abrir cuaderno</button>
+        <div class="spec-overlay" aria-hidden="true">
+          <span class="spec-band spec-band--pad-l">${pill(v.padH, "pad")}</span>
+          <span class="spec-band spec-band--pad-t">${pill(v.padV, "pad")}</span>
+          <span class="spec-band spec-band--pad-b"></span>
+          <span class="spec-band spec-band--pad-r"></span>
+          <span class="spec-band spec-band--gap">${pill(v.gap, "gap")}</span>
+        </div>
+      </div>
+    </div>`;
 
-  const px = v.padH * s;
-  const py = v.padV * s;
-  const measures =
-    piece() +
-    box(x, y, px, h, v.padH, "ad-pad") +
-    box(x + w - px, y, px, h, v.padH, "ad-pad") +
-    box(x + px, y, w - px * 2, py, v.padV, "ad-pad ad-pad-v") +
-    box(x + px, y + h - py, w - px * 2, py, v.padV, "ad-pad ad-pad-v") +
-    box(ix + v.icon * s, y + (h - 14) / 2, v.gap * s, 14, "", "ad-gap") +
-    `<text x="${ix + v.icon * s + (v.gap * s) / 2}" y="${y + h + 22}" text-anchor="middle" class="ad-dim ad-dim-out">${v.gap}</text>` +
-    `<line x1="${x - 24}" y1="${y}" x2="${x - 24}" y2="${y + h}" class="ad-line"/>` +
-    `<text x="${x - 32}" y="${y + h / 2 + 4}" text-anchor="end" class="ad-dim ad-dim-out">${v.height}</text>` +
-    `<line x1="${x + w + 24}" y1="${ty}" x2="${x + w + 24}" y2="${ty + touchH}" class="ad-line ad-line-touch"/>` +
-    `<text x="${x + w + 32}" y="${ty + touchH / 2 + 4}" class="ad-dim ad-dim-out">${v.touch} (táctil)</text>`;
-
-  return { anatomy: svg(560, 280, anatomy, "Anatomía del botón"), measures: svg(560, 220, measures, "Medidas del botón") };
+  return { anatomy, measures };
 }
 
 /* ---------- Icon button ---------- */
@@ -168,7 +157,121 @@ function listItem(v) {
   return { anatomy: svg(560, 200, anatomy, "Anatomía del list item"), measures: svg(560, 170, measures, "Medidas del list item") };
 }
 
-const BUILDERS = { button, "icon-button": iconButton, "list-item": listItem };
+function filterChip(v) {
+  const selected = `<button type="button" class="filter-chip filter-chip--selected" tabindex="-1">${CHIP_CHECK}Activos</button>`;
+  const anatomy = `
+    <div class="ad-live">
+      <div class="filter-chip-row">
+        ${selected}
+        <button type="button" class="filter-chip" tabindex="-1">Archivados</button>
+        <button type="button" class="filter-chip" tabindex="-1">Todos</button>
+      </div>
+    </div>`;
+
+  const pill = (n, kind) => `<span class="spec-n spec-n--${kind}">${n}</span>`;
+  const measures = `
+    <div class="spec-stage">
+      <div class="spec-live spec-live--chip" style="--spec-pad-x:${v.padHSelected}px;--spec-pad-y:${v.padV}px;--spec-gap:${v.gap}px;--spec-icon:${v.icon}px">
+        <button type="button" class="filter-chip filter-chip--selected spec-ghost" tabindex="-1">${CHIP_CHECK}Activos</button>
+        <div class="spec-overlay" aria-hidden="true">
+          <span class="spec-band spec-band--pad-l">${pill(v.padHSelected, "pad")}</span>
+          <span class="spec-band spec-band--pad-t">${pill(v.padV, "pad")}</span>
+          <span class="spec-band spec-band--pad-b"></span>
+          <span class="spec-band spec-band--pad-r"></span>
+          <span class="spec-band spec-band--gap">${pill(v.gap, "gap")}</span>
+        </div>
+      </div>
+    </div>`;
+
+  return { anatomy, measures };
+}
+
+function dialog(v) {
+  const inner = `
+      <div class="dialog-demo__icon">${DIALOG_ERROR}</div>
+      <h3 class="dialog-demo__title">¿Eliminar documento?</h3>
+      <p class="dialog-demo__body">Se borrará el documento y su archivo del dispositivo. Esta acción no se puede deshacer.</p>
+      <div class="dialog-demo__actions">
+        <button type="button" class="mot-btn mot-btn--text" tabindex="-1">Cancelar</button>
+        <button type="button" class="mot-btn mot-btn--text dialog-demo__destructive" tabindex="-1">Eliminar</button>
+      </div>`;
+
+  const anatomy = `<div class="ad-live ad-live--dialog"><div class="dialog-demo">${inner}</div></div>`;
+  const pill = (n, kind) => `<span class="spec-n spec-n--${kind}">${n}</span>`;
+  const measures = `
+    <div class="spec-stage spec-stage--dialog">
+      <div class="spec-live spec-live--dialog" style="--spec-pad-x:${v.pad}px;--spec-pad-y:${v.pad}px;--spec-gap:${v.actions}px">
+        <div class="dialog-demo spec-ghost">${inner}</div>
+        <div class="spec-overlay" aria-hidden="true">
+          <span class="spec-band spec-band--pad-l">${pill(v.pad, "pad")}</span>
+          <span class="spec-band spec-band--pad-t">${pill(v.pad, "pad")}</span>
+          <span class="spec-band spec-band--pad-b"></span>
+          <span class="spec-band spec-band--pad-r"></span>
+        </div>
+      </div>
+    </div>`;
+
+  return { anatomy, measures };
+}
+
+function snackbar(v) {
+  const anatomy = `<div class="ad-live">${snackbarHtml()}</div>`;
+  const pill = (n, kind) => `<span class="spec-n spec-n--${kind}">${n}</span>`;
+  const measures = `
+    <div class="spec-stage">
+      <div class="spec-live spec-live--snackbar" style="--spec-pad-x:${v.padH}px;--spec-pad-y:${v.padV}px;--spec-gap:${v.gap}px;--spec-icon:0px">
+        <div class="spec-ghost">${snackbarHtml()}</div>
+        <div class="spec-overlay" aria-hidden="true">
+          <span class="spec-band spec-band--pad-l">${pill(v.padH, "pad")}</span>
+          <span class="spec-band spec-band--pad-t">${pill(v.padV, "pad")}</span>
+          <span class="spec-band spec-band--pad-b"></span>
+          <span class="spec-band spec-band--pad-r"></span>
+        </div>
+      </div>
+    </div>`;
+  return { anatomy, measures };
+}
+
+function textField(v) {
+  const anatomy = `<div class="ad-live ad-live--field">${fieldHtml({
+    label: "Nombre del viaje",
+    value: "Barcelona 2026",
+  })}</div>`;
+  const pill = (n, kind) => `<span class="spec-n spec-n--${kind}">${n}</span>`;
+  const measures = `
+    <div class="spec-stage">
+      <div class="spec-live spec-live--field" style="--spec-pad-x:${v.padH}px;--spec-pad-y:${v.padV}px">
+        <div class="spec-ghost">${fieldHtml({ label: "Nombre del viaje", value: "Barcelona 2026" })}</div>
+        <div class="spec-overlay" aria-hidden="true">
+          <span class="spec-band spec-band--pad-l">${pill(v.padH, "pad")}</span>
+          <span class="spec-band spec-band--pad-t">${pill(v.padV, "pad")}</span>
+          <span class="spec-band spec-band--pad-b"></span>
+          <span class="spec-band spec-band--pad-r"></span>
+        </div>
+      </div>
+    </div>`;
+  return { anatomy, measures };
+}
+
+function eyebrow() {
+  const anatomy = `<div class="ad-live">
+    ${eyebrowHtml("Próximo viaje", "tertiary", "md")}
+    ${eyebrowHtml("En destino", "surface", "md")}
+    ${eyebrowHtml("Recuerdo", "secondary", "sm")}
+  </div>`;
+  return { anatomy, measures: anatomy };
+}
+
+const BUILDERS = {
+  button,
+  "icon-button": iconButton,
+  "list-item": listItem,
+  "filter-chip": filterChip,
+  dialog,
+  snackbar,
+  "text-field": textField,
+  eyebrow,
+};
 
 /* ---------- Secciones ---------- */
 
@@ -180,7 +283,7 @@ export function renderAnatomy(anatomy, diagram) {
   return (
     sectionOpen("anatomia", "Anatomía", {
       lead: built
-        ? "Las partes del componente y cómo las llamamos en diseño y en código. El número del dibujo es el de la lista."
+        ? "Las partes del componente y cómo las llamamos en diseño y en código."
         : "Partes que componen el control y cómo se nombran en Figma y en Material 3.",
     }) +
     (built ? `<div class="ad-layout"><figure class="ad-figure">${built.anatomy}</figure>${legend}</div>` : legend) +
@@ -194,7 +297,7 @@ export function renderMeasures(diagram) {
   if (!built) return "";
   return (
     sectionOpen("medidas", "Medidas", {
-      lead: "Espacios del componente en dp (1 dp del dibujo = 2 px). Salen de los mismos valores que usa la app.",
+      lead: "El control se ve en velo; en color, solo padding y huecos (1 px = 1 dp).",
     }) +
     `<div class="ad-layout"><figure class="ad-figure">${built.measures}</figure>` +
     (diagram.measures?.length ? table(["Medida", "Valor"], diagram.measures.map((m) => [m.label, `<strong>${m.value}</strong>`])) : "") +

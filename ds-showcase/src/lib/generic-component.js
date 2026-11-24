@@ -4,6 +4,7 @@ import {
   renderBehavior,
   renderComponentHeader,
   renderDecisions,
+  renderDoDontPair,
   renderGuidelines,
   renderImplementation,
   renderPlayground,
@@ -16,71 +17,58 @@ import {
 } from "./component-page.js";
 import { renderAnatomy, renderMeasures } from "./anatomy-diagram.js";
 
-const FIGMA_BASE =
-  "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=";
-
-const figmaHref = (node) => `${FIGMA_BASE}${String(node).replace(":", "-")}`;
-
-/**
- * Tabla Figma ↔ Compose: un set publicado en la librería y el composable que lo implementa.
- * `sets[]` = { figma, node, compose, note }.
- */
-export function renderFigmaMap(sets) {
-  if (!sets?.length) return "";
-  return (
-    sectionOpen("figma-compose", "Figma ↔ Compose", {
-      lead: "Cada set publicado en la librería de Figma, y el composable que lo implementa. Fuente: <code>docs/design-system/figma-compose-bindings.md</code>.",
-    }) +
-    table(
-      ["Set en Figma", "Composable", "Nota"],
-      sets.map((s) => [
-        s.node ? `<a href="${figmaHref(s.node)}" target="_blank" rel="noopener">${s.figma}</a>` : s.figma,
-        s.compose ? `<code>${s.compose}</code>` : "—",
-        s.note || "",
-      ])
-    ) +
-    "</section>"
-  );
-}
-
-/** Dónde aparece en la app. `screens[]` = { screen, uses }. */
+/** Dónde aparece en la app. `screens[]` = { screen, uses | pattern | fields }. */
 export function renderScreens(screens) {
   if (!screens?.length) return "";
   return (
-    sectionOpen("pantallas", "Dónde aparece en la app", {
-      lead: "Pantallas que consumen el componente. Si una pantalla necesita algo distinto, se cambia el componente, no la pantalla.",
+    sectionOpen("en-la-app", "En la app", {
+      lead: "Pantallas Compose que ya usan este control. La ficha vive aquí, no en Figma.",
     }) +
     table(
       ["Pantalla", "Uso"],
-      screens.map((s) => [`<code>${s.screen}</code>`, s.uses])
+      screens.map((s) => [`<code>${s.screen}</code>`, s.uses || s.pattern || s.fields || ""]),
     ) +
     "</section>"
   );
 }
 
 /**
- * Monta una ficha completa desde su JSON (esquema de button.json).
+ * Monta una ficha usage-first (mismo esqueleto que Button / Filter chip / Basic dialog).
+ *
  * Opciones:
- *  - playground: { id, title, hint, canvasHtml, controlsHtml }  (ejemplo interactivo)
- *  - setup(): se ejecuta tras pintar el HTML (para enganchar eventos del playground)
+ *  - specimenHtml: ejemplar vivo en la cabecera
+ *  - playground: { id, title, hint, canvasHtml, controlsHtml }
+ *  - doDont: { doHtml, doCaption, dontHtml, dontCaption }
+ *  - extraAfterUsage: HTML extra (tablas propias, etc.)
+ *  - setup(): eventos del playground
  */
-export function mountComponentPage(data, { playground = null, setup = null, figmaLinkLabel } = {}) {
+export function mountComponentPage(data, opts = {}) {
+  const { playground = null, setup = null, doDont = null, specimenHtml = "", extraAfterUsage = "" } = opts;
+
   initShowcasePage("components", { componentId: data.id });
 
-  document.getElementById("component-header").innerHTML = renderComponentHeader(data, figmaLinkLabel);
+  document.getElementById("component-header").innerHTML = renderComponentHeader({
+    ...data,
+    specimenHtml: specimenHtml || data.specimenHtml || "",
+  });
+
+  const guidelines = renderGuidelines(data);
+  const guidelinesWithPair = doDont
+    ? guidelines.replace("</section>", `${renderDoDontPair(doDont)}</section>`)
+    : guidelines;
 
   document.getElementById("component-main").innerHTML = [
     renderUsage(data),
+    extraAfterUsage,
+    renderScreens(data.screens),
     playground ? renderPlayground(playground) : "",
-    renderGuidelines(data),
-    renderVariantTable(data.variants),
-    renderFigmaMap(data.sets),
+    guidelinesWithPair,
+    renderVariantTable(data.variants, "Variantes"),
     renderAnatomy(data.anatomy, data.anatomyDiagram),
     renderMeasures(data.anatomyDiagram),
     renderBehavior(data.behavior),
     renderA11y(data.a11y),
     renderTokens(data.tokens),
-    renderScreens(data.screens),
     renderImplementation(data.implementation),
     renderDecisions(data),
     renderRelated(data.usage?.related),

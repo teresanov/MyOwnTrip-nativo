@@ -33,7 +33,7 @@ Fuente código: `designsystem/.../MOTSpacing.kt`
 | `MOTSpacing.screenContentBottomWithFab` | `mot/spacing/screen-content-bottom-with-fab` | 88 |
 | `MOTSpacing.ButtonXSmall.horizontal` | `mot/padding/button/xsmall-horizontal` | 12 |
 | `MOTSpacing.ButtonXSmall.vertical` | `mot/padding/button/xsmall-vertical` | 6 |
-| *(Figma Button SM)* | `mot/padding/button/small-horizontal` / `…-vertical` | 16 / 10 |
+| `MOTSpacing.ButtonSmall` | `mot/padding/button/small-horizontal` / `…-vertical` | 24 / 8 |
 | *(Figma Button MD)* | `mot/padding/button/medium-horizontal` / `…-vertical` | 24 / 16 |
 | *(Figma Button LG)* | `mot/padding/button/large-horizontal` / `…-vertical` | 48 / 32 |
 | Toggle (mismos pads/gaps que Button por Size) | `mot/padding/button/*` + `mot/spacing/component-*` | — |

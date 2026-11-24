@@ -1,82 +1,50 @@
-import { initShowcasePage } from "../lib/bootstrap.js";
 import data from "../data/components/text-field.json";
-import { mountDecisions } from "../lib/decisions.js";
-import {
-  renderA11ySection,
-  renderAnatomy,
-  renderChangelog,
-  renderComponentHeader,
-  renderComposeSection,
-  renderGuidelines,
-  renderPlayground,
-  renderTokenSection,
-  renderVariantTable,
-} from "../lib/component-page.js";
+import { mountComponentPage } from "../lib/generic-component.js";
+import { fieldHtml } from "../lib/specimens.js";
 
-initShowcasePage("components", { componentId: "text-field" });
-
-mountDecisions(data);
-
-document.getElementById("component-header").innerHTML = renderComponentHeader(
-  data,
-  "Abrir Text field en Figma",
-);
-
-const examples = (data.productExamples || [])
-  .map((e) => `<tr><td><code>${e.screen}</code></td><td>${e.fields}</td></tr>`)
-  .join("");
-
-document.getElementById("component-main").innerHTML = `
-  ${renderPlayground({
-    title: "Playground",
-    hint: "Escribe en los campos y activa el error de validación para ver borde, label y texto de apoyo como en un formulario real.",
+mountComponentPage(data, {
+  specimenHtml: fieldHtml({ label: "Nombre del viaje", value: "Barcelona 2026" }),
+  playground: {
+    id: "ejemplo",
+    title: "Ejemplo",
+    hint: "Escribe y activa el error de Destino: borde, label y supporting text juntos.",
     canvasHtml: `
       <div class="demo-stack">
-        <label class="mot-field">
-          <span class="mot-field__label">Nombre del viaje</span>
-          <input class="mot-field__input" id="demo-trip-name" type="text" value="Barcelona 2026" autocomplete="off" />
-        </label>
+        ${fieldHtml({ label: "Nombre del viaje", value: "Barcelona 2026" }).replace(
+          "class=\"mot-field__input\"",
+          "class=\"mot-field__input\" id=\"demo-trip-name\"",
+        )}
         <label class="mot-field" id="demo-dest-field">
           <span class="mot-field__label">Destino</span>
           <input class="mot-field__input" id="demo-dest-input" type="text" placeholder="Ciudad o región" autocomplete="off" />
           <span class="mot-field__support" id="demo-dest-error" hidden>El destino es obligatorio</span>
         </label>
-      </div>
-    `,
+      </div>`,
     controlsHtml: `
       <label class="playground-check">
         <input type="checkbox" id="demo-show-error" />
-        Mostrar error en «Destino»
-      </label>
-    `,
-  })}
-
-  ${renderAnatomy(data.anatomy)}
-  ${renderVariantTable(data.variants, "Estados")}
-
-  <section class="section">
-    <h2>Dónde aparece en la app</h2>
-    <table>
-      <thead><tr><th>Pantalla</th><th>Campos</th></tr></thead>
-      <tbody>${examples}</tbody>
-    </table>
-  </section>
-
-  ${renderTokenSection(data.tokens)}
-  ${renderGuidelines(data)}
-  ${renderA11ySection(data.a11y)}
-  ${renderComposeSection(data.compose)}
-  ${renderChangelog(data.changelog)}
-`;
-
-const destField = document.getElementById("demo-dest-field");
-const destError = document.getElementById("demo-dest-error");
-const showError = document.getElementById("demo-show-error");
-
-function syncErrorState() {
-  const on = showError.checked;
-  destField.classList.toggle("mot-field--error", on);
-  destError.hidden = !on;
-}
-
-showError.addEventListener("change", syncErrorState);
+        <span>Mostrar error en «Destino»</span>
+      </label>`,
+  },
+  doDont: {
+    doHtml: fieldHtml({
+      label: "Destino",
+      value: "",
+      error: "El destino es obligatorio",
+    }),
+    doCaption: "Error con borde, label y texto. Nunca solo el color.",
+    dontHtml: fieldHtml({ label: "Destino", value: "" }),
+    dontCaption: "Un campo vacío sin mensaje no comunica el error.",
+  },
+  setup() {
+    const destField = document.getElementById("demo-dest-field");
+    const destError = document.getElementById("demo-dest-error");
+    const showError = document.getElementById("demo-show-error");
+    if (!destField || !showError) return;
+    showError.addEventListener("change", () => {
+      const on = showError.checked;
+      destField.classList.toggle("mot-field--error", on);
+      destError.hidden = !on;
+    });
+  },
+});

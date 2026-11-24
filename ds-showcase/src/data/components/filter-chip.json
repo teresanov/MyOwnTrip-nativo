@@ -3,93 +3,199 @@
   "name": "Filter chip",
   "status": "ready",
   "priority": "P0",
-  "figma": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28270",
-  "purpose": "Los filter chips permiten elegir una opción dentro de un conjunto pequeño y cambiarla con un solo toque. En MyOwnTrip los usamos en filas horizontales con scroll —por ejemplo, Activos / Archivados / Todos en Wallet— y en formularios cuando hay pocas categorías. Implementamos el componente Material 3 `FilterChip` sin wrapper propio; en Home el filtro de viajes sigue el patrón Menu, no chips.",
-  "anatomy": [
-    "Container — Outlined pill, `Corner/Small` (8dp) ↔ `MaterialTheme.shapes.small`",
-    "Label — Inter `labelLarge`",
-    "Leading icon — opcional en set; Wallet caps = Label only",
-    "Selected — fill `secondaryContainer` + check; unselected — outline"
-  ],
+  "category": "selección",
+  "summary": "Elige una opción dentro de un conjunto pequeño y la deja activa.",
+  "figma": {
+    "label": "Filter chip · Outlined",
+    "node": "53923:28270",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28270"
+  },
+  "usage": {
+    "purpose": "Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. El runtime es el FilterChip de Material 3, sin wrapper MOT.",
+    "when": [
+      "Hay un conjunto cerrado de categorías y la persona cambia de una a otra con un toque.",
+      "El valor se queda visible en la misma pantalla (no dispara una acción que cierra un flujo).",
+      "Las etiquetas caben en una fila: sustantivos cortos, en español, 20 caracteres o menos."
+    ],
+    "whenNot": [
+      {
+        "case": "La acción confirma, guarda o cierra un flujo",
+        "use": "Button",
+        "href": "components/button.html"
+      },
+      {
+        "case": "Filtro de viajes en Home",
+        "use": "Menu — el patrón acordado no es chip",
+        "href": "components.html"
+      },
+      {
+        "case": "Una sola etiqueta de metadato (tipo, fecha, lugar)",
+        "use": "Eyebrow label",
+        "href": "components/eyebrow-label.html"
+      },
+      {
+        "case": "Mensaje breve que no pide una decisión",
+        "use": "Snackbar",
+        "href": "components/snackbar.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "La opción no está activa",
+        "use": "FilterChip selected = false",
+        "note": "Outline sobre el fondo; label onSurface."
+      },
+      {
+        "if": "La opción está activa",
+        "use": "FilterChip selected = true",
+        "note": "Fill secondaryContainer y check leading de M3. En Wallet solo hay una seleccionada por eje."
+      }
+    ],
+    "related": [
+      { "label": "Button", "href": "components/button.html" },
+      { "label": "Basic dialog", "href": "components/basic-dialog.html" },
+      { "label": "Eyebrow label", "href": "components/eyebrow-label.html" }
+    ]
+  },
   "variants": [
     {
       "id": "outlined-unselected",
-      "label": "Outlined · Selected=False",
+      "label": "Outlined · Unselected",
+      "composable": "FilterChip",
       "usage": "Opciones no activas en la fila (p. ej. «Archivados»)."
     },
     {
       "id": "outlined-selected",
-      "label": "Outlined · Selected=True",
-      "usage": "Filtro activo (p. ej. «Activos» en Wallet)."
+      "label": "Outlined · Selected",
+      "composable": "FilterChip",
+      "usage": "Filtro activo. M3 pone el check al inicio; no hace falta un leadingIcon propio."
     }
   ],
-  "properties": [
-    { "name": "Style", "type": "VARIANT", "example": "Outlined (Elevated CUT Fase D)" },
-    { "name": "Selected", "type": "VARIANT", "example": "True | False" },
-    { "name": "Label", "type": "TEXT", "example": "Activos" }
+  "anatomy": [
+    "<strong>Contenedor</strong> — píldora outlined, radio fijo 8 dp (<code>Corner/Small</code> ↔ <code>shapes.small</code>). No morfa.",
+    "<strong>Label</strong> — Inter <code>labelLarge</code>. Sustantivo de categoría, no un verbo de acción.",
+    "<strong>Check (selected)</strong> — icono leading 18 dp que añade Material 3 al seleccionar. Wallet no pasa un icono propio.",
+    "<strong>Fila</strong> — scroll horizontal, hueco <code>MOTSpacing.componentSm</code> (8 dp) entre chips."
   ],
-  "tokens": [
-    "secondaryContainer / onSecondaryContainer (selected)",
-    "outline / onSurface (unselected)",
-    "Corner/Small (8dp)",
-    "mot/padding/chip/horizontal-sm (8) · horizontal-lg (16)",
-    "mot/padding/chip/vertical (6)",
-    "mot/spacing/chip/gap (8) — gap entre chips en fila",
-    "MOTSpacing.componentSm — gap entre chips en Compose (Wallet)"
-  ],
-  "guidelines": {
-    "label": "Material Design 3 · Chips",
-    "url": "https://m3.material.io/components/chips/guidelines",
-    "consulted": "2026-11-10"
-  },
-  "dos": [
-    "Usa chips para presentar opciones contextuales y complementarias.",
-    "Muestra los chips siempre en un conjunto; pueden desplazarse horizontalmente.",
-    "Etiquetas cortas (20 caracteres o menos), con la misma tipografía que los botones.",
-    "Redacta los filter chips con sustantivos que describan la categoría que se incluye en los resultados.",
-    "Al tocar un filter chip se activa y aparece un check al inicio de la etiqueta; puede permitirse selección múltiple o de un solo chip.",
-    "Define el borde del chip con un contorno (outline) sobre fondos normales; la elevación solo si va sobre una imagen."
-  ],
-  "donts": [
-    "No sustituyas acciones principales por chips: las acciones que avanzan o retroceden en un paso van siempre como botones.",
-    "No uses chips para terminar o avanzar una tarea; el último paso de una tarea es un botón.",
-    "No muestres un chip suelto: deben aparecer en un conjunto.",
-    "No mezcles selección única y múltiple entre los conjuntos de chips de una misma pantalla.",
-    "No eleves los chips cuando están directamente sobre la página, ni uses la elevación para indicar el estado pulsado (usa el ripple).",
-    "Evita frases negativas en los filter chips, como «Excluir imágenes»."
-  ],
-  "productRules": {
-    "dos": [
-      "Agrupa los chips en una fila con scroll horizontal y separación `MOTSpacing.componentSm` entre elementos.",
-      "Mantén una sola opción seleccionada por eje de filtro (como Activos / Archivados / Todos).",
-      "Usa copy corto y claro en español; en Figma ajusta la propiedad Label de la instancia, no texto suelto encima.",
-      "Reserva AssistChip para los pocos flujos que ya lo tienen; no lo uses donde corresponde Eyebrow label."
+  "behavior": {
+    "lead": "El chip no cambia de radio al tocarlo: selected se lee por color y por el check. El morph 0→20 es del botón, no de este control.",
+    "rows": [
+      { "state": "Unselected", "detail": "Fondo transparente, borde outline, label onSurface." },
+      { "state": "Selected", "detail": "Fill secondaryContainer, onSecondaryContainer, check leading. En Wallet, una sola opción por eje." },
+      { "state": "Hover / pressed", "detail": "State layer M3 sobre onSurface (unselected) o onSecondaryContainer (selected). Sin elevación." },
+      { "state": "Disabled", "detail": "38 % de contenido; no se usa en Wallet hoy." }
     ],
-    "donts": [
-      "No reintroduzcas la variante Elevated del set (fue eliminada en la Fase D de la librería).",
-      "No uses esquinas Extra-small en chips: ese radio pertenece al Text field.",
-      "No dibujes chips con frames sueltos en el design-file; instancia siempre el set publicado.",
-      "No sustituyas el menú de filtro de Home por FilterChip: el patrón acordado es Menu."
+    "notes": [
+      "Home no usa FilterChip para el filtro de viajes: el patrón es Menu.",
+      "Elevated se retiró del set (Fase D). No reintroducirlo.",
+      "Selección única y múltiple no se mezclan en la misma pantalla."
     ]
   },
   "a11y": [
-    "Cada chip: rol toggleable; anunciar selected/unselected.",
-    "Alternativa sin scroll horizontal forzado: mismo filtro accesible vía Menu donde aplique.",
-    "Touch target ≥ 48dp vía padding M3."
+    "Cada chip es un toggle: anunciar selected / unselected (<code>aria-pressed</code> en este HTML; estado de FilterChip en Compose).",
+    "La fila puede hacer scroll; el mismo filtro tiene que ser alcanzable sin gesto horizontal (p. ej. Menu en Home).",
+    "Área táctil ≥ 48 dp de alto vía padding M3, aunque el contenedor visible mida 32 dp."
   ],
-  "compose": "Row(\n    modifier = Modifier.horizontalScroll(rememberScrollState()),\n    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),\n) {\n    FilterChip(\n        selected = filterPhase == WalletDocumentFilterPhase.Active,\n        onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Active) },\n        label = { Text(\"Activos\") },\n    )\n    // Archivados, Todos…\n}",
-  "productExamples": [
+  "tokens": {
+    "color": [
+      { "token": "secondaryContainer / onSecondaryContainer", "use": "Selected." },
+      { "token": "outline / onSurface", "use": "Unselected." }
+    ],
+    "shape": [
+      { "token": "shapes.small", "use": "8 dp fijos. No usar Extra-small (ese radio es del Text field)." }
+    ],
+    "spacing": [
+      { "token": "mot/padding/chip/horizontal-lg", "use": "16 dp — lados sin icono." },
+      { "token": "mot/padding/chip/horizontal-sm", "use": "8 dp — lado del check cuando selected." },
+      { "token": "mot/padding/chip/vertical", "use": "6 dp." },
+      { "token": "mot/spacing/chip/gap · MOTSpacing.componentSm", "use": "8 dp entre chips y entre check y label." }
+    ],
+    "type": [
+      { "token": "labelLarge", "use": "Inter 14 Medium. Misma familia que el botón." }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Chips",
+        "url": "https://m3.material.io/components/chips/guidelines"
+      }
+    ],
+    "consulted": "2026-11-10"
+  },
+  "dos": [
+    "Muestra los chips siempre en un conjunto; pueden desplazarse en horizontal.",
+    "Etiquetas cortas, con la misma tipografía que los botones.",
+    "Redacta con sustantivos que describan la categoría incluida en los resultados.",
+    "Al tocar, el chip se activa y aparece el check; Wallet usa una sola selección por eje."
+  ],
+  "donts": [
+    "No sustituyas acciones principales por chips: avanzar o retroceder va en botones.",
+    "No muestres un chip suelto.",
+    "No mezcles selección única y múltiple entre conjuntos de la misma pantalla.",
+    "No eleves los chips sobre la página ni uses la elevación para el pulsado."
+  ],
+  "productRules": {
+    "dos": [
+      "Fila con scroll y <code>Arrangement.spacedBy(MOTSpacing.componentSm)</code>.",
+      "Una sola opción seleccionada por eje de filtro.",
+      "Copy corto en español; en Figma cambia la propiedad Label de la instancia."
+    ],
+    "donts": [
+      "No reintroduzcas Elevated.",
+      "No uses esquinas Extra-small.",
+      "No dibujes chips con frames sueltos en el design-file.",
+      "No sustituyas el menú de filtro de Home por FilterChip."
+    ]
+  },
+  "implementation": {
+    "module": "material3",
+    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt",
+    "import": "androidx.compose.material3.FilterChip",
+    "composable": "FilterChip",
+    "note": "Sin wrapper MOT. El check leading lo pone M3 al selected; Wallet no pasa leadingIcon.",
+    "params": [
+      { "name": "selected", "type": "Boolean", "default": "—", "note": "Obligatorio." },
+      { "name": "onClick", "type": "() -> Unit", "default": "—", "note": "Cambia el filtro; no navega." },
+      { "name": "label", "type": "@Composable () -> Unit", "default": "—", "note": "Text con el sustantivo." },
+      { "name": "leadingIcon", "type": "@Composable (() -> Unit)?", "default": "check si selected", "note": "No override en Wallet." }
+    ],
+    "snippet": "Row(\n    modifier = Modifier.horizontalScroll(rememberScrollState()),\n    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),\n) {\n    FilterChip(\n        selected = filterPhase == WalletDocumentFilterPhase.Active,\n        onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Active) },\n        label = { Text(\"Activos\") },\n    )\n}"
+  },
+  "decisions": {
+    "source": "Compose FilterChip (M3) · set de librería 53923:28270",
+    "why": "Elegir una opción dentro de un conjunto pequeño con un toque, sin cerrar la pantalla.",
+    "layer": "M3 directo, sin wrapper"
+  },
+  "changelog": [
+    { "date": "2026-10-29", "note": "Fase B.3: Corner/Small + mot/padding/chip/*." },
+    { "date": "2026-10-30", "note": "Playground interactivo." },
+    { "date": "2026-11-24", "note": "Ficha usage-first: anatomía y medidas en el showcase; la librería deja de ser la documentación." }
+  ],
+  "screens": [
     { "screen": "WalletScreen", "pattern": "WalletDocumentFilterChips — Activos / Archivados / Todos" },
     { "screen": "ExpenseFormScreen", "pattern": "Categoría y método de pago" },
     { "screen": "JournalAddScreen", "pattern": "Tipo de entrada" }
   ],
-  "decisions": {
-    "source": "Figma node 53923-28270 · Compose `FilterChip` (M3)",
-    "why": "Elegir una opción dentro de un conjunto pequeño con un toque (Wallet, formularios).",
-    "layer": "M3 directo, sin wrapper"
-  },
-  "changelog": [
-    { "date": "2026-10-29", "note": "Fase B.3: Corner/Small + mot/padding/chip/*; Wallet 6 instancias; 0 LEGACY." },
-    { "date": "2026-10-30", "note": "Ficha showcase: playgrounds interactivos + copy legible (estilo Material)." }
-  ]
+  "anatomyDiagram": {
+    "kind": "filter-chip",
+    "values": {
+      "padH": 16,
+      "padHSelected": 8,
+      "padV": 6,
+      "gap": 8,
+      "icon": 18,
+      "radius": 8,
+      "height": 32
+    },
+    "measures": [
+      { "label": "Alto visible", "value": "32 dp" },
+      { "label": "Padding horizontal (sin check)", "value": "16 dp" },
+      { "label": "Padding leading (con check)", "value": "8 dp" },
+      { "label": "Padding vertical", "value": "6 dp" },
+      { "label": "Check", "value": "18 dp" },
+      { "label": "Hueco check–label y entre chips", "value": "8 dp" },
+      { "label": "Radio", "value": "8 dp" }
+    ]
+  }
 }

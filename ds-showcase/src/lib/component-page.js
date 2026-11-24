@@ -101,6 +101,37 @@ export function renderComponentHeader(data, figmaLinkLabel = "Component set en F
     <h1>${data.name} ${statusChipHtml(data.status)}</h1>
     <p class="page-header__lead">${val(purpose)}</p>
     ${links ? `<p class="page-header__links">${links}</p>` : ""}
+    ${data.specimenHtml ? renderSpecimenStage(data.specimenHtml) : ""}
+  `;
+}
+
+/** Escenario visual: el mismo HTML de ficha, no Compose. */
+export function renderSpecimenStage(innerHtml, caption) {
+  return `
+    <div class="specimen-stage">
+      ${innerHtml}
+    </div>
+    <p class="specimen-stage__note">${
+      caption ||
+      "HTML con los mismos roles y medidas que Compose (1&nbsp;px = 1&nbsp;dp). No es el runtime de Android."
+    }</p>
+  `;
+}
+
+export function renderDoDontPair({ doHtml, doCaption, dontHtml, dontCaption }) {
+  return `
+    <div class="dodont-visual">
+      <figure class="dodont-visual__card dodont-visual__card--do">
+        <p class="dodont-visual__kicker">Bien</p>
+        <div class="dodont-visual__stage">${doHtml}</div>
+        <figcaption>${doCaption}</figcaption>
+      </figure>
+      <figure class="dodont-visual__card dodont-visual__card--dont">
+        <p class="dodont-visual__kicker">Mal</p>
+        <div class="dodont-visual__stage">${dontHtml}</div>
+        <figcaption>${dontCaption}</figcaption>
+      </figure>
+    </div>
   `;
 }
 
@@ -216,7 +247,7 @@ export function renderVariantTable(variants, heading = "Variantes del set") {
 
   return (
     sectionOpen(slugify(heading), heading, {
-      lead: "Cada variante publicada en Figma tiene que poder trazarse a un composable real.",
+      lead: "Cada variante tiene que poder trazarse a un composable real.",
       tocLabel: "Variantes",
     }) +
     table(head, rows) +

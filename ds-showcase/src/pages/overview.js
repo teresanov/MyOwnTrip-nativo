@@ -32,6 +32,16 @@ document.getElementById("page-header").innerHTML = `
     La identidad está en la tipografía, en el color con cuentagotas y en un botón
     que es rectángulo hasta que lo tocas.
   </p>
+  <div class="specimen-stage">
+    <button type="button" class="mot-btn mot-btn--filled">Guardar gasto</button>
+    <button type="button" class="mot-btn mot-btn--tonal">Siguiente</button>
+    <button type="button" class="mot-btn mot-btn--outlined">Cancelar</button>
+    <button type="button" class="filter-chip filter-chip--selected">Activos</button>
+    <button type="button" class="filter-chip">Archivados</button>
+  </div>
+  <p class="specimen-stage__note">
+    Los mismos roles que en Compose. El showcase no monta Android: esto es HTML a 1&nbsp;px = 1&nbsp;dp.
+  </p>
 `;
 
 document.getElementById("main").innerHTML = `
@@ -71,9 +81,12 @@ document.getElementById("main").innerHTML = `
     <h2 id="estado">Estado del sistema</h2>
     <p class="section-lead">
       Las ${total} fichas del índice están escritas. ${ready} están <strong>listas</strong>
-      (Figma publicado, ficha y Compose alineados). ${review} siguen <strong>en revisión</strong>:
-      hay ficha, falta cerrar paridad o validar. No hay borradores: la deuda ya no es «falta
-      la ficha», es «falta cerrar».
+      (Figma publicado, ficha y Compose alineados). ${
+        review
+          ? `${review} ${review === 1 ? "sigue" : "siguen"} <strong>en revisión</strong>: hay ficha, falta validar.`
+          : "Ninguna está en revisión."
+      }
+      No hay borradores: la deuda ya no es «falta la ficha», es «falta cerrar».
     </p>
     ${
       inReviewNames.length
