@@ -51,7 +51,7 @@ Viajero urbano organizado · estética editorial (Monocle/Wallpaper) · papel c�
 1. Prohibido tokens de color por estado (`hover`/`pressed`/`focus`/`disabled`).
 2. Estados = state layers en runtime (`onX` @ 8/10/10/16%); disabled 38%/12%; nunca color guardado.
 3. UI solo roles M3 (`colorScheme`); jamás primitivos/tonos ni `AppColors` en pantallas.
-4. `tertiary` (#825513, marca) ≠ `error` (#B3261E, alerta).
+4. `tertiary` (#825513, marca) ≠ `error` (#904A42, alerta).
 5. Errores: icono + texto; nunca solo color.
 6. Fraunces (Display/Headline) + Inter (resto); serif solo arriba.
 

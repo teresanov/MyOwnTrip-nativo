@@ -49,7 +49,7 @@ Criterio: texto grande / logotipo ≥ **3:1** · texto normal ≥ **4.5:1** · g
 
 > Los lockups son **logotipos** (exención WCAG 1.4.3 para texto de marca). Aun así, el acento ocre cumple 3:1 sobre `surface` Light donde se usa el wordmark en app.
 
-> **UI:** `Schemes/Tertiary` = `#825513` (botones, chips). **Logo:** `Brand/ocre` = `#C48328`. No mezclar con **error** (`#B3261E` / `#904A42`).
+> **UI:** `Schemes/Tertiary` = `#825513` (botones, chips). **Logo:** `Brand/ocre` = `#C48328`. No mezclar con **error** (`#904A42` Light · `#FFB4AA` Dark en `Schemes/Error`).
 
 ## Tipografía logo
 

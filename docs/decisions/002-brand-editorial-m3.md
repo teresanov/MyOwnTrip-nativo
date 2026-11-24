@@ -15,12 +15,12 @@ ADR 001 fijó M3 estructural; este ADR fija identidad de marca y reglas de consu
 ### Marca
 - Persona: viajero urbano organizado.
 - Estética: editorial, papel cálido, acento ocre con moderación.
-- Tertiary (`#825513`) = acento de marca; **error** (`#B3261E`) = rojo profundo distinto a propósito.
+- Tertiary (`#825513`) = acento de marca; **error** (`#904A42`) = rojo profundo distinto a propósito.
 
 ### Color
 - **Primary (gris-azul, jun 2026):** Light `#4A5864` · Dark `#B4BAC2` · `primaryContainer` Light `#E4E1DC` · Dark `#3A444C`.
 - **Tertiary (ocre):** `#825513` Light · `#F8BB71` Dark (armonía MTB en Dark).
-- **Error:** `#B3261E` — distinto de tertiary a propósito.
+- **Error:** `#904A42` Light · `#FFB4AA` Dark (`Color.kt` / `Schemes/Error`) — distinto de tertiary a propósito.
 - Neutros seeds (si regeneras en MTB): `#8A8275` / `#847E72`.
 - **Workflow:** Figma (Bridge) → `variables.json` → `Color.kt`. **No** MTB como bucle principal (re-harmoniza a azul).
 - **Generate state layers = NO** (runtime only).
@@ -46,7 +46,7 @@ ADR 001 fijó M3 estructural; este ADR fija identidad de marca y reglas de consu
 1. Prohibido tokens de color por estado (`hover`/`pressed`/`focus`/`disabled`).
 2. Estados = state layers en runtime (`onX` @ 8/10/10/16%); disabled 38%/12%; nunca color guardado.
 3. UI solo roles semánticos M3; jamás primitivos/tonos.
-4. Tertiary (`#825513`, marca) y Error (`#B3261E`, alerta) — no mezclar.
+4. Tertiary (`#825513`, marca) y Error (`#904A42`, alerta) — no mezclar.
 5. Errores: icono + texto; nunca solo color.
 6. Fraunces (Display/Headline) + Inter (resto); serif solo arriba.
 
