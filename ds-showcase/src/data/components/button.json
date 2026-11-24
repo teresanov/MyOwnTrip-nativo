@@ -1,7 +1,7 @@
 {
   "id": "button",
   "name": "Button",
-  "status": "in-review",
+  "status": "ready",
   "priority": "P0",
   "category": "acciones",
   "summary": "Ejecuta una acción: confirmar, guardar, continuar.",

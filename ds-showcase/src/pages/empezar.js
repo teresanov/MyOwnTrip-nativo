@@ -35,8 +35,9 @@ document.getElementById("main").innerHTML = `
     </ol>
     <div class="callout">
       El estado de cada ficha dice cuánto puedes fiarte de ella.
-      <strong>Listo</strong> significa Figma publicado, ficha completa y Compose alineado.
-      <strong>Borrador</strong> significa que existe en algún sitio pero nadie lo ha documentado.
+      <strong>Listo</strong>: Figma publicado, ficha completa y Compose alineado.
+      <strong>En revisión</strong>: hay ficha, pero falta validar o migrar al esquema Usage-first.
+      <strong>Borrador</strong>: existe en Figma o en código y aún no hay ficha en el índice.
     </div>
   </section>
 

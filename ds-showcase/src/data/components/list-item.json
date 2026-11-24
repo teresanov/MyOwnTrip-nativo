@@ -1,7 +1,7 @@
 {
   "id": "list-item",
   "name": "List item",
-  "status": "in-review",
+  "status": "ready",
   "priority": "P1",
   "category": "contenido",
   "summary": "Fila de lista con icono, titular, texto de apoyo y acciones al final (Wallet).",

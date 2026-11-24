@@ -3,7 +3,7 @@
     {
       "id": "button",
       "name": "Button",
-      "status": "in-review",
+      "status": "ready",
       "priority": "P0",
       "category": "acciones",
       "href": "components/button.html",
@@ -12,7 +12,7 @@
     {
       "id": "icon-button",
       "name": "Icon button",
-      "status": "in-review",
+      "status": "ready",
       "priority": "P1",
       "category": "acciones",
       "href": "components/icon-button.html",
@@ -102,7 +102,7 @@
     {
       "id": "list-item",
       "name": "List item",
-      "status": "in-review",
+      "status": "ready",
       "priority": "P1",
       "category": "contenido",
       "href": "components/list-item.html",

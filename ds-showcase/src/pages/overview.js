@@ -9,6 +9,9 @@ const total = componentsManifest.components.length;
 const ready = componentsManifest.components.filter((c) => c.status === "ready").length;
 const review = componentsManifest.components.filter((c) => c.status === "in-review").length;
 const draft = componentsManifest.components.filter((c) => c.status === "draft").length;
+const inReviewNames = componentsManifest.components
+  .filter((c) => c.status === "in-review")
+  .map((c) => c.name);
 
 const FOUNDATIONS = site.nav.find((n) => n.id === "foundations")?.children || [];
 
@@ -39,7 +42,7 @@ document.getElementById("main").innerHTML = `
     </a>
     <a class="entry-card" href="${assetUrl("components.html")}">
       <h3>Componentes</h3>
-      <p>${total} componentes: ${ready} listos, ${review} en revisión, ${draft} sin ficha.</p>
+      <p>${total} fichas: ${ready} listas, ${review} en revisión${draft ? `, ${draft} en borrador` : ""}.</p>
     </a>
     <a class="entry-card" href="${assetUrl("gobernanza.html")}">
       <h3>Gobernanza</h3>
@@ -67,13 +70,34 @@ document.getElementById("main").innerHTML = `
   <section class="section">
     <h2 id="estado">Estado del sistema</h2>
     <p class="section-lead">
-      Una ficha en <strong>borrador</strong> significa que el componente existe en Figma o en
-      código pero nadie ha escrito cuándo usarlo. Es la deuda visible del sistema.
+      Las ${total} fichas del índice están escritas. ${ready} están <strong>listas</strong>
+      (Figma publicado, ficha y Compose alineados). ${review} siguen <strong>en revisión</strong>:
+      hay ficha, falta cerrar paridad o validar. No hay borradores: la deuda ya no es «falta
+      la ficha», es «falta cerrar».
+    </p>
+    ${
+      inReviewNames.length
+        ? `<p class="section-lead">En revisión: <strong>${inReviewNames.join("</strong>, <strong>")}</strong>.${
+            inReviewNames.includes("Swipeable list row")
+              ? " Esa ficha aún no usa el esquema Usage-first del resto del índice."
+              : ""
+          }</p>`
+        : `<p class="section-lead">Todas las fichas del índice están listas.</p>`
+    }
+    <p class="section-lead">
+      <strong>Search bar</strong> y <strong>Menu</strong> viven en Figma y en Compose pero no tienen
+      ficha en el índice; Home los documenta en
+      <a href="${assetUrl("patterns.html")}#home-filter-menu">Patrones · menú de filtros</a>.
+      La paridad Figma (state layers, iconos, etc.) se sigue en el log del repo, no en esta tabla.
     </p>
     <table>
       <thead><tr><th>Componente</th><th>Estado</th><th>Prioridad</th></tr></thead>
       <tbody>
-        ${componentsManifest.components
+        ${[...componentsManifest.components]
+          .sort((a, b) => {
+            const order = { "in-review": 0, draft: 1, ready: 2, deprecated: 3 };
+            return (order[a.status] ?? 9) - (order[b.status] ?? 9);
+          })
           .map(
             (c) => `
           <tr>
@@ -94,9 +118,9 @@ document.getElementById("main").innerHTML = `
   <section class="section">
     <h2 id="pipeline">Pipeline</h2>
     <div class="callout">
-      <strong>Figma</strong> (variables, vía Desktop Bridge) → <code>variables.json</code> →
-      <strong>Compose</strong> → esta web y el contexto para agentes.
-      Figma es librería visual; la documentación de componentes vive aquí.
+      <strong>Tokens:</strong> Figma (variables) → <code>variables.json</code> → Compose.
+      <strong>Componentes:</strong> Compose → Figma (espejo) → esta web.
+      La paridad se anota en el log; Notion registra el trabajo, no especifica.
     </div>
   </section>
 `;

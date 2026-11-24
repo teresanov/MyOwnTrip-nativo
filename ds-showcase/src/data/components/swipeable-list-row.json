@@ -3,7 +3,11 @@
   "name": "Swipeable list row",
   "status": "in-review",
   "priority": "P1",
-  "figma": null,
+  "figma": {
+    "label": "List Item - Swipe",
+    "node": "59106:13321",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=59106-13321"
+  },
   "purpose": "Fila de lista con acciones laterales tipo Gmail: deslizar para archivar o eliminar, con menú ⋮ equivalente por tap. Patrón Compose compartido en Home («Más viajes») y Wallet (lista plana). No usar en el hero destacado ni en carruseles.",
   "anatomy": [
     "SwipeToDismissBox — umbral ~45% del ancho; no confirma dismiss (acción inmediata + fila vuelve a reposo)",
@@ -42,7 +46,7 @@
       "No envolver el viaje destacado (TripHeroCard) ni filas del carrusel Wallet «Próximos».",
       "No usar swipe como única vía para eliminar sin alternativa por tap.",
       "No colores primitivos en fondos de swipe — solo roles M3 del colorScheme.",
-      "No crear component set en Figma para este patrón; documentar en showcase + referencia Compose."
+      "No redibujar el swipe con frames sueltos: instanciar List Item - Swipe del DS."
     ]
   },
   "a11y": [
@@ -54,7 +58,7 @@
   ],
   "compose": "// Home — lista «Más viajes»\nSwipeableTripListRow(\n    trip = trip,\n    today = today,\n    showArchivedActions = filterPhase == Archived,\n    onClick = { onTripClick(trip.id) },\n    onArchive = { onArchiveTrip(trip.id) },\n    onUnarchive = { onUnarchiveTrip(trip.id) },\n    onDeleteRequest = { requestDelete(trip.id) },\n)\n\n// Wallet — lista plana\nSwipeableWalletDocumentRow(\n    entry = entry,\n    showArchivedActions = showArchived,\n    onClick = { onEntryClick(entry.id) },\n    onArchive = { onArchive(entry.id) },\n    onUnarchive = { onUnarchive(entry.id) },\n    onDeleteRequest = { requestDelete(entry) },\n)",
   "decisions": {
-    "source": "Pendiente",
+    "source": "Figma List Item - Swipe 59106:13321 · SwipeableTripListRow / SwipeableWalletDocumentRow (app)",
     "why": "Acciones laterales (archivar, eliminar) con alternativa por tap (menú ⋮) para accesibilidad.",
     "layer": "Patrón Compose compartido (Home «Más viajes», Wallet)"
   },

@@ -37,12 +37,22 @@ export function setupToc() {
   tocDone = true;
 }
 
+const STATUS_CHIP_CLASS = {
+  draft: "chip--draft",
+  "in-review": "chip--review",
+  ready: "chip--ready",
+  deprecated: "chip--deprecated",
+};
+
+const STATUS_CHIP_LABEL = {
+  draft: "Borrador",
+  "in-review": "En revisión",
+  ready: "Listo",
+  deprecated: "Obsoleto",
+};
+
 export function statusChip(status) {
-  const map = {
-    draft: "chip--draft",
-    "in-review": "chip--review",
-    ready: "chip--ready",
-    deprecated: "chip--deprecated",
-  };
-  return `<span class="chip ${map[status] || "chip--draft"}">${status}</span>`;
+  return `<span class="chip ${STATUS_CHIP_CLASS[status] || "chip--draft"}">${
+    STATUS_CHIP_LABEL[status] || status
+  }</span>`;
 }

@@ -21,6 +21,31 @@ const dataDir = join(root, "src", "data");
 const outDir = join(root, "public");
 
 const readJson = async (...p) => JSON.parse(await readFile(join(dataDir, ...p), "utf8"));
+async function writeJson(filename, value) {
+  await writeFile(join(dataDir, filename), `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
+/** El estado vive en la ficha JSON; el manifiesto solo indexa. */
+async function syncManifestStatus(manifest) {
+  let changed = false;
+  for (const entry of manifest.components) {
+    const fichPath = join(dataDir, "components", `${entry.id}.json`);
+    try {
+      const data = JSON.parse(await readFile(fichPath, "utf8"));
+      if (data.status && entry.status !== data.status) {
+        entry.status = data.status;
+        changed = true;
+      }
+    } catch {
+      /* ficha ausente */
+    }
+  }
+  if (changed) {
+    await writeJson("components.json", manifest);
+    console.warn("components.json: status sincronizado desde fichas");
+  }
+  return manifest;
+}
 
 const bullets = (items) => items.map((i) => `- ${strip(i)}`).join("\n");
 
@@ -36,8 +61,7 @@ function strip(s) {
     .trim();
 }
 
-async function loadComponents() {
-  const manifest = await readJson("components.json");
+async function loadComponentsFromManifest(manifest) {
   const files = await readdir(join(dataDir, "components"));
   const byId = new Map();
   for (const f of files.filter((f) => f.endsWith(".json"))) {
@@ -105,7 +129,8 @@ async function main() {
   const rules = await readJson("rules.json");
   const tokens = await readJson("tokens.json");
   const site = await readJson("site.json");
-  const components = await loadComponents();
+  const manifest = await syncManifestStatus(await readJson("components.json"));
+  const components = await loadComponentsFromManifest(manifest);
   const today = new Date().toISOString().slice(0, 10);
 
   /* ---------- ds-context.md ---------- */

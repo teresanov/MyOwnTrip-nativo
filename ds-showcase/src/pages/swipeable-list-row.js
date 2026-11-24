@@ -7,9 +7,10 @@ initShowcasePage("components", { componentId: "swipeable-list-row" });
 
 mountDecisions(data);
 
-const figmaLine = data.figma
-  ? `<p><a href="${data.figma}" target="_blank" rel="noopener">Referencia en Figma ↗</a></p>`
-  : "<p><em>Sin component set en Figma — patrón documentado en Compose y showcase.</em></p>";
+const figmaUrl = data.figma?.url || (typeof data.figma === "string" ? data.figma : null);
+const figmaLine = figmaUrl
+  ? `<p><a href="${figmaUrl}" target="_blank" rel="noopener">${data.figma?.label || "Referencia en Figma"} ↗</a></p>`
+  : "<p><em>Sin set publicado en Figma — patrón documentado en Compose y showcase.</em></p>";
 
 document.getElementById("component-header").innerHTML = `
   <p class="page-header__eyebrow">Component · Patrones · ${data.priority || "P1"}</p>

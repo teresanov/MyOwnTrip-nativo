@@ -26,7 +26,7 @@
   ],
   "statusLabels": {
     "draft": "Borrador — existe en Figma o en código, sin ficha",
-    "in-review": "En revisión — ficha escrita, pendiente de validar",
+    "in-review": "En revisión — ficha escrita; falta validar o migrar al esquema Usage-first",
     "ready": "Listo — Figma publicado, ficha completa y Compose alineado",
     "deprecated": "Obsoleto — no usar en pantallas nuevas"
   }

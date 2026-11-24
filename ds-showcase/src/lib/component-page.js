@@ -16,6 +16,8 @@
  * Todas las secciones emiten <h2 id> para que el índice ancleado (toc.js) las recoja.
  */
 
+import { statusChip } from "./bootstrap.js";
+
 export function escapeHtml(s) {
   return String(s)
     .replace(/&/g, "&amp;")
@@ -64,13 +66,7 @@ export function list(items, cls = "list-dos") {
 }
 
 function statusChipHtml(status) {
-  const map = {
-    draft: "chip--draft",
-    "in-review": "chip--review",
-    ready: "chip--ready",
-    deprecated: "chip--deprecated",
-  };
-  return `<span class="chip ${map[status] || "chip--draft"}">${status}</span>`;
+  return statusChip(status);
 }
 
 function formatConsulted(iso) {

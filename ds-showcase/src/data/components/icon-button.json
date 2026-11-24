@@ -1,7 +1,7 @@
 {
   "id": "icon-button",
   "name": "Icon button",
-  "status": "in-review",
+  "status": "ready",
   "priority": "P1",
   "category": "acciones",
   "summary": "Acción compacta solo con icono: volver, editar, borrar, filtrar.",
