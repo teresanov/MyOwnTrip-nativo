@@ -1,6 +1,6 @@
 # MyOwnTrip · Design System — contexto para agentes
 
-> Generado el 2026-11-19 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
+> Generado el 2026-11-24 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
 > Fuente de verdad del comportamiento: el código de `designsystem/` y `app/`.
 
 ## Principios
@@ -65,7 +65,7 @@
 
 ## Button
 
-- Estado: in-review · P0
+- Estado: ready · P0
 - Para qué: Un botón ejecuta una acción en el sitio donde está: confirmar, guardar, continuar. En MyOwnTrip son crear un viaje, guardar un gasto y confirmar una entrada del Wallet.
 - Composable: `MOTButton` — `com.myowntrip.app.ui.theme.MOTButton`
 - Fuente: `designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTButtons.kt`
@@ -129,7 +129,7 @@ MOTButton(
 
 ## Icon button
 
-- Estado: in-review · P1
+- Estado: ready · P1
 - Para qué: Un icon button ejecuta una acción común y fácil de entender sin texto: volver, editar, borrar, abrir el menú de filtros. Es el control de la top app bar, de las filas de lista y de los campos con acción (calendario, borrar búsqueda).
 - Composable: `MOTIconButton` — `com.myowntrip.app.ui.theme.MOTIconButton`
 - Fuente: `designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTButtons.kt`
@@ -437,7 +437,7 @@ MOTIconButton(
 - No envolver el viaje destacado (TripHeroCard) ni filas del carrusel Wallet «Próximos».
 - No usar swipe como única vía para eliminar sin alternativa por tap.
 - No colores primitivos en fondos de swipe — solo roles M3 del colorScheme.
-- No crear component set en Figma para este patrón; documentar en showcase + referencia Compose.
+- No redibujar el swipe con frames sueltos: instanciar List Item - Swipe del DS.
 
 ### Accesibilidad
 
@@ -449,7 +449,7 @@ MOTIconButton(
 
 ## List item
 
-- Estado: in-review · P1
+- Estado: ready · P1
 - Para qué: Una fila de lista muestra un elemento discreto de una colección vertical: un documento del Wallet con su tipo, título, fecha y estado. La fila entera es el área pulsable y lleva a su detalle.
 - Composable: `WalletDocumentRow` — `com.myowntrip.app.ui.features.wallet.WalletDocumentRow`
 - Fuente: `app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt`

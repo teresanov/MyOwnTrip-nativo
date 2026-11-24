@@ -1,4 +1,4 @@
-import{i as a,b as e,d as o}from"./bootstrap-CkAT-PS0.js";a("empezar");document.getElementById("page-header").innerHTML=`
+import{i as a,b as e,d as o}from"./bootstrap-Bil26Efv.js";a("empezar");document.getElementById("page-header").innerHTML=`
   <p class="page-header__eyebrow">Empezar aquí</p>
   <h1>Cómo se usa este sistema</h1>
   <p class="page-header__lead">
@@ -28,8 +28,9 @@ import{i as a,b as e,d as o}from"./bootstrap-CkAT-PS0.js";a("empezar");document.
     </ol>
     <div class="callout">
       El estado de cada ficha dice cuánto puedes fiarte de ella.
-      <strong>Listo</strong> significa Figma publicado, ficha completa y Compose alineado.
-      <strong>Borrador</strong> significa que existe en algún sitio pero nadie lo ha documentado.
+      <strong>Listo</strong>: Figma publicado, ficha completa y Compose alineado.
+      <strong>En revisión</strong>: hay ficha, pero falta validar o migrar al esquema Usage-first.
+      <strong>Borrador</strong>: existe en Figma o en código y aún no hay ficha en el índice.
     </div>
   </section>
 
