@@ -22,7 +22,9 @@
 
 *Ningún ítem abierto.* Regresión o nuevo delta → nueva fila en Registro.
 
-**Hecho (no reabrir salvo regresión):** librería DS **publicada** (state layers nov 2026). Colección **`LEGACY · Semantic Layout`:** **ausente** en Figma live (8 colecciones; verificado 2026-11-24 vía Bridge).
+**Hecho (no reabrir salvo regresión):** librería DS **publicada** (state layers nov 2026). Colección **`LEGACY · Semantic Layout`:** **ausente** en Figma live (8 colecciones). **Paridad tokens Figma → `variables.json` → `Color.kt`:** cerrada 2026-11-24 — export live 597 vars · `diff-variables-kotlin.py` **0 drift** en `Schemes/*` + Extended.
+
+**Chequeo tokens (cuando toques variables en Figma):** `python scripts/export_figma_variables_json.py` (Bridge en DS) **o** MCP `figma_execute` + `python scripts/export_figma_variables_json.py --input <mcp.json>` → `python .cursor/skills/myowntrip-ds-audit/scripts/diff-variables-kotlin.py` → fila en Registro si hubo cambio.
 
 **Fuera de esta bitácora (producto):** event bookmark no entra por el + del Diario.
 
@@ -34,6 +36,7 @@
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-24 | tokens · cierre | **Paridad tokens cerrada:** re-export DS (`zrGAL4v6`) 8 colecciones · 597 variables; `diff-variables-kotlin.py` → **0 drift** Light/Dark `Schemes/*` + Extended. Post-barrido audits; sin cola tokens salvo regresión. | MCP export · `variables.json` · `Color.kt` | **Resuelto** |
 | 2026-11-24 | docs · audits | **Archivo cerrado:** eliminados planes y snapshots (`disparity-remediation-plan`, `compose-figma-parity-plan`, fases `figma-*`, inventarios históricos). Vivientes: **parity-log** + contrato date/time + gap scrapbook tipografía. | `audits/README.md` | **Resuelto** |
 | 2026-11-24 | design-file · 02/03 | **02 solo crear** · **03 solo editar** — **8 caps** (crear 1/1b/2/3 · editar 1–4); **MotDateRangeField** en formulario; tabla Viajes en bindings. | `Vf2tNMXy` · `figma-compose-bindings.md` · `figma-app-flows` | **Resuelto** |
 | 2026-11-24 | tokens · export | **`variables.json` regenerado** desde Figma DS (597 variables · 8 colecciones). Incluye `mot/opacity/disabled-content`, `*/Opacity-12` state layers nuevos. | `figma_execute` · `docs/design-system/variables.json` | **Resuelto** |

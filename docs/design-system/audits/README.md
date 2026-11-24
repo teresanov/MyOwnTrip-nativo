@@ -17,4 +17,10 @@ Los planes y snapshots de sesión (`compose-figma-parity-plan`, `disparity-remed
 2. [`figma-compose-bindings.md`](../figma-compose-bindings.md)
 3. [`parity-log.md`](../parity-log.md)
 
-Inventario tokens (regenerable): `python scripts/generate_tokens_inventory.py` → escribe `tokens-inventory-complete-2026-11-03.md` solo si hace falta auditoría puntual; no forma parte del índice de lectura habitual.
+**Chequeo tokens (obligatorio si cambias variables en Figma):**
+
+1. Export → `docs/design-system/variables.json` (`export_figma_variables_json.py`; si el Bridge no responde desde terminal, export MCP + `--input`).
+2. Diff → `python .cursor/skills/myowntrip-ds-audit/scripts/diff-variables-kotlin.py` (**0 drift** en roles mapeados).
+3. Cierre → fila en `parity-log.md` (§ Registro).
+
+Inventario largo (opcional): `python scripts/generate_tokens_inventory.py` — no commitear salvo auditoría puntual.
