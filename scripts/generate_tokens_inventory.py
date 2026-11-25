@@ -12,7 +12,7 @@ REPO = Path(__file__).resolve().parents[1]
 VAR_DEFS = Path(
     r"C:\Users\Usuario\.cursor\projects\c-Users-Usuario-AndroidProjects-MOT-nativo\agent-tools\62c412ea-4f7a-450c-ba27-aa233fa3d73f.txt"
 )
-MOT_SPACING_KT = REPO / "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTSpacing.kt"
+MOT_SPACING_KT = REPO / "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/theme/MOTSpacing.kt"
 OUT = REPO / "docs/design-system/audits/tokens-inventory-complete-2026-11-03.md"
 
 # Kit M3 importado (ARCHIVE). Smoke PRODUCT 2026-11-18: 0 binds en 6 maestros — ver contrato date-product.

@@ -39,7 +39,7 @@ private fun frauncesItalicFont(weight: FontWeight) = Font(
   ),
 )
 
-val FrauncesFamily = FontFamily(
+actual val FrauncesFamily = FontFamily(
   frauncesFont(FontWeight.Light),
   frauncesFont(FontWeight.Normal),
   frauncesFont(FontWeight.Medium),
@@ -62,7 +62,7 @@ private fun interFont(weight: FontWeight) = Font(
   ),
 )
 
-val InterFamily = FontFamily(
+actual val InterFamily = FontFamily(
   interFont(FontWeight.Normal),
   interFont(FontWeight.Medium),
   interFont(FontWeight.SemiBold),
@@ -77,18 +77,14 @@ private fun shantellFont(weight: FontWeight) = Font(
   ),
 )
 
-/**
- * Pluma del Diario: Shantell Sans, solo notas a mano del álbum (≥16sp),
- * nunca en UI funcional. Figma `MOT/album/hand-note` · `Static/Font/Hand`.
- */
-val HandFamily = FontFamily(
+actual val HandFamily = FontFamily(
   shantellFont(FontWeight.Normal),
   shantellFont(FontWeight.Medium),
   shantellFont(FontWeight.SemiBold),
   shantellFont(FontWeight.Bold),
 )
 
-val AppTypography = Typography(
+actual val AppTypography = Typography(
   displayLarge = TextStyle(
     fontFamily = FrauncesFamily,
     fontWeight = FontWeight.Normal,
@@ -208,27 +204,4 @@ val AppTypography = Typography(
     lineHeight = 16.sp,
     letterSpacing = 0.5.sp,
   ),
-)
-
-/**
- * Figma `MOT/album/day-kicker`: Fraunces Bold 11 / lh 16 / tracking 1.8.
- * Excepción editorial del masthead del álbum; no es un rol label.
- */
-val AlbumDayKicker = TextStyle(
-  fontFamily = FrauncesFamily,
-  fontWeight = FontWeight.Bold,
-  fontSize = 11.sp,
-  lineHeight = 16.sp,
-  letterSpacing = 1.8.sp,
-)
-
-/**
- * Figma `MOT/album/hand-note`: pluma del diario (HandFamily, Shantell Sans Medium 17/22).
- * Solo notas `JournalTextStyle.HAND`, nunca UI funcional.
- */
-val AlbumHandNote = TextStyle(
-  fontFamily = HandFamily,
-  fontWeight = FontWeight.Medium,
-  fontSize = 17.sp,
-  lineHeight = 22.sp,
 )

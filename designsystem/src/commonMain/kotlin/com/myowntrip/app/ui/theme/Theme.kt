@@ -1,21 +1,15 @@
 package com.myowntrip.app.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.MaterialExpressiveTheme
-import androidx.compose.material3.MotionScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 
-private val LightColorScheme = lightColorScheme(
+internal val MotLightColorScheme = lightColorScheme(
   primary = AppColors.primaryLight,
   onPrimary = AppColors.onPrimaryLight,
   primaryContainer = AppColors.primaryContainerLight,
@@ -66,7 +60,7 @@ private val LightColorScheme = lightColorScheme(
   scrim = AppColors.scrimLight,
 )
 
-private val DarkColorScheme = darkColorScheme(
+internal val MotDarkColorScheme = darkColorScheme(
   primary = AppColors.primaryDark,
   onPrimary = AppColors.onPrimaryDark,
   primaryContainer = AppColors.primaryContainerDark,
@@ -118,9 +112,9 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 data class ExtendedColors(
-  val success: androidx.compose.ui.graphics.Color,
-  val warning: androidx.compose.ui.graphics.Color,
-  val info: androidx.compose.ui.graphics.Color,
+  val success: Color,
+  val warning: Color,
+  val info: Color,
 )
 
 val LocalExtendedColors = staticCompositionLocalOf {
@@ -131,22 +125,14 @@ val LocalExtendedColors = staticCompositionLocalOf {
   )
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun MyOwnTripTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
   dynamicColor: Boolean = false,
+  reduceMotion: Boolean? = null,
   content: @Composable () -> Unit,
 ) {
-  val colorScheme = when {
-    dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-      val context = LocalContext.current
-      if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-    }
-    darkTheme -> DarkColorScheme
-    else -> LightColorScheme
-  }
-
+  val colorScheme = motColorScheme(darkTheme, dynamicColor)
   val extendedColors = if (darkTheme) {
     ExtendedColors(
       success = AppColors.successDark,
@@ -161,15 +147,27 @@ fun MyOwnTripTheme(
     )
   }
 
-  CompositionLocalProvider(
-    LocalExtendedColors provides extendedColors,
-  ) {
-    MaterialExpressiveTheme(
-      colorScheme = colorScheme,
-      typography = AppTypography,
-      shapes = MOTThemeShapes,
-      motionScheme = MotionScheme.standard(),
-      content = content,
-    )
+  if (reduceMotion != null) {
+    CompositionLocalProvider(
+      LocalExtendedColors provides extendedColors,
+      LocalReduceMotion provides reduceMotion,
+    ) {
+      MotThemeHost(colorScheme = colorScheme, content = content)
+    }
+  } else {
+    CompositionLocalProvider(
+      LocalExtendedColors provides extendedColors,
+    ) {
+      MotThemeHost(colorScheme = colorScheme, content = content)
+    }
   }
 }
+
+@Composable
+internal expect fun motColorScheme(darkTheme: Boolean, dynamicColor: Boolean): ColorScheme
+
+@Composable
+internal expect fun MotThemeHost(
+  colorScheme: ColorScheme,
+  content: @Composable () -> Unit,
+)

@@ -6,17 +6,20 @@ Storytale 0.0.7 pide Kotlin 2.3; la app Android sigue en 2.2.10. Por eso este pr
 
 ## Arrancar
 
-Desde la raíz del repo (mismo wrapper):
+En Windows: **doble clic** en [`arrancar-galeria.bat`](../arrancar-galeria.bat) (en la raíz del repo). Ese archivo elige el Java de Android Studio solo; no hace falta tocar nada más. Cuando compile, abre http://localhost:8080/
 
-```bash
-# Navegador (Wasm) — el enlace local para el portfolio
-./gradlew -p gallery wasmJsBrowserStoriesDevelopmentRun
+Desde una terminal, el mismo archivo:
 
-# Ventana de escritorio — para compartir pantalla del ordenador
-./gradlew -p gallery jvmStoriesRun
+```powershell
+.\arrancar-galeria.bat
 ```
 
-Hace falta JDK 17+ (el de Android Studio vale). Gradle 9 no arranca con Java 15.
+Escritorio (compartir pantalla del PC), con el Java correcto:
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
+.\gradlew -p gallery jvmStoriesRun
+```
 
 Si una tarea no aparece:
 
@@ -34,10 +37,9 @@ El estático sale bajo `gallery/build/`. El directorio exacto lo imprime Gradle 
 
 ## Qué hay ahora
 
-Stories de `MOTButton`, tonal, outlined, text e icon button, con knobs (label, enabled, dark, reduce motion). El morph 0→20 y el squish son el código de `designsystem`, copiado a `commonMain` hasta unificar el módulo KMP.
+Stories de `MOTButton`, tonal, outlined, text e icon button, con knobs (label, enabled, dark, reduce motion). El kit sale de `designsystem/src/commonMain` + `skiaMain` (mismas fuentes que `:app`; Android-only en `androidMain`: `R.font`, dynamic color, `Settings`).
 
 ## Próximo
 
-- Un solo `:designsystem` KMP (android + jvm + wasmJs) para no duplicar fuentes.
-- Fraunces/Inter vía composeResources.
+- Fraunces/Inter vía composeResources (paso 2).
 - Stories del resto del kit (chip, dialog, text field).

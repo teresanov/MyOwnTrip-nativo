@@ -7,6 +7,8 @@ plugins {
   id("io.github.aryapreetam.storytale") version "0.0.7"
 }
 
+val designsystemSrc = rootDir.resolve("../designsystem/src")
+
 kotlin {
   jvm()
   @OptIn(ExperimentalWasmDsl::class)
@@ -16,12 +18,25 @@ kotlin {
   }
 
   sourceSets {
-    commonMain.dependencies {
-      implementation(compose.runtime)
-      implementation(compose.foundation)
-      implementation(compose.material3)
-      implementation(compose.ui)
-      implementation(compose.components.resources)
+    val commonMain by getting {
+      kotlin.srcDir(designsystemSrc.resolve("commonMain/kotlin"))
+      dependencies {
+        implementation(compose.runtime)
+        implementation(compose.foundation)
+        implementation(compose.material3)
+        implementation(compose.ui)
+        implementation(compose.components.resources)
+      }
+    }
+    val skiaMain by creating {
+      dependsOn(commonMain)
+      kotlin.srcDir(designsystemSrc.resolve("skiaMain/kotlin"))
+    }
+    val jvmMain by getting {
+      dependsOn(skiaMain)
+    }
+    val wasmJsMain by getting {
+      dependsOn(skiaMain)
     }
   }
 }

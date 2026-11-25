@@ -78,7 +78,7 @@ URL_FILL1 = (
 )
 FILL1_SYMBOLS = {"stop"}
 OUT = pathlib.Path(__file__).resolve().parents[1] / (
-    "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTIcons.kt"
+    "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/theme/MOTIcons.kt"
 )
 
 

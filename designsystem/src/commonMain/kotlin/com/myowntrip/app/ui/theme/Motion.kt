@@ -8,8 +8,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.platform.LocalContext
-import android.provider.Settings
 
 object AppMotion {
   const val DurationShort = 200
@@ -47,14 +45,4 @@ object AppMotion {
 val LocalReduceMotion = staticCompositionLocalOf { false }
 
 @Composable
-fun rememberReduceMotion(): Boolean {
-  val context = LocalContext.current
-  return try {
-    Settings.Global.getFloat(
-      context.contentResolver,
-      Settings.Global.TRANSITION_ANIMATION_SCALE,
-    ) == 0f
-  } catch (_: Exception) {
-    false
-  }
-}
+expect fun rememberReduceMotion(): Boolean

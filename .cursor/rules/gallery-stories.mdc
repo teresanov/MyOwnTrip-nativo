@@ -1,0 +1,19 @@
+---
+description: Stories Storytale — matriz Figma+Compose, sin pantallas de producto
+globs: gallery/**
+alwaysApply: false
+---
+
+# Galería Storytale — determinismo
+
+- Canvas vivo: `gallery/` (Compose/Skia). Guía escrita: `ds-showcase/` (Vite). No clonar componentes en HTML.
+- Kit compartido: `:designsystem`. No duplicar color/spacing/controles en `gallery/`. No tocar `:app` por Kotlin de Storytale.
+
+Antes de crear o cambiar una story:
+
+1. **Matriz** Figma (ejes del set) × código del composable (parámetros, slots, defaults). Incluir enabled/disabled, loading si existe en código, icono/texto, padding, overflow, tema. No asumir el caso feliz.
+2. **Cobertura:** cada casuística acordada = story explícita y knob si el parámetro es del componente. Si algo queda fijo, decirlo y justificarlo.
+3. **Alcance DS:** solo piezas de `:designsystem` / composición de DS. Prohibido copy, flujos o pantallas de producto (Wallet, cámara, etc.).
+4. **Cero inventos.** Si Figma o Compose no están claros, preguntar. Entregar: qué ejes de Figma cubre la story y qué gaps quedan.
+
+Compose es SoT de runtime. Un eje de Figma sin API en el wrapper = gap (documentar, no fingir property).
