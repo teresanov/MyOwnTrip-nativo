@@ -1,6 +1,6 @@
 const STORAGE_KEY = "mot-showcase-theme";
 
-// Embedded in the portfolio (productdesigner.teresanovoa.com/lab/myowntrip/showcase/):
+// Embedded in the portfolio (productdesigner.teresanovoa.com/design-systems/myowntrip/showcase/):
 // the host page sends its theme (?theme=light|dark on first load, then postMessage).
 // That choice lives only for the session, so it never overrides the guide's own
 // saved preference when it is opened on its own.
