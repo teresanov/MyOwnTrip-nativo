@@ -33,6 +33,7 @@ import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
+import com.myowntrip.app.ui.theme.motPart
 
 /**
  * Figma: **Stacked card** `52346:27573` · layouts `Media & text` y `Text only`.
@@ -93,7 +94,7 @@ fun MotStackedCard(
       ) {
         if (leadingInitial != null) {
           Surface(
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier.size(40.dp).motPart("leading"),
             shape = CircleShape,
             color = MaterialTheme.colorScheme.surfaceContainerHigh,
           ) {
@@ -111,6 +112,7 @@ fun MotStackedCard(
             text = headerText,
             style = MaterialTheme.typography.titleMedium,
             color = resolvedHeader,
+            modifier = Modifier.motPart("header"),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
           )
@@ -118,7 +120,7 @@ fun MotStackedCard(
             text = subheadText,
             style = MaterialTheme.typography.bodyMedium,
             color = resolvedSubhead,
-            modifier = Modifier.padding(top = MOTSpacing.componentXs),
+            modifier = Modifier.padding(top = MOTSpacing.componentXs).motPart("subhead"),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
           )
@@ -129,6 +131,7 @@ fun MotStackedCard(
           onClick = onDismiss,
           modifier = Modifier
             .align(Alignment.TopEnd)
+            .motPart("dismiss")
             .semantics { contentDescription = dismissContentDescription },
         ) {
           Icon(
@@ -148,7 +151,7 @@ fun MotStackedCard(
           start = MOTSpacing.layoutMd,
           end = MOTSpacing.layoutMd,
           bottom = MOTSpacing.layoutMd,
-        ),
+        ).motPart("supporting"),
         maxLines = 4,
         overflow = TextOverflow.Ellipsis,
       )
@@ -161,7 +164,8 @@ fun MotStackedCard(
         contentDescription = imageContentDescription,
         modifier = Modifier
           .fillMaxWidth()
-          .height(imageHeight),
+          .height(imageHeight)
+          .motPart("image"),
         contentScale = ContentScale.Crop,
       )
     }
@@ -171,7 +175,7 @@ fun MotStackedCard(
   when (style) {
     MotCardStyle.Outlined -> {
       OutlinedCard(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().motPart("container"),
         colors = colors ?: CardDefaults.outlinedCardColors(),
       ) {
         content()
@@ -179,7 +183,7 @@ fun MotStackedCard(
     }
     MotCardStyle.Elevated -> {
       ElevatedCard(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().motPart("container"),
         colors = colors ?: CardDefaults.elevatedCardColors(),
       ) {
         content()

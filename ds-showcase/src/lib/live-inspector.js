@@ -14,6 +14,9 @@ const dp = (cssPx, zoom) => Math.round((cssPx / zoom) * 2) / 2;
 const fmt = (v) => (Number.isInteger(v) ? `${v}` : v.toFixed(1));
 
 function readGeometry(host) {
+  // Solo las piezas que la ficha declara (marcadores y filas): un componente puede llevar otros dentro
+  // (p. ej. el Eyebrow label dentro de TripHeroCard) y sus piezas no deben mezclarse.
+  const allow = JSON.parse(host.closest("[data-parts]")?.getAttribute("data-parts") || "null");
   const raw = host.getAttribute("data-mot-parts");
   if (!raw) return null;
   let data;
@@ -24,7 +27,10 @@ function readGeometry(host) {
   }
   const zoom = Number(host.getAttribute("data-p-zoom")) || 1;
   const parts = {};
-  for (const [name, [x, y, w, h]] of Object.entries(data.parts || {})) parts[name] = { x, y, w, h };
+  for (const [name, [x, y, w, h]] of Object.entries(data.parts || {})) {
+    if (allow && !allow.includes(name)) continue;
+    parts[name] = { x, y, w, h };
+  }
   const c = parts.container;
   if (c) {
     // La capa de estado ocupa el contenedor.
@@ -169,6 +175,24 @@ const LABELS = {
   confirm: "Acción de confirmar",
   dismiss: "Acción de descartar",
   scrim: "Scrim",
+  header: "Encabezado",
+  subhead: "Subtítulo",
+  supporting: "Texto de apoyo",
+  image: "Imagen",
+  leading: "Inicial",
+  card: "Card",
+  cover: "Portada",
+  eyebrow: "Eyebrow",
+  text: "Bloque de texto",
+  countdown: "Cuenta atrás",
+  meta: "Fechas",
+  cta: "Botón",
+  tab: "Pestaña",
+  tab2: "Pestaña",
+  indicator: "Indicador",
+  divider: "Divisor",
+  line: "Línea",
+  nav: "Volver",
 };
 // Piezas que ocupan toda la escena: no cuentan para colocar los marcadores alrededor del componente.
 const BACKDROP = new Set(["scrim"]);

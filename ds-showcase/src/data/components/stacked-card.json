@@ -11,7 +11,7 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52346-27573"
   },
   "usage": {
-    "purpose": "Una stacked card agrupa un tema en vertical: titular, subtítulo y, si hace falta, media o un dismiss. Outlined en listas y empty states; Elevated cuando hay que destacarla. Filled está cortado. El runtime es MotStackedCard; Home vacío usa HomeEmptyStackedCard.",
+    "purpose": "Una stacked card agrupa en un bloque vertical la información de un solo tema: un título, un subtítulo y, según el caso, un texto de apoyo o una imagen a todo el ancho. En MyOwnTrip aparece en Home cuando no hay viajes que mostrar: al empezar (con el mapa), cuando solo quedan viajes pasados y cuando una búsqueda no encuentra nada. La card no se pulsa; si hace falta una acción, va en un botón aparte. Tiene dos estilos: con borde (Outlined), que es el que usa la app, y con sombra (Elevated).",
     "when": [
       "Hay un bloque editorial (empty state, aviso, pieza de feed) que no es una fila de lista.",
       "El contenido es un solo tema: header + subhead, con o sin imagen."
@@ -81,11 +81,12 @@
     }
   ],
   "anatomy": [
-    "<strong>Superficie</strong> — OutlinedCard o ElevatedCard, radio 12 dp (<code>shapes.medium</code>).",
-    "<strong>Header</strong> — headerText + subheadText.",
-    "<strong>Media</strong> — imagen full-bleed bajo el header (Media & text).",
-    "<strong>Supporting</strong> — cuerpo en Text only.",
-    "<strong>Dismiss</strong> — MOTIconButton close si hay onDismiss."
+    "<strong>Contenedor</strong> — card con borde (Outlined) o con sombra (Elevated), esquinas de 12 dp.",
+    "<strong>Título</strong> — titleMedium, hasta dos líneas.",
+    "<strong>Subtítulo</strong> — bodyMedium en onSurfaceVariant, hasta dos líneas.",
+    "<strong>Imagen</strong> — opcional, a todo el ancho bajo el texto (200 dp de alto por defecto).",
+    "<strong>Texto de apoyo</strong> — opcional, solo cuando no hay imagen; hasta cuatro líneas.",
+    "<strong>Inicial y botón de cerrar</strong> — opcionales. Existen en el componente, pero ninguna pantalla los usa."
   ],
   "behavior": {
     "lead": "La card no es un botón: si hay acción, es el dismiss o un CTA que el producto ponga debajo, no la superficie entera.",
@@ -104,24 +105,53 @@
     ]
   },
   "a11y": [
-    "Dismiss con contentDescription.",
-    "Imagen informativa con alt; si es decorativa, contentDescription null y el header lo dice todo."
+    "El título y el subtítulo se leen en orden. La card no se anuncia como botón porque no se pulsa.",
+    "La imagen lleva descripción cuando aporta información (en Home vacío: «Mapa con chincheta de viaje»); si fuera decorativa, iría sin descripción.",
+    "El botón de cerrar, si se usa, tiene nombre accesible («Cerrar» por defecto)."
   ],
   "tokens": {
     "color": [
       {
-        "token": "surface / onSurface / onSurfaceVariant",
-        "use": "Outlined · Media & text."
+        "token": "surface / outlineVariant",
+        "use": "Fondo y borde en Outlined."
       },
       {
         "token": "surfaceContainerLow",
-        "use": "Elevated · Text only."
+        "use": "Fondo en Elevated."
+      },
+      {
+        "token": "onSurface",
+        "use": "Título."
+      },
+      {
+        "token": "onSurfaceVariant",
+        "use": "Subtítulo y texto de apoyo."
       }
     ],
     "shape": [
       {
         "token": "shapes.medium",
-        "use": "12 dp."
+        "use": "Esquinas de la card."
+      }
+    ],
+    "spacing": [
+      {
+        "token": "MOTSpacing.layoutMd",
+        "use": "Relleno alrededor del texto."
+      },
+      {
+        "token": "MOTSpacing.componentXs",
+        "use": "Entre título y subtítulo."
+      }
+    ],
+    "type": [
+      {
+        "token": "titleMedium",
+        "use": "Título."
+      },
+      {
+        "token": "bodyMedium",
+        "use": "Subtítulo y texto de apoyo."
       }
     ]
   },
@@ -167,7 +197,7 @@
     "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/StackedCard.kt",
     "import": "com.myowntrip.app.ui.components.MotStackedCard",
     "composable": "MotStackedCard",
-    "note": "La card recibe la imagen ya preparada (image: Painter). Las cards concretas de Home (vacío, «¿Listo para el siguiente?») viven en la app, en HomeStackedCards.kt.",
+    "note": "La card recibe la imagen ya preparada, así que no depende de dónde salga. Las cards concretas de Home (sin viajes y solo viajes pasados) están en la app, en HomeStackedCards.kt.",
     "params": [
       {
         "name": "style",
@@ -226,5 +256,75 @@
       "date": "2026-11-26",
       "note": "Movido al design system; la imagen llega como Painter. Ejemplo con el componente real."
     }
-  ]
+  ],
+  "anatomyDiagram": {
+    "kind": "stacked-card",
+    "values": {},
+    "live": {
+      "specimen": "stacked-card/playground",
+      "props": {
+        "layout": "media",
+        "style": "outlined"
+      },
+      "zoom": 1,
+      "height": 400,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.15",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "header",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "subhead",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 4,
+          "part": "image",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Card",
+          "size": "container"
+        },
+        {
+          "label": "Espacio a la izquierda del título",
+          "left": [
+            "container",
+            "header"
+          ]
+        },
+        {
+          "label": "Espacio sobre el título",
+          "top": [
+            "container",
+            "header"
+          ]
+        },
+        {
+          "label": "Título–subtítulo",
+          "vgap": [
+            "header",
+            "subhead"
+          ]
+        },
+        {
+          "label": "Imagen",
+          "size": "image"
+        }
+      ]
+    }
+  }
 }

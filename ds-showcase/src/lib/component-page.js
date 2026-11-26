@@ -16,6 +16,7 @@
  * Todas las secciones emiten <h2 id> para que el índice ancleado (toc.js) las recoja.
  */
 
+import { colorValues, tokenValue } from "./token-values.js";
 import { statusChip } from "./bootstrap.js";
 
 export function escapeHtml(s) {
@@ -310,26 +311,46 @@ export function renderA11y(a11y) {
 export function renderTokens(tokens) {
   if (!tokens) return "";
   const groups = [
-    ["Color", tokens.color],
-    ["Forma", tokens.shape],
-    ["Espaciado", tokens.spacing],
-    ["Tipografía", tokens.type],
-  ].filter(([, v]) => v?.length);
+    ["Color", "color", tokens.color],
+    ["Forma", "shape", tokens.shape],
+    ["Espaciado", "spacing", tokens.spacing],
+    ["Tipografía", "type", tokens.type],
+  ].filter(([, , v]) => v?.length);
 
   if (!groups.length) return "";
+
+  const swatch = (hex) => (hex ? `<span class="tok-swatch" style="background:${hex}"></span><code>${hex}</code>` : "—");
+  const colorCell = (vals, mode) =>
+    vals
+      .map((v) => `<div class="tok-color">${vals.length > 1 ? `<span class="tok-role">${v.role}</span>` : ""}${swatch(v[mode])}</div>`)
+      .join("");
 
   return (
     sectionOpen("tokens", "Tokens y roles", {
       lead:
-        "Roles consumidos en runtime. Ningún valor literal: si falta un rol, se añade al tema, no al componente.",
+        "Las variables del tema que usa el componente y lo que contienen, leídas del código. Si hace falta un valor nuevo, se crea una variable en el tema: el componente no lleva valores sueltos.",
       generated: true,
     }) +
     groups
-      .map(
-        ([label, items]) => `
-        <h3 class="subsection-title">${label}</h3>
-        ${table(["Rol", "Para qué"], items.map((t) => [`<code>${t.token}</code>`, t.use]))}`
-      )
+      .map(([label, kind, items]) => {
+        if (kind === "color") {
+          return `<h3 class="subsection-title">${label}</h3>${table(
+            ["Variable", "Claro", "Oscuro", "Dónde se aplica"],
+            items.map((t) => {
+              const vals = colorValues(t.token);
+              return [`<code>${t.token}</code>`, colorCell(vals, "light"), colorCell(vals, "dark"), t.use];
+            })
+          )}`;
+        }
+        return `<h3 class="subsection-title">${label}</h3>${table(
+          ["Variable", "Qué contiene", "Dónde se aplica"],
+          items.map((t) => [
+            t.variable === false ? "<em>Sin variable</em>" : `<code>${t.token}</code>`,
+            t.value || tokenValue(kind, t.token) || "—",
+            t.use,
+          ])
+        )}`;
+      })
       .join("") +
     "</section>"
   );
@@ -359,6 +380,21 @@ function implementationOrigin(impl) {
   return parts.join(" ");
 }
 
+/** Dónde está y en qué archivo, como lista corta (no como párrafo). */
+function implementationFacts(impl) {
+  const file = impl.sourceFile || "";
+  const rows = [];
+  const where = { material3: "Material 3, sin componente propio", designsystem: "Design system de MyOwnTrip", app: "La propia app (todavía fuera del design system)", "material3 + designsystem": "Material 3, con botones del design system" }[impl.module];
+  if (where) rows.push(["Dónde está", where]);
+  if (file && !file.startsWith("androidx.")) {
+    const name = file.split("/").pop();
+    const defines = impl.defines || file.startsWith("designsystem/") || file.includes("/ui/components/");
+    rows.push([defines ? "Archivo" : "Ejemplo de uso", `<code title="${file}">${name}</code>`]);
+  }
+  if (!rows.length) return "";
+  return `<dl class="impl-facts">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`;
+}
+
 export function renderImplementation(impl) {
   if (!impl) return "";
   const params = (impl.params || []).map((p) => [
@@ -370,9 +406,10 @@ export function renderImplementation(impl) {
 
   return (
     sectionOpen("implementacion", "Implementación", {
-      lead: `${impl.note || ""} ${implementationOrigin(impl)}`,
+      lead: impl.note || "",
       generated: true,
     }) +
+    implementationFacts(impl) +
     (impl.import ? `<pre><code>import ${escapeHtml(impl.import)}</code></pre>` : "") +
     (params.length
       ? `<h3 class="subsection-title">Parámetros de <code>${impl.composable}</code></h3>

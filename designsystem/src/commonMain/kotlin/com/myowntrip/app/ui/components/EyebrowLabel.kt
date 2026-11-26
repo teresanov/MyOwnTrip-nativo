@@ -13,6 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
+import com.myowntrip.app.ui.theme.motPart
 
 /**
  * Figma: **Eyebrow label** `61202:16834` · property `Label text`.
@@ -38,7 +39,7 @@ fun EyebrowLabel(
 ) {
   val (containerColor, labelColor, textStyle) = eyebrowTokens(color, size)
   Surface(
-    modifier = modifier.semantics { hideFromAccessibility() },
+    modifier = modifier.semantics { hideFromAccessibility() }.motPart("container"),
     shape = MaterialTheme.shapes.small,
     color = containerColor,
   ) {
@@ -49,7 +50,7 @@ fun EyebrowLabel(
       modifier = Modifier.padding(
         horizontal = if (size == EyebrowLabelSize.Medium) 8.dp else 16.dp,
         vertical = 4.dp,
-      ),
+      ).motPart("label"),
       maxLines = 1,
       overflow = TextOverflow.Ellipsis,
     )

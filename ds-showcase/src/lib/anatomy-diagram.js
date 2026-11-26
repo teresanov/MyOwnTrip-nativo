@@ -287,7 +287,7 @@ function renderLiveAnatomy(anatomy, live) {
       lead: "Las partes del componente y cómo las llamamos en diseño y en código. El dibujo es el componente real de la app: cada línea llega a la pieza que mide Compose. Pasa el cursor por la lista para resaltar cada parte.",
     }) +
     `<div class="ad-layout ad-layout--live">
-       <figure class="ad-figure li-wrap" data-inspect="anatomy" data-legend="#li-legend" data-markers='${JSON.stringify(live.markers)}'>
+       <figure class="ad-figure li-wrap" data-parts='${JSON.stringify(declaredParts(live))}' data-inspect="anatomy" data-legend="#li-legend" data-markers='${JSON.stringify(live.markers)}'>
          ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light", ...(live.props || {}) }, { height: live.height, label: "Anatomía del componente real" })}
          <svg class="li-overlay" aria-hidden="true"></svg>
        </figure>
@@ -305,7 +305,7 @@ function renderLiveMeasures(diagram) {
       lead: "Pasa el cursor sobre el componente: como el inspector del navegador, se resalta cada pieza con su tamaño y sus distancias en dp. En el contenedor, el verde es el espacio interior y el azul, el contenido. Los números se miden en el componente real, no se escriben a mano.",
     }) +
     `<div class="ad-layout ad-layout--live">
-       <figure class="ad-figure li-wrap" data-inspect="measures" data-table="#li-measures" data-rows='${JSON.stringify(live.rows || null)}' data-gaps='${JSON.stringify(live.gaps || [])}'>
+       <figure class="ad-figure li-wrap" data-parts='${JSON.stringify(declaredParts(live))}' data-inspect="measures" data-table="#li-measures" data-rows='${JSON.stringify(live.rows || null)}' data-gaps='${JSON.stringify(live.gaps || [])}'>
          ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light", ...(live.props || {}) }, { height: live.height, label: "Medidas del componente real" })}
          <svg class="li-overlay" aria-hidden="true"></svg>
          <div class="li-hit" aria-hidden="true"></div>
@@ -317,6 +317,14 @@ function renderLiveMeasures(diagram) {
        </div>
      </div></section>`
   );
+}
+
+/** Piezas que la ficha declara: marcadores, filas de medidas y huecos. */
+function declaredParts(live) {
+  const names = new Set((live.markers || []).map((m) => m.part));
+  for (const r of live.rows || []) for (const k of ["size", "left", "right", "top", "gap", "vgap"]) [].concat(r[k] || []).forEach((n) => names.add(n));
+  for (const g of live.gaps || []) g.forEach((n) => names.add(n));
+  return [...names];
 }
 
 export function renderAnatomy(anatomy, diagram) {

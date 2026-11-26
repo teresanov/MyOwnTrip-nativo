@@ -64,13 +64,13 @@
     }
   ],
   "anatomy": [
-    "<strong>Portada</strong> — 280 dp de alto, radio 12 dp (shapes.medium), sombra de 1 dp. Foto del viaje o, si no hay, las dos primeras letras del destino.",
-    "<strong>Scrim</strong> — degradado para leer título y meta.",
-    "<strong>Eyebrow</strong> — Tertiary · Medium. No interactivo.",
-    "<strong>Countdown</strong> — opcional («Sale en 3 días»). Oculto si el viaje ya empezó o pasó.",
-    "<strong>Título</strong> — Fraunces (headline).",
-    "<strong>Meta</strong> — Inter, fechas.",
-    "<strong>CTA</strong> — MOTTonalButton «Ver detalles», única acción. La portada no es pulsable."
+    "<strong>Portada</strong> — 280 dp de alto, esquinas de 12 dp, sombra de 1 dp. Foto del viaje o, si no hay, las dos primeras letras del destino.",
+    "<strong>Degradado</strong> — capa del color scrim sobre la portada, más oscura abajo, para leer el texto.",
+    "<strong>Eyebrow</strong> — Eyebrow label Tertiary con la fase: «Próximo viaje», «En destino» o «Recuerdo».",
+    "<strong>Cuenta atrás</strong> — solo en viajes próximos («Sale en 12 días»), titleMedium.",
+    "<strong>Título</strong> — nombre del viaje en Fraunces (headlineSmall seminegrita), hasta dos líneas.",
+    "<strong>Fechas</strong> — inicio, fin y duración, bodyMedium.",
+    "<strong>Botón</strong> — «Ver detalles» (MOTTonalButton), la única parte que se pulsa."
   ],
   "behavior": {
     "lead": "Una por Home. El único control es el CTA.",
@@ -90,27 +90,28 @@
     ]
   },
   "a11y": [
-    "Único control: Ver detalles (48 dp).",
-    "Fase y countdown van en el contentDescription del bloque o del CTA.",
-    "Imagen decorativa: sin alt aparte."
+    "Toda la card se anuncia desde el botón «Ver detalles»: su descripción junta la fase, la cuenta atrás, el nombre, las fechas y la acción, y su estado dice la fase del viaje.",
+    "La portada, la etiqueta y los textos sobre la foto se ocultan a los lectores de pantalla para no leerse dos veces.",
+    "Es el único elemento que se pulsa.",
+    "Pendiente: en tema oscuro el título y las fechas no se leen. Usan onPrimary, que en oscuro es casi negro (#1A2228), sobre un degradado negro: contraste de 1,30:1. La etiqueta tiene el mismo problema (ver Eyebrow label)."
   ],
   "tokens": {
     "color": [
       {
         "token": "scrim",
-        "use": "Degradado sobre la foto."
+        "use": "Degradado sobre la portada."
       },
       {
         "token": "onPrimary",
-        "use": "Título y meta sobre el scrim."
+        "use": "Título y fechas. Pendiente: en oscuro no contrasta con el degradado."
       },
       {
         "token": "tertiaryFixedDim",
-        "use": "Eyebrow y countdown."
+        "use": "Cuenta atrás y fondo de la etiqueta."
       },
       {
-        "token": "secondaryContainer",
-        "use": "CTA tonal."
+        "token": "surfaceContainerLow",
+        "use": "Fondo de la portada mientras carga."
       }
     ],
     "shape": [
@@ -157,7 +158,7 @@
     "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/TripHeroCard.kt",
     "import": "com.myowntrip.app.ui.components.TripHeroCard",
     "composable": "TripHeroCard",
-    "note": "El design system pinta la card con textos ya resueltos. En la app se llama con TripHeroCard(trip, today, onClick) (TripCards.kt), que calcula la fase, la cuenta atrás y las fechas. Sin foto, la portada es TripCoverPlaceholder: las dos primeras letras del destino.",
+    "note": "La card del design system recibe los textos ya escritos y la portada. En la app se llama con el viaje (TripHeroCard(trip, today, onClick), en TripCards.kt), que calcula la fase, la cuenta atrás y las fechas.",
     "params": [
       {
         "name": "eyebrow",
@@ -228,5 +229,106 @@
       "date": "2026-11-26",
       "note": "Parte visual movida al design system. Corregido: hay una sola variante (no Elevated/Outlined). Ejemplo con el componente real."
     }
-  ]
+  ],
+  "anatomyDiagram": {
+    "kind": "trip-hero",
+    "values": {},
+    "live": {
+      "specimen": "trip-hero-card/playground",
+      "props": {
+        "phase": "upcoming"
+      },
+      "zoom": 1,
+      "height": 440,
+      "markers": [
+        {
+          "n": 1,
+          "part": "cover",
+          "anchor": "left@0.2",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "cover",
+          "anchor": "at@0.92,0.55",
+          "side": "right"
+        },
+        {
+          "n": 3,
+          "part": "eyebrow",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 4,
+          "part": "countdown",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 5,
+          "part": "title",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 6,
+          "part": "meta",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 7,
+          "part": "cta",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Portada",
+          "size": "cover"
+        },
+        {
+          "label": "Margen de la etiqueta",
+          "left": [
+            "cover",
+            "eyebrow"
+          ]
+        },
+        {
+          "label": "Margen del texto",
+          "left": [
+            "cover",
+            "text"
+          ]
+        },
+        {
+          "label": "Cuenta atrás–título",
+          "vgap": [
+            "countdown",
+            "title"
+          ]
+        },
+        {
+          "label": "Título–fechas",
+          "vgap": [
+            "title",
+            "meta"
+          ]
+        },
+        {
+          "label": "Portada–botón",
+          "vgap": [
+            "cover",
+            "cta"
+          ]
+        },
+        {
+          "label": "Botón",
+          "size": "cta"
+        }
+      ]
+    }
+  }
 }

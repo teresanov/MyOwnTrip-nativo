@@ -46,6 +46,8 @@ export default defineConfig(({ mode }) => {
       host: true,
       port: 5173,
       strictPort: true,
+      // Las tablas de tokens leen MOTSpacing.kt, Shapes.kt y la tipografía del design system.
+      fs: { allow: [".."] },
     },
     plugins: [
       {

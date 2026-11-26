@@ -95,49 +95,55 @@
     ]
   },
   "a11y": [
-    "Decorativo: semantics hideFromAccessibility si el padre incluye la fase.",
-    "Nunca role Button.",
-    "Contraste ≥ 4.5:1 label sobre contenedor en los tres colores."
+    "Los lectores de pantalla no lo leen: el componente se oculta a propósito (hideFromAccessibility) para que la misma información no se anuncie dos veces.",
+    "Por eso quien lo usa tiene que repetir su texto en la descripción de lo que lo contiene. TripHeroCard lo hace: el botón «Ver detalles» se anuncia como «Próximo viaje. Sale en 12 días. Cracovia finde…».",
+    "Pendiente: en el Diario (álbum y piezas de un evento) ningún contenedor repite el texto, así que el título y la hora del evento no se anuncian.",
+    "No se pulsa: nunca lleva rol de botón.",
+    "Contraste medido del texto sobre su fondo: Tertiary 5,47:1 en claro y 1,32:1 en oscuro (no pasa); Surface 7,66:1 y 8,49:1; Secondary 9,41:1 y 7,63:1."
   ],
   "tokens": {
     "color": [
       {
         "token": "tertiaryFixedDim / onTertiaryContainer",
-        "use": "Tertiary."
+        "use": "Fondo y texto en Tertiary, el que usa la app. En oscuro el texto no contrasta: lo correcto sería onTertiaryFixed (pendiente)."
       },
       {
         "token": "surfaceContainerHigh / onSurfaceVariant",
-        "use": "Surface."
+        "use": "Fondo y texto en Surface (sin uso en la app)."
       },
       {
         "token": "secondaryContainer / onSecondaryContainer",
-        "use": "Secondary."
+        "use": "Fondo y texto en Secondary (sin uso en la app)."
       }
     ],
     "shape": [
       {
         "token": "shapes.small",
-        "use": "8 dp."
+        "use": "Esquinas del contenedor."
       }
     ],
     "spacing": [
       {
-        "token": "padding Medium",
-        "use": "8 × 4 dp en EyebrowLabel.kt."
+        "token": "—",
+        "variable": false,
+        "value": "8 dp a los lados · 4 dp arriba y abajo",
+        "use": "Relleno en Medium. Valor fijo en el componente, sin variable del tema."
       },
       {
-        "token": "padding Small",
-        "use": "16 × 4 dp en EyebrowLabel.kt."
+        "token": "—",
+        "variable": false,
+        "value": "16 dp a los lados · 4 dp arriba y abajo",
+        "use": "Relleno en Small. Valor fijo en el componente, sin variable del tema."
       }
     ],
     "type": [
       {
         "token": "labelMedium",
-        "use": "Size Medium."
+        "use": "Texto en Medium."
       },
       {
         "token": "labelSmall",
-        "use": "Size Small."
+        "use": "Texto en Small."
       }
     ]
   },
@@ -221,8 +227,8 @@
         },
         {
           "n": 2,
-          "part": "container",
-          "anchor": "at@0.5,0.5",
+          "part": "label",
+          "anchor": "top@0.5",
           "side": "top"
         }
       ],
@@ -230,6 +236,24 @@
         {
           "label": "Etiqueta completa",
           "size": "container"
+        },
+        {
+          "label": "Texto",
+          "size": "label"
+        },
+        {
+          "label": "Relleno a los lados",
+          "left": [
+            "container",
+            "label"
+          ]
+        },
+        {
+          "label": "Relleno arriba",
+          "top": [
+            "container",
+            "label"
+          ]
         }
       ]
     }

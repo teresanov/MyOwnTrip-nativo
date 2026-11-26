@@ -13,6 +13,8 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.myowntrip.app.ui.theme.LocalMotPartReporter
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import com.myowntrip.app.ui.components.TripCoverPlaceholder
 import com.myowntrip.app.ui.components.TripHeroCard
@@ -107,6 +109,8 @@ fun LiveSpecimen(
   CompositionLocalProvider(
     LocalDensity provides Density(base.density * zoom, base.fontScale),
     LocalPartSink provides sink,
+    // Piezas que marcan los propios componentes del design system (Modifier.motPart).
+    LocalMotPartReporter provides { name, coords -> sink.report(name, coords.boundsInWindow()) },
   ) {
   MyOwnTripTheme(
     darkTheme = props["theme"] == "dark",
@@ -143,7 +147,7 @@ fun LiveSpecimen(
         "app-bar/playground" -> AppBarPlayground(props)
         "app-bar/anatomy" -> AppBarAnatomy()
         "eyebrow-label/playground" -> EyebrowPlayground(props)
-        "eyebrow-label/anatomy" -> EyebrowLabel(text = "Próximo viaje", modifier = Modifier.part("container"))
+        "eyebrow-label/anatomy" -> EyebrowLabel(text = "Próximo viaje")
         "stacked-card/playground" -> StackedCardPlayground(props)
         "trip-hero-card/playground" -> TripHeroPlayground(props)
         // Cualquier specimen del catálogo (button/sizes, icon-button/round…) se puede incrustar por su id.

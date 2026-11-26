@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTonalButton
+import com.myowntrip.app.ui.theme.motPart
 
 /** Figma `61199:7842` · portada 280dp. */
 private val TripHeroPortadaHeight = 280.dp
@@ -62,13 +63,14 @@ fun TripHeroCard(
     ctaLabel = ctaLabel,
   )
   Column(
-    modifier = modifier.fillMaxWidth(),
+    modifier = modifier.fillMaxWidth().motPart("card"),
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),
   ) {
     Surface(
       modifier = Modifier
         .fillMaxWidth()
-        .height(TripHeroPortadaHeight),
+        .height(TripHeroPortadaHeight)
+        .motPart("cover"),
       shape = MaterialTheme.shapes.medium,
       color = MaterialTheme.colorScheme.surfaceContainerLow,
       shadowElevation = 1.dp,
@@ -89,12 +91,14 @@ fun TripHeroCard(
           text = eyebrow,
           modifier = Modifier
             .align(Alignment.TopStart)
-            .padding(MOTSpacing.layoutMd),
+            .padding(MOTSpacing.layoutMd)
+            .motPart("eyebrow"),
         )
         Column(
           modifier = Modifier
             .align(Alignment.BottomStart)
             .padding(MOTSpacing.layoutMd)
+            .motPart("text")
             .semantics { hideFromAccessibility() },
           verticalArrangement = Arrangement.spacedBy(TripHeroOverlayTextGap),
         ) {
@@ -103,12 +107,14 @@ fun TripHeroCard(
               text = countdown,
               style = MaterialTheme.typography.titleMedium,
               color = MaterialTheme.colorScheme.tertiaryFixedDim,
+              modifier = Modifier.motPart("countdown"),
               maxLines = 1,
               overflow = TextOverflow.Ellipsis,
             )
           }
           Text(
             text = title,
+            modifier = Modifier.motPart("title"),
             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
             color = MaterialTheme.colorScheme.onPrimary,
             maxLines = 2,
@@ -116,6 +122,7 @@ fun TripHeroCard(
           )
           Text(
             text = meta,
+            modifier = Modifier.motPart("meta"),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimary,
             maxLines = 2,
@@ -130,7 +137,7 @@ fun TripHeroCard(
     ) {
       MOTTonalButton(
         onClick = onClick,
-        modifier = Modifier.semantics {
+        modifier = Modifier.motPart("cta").semantics {
           contentDescription = heroContentDescription
           this.stateDescription = stateDescription
         },

@@ -1181,3 +1181,11 @@
 .li-tip { fill: var(--inverse-surface); }
 .li-tip-text { fill: var(--inverse-on-surface); font: 500 11px Inter, system-ui, sans-serif; }
 .li-note { font-size: 0.8125rem; color: var(--on-surface-variant); margin-top: 10px; }
+
+/* Tokens: muestra de color y datos de implementación */
+.tok-color { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 2px 0; }
+.tok-role { font-size: 0.75rem; color: var(--on-surface-variant); width: 100%; }
+.tok-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--outline-variant); flex: none; }
+.impl-facts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0 0 16px; }
+.impl-facts dt { font-weight: 600; }
+.impl-facts dd { margin: 0; }
