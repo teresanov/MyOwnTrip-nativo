@@ -749,3 +749,252 @@ WalletDocumentRow(
     trailingActions = { MOTIconButton(onClick = onMenu) { Icon(MOTIcons.MoreVert, contentDescription = "Acciones del documento") } },
 )
 ```
+
+## Tabs
+
+- Estado: ready · P1
+- Para qué: Las pestañas reparten el contenido de una pantalla en vistas del mismo nivel y permiten pasar de una a otra sin salir de ella. En MyOwnTrip ordenan las secciones de un viaje (Wallet, Plan, Diario, Gastos, Sitios) y las dos caras de un día (Plan y Diario). Cada pestaña es MOTTab, sobre la fila de pestañas de Material 3.
+- Composable: `MOTTab` — `com.myowntrip.app.ui.theme.MOTTab`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/theme/MOTTab.kt`
+
+### Variantes
+
+- **Fila fija** → `TabRow { MOTTab(…) }`: Pocas pestañas que caben a lo ancho.
+- **Fila con desplazamiento** → `ScrollableTabRow(edgePadding = MOTSpacing.none) { MOTTab(…) }`: Cinco pestañas o nombres largos.
+
+### Cuándo usarlo
+
+- El contenido se divide en vistas hermanas que se alternan o se comparan.
+- Todas las vistas comparten el mismo contexto (un viaje, un día) y la misma barra superior.
+- Los nombres caben en una palabra.
+
+### Cuándo NO usarlo
+
+- Filtrar una lista sin cambiar de vista → Filter chip
+- Ir a una pantalla interior (un detalle, un formulario) → Navegar a esa pantalla; su App bar trae el botón de volver
+
+### Elegir variante
+
+- Dos o tres pestañas que caben a lo ancho (Plan · Diario) → `TabRow + MOTTab` — Las pestañas se reparten el ancho a partes iguales.
+- Cuatro o más pestañas, o nombres que no caben (secciones del viaje) → `ScrollableTabRow + MOTTab` — La fila se desplaza en horizontal; edgePadding = 0, la primera pestaña arranca pegada al borde.
+
+### Prohibido en este componente
+
+- No uses pestañas para una secuencia de pasos.
+- No anides una fila de pestañas dentro de otra.
+- No pasar el texto por el parámetro text de Tab de Material 3: añade su propio espaciado interno.
+
+### Accesibilidad
+
+- Cada pestaña se anuncia como pestaña, con su estado de seleccionada.
+- La etiqueta es el nombre accesible: no hace falta contentDescription.
+- Toda la pestaña es área táctil, con 48 dp de alto.
+
+### Uso típico
+
+```kotlin
+var tabIndex by rememberSaveable { mutableIntStateOf(0) }
+TabRow(selectedTabIndex = tabIndex) {
+    listOf("Plan", "Diario").forEachIndexed { index, title ->
+        MOTTab(
+            selected = tabIndex == index,
+            onClick = { tabIndex = index },
+            label = title,
+        )
+    }
+}
+```
+
+## Divider
+
+- Estado: ready · P2
+- Para qué: Un divisor es una línea fina que separa grupos de contenido. En MyOwnTrip separa las filas de una lista (Wallet, revisión de un viaje) y los bloques de un formulario (por ejemplo, la zona de peligro de Editar viaje). Es MOTHorizontalDivider: el divisor horizontal de Material 3 con el color outlineVariant y una opción de sangría.
+- Composable: `MOTHorizontalDivider` — `com.myowntrip.app.ui.theme.MOTHorizontalDivider`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/theme/MOTDivider.kt`
+
+### Variantes
+
+- **A todo el ancho** → `MOTHorizontalDivider()`: Bloques de formulario y secciones.
+- **Con sangría** → `MOTHorizontalDivider(inset = true)`: Filas de una lista.
+
+### Cuándo usarlo
+
+- Hay que separar filas de una lista que no tienen contenedor propio.
+- Un formulario o una pantalla cambia de bloque.
+
+### Cuándo NO usarlo
+
+- Cada elemento ya va en una card → La card ya separa: Stacked card
+- Basta con aire entre bloques → El espaciado del sistema
+
+### Elegir variante
+
+- Separar filas de una lista → `MOTHorizontalDivider(inset = true)` — 16 dp de sangría a cada lado, alineada con el texto de las filas.
+- Separar bloques de un formulario o secciones de una pantalla → `MOTHorizontalDivider()` — Línea a todo el ancho disponible.
+
+### Prohibido en este componente
+
+- No los uses como decoración ni en exceso: el espacio en blanco también separa.
+
+### Accesibilidad
+
+- Es decorativo: los lectores de pantalla lo ignoran.
+- No transmite información por sí solo; los grupos tienen que entenderse sin él.
+
+### Uso típico
+
+```kotlin
+LazyColumn {
+    items(entries) { entry ->
+        WalletDocumentRow(entry)
+        MOTHorizontalDivider(inset = true)
+    }
+}
+```
+
+## Assist chip
+
+- Estado: ready · P2
+- Para qué: Un assist chip es un chip con una acción ligada al contenido que acompaña. En MyOwnTrip hay un solo uso: en el detalle de un documento de Wallet avisa de que su sitio en el plan ha cambiado («Actualizada en el plan · Día 2») y, al tocarlo, abre ese día. Es el AssistChip de Material 3 con el color de aviso (warning) del sistema.
+- Composable: `PlanPlacementSourceChip` — `com.myowntrip.app.ui.features.plan.PlanPlacementSourceChip`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/features/plan/PlanPlacementSourceChip.kt`
+
+### Variantes
+
+- **Aviso** → `PlanPlacementSourceChip(label, onClick)`: Con un día del plan al que ir.
+- **Deshabilitado** → `PlanPlacementSourceChip(label)`: Sin destino.
+
+### Cuándo usarlo
+
+- Hay que señalar un cambio relacionado con el contenido y ofrecer ir a verlo.
+- La acción es secundaria: la pantalla se entiende sin tocar el chip.
+
+### Cuándo NO usarlo
+
+- Elegir una categoría o filtrar → Filter chip
+- La acción completa o confirma algo → Button
+- Solo hay que etiquetar, sin acción → Eyebrow label
+
+### Elegir variante
+
+- El documento cambió de sitio en el plan y hay un día al que ir → `PlanPlacementSourceChip(label, onClick)` — Estilo de aviso: relleno y borde del color warning.
+- No hay día al que ir → `PlanPlacementSourceChip(label) sin onClick` — Se ve deshabilitado, en gris y sin borde.
+
+### Prohibido en este componente
+
+- No uses un chip para la acción principal de la pantalla.
+
+### Accesibilidad
+
+- La etiqueta es el nombre accesible y dice qué cambió.
+- Deshabilitado, se anuncia como no disponible.
+- La altura visible es de 32 dp, pero el área táctil llega a 48 dp.
+
+### Uso típico
+
+```kotlin
+planPlacement?.let { placement ->
+    PlanPlacementSourceChip(
+        label = placement.detailChipLabel,
+        onClick = { onOpenPlanDay(placement.tripId, placement.dayId) },
+    )
+}
+```
+
+## FAB
+
+- Estado: in-review · P1
+- Para qué: El botón de acción flotante (FAB) lleva la acción principal de una pantalla y flota sobre el contenido, abajo a la derecha. En MyOwnTrip añade contenido en las pestañas del viaje (documento, actividad, gasto, sitio) y en el día, dispara la cámara y, en Home, abre el menú de acciones rápidas. Es el FloatingActionButton de Material 3, sin componente propio.
+- Composable: `FloatingActionButton` — `androidx.compose.material3.FloatingActionButton`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/features/trips/TripDetailScreen.kt`
+
+### Variantes
+
+- **FAB** → `FloatingActionButton`: Acción principal de la pantalla.
+- **FAB pequeño** → `SmallFloatingActionButton`: Solo dentro del menú de acciones rápidas de Home.
+
+### Cuándo usarlo
+
+- La pantalla tiene una acción principal clara, casi siempre añadir.
+- La acción tiene que estar a mano mientras se desplaza el contenido.
+
+### Cuándo NO usarlo
+
+- La acción cierra un flujo (guardar, confirmar) → Button
+- Acción secundaria o de la barra superior → Icon button
+
+### Elegir variante
+
+- Añadir en la pestaña o pantalla actual → `FloatingActionButton + icono Añadir` — Sin texto: el nombre va en contentDescription («Añadir gasto»).
+- Varias formas de añadir, en Home → `Menú de acciones rápidas (HomeSpeedDial)` — El FAB abre y cierra el menú; el icono pasa de Añadir a Cerrar.
+
+### Prohibido en este componente
+
+- No lo uses para acciones menores ni destructivas.
+
+### Accesibilidad
+
+- No tiene texto visible: el nombre va en contentDescription y dice la acción concreta («Añadir gasto», no «Añadir»).
+- 56 dp: supera el área táctil mínima de 48 dp.
+
+### Uso típico
+
+```kotlin
+Scaffold(
+    floatingActionButton = {
+        FloatingActionButton(
+            onClick = onAddExpense,
+            modifier = Modifier.semantics { contentDescription = "Añadir gasto" },
+        ) { Icon(MOTIcons.Add, contentDescription = null) }
+    },
+) { /* … */ }
+```
+
+## App bar
+
+- Estado: ready · P1
+- Para qué: La barra superior (top app bar) da título a la pantalla y reúne la navegación hacia atrás y sus acciones. En MyOwnTrip todas las pantallas interiores la usan con el mismo esquema: flecha de volver, título y, a veces, una acción (editar, borrar, guardar). Es el TopAppBar pequeño de Material 3, con MOTIconButton en los iconos.
+- Composable: `TopAppBar` — `androidx.compose.material3.TopAppBar`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/features/trips/EditTripScreen.kt`
+
+### Variantes
+
+- **Pequeña** → `TopAppBar`: Todas las pantallas interiores. No se usan las variantes centrada, mediana ni grande.
+
+### Cuándo usarlo
+
+- La pantalla es interior: se llega desde otra (un detalle, un formulario, un editor).
+- La pantalla necesita un título y una forma de volver.
+
+### Cuándo NO usarlo
+
+- Cambiar entre vistas hermanas de la misma pantalla → Tabs, debajo de la barra
+- La acción principal es añadir → FAB
+
+### Elegir variante
+
+- Pantalla interior (todas las de la app) → `TopAppBar + volver` — Título a la izquierda, junto a la flecha.
+- La pantalla edita o borra lo que muestra → `+ una acción en actions` — Editar viaje, Eliminar documento, Borrar gasto o sitio, Guardar boceto, Abrir con otra app.
+
+### Prohibido en este componente
+
+- No llenes la barra de acciones.
+
+### Accesibilidad
+
+- La flecha de volver lleva contentDescription «Volver».
+- Cada acción lleva su nombre: «Editar viaje», «Eliminar documento».
+- Los iconos tienen un área táctil de 48 dp.
+
+### Uso típico
+
+```kotlin
+TopAppBar(
+    title = { Text("Editar viaje") },
+    navigationIcon = {
+        MOTIconButton(onClick = onBack) {
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
+        }
+    },
+)
+```

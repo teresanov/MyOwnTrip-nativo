@@ -1,0 +1,222 @@
+{
+  "id": "fab",
+  "name": "FAB",
+  "status": "in-review",
+  "priority": "P1",
+  "category": "acciones",
+  "summary": "Acción principal flotante de la pantalla.",
+  "figma": {
+    "label": "FAB",
+    "node": "57998:43426",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57998-43426"
+  },
+  "usage": {
+    "purpose": "El botón de acción flotante (FAB) lleva la acción principal de una pantalla y flota sobre el contenido, abajo a la derecha. En MyOwnTrip añade contenido en las pestañas del viaje (documento, actividad, gasto, sitio) y en el día, dispara la cámara y, en Home, abre el menú de acciones rápidas. Es el FloatingActionButton de Material 3, sin componente propio.",
+    "when": [
+      "La pantalla tiene una acción principal clara, casi siempre añadir.",
+      "La acción tiene que estar a mano mientras se desplaza el contenido."
+    ],
+    "whenNot": [
+      {
+        "case": "La acción cierra un flujo (guardar, confirmar)",
+        "use": "Button",
+        "href": "components/button.html"
+      },
+      {
+        "case": "Acción secundaria o de la barra superior",
+        "use": "Icon button",
+        "href": "components/icon-button.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Añadir en la pestaña o pantalla actual",
+        "use": "FloatingActionButton + icono Añadir",
+        "note": "Sin texto: el nombre va en contentDescription («Añadir gasto»)."
+      },
+      {
+        "if": "Varias formas de añadir, en Home",
+        "use": "Menú de acciones rápidas (HomeSpeedDial)",
+        "note": "El FAB abre y cierra el menú; el icono pasa de Añadir a Cerrar."
+      }
+    ],
+    "related": [
+      {
+        "label": "Button",
+        "href": "components/button.html"
+      },
+      {
+        "label": "Icon button",
+        "href": "components/icon-button.html"
+      }
+    ]
+  },
+  "screens": [
+    {
+      "screen": "TripDetailScreen",
+      "uses": "Añadir documento, actividad, gasto o sitio, según la pestaña"
+    },
+    {
+      "screen": "DayHubScreen",
+      "uses": "Añadir actividad"
+    },
+    {
+      "screen": "TakePhotoScreen",
+      "uses": "Capturar foto"
+    },
+    {
+      "screen": "Home (HomeSpeedDial)",
+      "uses": "Abrir acciones rápidas"
+    }
+  ],
+  "variants": [
+    {
+      "id": "fab",
+      "label": "FAB",
+      "composable": "FloatingActionButton",
+      "usage": "Acción principal de la pantalla."
+    },
+    {
+      "id": "small",
+      "label": "FAB pequeño",
+      "composable": "SmallFloatingActionButton",
+      "usage": "Solo dentro del menú de acciones rápidas de Home."
+    }
+  ],
+  "anatomy": [
+    "<strong>Contenedor</strong> — 56 × 56 dp, primaryContainer, sombra de nivel 3; esquina Large (16 dp), la forma por defecto de Material 3.",
+    "<strong>Icono</strong> — 24 dp, onPrimaryContainer."
+  ],
+  "behavior": {
+    "lead": "El FAB aparece solo cuando su acción tiene sentido.",
+    "rows": [
+      {
+        "state": "Pulsado",
+        "detail": "Capa de estado sobre el contenedor; la sombra no cambia."
+      },
+      {
+        "state": "Viaje pasado",
+        "detail": "En la pestaña Plan y en el día no hay FAB: no se añaden actividades."
+      },
+      {
+        "state": "Wallet vacío",
+        "detail": "Sin FAB: el estado vacío trae su propio botón para añadir."
+      }
+    ],
+    "notes": [
+      "Forma pendiente de decidir: la documentación de marca y Figma lo describen circular, pero el código usa la forma por defecto de Material 3 (esquina Large, 16 dp). Registrado en el parity-log."
+    ]
+  },
+  "a11y": [
+    "No tiene texto visible: el nombre va en contentDescription y dice la acción concreta («Añadir gasto», no «Añadir»).",
+    "56 dp: supera el área táctil mínima de 48 dp."
+  ],
+  "tokens": {
+    "color": [
+      {
+        "token": "primaryContainer",
+        "use": "Contenedor."
+      },
+      {
+        "token": "onPrimaryContainer",
+        "use": "Icono."
+      }
+    ],
+    "shape": [
+      {
+        "token": "shapes.large",
+        "use": "16 dp (forma por defecto de Material 3)."
+      }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · FAB",
+        "url": "https://m3.material.io/components/floating-action-button/guidelines"
+      }
+    ],
+    "consulted": "2026-11-26"
+  },
+  "dos": [
+    "Usa el FAB para la acción más importante de la pantalla.",
+    "Un solo FAB por pantalla.",
+    "Usa un icono claro."
+  ],
+  "donts": [
+    "No lo uses para acciones menores ni destructivas."
+  ],
+  "implementation": {
+    "module": "material3",
+    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/features/trips/TripDetailScreen.kt",
+    "import": "androidx.compose.material3.FloatingActionButton",
+    "composable": "FloatingActionButton",
+    "note": "",
+    "params": [
+      {
+        "name": "onClick",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "La acción principal."
+      },
+      {
+        "name": "modifier",
+        "type": "Modifier",
+        "default": "Modifier",
+        "note": "Lleva el contentDescription con la acción."
+      }
+    ],
+    "snippet": "Scaffold(\n    floatingActionButton = {\n        FloatingActionButton(\n            onClick = onAddExpense,\n            modifier = Modifier.semantics { contentDescription = \"Añadir gasto\" },\n        ) { Icon(MOTIcons.Add, contentDescription = null) }\n    },\n) { /* … */ }"
+  },
+  "decisions": {
+    "source": "FloatingActionButton de Material 3 · set de la librería de Figma",
+    "why": "Añadir es la acción principal de cada pestaña del viaje.",
+    "layer": "Material 3 directo, en el Scaffold de la pantalla."
+  },
+  "changelog": [
+    {
+      "date": "2026-11-26",
+      "note": "Ficha nueva, con ejemplo, anatomía y medidas sobre el componente real (Compose en WebAssembly)."
+    }
+  ],
+  "anatomyDiagram": {
+    "kind": "fab",
+    "values": {},
+    "live": {
+      "specimen": "fab/anatomy",
+      "zoom": 2,
+      "height": 260,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "icon",
+          "anchor": "top@0.5",
+          "side": "top"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Contenedor",
+          "size": "container"
+        },
+        {
+          "label": "Icono",
+          "size": "icon"
+        },
+        {
+          "label": "Espacio alrededor del icono",
+          "left": [
+            "container",
+            "icon"
+          ]
+        }
+      ]
+    }
+  }
+}

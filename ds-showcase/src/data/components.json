@@ -107,6 +107,51 @@
       "category": "contenido",
       "href": "components/list-item.html",
       "summary": "Fila de lista con icono, titular, texto de apoyo y acciones al final (Wallet)."
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "status": "ready",
+      "priority": "P1",
+      "category": "navegacion",
+      "href": "components/tabs.html",
+      "summary": "Cambia entre vistas hermanas: Plan y Diario, o las secciones de un viaje."
+    },
+    {
+      "id": "divider",
+      "name": "Divider",
+      "status": "ready",
+      "priority": "P2",
+      "category": "contenido",
+      "href": "components/divider.html",
+      "summary": "Línea fina que separa filas de lista y bloques de formulario."
+    },
+    {
+      "id": "assist-chip",
+      "name": "Assist chip",
+      "status": "ready",
+      "priority": "P2",
+      "category": "acciones",
+      "href": "components/assist-chip.html",
+      "summary": "Aviso de cambio en el plan, en el detalle de Wallet, que lleva al día."
+    },
+    {
+      "id": "fab",
+      "name": "FAB",
+      "status": "in-review",
+      "priority": "P1",
+      "category": "acciones",
+      "href": "components/fab.html",
+      "summary": "Acción principal flotante: añadir documento, actividad, gasto o sitio."
+    },
+    {
+      "id": "app-bar",
+      "name": "App bar",
+      "status": "ready",
+      "priority": "P1",
+      "category": "navegacion",
+      "href": "components/app-bar.html",
+      "summary": "Barra superior: volver, título de la pantalla y una acción."
     }
   ]
 }

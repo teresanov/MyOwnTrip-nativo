@@ -1,0 +1,200 @@
+{
+  "id": "divider",
+  "name": "Divider",
+  "status": "ready",
+  "priority": "P2",
+  "category": "contenido",
+  "summary": "Línea fina que separa grupos de contenido.",
+  "figma": {
+    "label": "Dividers",
+    "node": "51816:5860",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51816-5860"
+  },
+  "usage": {
+    "purpose": "Un divisor es una línea fina que separa grupos de contenido. En MyOwnTrip separa las filas de una lista (Wallet, revisión de un viaje) y los bloques de un formulario (por ejemplo, la zona de peligro de Editar viaje). Es MOTHorizontalDivider: el divisor horizontal de Material 3 con el color outlineVariant y una opción de sangría.",
+    "when": [
+      "Hay que separar filas de una lista que no tienen contenedor propio.",
+      "Un formulario o una pantalla cambia de bloque."
+    ],
+    "whenNot": [
+      {
+        "case": "Cada elemento ya va en una card",
+        "use": "La card ya separa: Stacked card",
+        "href": "components/stacked-card.html"
+      },
+      {
+        "case": "Basta con aire entre bloques",
+        "use": "El espaciado del sistema",
+        "href": "spacing.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Separar filas de una lista",
+        "use": "MOTHorizontalDivider(inset = true)",
+        "note": "16 dp de sangría a cada lado, alineada con el texto de las filas."
+      },
+      {
+        "if": "Separar bloques de un formulario o secciones de una pantalla",
+        "use": "MOTHorizontalDivider()",
+        "note": "Línea a todo el ancho disponible."
+      }
+    ],
+    "related": [
+      {
+        "label": "List item",
+        "href": "components/list-item.html"
+      },
+      {
+        "label": "Stacked card",
+        "href": "components/stacked-card.html"
+      }
+    ]
+  },
+  "screens": [
+    {
+      "screen": "WalletScreen",
+      "uses": "Entre filas de documentos (con sangría)"
+    },
+    {
+      "screen": "HomeFlowReviewScreen · WalletFlowReviewScreen",
+      "uses": "Entre bloques de la revisión (con sangría)"
+    },
+    {
+      "screen": "EditTripScreen · CreateTripScreen",
+      "uses": "Entre bloques del formulario (a todo el ancho)"
+    },
+    {
+      "screen": "TripPlanTab",
+      "uses": "Entre secciones del plan (a todo el ancho)"
+    }
+  ],
+  "variants": [
+    {
+      "id": "full",
+      "label": "A todo el ancho",
+      "composable": "MOTHorizontalDivider()",
+      "usage": "Bloques de formulario y secciones."
+    },
+    {
+      "id": "inset",
+      "label": "Con sangría",
+      "composable": "MOTHorizontalDivider(inset = true)",
+      "usage": "Filas de una lista."
+    }
+  ],
+  "anatomy": [
+    "<strong>Línea</strong> — 1 dp de grosor, outlineVariant.",
+    "<strong>Sangría</strong> — opcional: 16 dp a cada lado (MOTSpacing.screenHorizontal)."
+  ],
+  "a11y": [
+    "Es decorativo: los lectores de pantalla lo ignoran.",
+    "No transmite información por sí solo; los grupos tienen que entenderse sin él."
+  ],
+  "tokens": {
+    "color": [
+      {
+        "token": "outlineVariant",
+        "use": "Línea."
+      }
+    ],
+    "spacing": [
+      {
+        "token": "MOTSpacing.screenHorizontal",
+        "use": "16 dp de sangría a cada lado, si inset = true."
+      }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Divider",
+        "url": "https://m3.material.io/components/divider/guidelines"
+      }
+    ],
+    "consulted": "2026-11-26"
+  },
+  "dos": [
+    "Usa divisores para separar grupos de contenido en listas y pantallas.",
+    "Usa la variante con sangría para separar elementos relacionados de una lista."
+  ],
+  "donts": [
+    "No los uses como decoración ni en exceso: el espacio en blanco también separa."
+  ],
+  "implementation": {
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/theme/MOTDivider.kt",
+    "import": "com.myowntrip.app.ui.theme.MOTHorizontalDivider",
+    "composable": "MOTHorizontalDivider",
+    "note": "Algunas pantallas usan todavía el HorizontalDivider de Material 3 directamente (hoja de añadir de Home, formulario de Wallet, horario del día). Se ve igual, porque el color por defecto de Material 3 también es outlineVariant.",
+    "params": [
+      {
+        "name": "inset",
+        "type": "Boolean",
+        "default": "false",
+        "note": "true: 16 dp de sangría a cada lado."
+      },
+      {
+        "name": "color",
+        "type": "Color",
+        "default": "outlineVariant",
+        "note": "Ninguna pantalla lo cambia."
+      }
+    ],
+    "snippet": "LazyColumn {\n    items(entries) { entry ->\n        WalletDocumentRow(entry)\n        MOTHorizontalDivider(inset = true)\n    }\n}"
+  },
+  "decisions": {
+    "source": "MOTHorizontalDivider (design system) sobre HorizontalDivider de Material 3 · set de la librería de Figma",
+    "why": "Separar filas y bloques con la misma línea en toda la app.",
+    "layer": "Componente fino del design system: fija el color y ofrece la sangría."
+  },
+  "changelog": [
+    {
+      "date": "2026-11-26",
+      "note": "Ficha nueva, con ejemplo, anatomía y medidas sobre el componente real (Compose en WebAssembly)."
+    }
+  ],
+  "anatomyDiagram": {
+    "kind": "divider",
+    "values": {},
+    "live": {
+      "specimen": "divider/anatomy",
+      "zoom": 2,
+      "height": 200,
+      "markers": [
+        {
+          "n": 1,
+          "part": "line",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 2,
+          "part": "container",
+          "anchor": "left@0.5",
+          "side": "left"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Grosor de la línea",
+          "size": "line"
+        },
+        {
+          "label": "Sangría izquierda",
+          "left": [
+            "container",
+            "line"
+          ]
+        },
+        {
+          "label": "Sangría derecha",
+          "right": [
+            "container",
+            "line"
+          ]
+        }
+      ]
+    }
+  }
+}

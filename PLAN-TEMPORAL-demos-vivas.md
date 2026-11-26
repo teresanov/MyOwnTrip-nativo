@@ -35,11 +35,11 @@ Se pueden hacer ya: todo está en `:designsystem` o es M3 directo.
 - [x] Basic dialog (M3 `AlertDialog` + `MOTTextButton`) — riesgo: el diálogo abre ventana propia; puede que haya que mostrar su contenido sin ventana. — falta revisión en navegador
 
 ### Tramo 2 — Fichas nuevas de piezas que ya están en `:designsystem` o son M3
-- [ ] Tabs (`MOTTab`)
-- [ ] Dividers (`MOTHorizontalDivider`)
-- [ ] Assist chip (M3 `AssistChip`)
-- [ ] FAB (M3, circular, sin morph)
-- [ ] App bar (M3 `TopAppBar`)
+- [x] Tabs (`MOTTab`)
+- [x] Dividers (`MOTHorizontalDivider`)
+- [x] Assist chip (M3 `AssistChip`) — demo con copia de `PlanPlacementSourceChip` (vive en :app)
+- [x] FAB (M3) — en código NO es circular (esquina Large 16 dp); pendiente de decidir, en parity-log
+- [x] App bar (M3 `TopAppBar`)
 
 ### Tramo 3 — Componentes de producto que viven en `:app` → se MUEVEN a `:designsystem`
 **Decidido (2026-11-26):** se mueven al kit (KMP, `commonMain`), sin dependencias de Android. Compilar `:app` tras cada movimiento; mantener paquetes/imports o actualizar los consumidores.
@@ -86,3 +86,4 @@ Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, hi
 | 2026-11-26 | 1 | Text field: sin X inventada, iconos reales (calendario, chevron), texto de apoyo opcional; anatomía a 220 dp para que quepa. Filter chip: hueco entre chips en Medidas, nota en claro. Implementación: «Viene de… / Está definido en…» en vez de «Módulo · fuente» | Alineación del texto de apoyo verificada: 16 dp, igual que el texto (M3) |
 | 2026-11-26 | 1 | Text field: cabecera y Bien/Mal con el componente real (antes HTML inventado: label encima y texto de apoyo pegado a la caja). Nota de cabecera distingue real / recreación | Quedan réplicas HTML en cabecera y Bien/Mal de Button, Icon button, Filter chip, Snackbar y Basic dialog |
 | 2026-11-26 | 1 | Cabecera y Bien/Mal con el componente real en Button, Icon button, Filter chip, Snackbar y Basic dialog (specimens fijos `button/set`, `filter-chip/single`, `snackbar/static`, `basic-dialog/static`); textos reales de la app; confirmación destructiva en color error; Filter chip sin «check» en ninguna parte | Pendiente: Espaciado (spacing.js) aún usa botones HTML con icono y texto inventados («Abrir cuaderno»). Fraunces sin aplicar en las demos |
+| 2026-11-26 | 2 | Fichas nuevas Tabs, Divider, Assist chip, FAB, App bar: demo, anatomía y medidas reales; categoría Navegación | Falta revisión de Teresa. Corregido de paso: el Filter chip medía 48 dp (área táctil) en vez de 32 dp |

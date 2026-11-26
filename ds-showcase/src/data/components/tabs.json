@@ -1,0 +1,285 @@
+{
+  "id": "tabs",
+  "name": "Tabs",
+  "status": "ready",
+  "priority": "P1",
+  "category": "navegacion",
+  "summary": "Cambia entre vistas hermanas de una misma pantalla.",
+  "figma": {
+    "label": "Tabs",
+    "node": "54563:40023",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=54563-40023"
+  },
+  "usage": {
+    "purpose": "Las pestañas reparten el contenido de una pantalla en vistas del mismo nivel y permiten pasar de una a otra sin salir de ella. En MyOwnTrip ordenan las secciones de un viaje (Wallet, Plan, Diario, Gastos, Sitios) y las dos caras de un día (Plan y Diario). Cada pestaña es MOTTab, sobre la fila de pestañas de Material 3.",
+    "when": [
+      "El contenido se divide en vistas hermanas que se alternan o se comparan.",
+      "Todas las vistas comparten el mismo contexto (un viaje, un día) y la misma barra superior.",
+      "Los nombres caben en una palabra."
+    ],
+    "whenNot": [
+      {
+        "case": "Filtrar una lista sin cambiar de vista",
+        "use": "Filter chip",
+        "href": "components/filter-chip.html"
+      },
+      {
+        "case": "Ir a una pantalla interior (un detalle, un formulario)",
+        "use": "Navegar a esa pantalla; su App bar trae el botón de volver",
+        "href": "components/app-bar.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Dos o tres pestañas que caben a lo ancho (Plan · Diario)",
+        "use": "TabRow + MOTTab",
+        "note": "Las pestañas se reparten el ancho a partes iguales."
+      },
+      {
+        "if": "Cuatro o más pestañas, o nombres que no caben (secciones del viaje)",
+        "use": "ScrollableTabRow + MOTTab",
+        "note": "La fila se desplaza en horizontal; edgePadding = 0, la primera pestaña arranca pegada al borde."
+      }
+    ],
+    "related": [
+      {
+        "label": "App bar",
+        "href": "components/app-bar.html"
+      },
+      {
+        "label": "Filter chip",
+        "href": "components/filter-chip.html"
+      }
+    ]
+  },
+  "screens": [
+    {
+      "screen": "TripDetailScreen",
+      "uses": "Wallet · Plan · Diario · Gastos · Sitios (fila con desplazamiento)"
+    },
+    {
+      "screen": "DayHubScreen",
+      "uses": "Plan · Diario (fila fija)"
+    }
+  ],
+  "variants": [
+    {
+      "id": "fixed",
+      "label": "Fila fija",
+      "composable": "TabRow { MOTTab(…) }",
+      "usage": "Pocas pestañas que caben a lo ancho."
+    },
+    {
+      "id": "scrollable",
+      "label": "Fila con desplazamiento",
+      "composable": "ScrollableTabRow(edgePadding = MOTSpacing.none) { MOTTab(…) }",
+      "usage": "Cinco pestañas o nombres largos."
+    }
+  ],
+  "anatomy": [
+    "<strong>Fila de pestañas</strong> — 48 dp de alto, fondo surface.",
+    "<strong>Etiqueta</strong> — titleSmall, una línea; primary en la pestaña activa y onSurfaceVariant en las demás.",
+    "<strong>Indicador</strong> — barra de 3 dp en primary bajo la pestaña activa; se desliza al cambiar.",
+    "<strong>Divisor</strong> — línea de 1 dp en outlineVariant bajo toda la fila."
+  ],
+  "behavior": {
+    "lead": "Tocar una pestaña cambia la vista al momento y el indicador se desliza hasta ella.",
+    "rows": [
+      {
+        "state": "Activa",
+        "detail": "Etiqueta en primary e indicador debajo."
+      },
+      {
+        "state": "Inactiva",
+        "detail": "Etiqueta en onSurfaceVariant."
+      },
+      {
+        "state": "Pulsada",
+        "detail": "Capa de estado sobre toda la pestaña."
+      },
+      {
+        "state": "Al volver a la pantalla",
+        "detail": "Se recupera la pestaña que estaba elegida (rememberSaveable)."
+      }
+    ]
+  },
+  "a11y": [
+    "Cada pestaña se anuncia como pestaña, con su estado de seleccionada.",
+    "La etiqueta es el nombre accesible: no hace falta contentDescription.",
+    "Toda la pestaña es área táctil, con 48 dp de alto."
+  ],
+  "tokens": {
+    "color": [
+      {
+        "token": "surface",
+        "use": "Fondo de la fila."
+      },
+      {
+        "token": "primary",
+        "use": "Etiqueta activa e indicador."
+      },
+      {
+        "token": "onSurfaceVariant",
+        "use": "Etiquetas inactivas."
+      },
+      {
+        "token": "outlineVariant",
+        "use": "Divisor bajo la fila."
+      }
+    ],
+    "spacing": [
+      {
+        "token": "MOTSpacing.Tab.horizontal",
+        "use": "16 dp a los lados de la etiqueta."
+      },
+      {
+        "token": "MOTSpacing.Tab.vertical",
+        "use": "14 dp arriba y abajo de la etiqueta."
+      }
+    ],
+    "type": [
+      {
+        "token": "titleSmall",
+        "use": "Etiqueta."
+      }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Tabs",
+        "url": "https://m3.material.io/components/tabs/guidelines"
+      }
+    ],
+    "consulted": "2026-11-26"
+  },
+  "dos": [
+    "Agrupa en pestañas contenido relacionado y del mismo nivel.",
+    "Usa etiquetas cortas y claras.",
+    "Coloca la fila justo debajo de la barra superior."
+  ],
+  "donts": [
+    "No uses pestañas para una secuencia de pasos.",
+    "No anides una fila de pestañas dentro de otra."
+  ],
+  "productRules": {
+    "dos": [
+      "Usar MOTTab con label: aplica el espaciado del sistema a la etiqueta (MOTSpacing.Tab)."
+    ],
+    "donts": [
+      "No pasar el texto por el parámetro text de Tab de Material 3: añade su propio espaciado interno."
+    ]
+  },
+  "implementation": {
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/theme/MOTTab.kt",
+    "import": "com.myowntrip.app.ui.theme.MOTTab",
+    "composable": "MOTTab",
+    "note": "",
+    "params": [
+      {
+        "name": "selected",
+        "type": "Boolean",
+        "default": "—",
+        "note": "Si es la pestaña activa."
+      },
+      {
+        "name": "onClick",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "Cambia el índice seleccionado."
+      },
+      {
+        "name": "label",
+        "type": "String",
+        "default": "—",
+        "note": "Una palabra."
+      },
+      {
+        "name": "enabled",
+        "type": "Boolean",
+        "default": "true",
+        "note": "Ninguna pantalla lo desactiva."
+      }
+    ],
+    "snippet": "var tabIndex by rememberSaveable { mutableIntStateOf(0) }\nTabRow(selectedTabIndex = tabIndex) {\n    listOf(\"Plan\", \"Diario\").forEachIndexed { index, title ->\n        MOTTab(\n            selected = tabIndex == index,\n            onClick = { tabIndex = index },\n            label = title,\n        )\n    }\n}"
+  },
+  "decisions": {
+    "source": "MOTTab (design system) sobre TabRow y ScrollableTabRow de Material 3 · set de la librería de Figma",
+    "why": "Las secciones de un viaje y de un día son vistas hermanas: las pestañas las alternan sin perder el contexto.",
+    "layer": "Componente fino del design system: solo fija el espaciado de la etiqueta."
+  },
+  "changelog": [
+    {
+      "date": "2026-11-26",
+      "note": "Ficha nueva, con ejemplo, anatomía y medidas sobre el componente real (Compose en WebAssembly)."
+    }
+  ],
+  "anatomyDiagram": {
+    "kind": "tabs",
+    "values": {},
+    "live": {
+      "specimen": "tabs/anatomy",
+      "zoom": 1.4,
+      "height": 260,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "label",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "indicator",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        },
+        {
+          "n": 4,
+          "part": "divider",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Fila de pestañas",
+          "size": "container"
+        },
+        {
+          "label": "Pestaña",
+          "size": "tab"
+        },
+        {
+          "label": "Espacio a la izquierda de la etiqueta",
+          "left": [
+            "tab",
+            "label"
+          ]
+        },
+        {
+          "label": "Espacio sobre la etiqueta",
+          "top": [
+            "tab",
+            "label"
+          ]
+        },
+        {
+          "label": "Indicador",
+          "size": "indicator"
+        },
+        {
+          "label": "Divisor",
+          "size": "divider"
+        }
+      ]
+    }
+  }
+}

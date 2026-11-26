@@ -353,7 +353,7 @@ function implementationOrigin(impl) {
   if (file && !file.startsWith("androidx.")) {
     const name = file.split("/").pop();
     const where = name.includes(".") ? `<code>${name}</code>` : `la carpeta <code>${name}</code>`;
-    const defines = file.startsWith("designsystem/") || file.includes("/ui/components/");
+    const defines = impl.defines || file.startsWith("designsystem/") || file.includes("/ui/components/");
     parts.push(defines ? `Está definido en ${where}.` : `Un ejemplo de uso en la app: ${where}.`);
   }
   return parts.join(" ");

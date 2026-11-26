@@ -13,6 +13,22 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.myowntrip.app.ui.theme.MOTTab
+import com.myowntrip.app.ui.theme.MOTSpacing
+import com.myowntrip.app.ui.theme.MOTHorizontalDivider
+import com.myowntrip.app.ui.theme.LocalExtendedColors
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Surface
 import kotlinx.coroutines.launch
@@ -98,7 +114,7 @@ fun LiveSpecimen(
         "text-field/playground" -> TextFieldPlayground(props)
         "text-field/anatomy" -> TextFieldAnatomy(props)
         "filter-chip/playground" -> FilterChipPlayground(props)
-        "filter-chip/anatomy" -> FilterChipAnatomy()
+        "filter-chip/anatomy" -> FilterChipAnatomy(onMeta)
         "snackbar/playground" -> SnackbarPlayground(props)
         "snackbar/anatomy" -> SnackbarAnatomy(props)
         "basic-dialog/playground" -> DialogPlayground(props)
@@ -108,6 +124,16 @@ fun LiveSpecimen(
         "filter-chip/single" -> FilterChipSingle(props)
         "snackbar/static" -> SnackbarStatic(props)
         "basic-dialog/static" -> DialogStatic(props)
+        "tabs/playground" -> TabsPlayground(props)
+        "tabs/anatomy" -> TabsAnatomy()
+        "divider/playground" -> DividerPlayground(props)
+        "divider/anatomy" -> DividerAnatomy()
+        "assist-chip/playground" -> AssistChipPlayground(props)
+        "assist-chip/anatomy" -> AssistChipAnatomy(onMeta)
+        "fab/playground" -> FabPlayground(props)
+        "fab/anatomy" -> FabAnatomy()
+        "app-bar/playground" -> AppBarPlayground(props)
+        "app-bar/anatomy" -> AppBarAnatomy()
         // Cualquier specimen del catálogo (button/sizes, icon-button/round…) se puede incrustar por su id.
         else -> Catalog.firstOrNull { it.id == id }?.content?.invoke() ?: Text("Specimen desconocido: $id")
       }
@@ -314,7 +340,11 @@ private fun FilterChipPlayground(p: Map<String, String>) {
 
 /** Dos chips (uno seleccionado) para medir pieza, label y hueco entre chips. */
 @Composable
-private fun FilterChipAnatomy() {
+private fun FilterChipAnatomy(onMeta: (Map<String, Float>) -> Unit) {
+  // Como en ButtonAnatomy: el área táctil se informa aparte y se desactiva para medir el chip visible.
+  val touch: Dp = LocalMinimumInteractiveComponentSize.current
+  SideEffect { onMeta(mapOf("touchDp" to touch.value)) }
+  CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
   Row(horizontalArrangement = Arrangement.spacedBy(com.myowntrip.app.ui.theme.MOTSpacing.Chip.gap)) {
     FilterChip(
       selected = true,
@@ -328,6 +358,7 @@ private fun FilterChipAnatomy() {
       modifier = Modifier.part("chip2"),
       label = { Text("Hoteles", Modifier.part("label2")) },
     )
+  }
   }
 }
 
@@ -473,6 +504,169 @@ private fun DialogStatic(p: Map<String, String>) {
     },
     dismissButton = if (filled) null else {
       { MOTTextButton(onClick = {}) { Text(p["dismiss"] ?: "Cancelar") } }
+    },
+  )
+}
+
+/* ---------- Tramo 2 ---------- */
+
+/** Pestañas del día (DayHub) y del viaje (TripDetail), con los textos de la app. */
+private val DayTabs = listOf("Plan", "Diario")
+private val TripTabs = listOf("Wallet", "Plan", "Diario", "Gastos", "Sitios")
+
+/** Ancho de pantalla de móvil para las piezas que ocupan todo el ancho. */
+private val PhoneWidth = 360.dp
+
+/** row=fixed: TabRow de DayHub (2 pestañas). row=scrollable: ScrollableTabRow del viaje (5 pestañas). */
+@Composable
+private fun TabsPlayground(p: Map<String, String>) {
+  var index by remember { mutableStateOf(0) }
+  val enabled = p["enabled"] != "false"
+  if (p["row"] == "scrollable") {
+    ScrollableTabRow(selectedTabIndex = index.coerceAtMost(TripTabs.lastIndex), edgePadding = MOTSpacing.none, modifier = Modifier.width(PhoneWidth)) {
+      TripTabs.forEachIndexed { i, title -> MOTTab(selected = index == i, onClick = { index = i }, label = title, enabled = enabled) }
+    }
+  } else {
+    TabRow(selectedTabIndex = index.coerceAtMost(DayTabs.lastIndex), modifier = Modifier.width(PhoneWidth)) {
+      DayTabs.forEachIndexed { i, title -> MOTTab(selected = index == i, onClick = { index = i }, label = title, enabled = enabled) }
+    }
+  }
+}
+
+/** TabRow de DayHub con sus piezas marcadas. Indicador y divisor son los que pone TabRow por defecto. */
+@Composable
+private fun TabsAnatomy() {
+  TabRow(
+    selectedTabIndex = 0,
+    modifier = Modifier.width(280.dp).part("container"),
+    indicator = { positions -> TabRowDefaults.SecondaryIndicator(Modifier.tabIndicatorOffset(positions[0]).part("indicator")) },
+    divider = { HorizontalDivider(Modifier.part("divider")) },
+  ) {
+    MOTTab(selected = true, onClick = {}, modifier = Modifier.part("tab")) {
+      Text(
+        "Plan",
+        modifier = Modifier.padding(horizontal = MOTSpacing.Tab.horizontal, vertical = MOTSpacing.Tab.vertical).part("label"),
+      )
+    }
+    MOTTab(selected = false, onClick = {}, modifier = Modifier.part("tab2")) {
+      Text("Diario", modifier = Modifier.padding(horizontal = MOTSpacing.Tab.horizontal, vertical = MOTSpacing.Tab.vertical))
+    }
+  }
+}
+
+/** Dos filas de lista separadas por un divisor, como en Wallet. inset=false: divisor a todo el ancho. */
+@Composable
+private fun DividerPlayground(p: Map<String, String>) {
+  Column(Modifier.width(PhoneWidth)) {
+    Text("Billete tren", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(MOTSpacing.screenHorizontal))
+    MOTHorizontalDivider(inset = p["inset"] != "false")
+    Text("Reserva hotel", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(MOTSpacing.screenHorizontal))
+  }
+}
+
+@Composable
+private fun DividerAnatomy() {
+  // Igual que inset = true (la sangría va por fuera de la línea), pero con la marca dentro de la sangría
+  // para que la medida sea la de la línea y no la del hueco.
+  Box(Modifier.width(180.dp).padding(vertical = 24.dp).part("container")) {
+    MOTHorizontalDivider(modifier = Modifier.padding(horizontal = MOTSpacing.screenHorizontal).part("line"))
+  }
+}
+
+/**
+ * Copia fiel de PlanPlacementSourceChip (vive en :app, features/plan): AssistChip con el color de aviso.
+ * Si cambia allí, hay que cambiarlo aquí hasta que el chip pase al design system.
+ */
+@Composable
+private fun PlanPlacementChip(label: String, onClick: (() -> Unit)?, modifier: Modifier = Modifier, labelModifier: Modifier = Modifier) {
+  val warning = LocalExtendedColors.current.warning
+  AssistChip(
+    onClick = onClick ?: {},
+    enabled = onClick != null,
+    label = { Text(label, labelModifier) },
+    modifier = modifier,
+    colors = AssistChipDefaults.assistChipColors(
+      labelColor = warning,
+      containerColor = warning.copy(alpha = 0.14f),
+      disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+      disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    ),
+    border = AssistChipDefaults.assistChipBorder(
+      enabled = onClick != null,
+      borderColor = warning.copy(alpha = 0.35f),
+      disabledBorderColor = Color.Transparent,
+    ),
+  )
+}
+
+@Composable
+private fun AssistChipPlayground(p: Map<String, String>) {
+  PlanPlacementChip(
+    label = p["label"] ?: "Actualizada en el plan · Día 2",
+    onClick = if (p["enabled"] != "false") ({}) else null,
+  )
+}
+
+@Composable
+private fun AssistChipAnatomy(onMeta: (Map<String, Float>) -> Unit) {
+  val touch: Dp = LocalMinimumInteractiveComponentSize.current
+  SideEffect { onMeta(mapOf("touchDp" to touch.value)) }
+  CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+  PlanPlacementChip(
+    label = "Actualizada en el plan · Día 2",
+    onClick = {},
+    modifier = Modifier.part("container"),
+    labelModifier = Modifier.part("label"),
+  )
+  }
+}
+
+/** FAB de las pestañas del viaje: icono Añadir, sin texto. */
+@Composable
+private fun FabPlayground(p: Map<String, String>) {
+  FloatingActionButton(onClick = {}) {
+    Icon(MOTIcons.Add, contentDescription = p["description"] ?: "Añadir gasto")
+  }
+}
+
+@Composable
+private fun FabAnatomy() {
+  FloatingActionButton(onClick = {}, modifier = Modifier.part("container")) {
+    Icon(MOTIcons.Add, contentDescription = null, modifier = Modifier.part("icon"))
+  }
+}
+
+/** TopAppBar como en la app: volver + título + acción opcional (editar o borrar). */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AppBarPlayground(p: Map<String, String>) {
+  TopAppBar(
+    modifier = Modifier.width(PhoneWidth),
+    title = { Text(p["title"] ?: "Editar viaje", maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) },
+    navigationIcon = {
+      MOTIconButton(onClick = {}) { Icon(MOTIcons.ArrowBack, contentDescription = "Volver") }
+    },
+    actions = {
+      when (p["action"]) {
+        "edit" -> MOTIconButton(onClick = {}) { Icon(MOTIcons.Edit, contentDescription = "Editar viaje") }
+        "delete" -> MOTIconButton(onClick = {}) { Icon(MOTIcons.Delete, contentDescription = "Eliminar documento") }
+        else -> {}
+      }
+    },
+  )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AppBarAnatomy() {
+  TopAppBar(
+    modifier = Modifier.width(PhoneWidth).part("container"),
+    title = { Text("Cracovia finde", Modifier.part("title")) },
+    navigationIcon = {
+      MOTIconButton(onClick = {}, modifier = Modifier.part("nav")) { Icon(MOTIcons.ArrowBack, contentDescription = null) }
+    },
+    actions = {
+      MOTIconButton(onClick = {}, modifier = Modifier.part("action")) { Icon(MOTIcons.Edit, contentDescription = null) }
     },
   )
 }

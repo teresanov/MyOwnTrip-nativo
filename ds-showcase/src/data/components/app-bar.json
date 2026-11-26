@@ -1,0 +1,243 @@
+{
+  "id": "app-bar",
+  "name": "App bar",
+  "status": "ready",
+  "priority": "P1",
+  "category": "navegacion",
+  "summary": "Barra superior con volver, título y acciones.",
+  "figma": {
+    "label": "App bar",
+    "node": "58114:20565",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58114-20565"
+  },
+  "usage": {
+    "purpose": "La barra superior (top app bar) da título a la pantalla y reúne la navegación hacia atrás y sus acciones. En MyOwnTrip todas las pantallas interiores la usan con el mismo esquema: flecha de volver, título y, a veces, una acción (editar, borrar, guardar). Es el TopAppBar pequeño de Material 3, con MOTIconButton en los iconos.",
+    "when": [
+      "La pantalla es interior: se llega desde otra (un detalle, un formulario, un editor).",
+      "La pantalla necesita un título y una forma de volver."
+    ],
+    "whenNot": [
+      {
+        "case": "Cambiar entre vistas hermanas de la misma pantalla",
+        "use": "Tabs, debajo de la barra",
+        "href": "components/tabs.html"
+      },
+      {
+        "case": "La acción principal es añadir",
+        "use": "FAB",
+        "href": "components/fab.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Pantalla interior (todas las de la app)",
+        "use": "TopAppBar + volver",
+        "note": "Título a la izquierda, junto a la flecha."
+      },
+      {
+        "if": "La pantalla edita o borra lo que muestra",
+        "use": "+ una acción en actions",
+        "note": "Editar viaje, Eliminar documento, Borrar gasto o sitio, Guardar boceto, Abrir con otra app."
+      }
+    ],
+    "related": [
+      {
+        "label": "Icon button",
+        "href": "components/icon-button.html"
+      },
+      {
+        "label": "Tabs",
+        "href": "components/tabs.html"
+      }
+    ]
+  },
+  "screens": [
+    {
+      "screen": "TripDetailScreen",
+      "uses": "Nombre del viaje · Volver · Editar viaje"
+    },
+    {
+      "screen": "EditTripScreen",
+      "uses": "Editar viaje · Volver"
+    },
+    {
+      "screen": "WalletDetailScreen",
+      "uses": "Título del documento · Volver · Eliminar documento"
+    },
+    {
+      "screen": "DayHubScreen",
+      "uses": "«Día N · fecha» · Volver"
+    }
+  ],
+  "variants": [
+    {
+      "id": "small",
+      "label": "Pequeña",
+      "composable": "TopAppBar",
+      "usage": "Todas las pantallas interiores. No se usan las variantes centrada, mediana ni grande."
+    }
+  ],
+  "anatomy": [
+    "<strong>Contenedor</strong> — 64 dp de alto, surface, sin sombra.",
+    "<strong>Volver</strong> — MOTIconButton con la flecha (ArrowBack).",
+    "<strong>Título</strong> — titleLarge en onSurface, una línea con puntos suspensivos si no cabe.",
+    "<strong>Acción</strong> — opcional: MOTIconButton en onSurfaceVariant."
+  ],
+  "behavior": {
+    "lead": "La barra es fija.",
+    "rows": [
+      {
+        "state": "Al desplazar el contenido",
+        "detail": "No cambia: ninguna pantalla le pasa scrollBehavior."
+      }
+    ]
+  },
+  "a11y": [
+    "La flecha de volver lleva contentDescription «Volver».",
+    "Cada acción lleva su nombre: «Editar viaje», «Eliminar documento».",
+    "Los iconos tienen un área táctil de 48 dp."
+  ],
+  "tokens": {
+    "color": [
+      {
+        "token": "surface",
+        "use": "Contenedor."
+      },
+      {
+        "token": "onSurface",
+        "use": "Título y flecha de volver."
+      },
+      {
+        "token": "onSurfaceVariant",
+        "use": "Acciones."
+      }
+    ],
+    "type": [
+      {
+        "token": "titleLarge",
+        "use": "Título."
+      }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Top app bar",
+        "url": "https://m3.material.io/components/top-app-bar/guidelines"
+      }
+    ],
+    "consulted": "2026-11-26"
+  },
+  "dos": [
+    "Usa el título para decir dónde está la persona.",
+    "Pon en la barra solo las acciones más importantes de la pantalla."
+  ],
+  "donts": [
+    "No llenes la barra de acciones."
+  ],
+  "implementation": {
+    "module": "material3",
+    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/features/trips/EditTripScreen.kt",
+    "import": "androidx.compose.material3.TopAppBar",
+    "composable": "TopAppBar",
+    "note": "Pide @OptIn(ExperimentalMaterial3Api::class).",
+    "params": [
+      {
+        "name": "title",
+        "type": "@Composable () -> Unit",
+        "default": "—",
+        "note": "Text con el título."
+      },
+      {
+        "name": "navigationIcon",
+        "type": "@Composable () -> Unit",
+        "default": "{}",
+        "note": "MOTIconButton con ArrowBack."
+      },
+      {
+        "name": "actions",
+        "type": "@Composable RowScope.() -> Unit",
+        "default": "{}",
+        "note": "Una acción como mucho en la app."
+      }
+    ],
+    "snippet": "TopAppBar(\n    title = { Text(\"Editar viaje\") },\n    navigationIcon = {\n        MOTIconButton(onClick = onBack) {\n            Icon(MOTIcons.ArrowBack, contentDescription = \"Volver\")\n        }\n    },\n)"
+  },
+  "decisions": {
+    "source": "TopAppBar (pequeño) de Material 3 · set de la librería de Figma",
+    "why": "El mismo esquema de cabecera en todas las pantallas interiores.",
+    "layer": "Material 3 directo; iconos con MOTIconButton."
+  },
+  "changelog": [
+    {
+      "date": "2026-11-26",
+      "note": "Ficha nueva, con ejemplo, anatomía y medidas sobre el componente real (Compose en WebAssembly)."
+    }
+  ],
+  "anatomyDiagram": {
+    "kind": "app-bar",
+    "values": {},
+    "live": {
+      "specimen": "app-bar/anatomy",
+      "zoom": 1,
+      "height": 220,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "at@0.45,0.15",
+          "side": "top"
+        },
+        {
+          "n": 2,
+          "part": "nav",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 3,
+          "part": "title",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        },
+        {
+          "n": 4,
+          "part": "action",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Barra",
+          "size": "container"
+        },
+        {
+          "label": "Botón de volver",
+          "size": "nav"
+        },
+        {
+          "label": "Espacio a la izquierda de volver",
+          "left": [
+            "container",
+            "nav"
+          ]
+        },
+        {
+          "label": "Volver–título",
+          "gap": [
+            "nav",
+            "title"
+          ]
+        },
+        {
+          "label": "Espacio a la derecha de la acción",
+          "right": [
+            "container",
+            "action"
+          ]
+        }
+      ]
+    }
+  }
+}

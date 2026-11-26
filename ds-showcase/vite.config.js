@@ -26,6 +26,11 @@ const PAGES = [
   ["swipeable-list-row", "components/swipeable-list-row.html"],
   ["list-item", "components/list-item.html"],
   ["icon-button", "components/icon-button.html"],
+  ["tabs", "components/tabs.html"],
+  ["divider", "components/divider.html"],
+  ["assist-chip", "components/assist-chip.html"],
+  ["fab", "components/fab.html"],
+  ["app-bar", "components/app-bar.html"],
   // Resto
   ["patterns", "patterns.html"],
   ["governance", "gobernanza.html"],
