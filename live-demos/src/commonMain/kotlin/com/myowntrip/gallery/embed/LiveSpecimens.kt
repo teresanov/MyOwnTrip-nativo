@@ -13,6 +13,8 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.myowntrip.app.ui.components.MotSwipeableRow
+import com.myowntrip.app.ui.components.MotListItem
 import com.myowntrip.app.ui.theme.LocalMotPartReporter
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.graphics.painter.BitmapPainter
@@ -150,6 +152,8 @@ fun LiveSpecimen(
         "eyebrow-label/anatomy" -> EyebrowLabel(text = "Próximo viaje")
         "stacked-card/playground" -> StackedCardPlayground(props)
         "trip-hero-card/playground" -> TripHeroPlayground(props)
+        "list-item/playground" -> ListItemPlayground(props)
+        "swipeable-list-row/playground" -> SwipeRowPlayground(props)
         // Cualquier specimen del catálogo (button/sizes, icon-button/round…) se puede incrustar por su id.
         else -> Catalog.firstOrNull { it.id == id }?.content?.invoke() ?: Text("Specimen desconocido: $id")
       }
@@ -750,4 +754,87 @@ private fun TripHeroPlayground(p: Map<String, String>) {
       ?: Modifier.width(PhoneWidth).padding(horizontal = MOTSpacing.screenHorizontal),
     cover = { m -> TripCoverPlaceholder(destination = "Cracovia", modifier = m) },
   )
+}
+
+/* ---------- Tramo 3: filas de lista ---------- */
+
+/**
+ * Fila de Wallet con los textos de las vistas previas de la app.
+ * warning=true: aviso del plan · availability: none | offline | cloud · menu=true: botón ⋮.
+ * El indicador del final es una copia del compacto de Wallet (WalletOfflineIndicator vive en la app).
+ */
+@Composable
+private fun WalletLikeRow(p: Map<String, String>, menu: (@Composable () -> Unit)? = null) {
+  val warning = p["warning"] == "true"
+  val availability = p["availability"] ?: "none"
+  val offlineIcon = when (availability) {
+    "offline" -> MOTIcons.WifiOff
+    "cloud" -> MOTIcons.Cloud
+    else -> null
+  }
+  val width = p["width"]?.toIntOrNull()?.dp ?: PhoneWidth
+  MotListItem(
+    title = "IB 3254 · Madrid → Barcelona",
+    supportingText = "Vuelo · 20 nov 2026 · 10:30",
+    icon = MOTIcons.Flight,
+    contentDescription = buildString {
+      append("Vuelo, IB 3254 · Madrid → Barcelona, 20 nov 2026 · 10:30")
+      if (warning) append(", actualizada en el plan, día 2")
+      when (availability) {
+        "offline" -> append(", Guardado en el teléfono, disponible sin conexión")
+        "cloud" -> append(", En la nube, requiere conexión")
+      }
+    },
+    onClick = {},
+    modifier = Modifier.width(width),
+    warningSuffix = if (warning) " · Actualizada en el plan · Día 2" else null,
+    dimmed = availability == "offline" && !warning,
+    trailing = if (offlineIcon != null || menu != null) {
+      {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+          if (offlineIcon != null) {
+            Icon(offlineIcon, contentDescription = null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.tertiary)
+          }
+          if (offlineIcon != null && menu != null) Spacer(Modifier.width(4.dp))
+          menu?.invoke()
+        }
+      }
+    } else {
+      null
+    },
+  )
+}
+
+@Composable
+private fun ListItemPlayground(p: Map<String, String>) {
+  WalletLikeRow(p, menu = if (p["menu"] == "true") {
+    { MOTIconButton(onClick = {}) { Icon(MOTIcons.MoreVert, contentDescription = "Acciones del documento", modifier = Modifier.size(22.dp)) } }
+  } else {
+    null
+  })
+}
+
+/** Fila deslizable de Wallet: desliza con el ratón o el dedo, o usa ⋮. Debajo, la última acción. */
+@Composable
+private fun SwipeRowPlayground(p: Map<String, String>) {
+  var archived by remember(p["archived"]) { mutableStateOf(p["archived"] == "true") }
+  var last by remember { mutableStateOf("Desliza la fila o usa su menú de acciones") }
+  Column(Modifier.width(PhoneWidth)) {
+    MotSwipeableRow(
+      archived = archived,
+      itemNoun = "documento",
+      onArchive = { archived = true; last = "Archivado. En la app, un snackbar ofrece deshacer." },
+      onUnarchive = { archived = false; last = "Restaurado." },
+      onDeleteRequest = { last = "Eliminar: en la app se abre el diálogo de confirmación. No borra al soltar." },
+    ) { menuButton ->
+      WalletLikeRow(p, menu = { menuButton(Modifier) })
+    }
+    MOTHorizontalDivider(inset = true)
+    Text(
+      last,
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      modifier = Modifier.padding(MOTSpacing.screenHorizontal),
+    )
+  }
 }

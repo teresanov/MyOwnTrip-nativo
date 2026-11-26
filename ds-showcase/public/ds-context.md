@@ -647,25 +647,24 @@ EyebrowLabel(
 
 ## Swipeable list row
 
-- Estado: in-review · P1
-- Para qué: Una fila swipeable guarda las acciones laterales tipo Gmail: deslizar para archivar o eliminar, y el mismo par en un menú ⋮ por tap. El patrón es Compose compartido: SwipeableTripListRow en Home («Más viajes») y SwipeableWalletDocumentRow en Wallet. No envuelve el hero ni los carruseles.
-- Composable: `SwipeableTripListRow` — `com.myowntrip.app.ui.components.home.SwipeableTripListRow`
-- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/home/SwipeableTripListRow.kt`
+- Estado: ready · P1
+- Para qué: Una fila deslizable añade a una fila de lista dos acciones rápidas: deslizar hacia la derecha para archivar (o restaurar, en la lista de archivados) y hacia la izquierda para eliminar. Las mismas acciones están siempre en el menú ⋮ de la fila, para quien no puede o no sabe deslizar. En MyOwnTrip se usa en los documentos de Wallet y en la lista de viajes de Home. Es MotSwipeableRow, del design system.
+- Composable: `MotSwipeableRow` — `com.myowntrip.app.ui.components.MotSwipeableRow`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotSwipeableRow.kt`
 
 ### Variantes
 
-- **Lista activa** → `SwipeableWalletDocumentRow`: Archivar / Eliminar.
-- **Lista archivados** → `SwipeableWalletDocumentRow`: Restaurar / Eliminar.
+- **Lista activa** → `MotSwipeableRow(archived = false, …)`: Archivar a la derecha, eliminar a la izquierda.
+- **Lista de archivados** → `MotSwipeableRow(archived = true, …)`: Restaurar a la derecha, eliminar a la izquierda.
 
 ### Cuándo usarlo
 
-- La colección es una lista vertical de viajes o documentos.
-- Archivar y eliminar son acciones frecuentes, no el CTA de la pantalla.
+- Archivar y eliminar son acciones frecuentes en esa lista.
+- Cada fila es un elemento independiente.
 
 ### Cuándo NO usarlo
 
-- Viaje destacado de Home → TripHeroCard
-- Carrusel de próximos en Wallet → La card del carrusel, sin swipe
+- La portada del viaje destacado o un carrusel → TripHeroCard, sin deslizamiento
 
 ### Elegir variante
 
@@ -679,54 +678,52 @@ EyebrowLabel(
 
 ### Accesibilidad
 
-- customActions de TalkBack: Archivar/Restaurar y Eliminar.
-- Menú ⋮: «Acciones del viaje» / «Acciones del documento».
-- Eliminar: icono + texto error, nunca solo color.
+- Los lectores de pantalla ofrecen las dos acciones sobre la propia fila: «Archivar documento» (o «Restaurar documento») y «Eliminar documento»; en viajes, «… viaje».
+- El botón ⋮ se anuncia como «Acciones del documento» o «Acciones del viaje».
+- Eliminar no depende solo del color: lleva icono y texto.
 
 ### Uso típico
 
 ```kotlin
-SwipeableTripListRow(
-    trip = trip,
-    today = today,
-    showArchivedActions = filterPhase == Archived,
-    onClick = { onTripClick(trip.id) },
-    onArchive = { onArchiveTrip(trip.id) },
-    onUnarchive = { onUnarchiveTrip(trip.id) },
-    onDeleteRequest = { requestDelete(trip.id) },
-)
+MotSwipeableRow(
+    archived = showArchivedActions,
+    itemNoun = "documento",
+    onArchive = onArchive,
+    onUnarchive = onUnarchive,
+    onDeleteRequest = onDeleteRequest,
+) { menuButton ->
+    WalletDocumentRow(entry, onClick, trailingActions = { menuButton(Modifier) })
+}
 ```
 
 ## List item
 
 - Estado: ready · P1
-- Para qué: Una fila de lista muestra un elemento discreto de una colección vertical: un documento del Wallet con su tipo, título, fecha y estado. La fila entera es el área pulsable y lleva a su detalle.
-- Composable: `WalletDocumentRow` — `com.myowntrip.app.ui.features.wallet.WalletDocumentRow`
-- Fuente: `app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt`
+- Para qué: Una fila de lista presenta un elemento de una colección vertical para poder recorrerla de un vistazo y abrir uno. En MyOwnTrip es la fila de los documentos de Wallet: un icono según el tipo, el título y, debajo, el tipo y la fecha. Toda la fila se pulsa y lleva al detalle. Es MotListItem, del design system, sobre el ListItem de Material 3.
+- Composable: `MotListItem` — `com.myowntrip.app.ui.components.MotListItem`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotListItem.kt`
 
 ### Variantes
 
-- **Leading=Icon** → `WalletDocumentRow`: Fila de documento con icono por tipo.
-- **Show drift = true** → `WalletPlanDriftLeadingIcon`: Icono con punto de aviso cuando el plan no coincide con el documento.
-- **List Item - Swipe** → `SwipeableWalletDocumentRow`: Fila con acciones de archivar y eliminar por swipe.
+- **Normal** → `MotListItem(title, supportingText, icon, …)`: Documento sin avisos.
+- **Con aviso del plan** → `warningSuffix = " · Actualizada en el plan · Día 2"`: El documento cambió de sitio en el plan: borde, punto y aviso en color warning.
+- **Guardado en el móvil** → `dimmed = true + indicador al final`: Disponible sin conexión y sin nada pendiente: la fila se atenúa.
+- **Con menú ⋮** → `trailing = { … }`: Lo añade la fila deslizable.
 
 ### Cuándo usarlo
 
-- Hay una colección de elementos del mismo tipo que se recorre en vertical (documentos del Wallet).
-- Cada elemento tiene un titular y, como mucho, una o dos líneas de apoyo.
-- Se necesita un icono que ayude a escanear el tipo de elemento (vuelo, hotel, coche, entrada).
+- Hay que listar elementos del mismo tipo para recorrerlos y abrir uno.
+- Cada elemento cabe en un título y una línea de apoyo.
 
 ### Cuándo NO usarlo
 
-- Elemento con portada o foto grande (viajes en Home) → Horizontal card
-- Destacar un solo elemento con imagen y CTA → TripHeroCard
-- Elegir una opción de un conjunto pequeño → Filter chip
+- El elemento necesita imagen o portada → Horizontal card
+- Hay que elegir opciones o filtrar la lista → Filter chip
 
 ### Elegir variante
 
-- Fila de documento sin acciones laterales → `WalletDocumentRow` — ListItem de M3 con container surface.
-- La fila se archiva o elimina con swipe → `SwipeableWalletDocumentRow` — Envuelve WalletDocumentRow; ver Swipeable list row.
-- El plan ha cambiado respecto al documento → `WalletDocumentRow con planPlacement` — Borde izquierdo en warning y punto de drift en el icono.
+- Lista de documentos → `MotListItem` — El icono indica el tipo de documento.
+- Hay que poder archivar o eliminar desde la lista → `MotListItem dentro de MotSwipeableRow` — Ver Swipeable list row.
 
 ### Prohibido en este componente
 
@@ -738,19 +735,21 @@ SwipeableTripListRow(
 
 ### Accesibilidad
 
-- contentDescription de la fila: «tipo, título, fecha, drift, disponibilidad offline». TalkBack lo lee de una vez.
-- El punto de drift y el borde no son el único aviso: el texto de apoyo incluye la frase de drift.
-- Los iconos internos son decorativos (contentDescription = null); el significado va en la descripción de la fila.
-- La fila entera es el área táctil; el ListItem de M3 garantiza una altura mínima superior a 48 dp.
+- La fila se anuncia de una vez, con una frase que junta el tipo, el título, la fecha, el aviso del plan y la disponibilidad: «Vuelo, IB 3254 · Madrid → Barcelona, 20 nov 2026 · 10:30, actualizada en el plan, día 2».
+- El aviso no depende solo del color: además del borde y el punto, el texto de apoyo lo dice.
+- Los iconos no se anuncian por separado: su significado ya está en la frase de la fila.
+- Toda la fila es pulsable y mide más de 48 dp de alto.
 
 ### Uso típico
 
 ```kotlin
-WalletDocumentRow(
-    entry = entry,
+MotListItem(
+    title = entry.title,
+    supportingText = "Vuelo · 20 nov 2026 · 10:30",
+    icon = MOTIcons.Flight,
+    contentDescription = "Vuelo, IB 3254 · Madrid → Barcelona, 20 nov 2026 · 10:30",
     onClick = { onEntryClick(entry.id) },
-    planPlacement = placement,
-    trailingActions = { MOTIconButton(onClick = onMenu) { Icon(MOTIcons.MoreVert, contentDescription = "Acciones del documento") } },
+    warningSuffix = planPlacement?.listDriftSuffix,
 )
 ```
 

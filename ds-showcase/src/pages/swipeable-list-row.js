@@ -1,26 +1,25 @@
 import data from "../data/components/swipeable-list-row.json";
 import { mountComponentPage } from "../lib/generic-component.js";
-import { listItemHtml } from "../lib/specimens.js";
-
-const swipe = `
-  <div class="swipe-demo">
-    <div class="swipe-demo__rail swipe-demo__rail--start">Archivar</div>
-    <div class="swipe-demo__row">${listItemHtml()}</div>
-    <div class="swipe-demo__rail swipe-demo__rail--end">Eliminar</div>
-  </div>`;
+import { liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
 
 mountComponentPage(data, {
-  specimenHtml: swipe,
+  specimenHtml: liveHostHtml("swipeable-list-row/playground", { theme: "light" }, { height: 150, label: "MotSwipeableRow real" }),
   playground: {
     id: "ejemplo",
     title: "Ejemplo",
-    hint: "Anatomía del gesto, no un swipe real. En Compose, el umbral es ~45 % y Eliminar abre el diálogo; no borra al soltar. El ⋮ hace lo mismo por tap.",
-    canvasHtml: swipe,
+    hint: '<span class="live-badge">Compose real</span> Es <code>MotSwipeableRow</code> del design system, compilado a WebAssembly, con una fila de Wallet. Arrastra la fila con el ratón hacia un lado u otro, o abre el menú ⋮. Debajo se ve qué haría la app.',
+    canvasHtml: `
+      ${liveHostHtml("swipeable-list-row/playground", { archived: "false", theme: "light" }, { height: 170, label: "MotSwipeableRow real" })}
+      <p class="playground__status"><code>MotSwipeableRow(archived, itemNoun = "documento", onArchive, onUnarchive, onDeleteRequest) { menuButton -> … }</code></p>`,
+    controlsHtml: `
+      <label class="playground-check"><input type="checkbox" id="demo-archived" /><span>Lista de archivados</span></label>
+      <label class="playground-check"><input type="checkbox" id="demo-dark" /><span>Tema oscuro</span></label>`,
   },
-  doDont: {
-    doHtml: swipe,
-    doCaption: "Fondos secondaryContainer / errorContainer y menú ⋮ equivalente.",
-    dontHtml: `<div class="mot-li-wrap">${listItemHtml({ more: false })}</div>`,
-    dontCaption: "Fila sin ⋮: el swipe quedaría como única vía. Prohibido por a11y.",
+  setup() {
+    const host = document.querySelector('.playground__canvas [data-mot-specimen="swipeable-list-row/playground"]');
+    const [archived, dark] = ["demo-archived", "demo-dark"].map((i) => document.getElementById(i));
+    const sync = () => setLiveProps(host, { archived: archived.checked, theme: dark.checked ? "dark" : "light" });
+    [archived, dark].forEach((el) => el.addEventListener("change", sync));
+    sync();
   },
 });

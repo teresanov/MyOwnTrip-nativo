@@ -1,5 +1,6 @@
 package com.myowntrip.app.ui.features.wallet
 
+import com.myowntrip.app.ui.components.MotListItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -501,6 +502,7 @@ private fun WalletHighlightCard(
   }
 }
 
+/** Fila de documento de Wallet: traduce la entrada a la fila del design system (MotListItem). */
 @Composable
 internal fun WalletDocumentRow(
   entry: WalletEntry,
@@ -512,79 +514,25 @@ internal fun WalletDocumentRow(
   val label = entryTypeLabel(entry.type)
   val offline = remember(entry.id, entry.pdfUri, entry.qrPayload, entry.linkUrl) { entry.offlineAvailability() }
   val showOffline = offline.isAvailableOffline() || offline.isCloudOnly()
-  val hasPlanDrift = planPlacement != null
-  val dimOffline = offline.isAvailableOffline() && !hasPlanDrift
-  val warning = LocalExtendedColors.current.warning
-  val baseSupporting = buildString {
-    append(label)
-    entryScheduleLabel(entry).takeIf { it != "Sin fecha" }?.let { append(" · $it") }
-  }
-
-  ListItem(
-    modifier = modifier
-      .alpha(if (dimOffline) 0.72f else 1f)
-      .then(
-        if (hasPlanDrift) {
-          Modifier.drawBehind {
-            drawRect(
-              color = warning,
-              topLeft = Offset.Zero,
-              size = Size(WalletPlanDriftBorderWidth.toPx(), size.height),
-            )
-          }
-        } else {
-          Modifier
-        },
-      )
-      .clickable(onClick = onClick)
-      .semantics {
-        contentDescription = buildString {
-          append("$label, ${entry.title}")
-          entryScheduleLabel(entry).takeIf { it != "Sin fecha" }?.let { append(", $it") }
-          planPlacement?.accessibilityDriftPhrase?.let { append(", $it") }
-          offline.accessibilityLabel()?.let { append(", $it") }
-        }
-      },
-    headlineContent = {
-      Text(
-        text = entry.title,
-        style = MaterialTheme.typography.titleMedium,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-      )
+  val schedule = entryScheduleLabel(entry).takeIf { it != "Sin fecha" }
+  MotListItem(
+    title = entry.title,
+    supportingText = buildString {
+      append(label)
+      schedule?.let { append(" · $it") }
     },
-    supportingContent = {
-      if (planPlacement != null) {
-        Text(
-          text = buildAnnotatedString {
-            withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-              append(baseSupporting)
-            }
-            withStyle(SpanStyle(color = warning)) {
-              append(planPlacement.listDriftSuffix)
-            }
-          },
-          style = MaterialTheme.typography.bodyMedium,
-          maxLines = 2,
-          overflow = TextOverflow.Ellipsis,
-        )
-      } else {
-        Text(
-          text = baseSupporting,
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-          maxLines = 2,
-          overflow = TextOverflow.Ellipsis,
-        )
-      }
+    icon = entryTypeIcon(entry.type),
+    contentDescription = buildString {
+      append("$label, ${entry.title}")
+      schedule?.let { append(", $it") }
+      planPlacement?.accessibilityDriftPhrase?.let { append(", $it") }
+      offline.accessibilityLabel()?.let { append(", $it") }
     },
-    leadingContent = {
-      WalletPlanDriftLeadingIcon(
-        icon = entryTypeIcon(entry.type),
-        showDriftDot = hasPlanDrift,
-      )
-    },
-    trailingContent = if (showOffline || trailingActions != null) {
+    onClick = onClick,
+    modifier = modifier,
+    warningSuffix = planPlacement?.listDriftSuffix,
+    dimmed = offline.isAvailableOffline() && planPlacement == null,
+    trailing = if (showOffline || trailingActions != null) {
       {
         Row(verticalAlignment = Alignment.CenterVertically) {
           if (showOffline) {
@@ -599,7 +547,6 @@ internal fun WalletDocumentRow(
     } else {
       null
     },
-    colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surface),
   )
 }
 

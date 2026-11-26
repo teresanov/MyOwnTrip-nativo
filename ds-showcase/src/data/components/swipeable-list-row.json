@@ -1,7 +1,7 @@
 {
   "id": "swipeable-list-row",
   "name": "Swipeable list row",
-  "status": "in-review",
+  "status": "ready",
   "priority": "P1",
   "category": "contenido",
   "summary": "Fila con archivar y eliminar por swipe, y la misma acción en el menú ⋮.",
@@ -11,20 +11,16 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=59106-13321"
   },
   "usage": {
-    "purpose": "Una fila swipeable guarda las acciones laterales tipo Gmail: deslizar para archivar o eliminar, y el mismo par en un menú ⋮ por tap. El patrón es Compose compartido: SwipeableTripListRow en Home («Más viajes») y SwipeableWalletDocumentRow en Wallet. No envuelve el hero ni los carruseles.",
+    "purpose": "Una fila deslizable añade a una fila de lista dos acciones rápidas: deslizar hacia la derecha para archivar (o restaurar, en la lista de archivados) y hacia la izquierda para eliminar. Las mismas acciones están siempre en el menú ⋮ de la fila, para quien no puede o no sabe deslizar. En MyOwnTrip se usa en los documentos de Wallet y en la lista de viajes de Home. Es MotSwipeableRow, del design system.",
     "when": [
-      "La colección es una lista vertical de viajes o documentos.",
-      "Archivar y eliminar son acciones frecuentes, no el CTA de la pantalla."
+      "Archivar y eliminar son acciones frecuentes en esa lista.",
+      "Cada fila es un elemento independiente."
     ],
     "whenNot": [
       {
-        "case": "Viaje destacado de Home",
-        "use": "TripHeroCard",
+        "case": "La portada del viaje destacado o un carrusel",
+        "use": "TripHeroCard, sin deslizamiento",
         "href": "components/trip-hero-card.html"
-      },
-      {
-        "case": "Carrusel de próximos en Wallet",
-        "use": "La card del carrusel, sin swipe"
       }
     ],
     "chooseVariant": [
@@ -40,40 +36,86 @@
       }
     ],
     "related": [
-      { "label": "List item", "href": "components/list-item.html" },
-      { "label": "Basic dialog", "href": "components/basic-dialog.html" },
-      { "label": "Snackbar", "href": "components/snackbar.html" },
-      { "label": "Icon button", "href": "components/icon-button.html" }
+      {
+        "label": "List item",
+        "href": "components/list-item.html"
+      },
+      {
+        "label": "Basic dialog",
+        "href": "components/basic-dialog.html"
+      },
+      {
+        "label": "Snackbar",
+        "href": "components/snackbar.html"
+      },
+      {
+        "label": "Icon button",
+        "href": "components/icon-button.html"
+      }
     ]
   },
   "variants": [
-    { "id": "active", "label": "Lista activa", "composable": "SwipeableWalletDocumentRow", "usage": "Archivar / Eliminar." },
-    { "id": "archived", "label": "Lista archivados", "composable": "SwipeableWalletDocumentRow", "usage": "Restaurar / Eliminar." }
+    {
+      "id": "active",
+      "label": "Lista activa",
+      "composable": "MotSwipeableRow(archived = false, …)",
+      "usage": "Archivar a la derecha, eliminar a la izquierda."
+    },
+    {
+      "id": "archived",
+      "label": "Lista de archivados",
+      "composable": "MotSwipeableRow(archived = true, …)",
+      "usage": "Restaurar a la derecha, eliminar a la izquierda."
+    }
   ],
   "anatomy": [
-    "<strong>SwipeToDismissBox</strong> — umbral ~45 %. No confirma el dismiss: ejecuta y la fila vuelve.",
-    "<strong>Fondo inicio</strong> — secondaryContainer + Archivar o Restaurar.",
-    "<strong>Fondo final</strong> — errorContainer + Eliminar.",
-    "<strong>Contenido</strong> — TripListCard o WalletDocumentRow + MOTIconButton ⋮.",
-    "<strong>Menú</strong> — las mismas acciones por tap. Eliminar en error."
+    "<strong>Fila</strong> — el contenido: la fila del documento o la card del viaje.",
+    "<strong>Fondo al deslizar a la derecha</strong> — secondaryContainer con el icono de archivar o de restaurar.",
+    "<strong>Fondo al deslizar a la izquierda</strong> — errorContainer con el icono de eliminar.",
+    "<strong>Botón ⋮</strong> — abre un menú con las mismas dos acciones; Eliminar va en color error y con su icono."
   ],
   "behavior": {
-    "lead": "Toda acción de swipe tiene que existir también por tap (política android-compose-ux).",
+    "lead": "Ninguna acción se completa solo por deslizar del todo: al pasar el 45 % del ancho, se lanza la acción y la fila vuelve a su sitio.",
     "rows": [
-      { "state": "Swipe archivar", "detail": "Acción inmediata + snackbar Deshacer si el producto lo permite." },
-      { "state": "Swipe eliminar", "detail": "Solo abre el diálogo. No borra al soltar." }
+      {
+        "state": "Deslizar a la derecha",
+        "detail": "Archiva o restaura. En Wallet, un snackbar ofrece deshacer."
+      },
+      {
+        "state": "Deslizar a la izquierda",
+        "detail": "Solo abre el diálogo de confirmación; nada se borra al soltar."
+      },
+      {
+        "state": "Botón ⋮",
+        "detail": "Las mismas dos acciones con un toque. El menú se abre justo debajo del botón."
+      }
     ]
   },
   "a11y": [
-    "customActions de TalkBack: Archivar/Restaurar y Eliminar.",
-    "Menú ⋮: «Acciones del viaje» / «Acciones del documento».",
-    "Eliminar: icono + texto error, nunca solo color."
+    "Los lectores de pantalla ofrecen las dos acciones sobre la propia fila: «Archivar documento» (o «Restaurar documento») y «Eliminar documento»; en viajes, «… viaje».",
+    "El botón ⋮ se anuncia como «Acciones del documento» o «Acciones del viaje».",
+    "Eliminar no depende solo del color: lleva icono y texto."
   ],
   "tokens": {
     "color": [
-      { "token": "secondaryContainer / onSecondaryContainer", "use": "Fondo Archivar / Restaurar." },
-      { "token": "errorContainer / onErrorContainer", "use": "Fondo Eliminar." },
-      { "token": "error", "use": "Ítem Eliminar del menú." }
+      {
+        "token": "secondaryContainer / onSecondaryContainer",
+        "use": "Fondo e icono al deslizar a la derecha."
+      },
+      {
+        "token": "errorContainer / onErrorContainer",
+        "use": "Fondo e icono al deslizar a la izquierda."
+      },
+      {
+        "token": "error",
+        "use": "Opción Eliminar del menú."
+      }
+    ],
+    "spacing": [
+      {
+        "token": "MOTSpacing.ListItem.horizontal",
+        "use": "Margen del icono en el fondo al deslizar."
+      }
     ]
   },
   "productRules": {
@@ -87,24 +129,72 @@
     ]
   },
   "screens": [
-    { "screen": "SwipeableTripListRow", "uses": "Home · Más viajes y Archivados" },
-    { "screen": "SwipeableWalletDocumentRow", "uses": "Wallet · lista plana" }
+    {
+      "screen": "WalletScreen",
+      "uses": "Documentos del viaje (SwipeableWalletDocumentRow)"
+    },
+    {
+      "screen": "Home",
+      "uses": "Más viajes y archivados (SwipeableTripListRow)"
+    }
   ],
   "implementation": {
-    "module": "app",
-    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/components/home/SwipeableTripListRow.kt",
-    "import": "com.myowntrip.app.ui.components.home.SwipeableTripListRow",
-    "composable": "SwipeableTripListRow",
-    "note": "Wallet usa SwipeableWalletDocumentRow con el mismo contrato de callbacks.",
-    "snippet": "SwipeableTripListRow(\n    trip = trip,\n    today = today,\n    showArchivedActions = filterPhase == Archived,\n    onClick = { onTripClick(trip.id) },\n    onArchive = { onArchiveTrip(trip.id) },\n    onUnarchive = { onUnarchiveTrip(trip.id) },\n    onDeleteRequest = { requestDelete(trip.id) },\n)"
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotSwipeableRow.kt",
+    "import": "com.myowntrip.app.ui.components.MotSwipeableRow",
+    "composable": "MotSwipeableRow",
+    "note": "Las dos filas de la app (documentos y viajes) usan este componente con su propio contenido. Antes eran dos copias casi iguales del mismo código.",
+    "params": [
+      {
+        "name": "archived",
+        "type": "Boolean",
+        "default": "—",
+        "note": "true: la acción de la derecha restaura."
+      },
+      {
+        "name": "itemNoun",
+        "type": "String",
+        "default": "—",
+        "note": "«documento», «viaje»: para los nombres accesibles."
+      },
+      {
+        "name": "onArchive / onUnarchive",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": ""
+      },
+      {
+        "name": "onDeleteRequest",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "Abre la confirmación; no borra."
+      },
+      {
+        "name": "content",
+        "type": "@Composable (menuButton) -> Unit",
+        "default": "—",
+        "note": "La fila; coloca menuButton donde toque."
+      }
+    ],
+    "snippet": "MotSwipeableRow(\n    archived = showArchivedActions,\n    itemNoun = \"documento\",\n    onArchive = onArchive,\n    onUnarchive = onUnarchive,\n    onDeleteRequest = onDeleteRequest,\n) { menuButton ->\n    WalletDocumentRow(entry, onClick, trailingActions = { menuButton(Modifier) })\n}"
   },
   "decisions": {
-    "source": "Compose SwipeableTripListRow / SwipeableWalletDocumentRow",
-    "why": "Acciones laterales con alternativa por tap.",
-    "layer": "Patrón Compose compartido"
+    "source": "MotSwipeableRow (design system) sobre SwipeToDismissBox de Material 3 · set «List Item - Swipe» de Figma",
+    "why": "Archivar y eliminar rápido en listas largas, sin dejar fuera a quien no desliza.",
+    "layer": "Componente del design system; el contenido de la fila lo pone cada pantalla."
   },
   "changelog": [
-    { "date": "2026-06-18", "note": "Ficha inicial." },
-    { "date": "2026-11-24", "note": "Ficha usage-first en el showcase." }
+    {
+      "date": "2026-06-18",
+      "note": "Ficha inicial."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha usage-first en el showcase."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Las dos filas deslizables pasan a un único componente del design system (MotSwipeableRow). Ficha reescrita, con ejemplo real."
+    }
   ]
 }

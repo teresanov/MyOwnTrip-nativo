@@ -36,6 +36,7 @@
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-26 | List item · aviso del plan | **Borde izquierdo del aviso invisible en la app:** se dibujaba con `drawBehind` y el fondo del `ListItem` lo tapaba (solo se veían punto y texto). Corregido en `MotListItem` con `drawWithContent`. Fila movida al DS; `WalletPlanDriftLeadingIcon` → `MotListLeadingIcon`. | `MotListItem.kt` (DS) · demo showcase | **Resuelto** |
 | 2026-11-26 | color · tema oscuro | **TripHeroCard (código corregido):** título y fechas pasan de `onPrimary` (en oscuro #1A2228 sobre scrim negro, 1,30:1) a `primaryFixed` (#E4E1DC en los dos temas, ≥ 12,9:1). **Falta Figma:** enlazar título y meta a `Primary Fixed`. | `TripHeroCard.kt` (DS) · demo showcase | **Pendiente (Figma)** |
 | 2026-11-26 | color · tema oscuro | **Eyebrow label Tertiary (código corregido):** texto de `onTertiaryContainer` (en oscuro #FFDDB8 sobre #F8BB71, 1,32:1) a `onTertiaryFixed` (#2B1700 en los dos temas, 10,07:1). **Falta Figma:** label de Style=Tertiary a `On Tertiary Fixed`. | `EyebrowLabel.kt` (DS) | **Pendiente (Figma)** |
 | 2026-11-26 | a11y · Diario | **Eyebrow label oculto sin repetición:** el componente usa `hideFromAccessibility`; en `ScrapbookAlbum` (pieza de evento, fecha del álbum) y `SpreadPiece` ningún contenedor incluye su texto → título/hora del evento no se anuncian. TripHeroCard sí lo repite en el CTA. | `ScrapbookAlbum.kt` · `SpreadPiece.kt` | **Pendiente** |

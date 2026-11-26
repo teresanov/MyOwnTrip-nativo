@@ -93,7 +93,7 @@
     {
       "id": "swipeable-list-row",
       "name": "Swipeable list row",
-      "status": "in-review",
+      "status": "ready",
       "priority": "P1",
       "category": "contenido",
       "href": "components/swipeable-list-row.html",

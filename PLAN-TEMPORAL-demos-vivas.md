@@ -47,10 +47,10 @@ Se pueden hacer ya: todo está en `:designsystem` o es M3 directo.
 - [x] Eyebrow label (`EyebrowLabel`) — movido; demo y anatomía reales
 - [x] Stacked card · Horizontal card (`MotStackedCard`, `MotHorizontalCard`) — movidos; la imagen llega como Painter; cards de Home en `HomeStackedCards.kt` (app). Falta anatomía viva
 - [x] TripHeroCard — parte visual al DS (+ `TripCoverPlaceholder`); de Trip a textos en `TripCards.kt` (app). Falta anatomía viva
-- [ ] List item (`WalletDocumentRow`, `internal` en Wallet)
-- [ ] Swipeable list row (`SwipeableWalletDocumentRow`, `SwipeableTripListRow`)
-- [ ] Date & time pickers (`Mot*` en `ui/components/date/`)
-- [ ] Search bar + Menu (`HomeSearchBar`, `HomeFilterDropdownMenu`) · Bottom sheet (`HomeFabAddSheet`) · Speed dial (`HomeSpeedDial`)
+- [x] List item — `MotListItem` + `MotListLeadingIcon` en el DS; `WalletDocumentRow` (app) traduce el documento. Corregido borde de aviso invisible
+- [x] Swipeable list row — `MotSwipeableRow` en el DS (antes dos copias); menú anclado al botón ⋮ en ambas
+- [ ] Date & time pickers — BLOQUEADO: 1.850 líneas sobre java.time (solo Android). Para el DS común hay que pasar a kotlinx-datetime y nombres en español propios. Decisión de Teresa
+- [ ] Search bar + Menu (`HomeSearchAndFilter.kt`: separar barra y filas de menú genéricas de los filtros de viaje) · Bottom sheet (`HomeFabAddSheet`: producto, M3 ModalBottomSheet) · [x] Speed dial (`HomeSpeedDial`) movido
 
 ### Tramo 3b — Patrones con demo viva (flujo completo y su motion)
 Cada ficha de componente dice qué abre y en qué patrón aparece (enlace). La página de Patrones enseña el flujo entero en Compose real.
@@ -100,3 +100,4 @@ Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, hi
 | 2026-11-26 | 3 | Movidos al DS: EyebrowLabel, MotStackedCard (+MotCardStyle), MotHorizontalCard, TripHeroCard (visual) y TripCoverPlaceholder; app compila, tests y assembleDebug OK. Demos reales en sus fichas. Fuentes arregladas en todas las demos | live-demos: build siempre con `clean` (fallo interno del compilador Wasm en builds incrementales). Falta: List item, filas deslizables, date pickers, búsqueda/menú/hoja/speed dial. Revisión visual de las 3 fichas pendiente |
 | 2026-11-26 | 3 | Revisión de Teresa: piezas con nombre en el DS (`Modifier.motPart`, inerte en la app) → anatomía y medidas reales de Eyebrow, Stacked card y TripHeroCard; tabla de tokens con valores leídos del código (claro/oscuro); Implementación con datos separados; textos reescritos | Pendientes de decisión (parity-log): texto de TripHeroCard en oscuro, Eyebrow Tertiary en oscuro, Eyebrow sin repetición en el Diario. Sin verificación visual (preview sin fotogramas) |
 | 2026-11-26 | 3 | Medidas con cotas fijas (rellenos y huecos) en Stacked card y TripHeroCard, sin tamaños que dependen del texto; nota de qué varía. Tema oscuro corregido en código: TripHeroCard (título/fechas → primaryFixed) y Eyebrow Tertiary (texto → onTertiaryFixed). Verificado con Chrome headless | Falta enlazar esos roles en Figma (parity-log) |
+| 2026-11-26 | 3 | List item y Swipeable list row al DS con fichas reescritas y demo real; HomeSpeedDial movido. App: tests y assembleDebug OK | Pendiente decisión: date pickers (java.time). Siguiente: búsqueda y menú de Home |

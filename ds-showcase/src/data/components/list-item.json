@@ -11,44 +11,33 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=51964-63037"
   },
   "usage": {
-    "purpose": "Una fila de lista muestra un elemento discreto de una colección vertical: un documento del Wallet con su tipo, título, fecha y estado. La fila entera es el área pulsable y lleva a su detalle.",
+    "purpose": "Una fila de lista presenta un elemento de una colección vertical para poder recorrerla de un vistazo y abrir uno. En MyOwnTrip es la fila de los documentos de Wallet: un icono según el tipo, el título y, debajo, el tipo y la fecha. Toda la fila se pulsa y lleva al detalle. Es MotListItem, del design system, sobre el ListItem de Material 3.",
     "when": [
-      "Hay una colección de elementos del mismo tipo que se recorre en vertical (documentos del Wallet).",
-      "Cada elemento tiene un titular y, como mucho, una o dos líneas de apoyo.",
-      "Se necesita un icono que ayude a escanear el tipo de elemento (vuelo, hotel, coche, entrada)."
+      "Hay que listar elementos del mismo tipo para recorrerlos y abrir uno.",
+      "Cada elemento cabe en un título y una línea de apoyo."
     ],
     "whenNot": [
       {
-        "case": "Elemento con portada o foto grande (viajes en Home)",
+        "case": "El elemento necesita imagen o portada",
         "use": "Horizontal card",
         "href": "components/stacked-card.html"
       },
       {
-        "case": "Destacar un solo elemento con imagen y CTA",
-        "use": "TripHeroCard",
-        "href": "components/trip-hero-card.html"
-      },
-      {
-        "case": "Elegir una opción de un conjunto pequeño",
+        "case": "Hay que elegir opciones o filtrar la lista",
         "use": "Filter chip",
         "href": "components/filter-chip.html"
       }
     ],
     "chooseVariant": [
       {
-        "if": "Fila de documento sin acciones laterales",
-        "use": "WalletDocumentRow",
-        "note": "ListItem de M3 con container surface."
+        "if": "Lista de documentos",
+        "use": "MotListItem",
+        "note": "El icono indica el tipo de documento."
       },
       {
-        "if": "La fila se archiva o elimina con swipe",
-        "use": "SwipeableWalletDocumentRow",
-        "note": "Envuelve WalletDocumentRow; ver Swipeable list row."
-      },
-      {
-        "if": "El plan ha cambiado respecto al documento",
-        "use": "WalletDocumentRow con planPlacement",
-        "note": "Borde izquierdo en warning y punto de drift en el icono."
+        "if": "Hay que poder archivar o eliminar desde la lista",
+        "use": "MotListItem dentro de MotSwipeableRow",
+        "note": "Ver Swipeable list row."
       }
     ],
     "related": [
@@ -104,24 +93,27 @@
   "variants": [
     {
       "id": "default",
-      "label": "Leading=Icon",
-      "composable": "WalletDocumentRow",
-      "usage": "Fila de documento con icono por tipo.",
-      "figmaNode": "51964:63037"
+      "label": "Normal",
+      "composable": "MotListItem(title, supportingText, icon, …)",
+      "usage": "Documento sin avisos."
     },
     {
-      "id": "drift",
-      "label": "Show drift = true",
-      "composable": "WalletPlanDriftLeadingIcon",
-      "usage": "Icono con punto de aviso cuando el plan no coincide con el documento.",
-      "figmaNode": "61433:3879"
+      "id": "warning",
+      "label": "Con aviso del plan",
+      "composable": "warningSuffix = \" · Actualizada en el plan · Día 2\"",
+      "usage": "El documento cambió de sitio en el plan: borde, punto y aviso en color warning."
     },
     {
-      "id": "swipe",
-      "label": "List Item - Swipe",
-      "composable": "SwipeableWalletDocumentRow",
-      "usage": "Fila con acciones de archivar y eliminar por swipe.",
-      "figmaNode": "59106:13321"
+      "id": "offline",
+      "label": "Guardado en el móvil",
+      "composable": "dimmed = true + indicador al final",
+      "usage": "Disponible sin conexión y sin nada pendiente: la fila se atenúa."
+    },
+    {
+      "id": "menu",
+      "label": "Con menú ⋮",
+      "composable": "trailing = { … }",
+      "usage": "Lo añade la fila deslizable."
     }
   ],
   "sets": [
@@ -151,86 +143,95 @@
     }
   ],
   "anatomy": [
-    "<strong>Contenedor</strong> — fila completa y pulsable; fondo <code>surface</code>.",
-    "<strong>Leading</strong> — icono de tipo en círculo de 40 dp (glifo de 24 dp), con punto de drift opcional.",
-    "<strong>Titular</strong> — <code>titleMedium</code>, hasta 2 líneas con elipsis.",
-    "<strong>Texto de apoyo</strong> — <code>bodyMedium</code>: tipo · fecha; si hay drift, un sufijo en <code>warning</code>.",
-    "<strong>Trailing</strong> — indicador offline compacto y acciones (menú ⋮) opcionales.",
-    "<strong>Borde de drift</strong> — franja izquierda en <code>warning</code> solo cuando el plan se ha desviado."
+    "<strong>Contenedor</strong> — la fila entera, pulsable, con fondo surface. Con aviso, lleva un borde izquierdo de 4 dp en warning.",
+    "<strong>Icono</strong> — círculo de 40 dp en surfaceContainer con el icono del tipo (24 dp, onSurfaceVariant).",
+    "<strong>Punto de aviso</strong> — 10 dp en warning, abajo a la derecha del icono, solo con aviso del plan.",
+    "<strong>Título</strong> — titleMedium, hasta dos líneas.",
+    "<strong>Texto de apoyo</strong> — bodyMedium en onSurfaceVariant: tipo · fecha. El aviso se añade al final en warning.",
+    "<strong>Final</strong> — opcional: indicador de sin conexión, QR o nube (18 dp, tertiary) y el botón ⋮ cuando la fila se desliza."
   ],
   "behavior": {
-    "lead": "La fila entera es el área pulsable. El estado se comunica con tres señales que no dependen del color: texto de apoyo, icono con punto y borde.",
+    "lead": "Toda la fila se pulsa y abre el detalle del documento.",
     "rows": [
       {
         "state": "Normal",
-        "detail": "Titular + tipo · fecha. Sin borde."
+        "detail": "Título y, debajo, tipo · fecha."
       },
       {
-        "state": "Disponible offline",
-        "detail": "Opacidad 0.72 en la fila y indicador offline compacto al final (si no hay drift)."
+        "state": "Con aviso del plan",
+        "detail": "Borde izquierdo, punto en el icono y aviso al final del texto de apoyo, en warning."
       },
       {
-        "state": "Solo en la nube",
-        "detail": "Indicador offline compacto al final."
+        "state": "Guardado en el móvil",
+        "detail": "La fila se atenúa (72 % de opacidad) y lleva el icono de sin conexión al final. Si además hay aviso, no se atenúa: el aviso manda."
       },
       {
-        "state": "Drift con el plan",
-        "detail": "Borde izquierdo en warning, punto en el icono y sufijo de drift en el texto de apoyo. La fila no se atenúa."
+        "state": "En la nube",
+        "detail": "Icono de nube al final, sin atenuar."
       }
     ],
     "notes": [
-      "La atenuación por offline no se aplica cuando hay drift: el aviso tiene prioridad.",
-      "El ancho del borde de drift es <code>WalletPlanDriftBorderWidth</code>."
-    ],
-    "exceptionsTitle": "Qué no hace esta fila",
-    "exceptions": [
-      "No confirma ni abre acciones por sí misma: el swipe lo añade <code>SwipeableWalletDocumentRow</code>.",
-      "No muestra imagen del documento: para portadas, usa Horizontal card."
+      "La fila no archiva ni elimina por sí sola: eso lo añade la fila deslizable.",
+      "No lleva imagen: para portadas está la Horizontal card."
     ]
   },
   "a11y": [
-    "contentDescription de la fila: «tipo, título, fecha, drift, disponibilidad offline». TalkBack lo lee de una vez.",
-    "El punto de drift y el borde no son el único aviso: el texto de apoyo incluye la frase de drift.",
-    "Los iconos internos son decorativos (<code>contentDescription = null</code>); el significado va en la descripción de la fila.",
-    "La fila entera es el área táctil; el ListItem de M3 garantiza una altura mínima superior a 48 dp."
+    "La fila se anuncia de una vez, con una frase que junta el tipo, el título, la fecha, el aviso del plan y la disponibilidad: «Vuelo, IB 3254 · Madrid → Barcelona, 20 nov 2026 · 10:30, actualizada en el plan, día 2».",
+    "El aviso no depende solo del color: además del borde y el punto, el texto de apoyo lo dice.",
+    "Los iconos no se anuncian por separado: su significado ya está en la frase de la fila.",
+    "Toda la fila es pulsable y mide más de 48 dp de alto."
   ],
   "tokens": {
     "color": [
       {
         "token": "surface",
-        "use": "Container de la fila (ListItemDefaults.colors)."
+        "use": "Fondo de la fila."
+      },
+      {
+        "token": "surfaceContainer",
+        "use": "Círculo del icono."
       },
       {
         "token": "onSurfaceVariant",
-        "use": "Texto de apoyo e icono de tipo."
+        "use": "Icono del tipo y texto de apoyo."
       },
       {
-        "token": "warning",
-        "use": "Borde izquierdo, punto de drift y sufijo de drift (ExtendedColors)."
+        "token": "onSurface",
+        "use": "Título."
+      },
+      {
+        "token": "warning (color extendido)",
+        "use": "Borde, punto y texto del aviso del plan."
+      },
+      {
+        "token": "tertiary",
+        "use": "Indicador de sin conexión, QR o nube."
       }
     ],
     "spacing": [
       {
-        "token": "MOTSpacing.ListItem.horizontal",
-        "use": "16 dp — padding horizontal."
+        "token": "—",
+        "variable": false,
+        "value": "40 dp",
+        "use": "Círculo del icono (fijo en el componente)."
       },
       {
-        "token": "MOTSpacing.ListItem.vertical",
-        "use": "12 dp — padding vertical."
+        "token": "—",
+        "variable": false,
+        "value": "4 dp",
+        "use": "Borde del aviso (fijo en el componente)."
       },
       {
-        "token": "MOTSpacing.ListItem.gap",
-        "use": "12 dp — hueco entre leading y contenido."
-      },
-      {
-        "token": "MOTSpacing.ListItem.trailingGap",
-        "use": "10 dp — hueco antes del trailing."
+        "token": "—",
+        "variable": false,
+        "value": "16 dp",
+        "use": "Relleno a los lados: el del ListItem de Material 3."
       }
     ],
     "type": [
       {
         "token": "titleMedium",
-        "use": "Titular."
+        "use": "Título."
       },
       {
         "token": "bodyMedium",
@@ -241,25 +242,39 @@
   "screens": [
     {
       "screen": "WalletScreen",
-      "uses": "Lista de documentos activos, archivados y todos; las filas llevan swipe vía SwipeableWalletDocumentRow."
-    },
-    {
-      "screen": "HomeFabAddSheet",
-      "uses": "Opciones del sheet de añadir, con ListItem de M3 directo (sin WalletDocumentRow)."
+      "uses": "Documentos del viaje, activos y archivados"
     }
   ],
   "implementation": {
-    "module": "app",
-    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt",
-    "import": "com.myowntrip.app.ui.features.wallet.WalletDocumentRow",
-    "composable": "WalletDocumentRow",
-    "note": "No existe un MOTListItem genérico: el patrón de lista de producto es el ListItem de M3 con container surface. WalletDocumentRow es internal del módulo app.",
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotListItem.kt",
+    "import": "com.myowntrip.app.ui.components.MotListItem",
+    "composable": "MotListItem",
+    "note": "La fila no sabe de documentos: recibe los textos, el icono y el aviso. En Wallet, WalletDocumentRow (en la app) traduce cada documento a esos datos y añade el indicador de sin conexión al final.",
     "params": [
       {
-        "name": "entry",
-        "type": "WalletEntry",
+        "name": "title",
+        "type": "String",
         "default": "—",
-        "note": "Documento a mostrar."
+        "note": "Título del documento."
+      },
+      {
+        "name": "supportingText",
+        "type": "String",
+        "default": "—",
+        "note": "Tipo · fecha."
+      },
+      {
+        "name": "icon",
+        "type": "ImageVector",
+        "default": "—",
+        "note": "Icono del tipo."
+      },
+      {
+        "name": "contentDescription",
+        "type": "String",
+        "default": "—",
+        "note": "Frase completa para lectores de pantalla."
       },
       {
         "name": "onClick",
@@ -268,30 +283,30 @@
         "note": "Abre el detalle."
       },
       {
-        "name": "modifier",
-        "type": "Modifier",
-        "default": "Modifier",
-        "note": ""
-      },
-      {
-        "name": "planPlacement",
-        "type": "WalletPlanPlacementInfo?",
+        "name": "warningSuffix",
+        "type": "String?",
         "default": "null",
-        "note": "Si no es null, activa borde, punto y frase de drift."
+        "note": "Aviso del plan; activa borde y punto."
       },
       {
-        "name": "trailingActions",
+        "name": "dimmed",
+        "type": "Boolean",
+        "default": "false",
+        "note": "Atenúa la fila."
+      },
+      {
+        "name": "trailing",
         "type": "@Composable (() -> Unit)?",
         "default": "null",
-        "note": "Menú ⋮ u otras acciones al final."
+        "note": "Indicadores y menú al final."
       }
     ],
-    "snippet": "WalletDocumentRow(\n    entry = entry,\n    onClick = { onEntryClick(entry.id) },\n    planPlacement = placement,\n    trailingActions = { MOTIconButton(onClick = onMenu) { Icon(MOTIcons.MoreVert, contentDescription = \"Acciones del documento\") } },\n)"
+    "snippet": "MotListItem(\n    title = entry.title,\n    supportingText = \"Vuelo · 20 nov 2026 · 10:30\",\n    icon = MOTIcons.Flight,\n    contentDescription = \"Vuelo, IB 3254 · Madrid → Barcelona, 20 nov 2026 · 10:30\",\n    onClick = { onEntryClick(entry.id) },\n    warningSuffix = planPlacement?.listDriftSuffix,\n)"
   },
   "decisions": {
-    "source": "Figma List item 51964:63037 · Compose WalletDocumentRow (app)",
-    "why": "La lista de documentos reutiliza el ListItem de M3; lo propio de MyOwnTrip es el icono por tipo, el drift con el plan y el estado offline.",
-    "layer": "Patrón de producto sobre ListItem de M3 (sin wrapper en designsystem)"
+    "source": "MotListItem (design system) sobre ListItem de Material 3 · set «List Item» de Figma",
+    "why": "La lista de documentos tiene que recorrerse rápido y avisar de cambios del plan sin abrir cada documento.",
+    "layer": "Componente del design system; la traducción de cada documento queda en la app."
   },
   "changelog": [
     {
@@ -309,43 +324,100 @@
     {
       "date": "2026-11-24",
       "note": "Ejemplar vivo. Sin tabla de node-ids."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "La fila pasa al design system (MotListItem). Ficha reescrita, con ejemplo, anatomía y medidas sobre el componente real."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Corregido: el borde del aviso del plan no se veía (lo tapaba el fondo de la fila)."
     }
   ],
   "anatomyDiagram": {
     "kind": "list-item",
-    "values": {
-      "padH": 16,
-      "padV": 12,
-      "gap": 12,
-      "circle": 40,
-      "glyph": 24,
-      "dot": 10
-    },
-    "measures": [
-      {
-        "label": "Padding horizontal",
-        "value": "16 dp"
+    "values": {},
+    "live": {
+      "specimen": "list-item/playground",
+      "props": {
+        "warning": "true",
+        "availability": "offline",
+        "menu": "true",
+        "width": "250"
       },
-      {
-        "label": "Padding vertical",
-        "value": "12 dp"
-      },
-      {
-        "label": "Hueco entre icono y texto",
-        "value": "12 dp"
-      },
-      {
-        "label": "Círculo del icono",
-        "value": "40 dp"
-      },
-      {
-        "label": "Glifo",
-        "value": "24 dp"
-      },
-      {
-        "label": "Punto de drift",
-        "value": "10 dp"
-      }
-    ]
+      "zoom": 1.5,
+      "height": 320,
+      "redlines": true,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "leading",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "warningDot",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        },
+        {
+          "n": 4,
+          "part": "title",
+          "anchor": "top@0.6",
+          "side": "top"
+        },
+        {
+          "n": 5,
+          "part": "supporting",
+          "anchor": "bottom@0.6",
+          "side": "bottom"
+        },
+        {
+          "n": 6,
+          "part": "trailing",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Relleno a la izquierda",
+          "left": [
+            "container",
+            "leading"
+          ]
+        },
+        {
+          "label": "Icono–texto",
+          "gap": [
+            "leading",
+            "title"
+          ]
+        },
+        {
+          "label": "Relleno a la derecha",
+          "right": [
+            "container",
+            "trailing"
+          ]
+        },
+        {
+          "label": "Círculo del icono",
+          "height": "leading"
+        },
+        {
+          "label": "Punto de aviso",
+          "height": "warningDot"
+        }
+      ],
+      "note": "El alto de la fila depende del texto (el título puede ocupar dos líneas); el ancho, el de la lista."
+    }
   }
 }

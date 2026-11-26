@@ -32,7 +32,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.AppMotion
 import com.myowntrip.app.ui.theme.LocalReduceMotion
@@ -147,39 +146,3 @@ private fun HomeSpeedDialItem(
   }
 }
 
-@Preview(showBackground = true, widthDp = 360, heightDp = 200)
-@Composable
-private fun HomeSpeedDialPreview() {
-  var expanded by remember { mutableStateOf(true) }
-  MyOwnTripTheme {
-    Box(Modifier.fillMaxSize()) {
-      HomeSpeedDial(
-        expanded = expanded,
-        onExpandedChange = { expanded = it },
-        actions = listOf(
-          HomeQuickAction(
-            label = "Nuevo viaje",
-            icon = MOTIcons.Luggage,
-            contentDescription = "Crear viaje",
-            onClick = {},
-          ),
-          HomeQuickAction(
-            label = "Documento",
-            icon = MOTIcons.Upload,
-            contentDescription = "Añadir documento",
-            onClick = {},
-          ),
-          HomeQuickAction(
-            label = "Recuerdo",
-            icon = MOTIcons.PhotoCamera,
-            contentDescription = "Añadir recuerdo",
-            onClick = {},
-          ),
-        ),
-        modifier = Modifier
-          .fillMaxSize()
-          .padding(MOTSpacing.screenHorizontal),
-      )
-    }
-  }
-}
