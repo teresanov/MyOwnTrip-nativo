@@ -903,15 +903,16 @@ planPlacement?.let { placement ->
 
 ## FAB
 
-- Estado: in-review · P1
-- Para qué: El botón de acción flotante (FAB) lleva la acción principal de una pantalla y flota sobre el contenido, abajo a la derecha. En MyOwnTrip añade contenido en las pestañas del viaje (documento, actividad, gasto, sitio) y en el día, dispara la cámara y, en Home, abre el menú de acciones rápidas. Es el FloatingActionButton de Material 3, sin componente propio.
+- Estado: ready · P1
+- Para qué: El botón de acción flotante (FAB) lleva la acción principal de una pantalla y flota sobre el contenido, abajo a la derecha. En MyOwnTrip añade contenido en las pestañas del viaje (documento, actividad, gasto, sitio) y en el día, y dispara la cámara. Es el FloatingActionButton de Material 3 sin personalizar: ni forma ni colores propios. Cuando el FAB abre varias opciones se convierte en un menú (FAB menu), que es un componente aparte.
 - Composable: `FloatingActionButton` — `androidx.compose.material3.FloatingActionButton`
 - Fuente: `app/src/main/java/com/myowntrip/app/ui/features/trips/TripDetailScreen.kt`
 
 ### Variantes
 
-- **FAB** → `FloatingActionButton`: Acción principal de la pantalla.
-- **FAB pequeño** → `SmallFloatingActionButton`: Solo dentro del menú de acciones rápidas de Home.
+- **FAB** → `FloatingActionButton`: Una acción principal.
+- **FAB menu** → `FloatingActionButtonMenu + ToggleFloatingActionButton`: Varias acciones de añadir (Diario). El botón abierto es circular.
+- **FAB pequeño** → `SmallFloatingActionButton`: Solo en las opciones del menú de Home.
 
 ### Cuándo usarlo
 
@@ -925,8 +926,9 @@ planPlacement?.let { placement ->
 
 ### Elegir variante
 
-- Añadir en la pestaña o pantalla actual → `FloatingActionButton + icono Añadir` — Sin texto: el nombre va en contentDescription («Añadir gasto»).
-- Varias formas de añadir, en Home → `Menú de acciones rápidas (HomeSpeedDial)` — El FAB abre y cierra el menú; el icono pasa de Añadir a Cerrar.
+- Una sola acción: añadir en la pestaña o pantalla actual → `FloatingActionButton + icono Añadir` — Sin texto: el nombre va en contentDescription («Añadir gasto»).
+- Varias formas de añadir en la misma pantalla (Diario) → `FAB menu: FloatingActionButtonMenu + ToggleFloatingActionButton` — Al abrir el menú, el botón pasa de esquina redondeada a círculo y el icono de Añadir a Cerrar.
+- Acciones rápidas de Home → `HomeSpeedDial` — Menú propio de la app sobre un FAB normal: no cambia de forma.
 
 ### Prohibido en este componente
 
