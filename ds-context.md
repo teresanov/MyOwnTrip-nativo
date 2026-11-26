@@ -1,6 +1,6 @@
 # MyOwnTrip · Design System — contexto para agentes
 
-> Generado el 2026-11-24 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
+> Generado el 2026-11-26 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
 > Fuente de verdad del comportamiento: el código de `designsystem/` y `app/`.
 
 ## Principios
