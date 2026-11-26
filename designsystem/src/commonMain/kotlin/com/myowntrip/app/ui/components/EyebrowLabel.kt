@@ -69,9 +69,11 @@ private fun eyebrowTokens(
     EyebrowLabelSize.Small -> typography.labelSmall
   }
   return when (color) {
+    // Fondo fijo (igual en claro y oscuro) → texto fijo: onTertiaryFixed. Con onTertiaryContainer
+    // el texto se aclaraba en oscuro y no se leía (1,3:1).
     EyebrowLabelColor.Tertiary -> Triple(
       scheme.tertiaryFixedDim,
-      scheme.onTertiaryContainer,
+      scheme.onTertiaryFixed,
       textStyle,
     )
     EyebrowLabelColor.Surface -> Triple(

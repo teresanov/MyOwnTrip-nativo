@@ -580,7 +580,7 @@ MotStackedCard(
 - Toda la card se anuncia desde el botón «Ver detalles»: su descripción junta la fase, la cuenta atrás, el nombre, las fechas y la acción, y su estado dice la fase del viaje.
 - La portada, la etiqueta y los textos sobre la foto se ocultan a los lectores de pantalla para no leerse dos veces.
 - Es el único elemento que se pulsa.
-- Pendiente: en tema oscuro el título y las fechas no se leen. Usan onPrimary, que en oscuro es casi negro (#1A2228), sobre un degradado negro: contraste de 1,30:1. La etiqueta tiene el mismo problema (ver Eyebrow label).
+- El título y las fechas usan un color claro fijo (primaryFixed) sobre el degradado: contraste de 12,9:1 o más en los dos temas.
 
 ### Uso típico
 
@@ -634,7 +634,7 @@ TripHeroCard(
 - Por eso quien lo usa tiene que repetir su texto en la descripción de lo que lo contiene. TripHeroCard lo hace: el botón «Ver detalles» se anuncia como «Próximo viaje. Sale en 12 días. Cracovia finde…».
 - Pendiente: en el Diario (álbum y piezas de un evento) ningún contenedor repite el texto, así que el título y la hora del evento no se anuncian.
 - No se pulsa: nunca lleva rol de botón.
-- Contraste medido del texto sobre su fondo: Tertiary 5,47:1 en claro y 1,32:1 en oscuro (no pasa); Surface 7,66:1 y 8,49:1; Secondary 9,41:1 y 7,63:1.
+- Contraste del texto sobre su fondo: Tertiary 10,07:1 en los dos temas; Surface 7,66:1 en claro y 8,49:1 en oscuro; Secondary 9,41:1 y 7,63:1.
 
 ### Uso típico
 

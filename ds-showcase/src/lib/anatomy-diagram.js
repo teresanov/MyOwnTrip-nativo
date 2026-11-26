@@ -302,10 +302,12 @@ function renderLiveMeasures(diagram) {
   const v = diagram.values || {};
   return (
     sectionOpen("medidas", "Medidas", {
-      lead: "Pasa el cursor sobre el componente: como el inspector del navegador, se resalta cada pieza con su tamaño y sus distancias en dp. En el contenedor, el verde es el espacio interior y el azul, el contenido. Los números se miden en el componente real, no se escriben a mano.",
+      lead: live.redlines
+        ? "Las cotas rojas son los rellenos y los huecos del componente, medidos en el componente real. Pasa el cursor por una pieza para ver su tamaño y solo sus cotas."
+        : "Pasa el cursor sobre el componente: como el inspector del navegador, se resalta cada pieza con su tamaño y sus distancias en dp. En el contenedor, el verde es el espacio interior y el azul, el contenido. Los números se miden en el componente real, no se escriben a mano.",
     }) +
     `<div class="ad-layout ad-layout--live">
-       <figure class="ad-figure li-wrap" data-parts='${JSON.stringify(declaredParts(live))}' data-inspect="measures" data-table="#li-measures" data-rows='${JSON.stringify(live.rows || null)}' data-gaps='${JSON.stringify(live.gaps || [])}'>
+       <figure class="ad-figure li-wrap" data-parts='${JSON.stringify(declaredParts(live))}' data-inspect="measures" data-table="#li-measures" data-rows='${JSON.stringify(live.rows || null)}' data-gaps='${JSON.stringify(live.gaps || [])}'${live.redlines ? " data-redlines" : ""}>
          ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light", ...(live.props || {}) }, { height: live.height, label: "Medidas del componente real" })}
          <svg class="li-overlay" aria-hidden="true"></svg>
          <div class="li-hit" aria-hidden="true"></div>
@@ -313,6 +315,7 @@ function renderLiveMeasures(diagram) {
        <div>
          <table><thead><tr><th>Medida</th><th>Medido en Compose</th></tr></thead>
            <tbody id="li-measures"><tr><td colspan="2">Midiendo el componente…</td></tr></tbody></table>
+         ${live.note ? `<p class="li-note">${live.note}</p>` : ""}
          ${v.padH != null ? `<p class="li-note">Padding declarado en código: ${v.padH} × ${v.padV} dp. El espacio arriba y abajo puede ser mayor porque el contenedor tiene una altura mínima y centra el contenido.</p>` : ""}
        </div>
      </div></section>`
@@ -322,7 +325,7 @@ function renderLiveMeasures(diagram) {
 /** Piezas que la ficha declara: marcadores, filas de medidas y huecos. */
 function declaredParts(live) {
   const names = new Set((live.markers || []).map((m) => m.part));
-  for (const r of live.rows || []) for (const k of ["size", "left", "right", "top", "gap", "vgap"]) [].concat(r[k] || []).forEach((n) => names.add(n));
+  for (const r of live.rows || []) for (const k of ["size", "height", "width", "left", "right", "top", "bottom", "gap", "vgap"]) [].concat(r[k] || []).forEach((n) => names.add(n));
   for (const g of live.gaps || []) g.forEach((n) => names.add(n));
   return [...names];
 }

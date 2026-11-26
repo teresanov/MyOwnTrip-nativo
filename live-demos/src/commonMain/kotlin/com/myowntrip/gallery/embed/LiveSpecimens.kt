@@ -707,7 +707,9 @@ private fun EyebrowPlayground(p: Map<String, String>) {
 @Composable
 private fun StackedCardPlayground(p: Map<String, String>) {
   val style = if (p["style"] == "elevated") MotCardStyle.Elevated else MotCardStyle.Outlined
-  val modifier = Modifier.width(PhoneWidth).padding(horizontal = MOTSpacing.screenHorizontal)
+  // width: ancho de la card en dp (anatomía y medidas usan uno menor para poder ampliar el dibujo).
+  val modifier = p["width"]?.toIntOrNull()?.let { Modifier.width(it.dp) }
+    ?: Modifier.width(PhoneWidth).padding(horizontal = MOTSpacing.screenHorizontal)
   when (p["layout"]) {
     "text" -> MotStackedCard(
       style = style,
@@ -744,7 +746,8 @@ private fun TripHeroPlayground(p: Map<String, String>) {
     stateDescription = when (phase) { "current" -> "Viaje en curso"; "past" -> "Viaje pasado"; else -> "Próximo viaje" },
     countdown = if (phase == "upcoming") "Sale en 12 días" else null,
     onClick = {},
-    modifier = Modifier.width(PhoneWidth).padding(horizontal = MOTSpacing.screenHorizontal),
+    modifier = p["width"]?.toIntOrNull()?.let { Modifier.width(it.dp) }
+      ?: Modifier.width(PhoneWidth).padding(horizontal = MOTSpacing.screenHorizontal),
     cover = { m -> TripCoverPlaceholder(destination = "Cracovia", modifier = m) },
   )
 }

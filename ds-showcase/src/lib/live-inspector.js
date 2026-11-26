@@ -233,7 +233,44 @@ function tooltip(svg, r, text, bounds) {
   );
 }
 
-function drawInspect(svg, geo, name, bounds, gaps = []) {
+/** Dibuja las cotas de las filas declaradas (left/right/top/gap/vgap). Con only, solo las de esa pieza. */
+function drawRedlines(svg, geo, rows, only) {
+  const { parts, zoom } = geo;
+  const z = (v) => fmt(dp(v, zoom));
+  for (const r of rows || []) {
+    const pair = r.left || r.right || r.top || r.bottom || r.gap || r.vgap;
+    if (!pair) continue;
+    if (only && !pair.includes(only)) continue;
+    const [a, b] = pair.map((n) => parts[n]);
+    if (!a || !b) continue;
+    if (r.left) hLine(svg, a.x, b.x, b.y + b.h / 2, z(b.x - a.x));
+    else if (r.right) hLine(svg, b.x + b.w, a.x + a.w, b.y + b.h / 2, z(a.x + a.w - b.x - b.w));
+    else if (r.top) vLine(svg, a.y, b.y, b.x + Math.min(b.w / 2, 28), z(b.y - a.y));
+    else if (r.bottom) vLine(svg, b.y + b.h, a.y + a.h, b.x + Math.min(b.w / 2, 28), z(a.y + a.h - b.y - b.h));
+    else if (r.gap) hLine(svg, a.x + a.w, b.x, Math.min(a.y + a.h / 2, b.y + b.h / 2), z(b.x - a.x - a.w));
+    else if (r.vgap) vLine(svg, a.y + a.h, b.y, b.x + Math.min(b.w / 2, 28), z(b.y - a.y - a.h));
+  }
+}
+
+function drawInspect(svg, geo, name, bounds, gaps = [], redlines = null) {
+  if (redlines) {
+    // Ficha con cotas fijas: sin cursor se ven todos los rellenos y huecos; con cursor, la pieza
+    // resaltada, su tamaño y las cotas en las que participa.
+    svg.replaceChildren();
+    const { parts, zoom } = geo;
+    const z = (v) => fmt(dp(v, zoom));
+    if (!name) {
+      drawRedlines(svg, geo, redlines);
+      return;
+    }
+    const r = parts[name];
+    const frame = parts.container || parts.card;
+    if (frame && frame !== r) svg.append(el("rect", { x: frame.x, y: frame.y, width: frame.w, height: frame.h, class: "li-ghost" }));
+    svg.append(el("rect", { x: r.x, y: r.y, width: r.w, height: r.h, class: "li-content" }));
+    drawRedlines(svg, geo, redlines, name);
+    tooltip(svg, r, `${LABELS[name] || name} · ${z(r.w)} × ${z(r.h)} dp`, bounds);
+    return;
+  }
   svg.replaceChildren();
   const { parts, zoom } = geo;
   const c = parts.container;
@@ -301,6 +338,10 @@ function declaredRows(geo, rows) {
         if (r.width) return [r.label, z(P(r.width).w)];
         if (r.left) return [r.label, z(P(r.left[1]).x - P(r.left[0]).x)];
         if (r.top) return [r.label, z(P(r.top[1]).y - P(r.top[0]).y)];
+        if (r.bottom) {
+          const [o, i] = r.bottom.map(P);
+          return [r.label, z(o.y + o.h - i.y - i.h)];
+        }
         if (r.right) {
           const [o, i] = r.right.map(P);
           return [r.label, z(o.x + o.w - i.x - i.w)];
@@ -351,13 +392,14 @@ function attachMeasures(wrap) {
   const tbody = document.querySelector(wrap.getAttribute("data-table"));
   const declared = JSON.parse(wrap.getAttribute("data-rows") || "null");
   const gaps = JSON.parse(wrap.getAttribute("data-gaps") || "[]");
+  const redlines = wrap.hasAttribute("data-redlines") ? declared : null;
   let geo = null;
   let current = null;
 
   host.addEventListener("mot:parts", () => {
     geo = readGeometry(host);
     if (geo && tbody) measuresTable(geo, tbody, declared);
-    if (geo) drawInspect(svg, geo, current, { w: wrap.clientWidth, h: wrap.clientHeight }, gaps);
+    if (geo) drawInspect(svg, geo, current, { w: wrap.clientWidth, h: wrap.clientHeight }, gaps, redlines);
   });
 
   hit.addEventListener("mousemove", (e) => {
@@ -371,12 +413,12 @@ function attachMeasures(wrap) {
     const name = hits[0]?.[0] || null;
     if (name !== current) {
       current = name;
-      drawInspect(svg, geo, current, { w: b.width, h: b.height }, gaps);
+      drawInspect(svg, geo, current, { w: b.width, h: b.height }, gaps, redlines);
     }
   });
   hit.addEventListener("mouseleave", () => {
     current = null;
-    if (geo) drawInspect(svg, geo, null, { w: wrap.clientWidth, h: wrap.clientHeight }, gaps);
+    if (geo) drawInspect(svg, geo, null, { w: wrap.clientWidth, h: wrap.clientHeight }, gaps, redlines);
   });
 }
 

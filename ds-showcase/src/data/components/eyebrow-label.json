@@ -99,13 +99,13 @@
     "Por eso quien lo usa tiene que repetir su texto en la descripción de lo que lo contiene. TripHeroCard lo hace: el botón «Ver detalles» se anuncia como «Próximo viaje. Sale en 12 días. Cracovia finde…».",
     "Pendiente: en el Diario (álbum y piezas de un evento) ningún contenedor repite el texto, así que el título y la hora del evento no se anuncian.",
     "No se pulsa: nunca lleva rol de botón.",
-    "Contraste medido del texto sobre su fondo: Tertiary 5,47:1 en claro y 1,32:1 en oscuro (no pasa); Surface 7,66:1 y 8,49:1; Secondary 9,41:1 y 7,63:1."
+    "Contraste del texto sobre su fondo: Tertiary 10,07:1 en los dos temas; Surface 7,66:1 en claro y 8,49:1 en oscuro; Secondary 9,41:1 y 7,63:1."
   ],
   "tokens": {
     "color": [
       {
-        "token": "tertiaryFixedDim / onTertiaryContainer",
-        "use": "Fondo y texto en Tertiary, el que usa la app. En oscuro el texto no contrasta: lo correcto sería onTertiaryFixed (pendiente)."
+        "token": "tertiaryFixedDim / onTertiaryFixed",
+        "use": "Fondo y texto en Tertiary, el que usa la app. Los dos son fijos: no cambian entre claro y oscuro."
       },
       {
         "token": "surfaceContainerHigh / onSurfaceVariant",
@@ -209,6 +209,10 @@
     {
       "date": "2026-11-26",
       "note": "Movido al design system. Ejemplo y anatomía sobre el componente real."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Tertiary: texto en onTertiaryFixed (antes onTertiaryContainer, ilegible en oscuro)."
     }
   ],
   "anatomyDiagram": {

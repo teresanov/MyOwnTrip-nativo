@@ -89,19 +89,19 @@
     "<strong>Inicial y botón de cerrar</strong> — opcionales. Existen en el componente, pero ninguna pantalla los usa."
   ],
   "behavior": {
-    "lead": "La card no es un botón: si hay acción, es el dismiss o un CTA que el producto ponga debajo, no la superficie entera.",
+    "lead": "La card no se pulsa entera. Si hace falta una acción, va en un botón aparte.",
     "rows": [
       {
         "state": "Outlined",
-        "detail": "Marco outline. Feeds y empty states."
+        "detail": "Borde de 1 dp en outlineVariant y fondo surface. Es el estilo de los tres usos de Home."
       },
       {
         "state": "Elevated",
-        "detail": "Sombra de ElevatedCard. Destacados."
+        "detail": "Sombra y fondo surfaceContainerLow, sin borde. Existe en el componente, pero ninguna pantalla lo usa."
       }
     ],
-    "exceptions": [
-      "Filled está cortado: no reintroducirlo."
+    "notes": [
+      "No hay estilo relleno (Filled): se quitó del sistema."
     ]
   },
   "a11y": [
@@ -264,10 +264,11 @@
       "specimen": "stacked-card/playground",
       "props": {
         "layout": "media",
-        "style": "outlined"
+        "style": "outlined",
+        "width": "240"
       },
-      "zoom": 1,
-      "height": 400,
+      "zoom": 1.5,
+      "height": 520,
       "markers": [
         {
           "n": 1,
@@ -296,18 +297,14 @@
       ],
       "rows": [
         {
-          "label": "Card",
-          "size": "container"
-        },
-        {
-          "label": "Espacio a la izquierda del título",
+          "label": "Relleno a la izquierda",
           "left": [
             "container",
             "header"
           ]
         },
         {
-          "label": "Espacio sobre el título",
+          "label": "Relleno arriba",
           "top": [
             "container",
             "header"
@@ -321,10 +318,19 @@
           ]
         },
         {
-          "label": "Imagen",
-          "size": "image"
+          "label": "Subtítulo–imagen",
+          "vgap": [
+            "subhead",
+            "image"
+          ]
+        },
+        {
+          "label": "Alto de la imagen (por defecto)",
+          "height": "image"
         }
-      ]
+      ],
+      "redlines": true,
+      "note": "El alto de la card depende del texto y de si lleva imagen; el ancho, de la columna donde va (en Home, la pantalla menos 16 dp a cada lado). Sin imagen, el relleno de abajo también es de 16 dp."
     }
   }
 }

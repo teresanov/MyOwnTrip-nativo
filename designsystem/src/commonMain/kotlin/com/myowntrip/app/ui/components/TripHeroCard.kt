@@ -43,6 +43,8 @@ private val TripHeroCtaRowHeight = 48.dp
  * Parte visual: recibe los textos ya resueltos y la portada en [cover]. La traducción de un viaje
  * (fase, cuenta atrás, fechas) vive en la app: `TripHeroCard(trip, today, …)` en TripCards.kt.
  */
+// Título y fechas van sobre el degradado, que es negro en los dos temas: usan primaryFixed, un claro
+// que no cambia con el tema. Con onPrimary (pensado para texto sobre primary) se oscurecían en oscuro.
 @Composable
 fun TripHeroCard(
   eyebrow: String,
@@ -116,7 +118,7 @@ fun TripHeroCard(
             text = title,
             modifier = Modifier.motPart("title"),
             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.primaryFixed,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
           )
@@ -124,7 +126,7 @@ fun TripHeroCard(
             text = meta,
             modifier = Modifier.motPart("meta"),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.primaryFixed,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
           )

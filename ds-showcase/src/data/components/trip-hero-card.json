@@ -93,7 +93,7 @@
     "Toda la card se anuncia desde el botón «Ver detalles»: su descripción junta la fase, la cuenta atrás, el nombre, las fechas y la acción, y su estado dice la fase del viaje.",
     "La portada, la etiqueta y los textos sobre la foto se ocultan a los lectores de pantalla para no leerse dos veces.",
     "Es el único elemento que se pulsa.",
-    "Pendiente: en tema oscuro el título y las fechas no se leen. Usan onPrimary, que en oscuro es casi negro (#1A2228), sobre un degradado negro: contraste de 1,30:1. La etiqueta tiene el mismo problema (ver Eyebrow label)."
+    "El título y las fechas usan un color claro fijo (primaryFixed) sobre el degradado: contraste de 12,9:1 o más en los dos temas."
   ],
   "tokens": {
     "color": [
@@ -102,8 +102,8 @@
         "use": "Degradado sobre la portada."
       },
       {
-        "token": "onPrimary",
-        "use": "Título y fechas. Pendiente: en oscuro no contrasta con el degradado."
+        "token": "primaryFixed",
+        "use": "Título y fechas. Es fijo: no cambia entre claro y oscuro, como el degradado."
       },
       {
         "token": "tertiaryFixedDim",
@@ -228,6 +228,10 @@
     {
       "date": "2026-11-26",
       "note": "Parte visual movida al design system. Corregido: hay una sola variante (no Elevated/Outlined). Ejemplo con el componente real."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Título y fechas en primaryFixed (antes onPrimary, ilegible en oscuro)."
     }
   ],
   "anatomyDiagram": {
@@ -236,10 +240,11 @@
     "live": {
       "specimen": "trip-hero-card/playground",
       "props": {
-        "phase": "upcoming"
+        "phase": "upcoming",
+        "width": "250"
       },
-      "zoom": 1,
-      "height": 440,
+      "zoom": 1.5,
+      "height": 580,
       "markers": [
         {
           "n": 1,
@@ -286,19 +291,29 @@
       ],
       "rows": [
         {
-          "label": "Portada",
-          "size": "cover"
+          "label": "Margen de la etiqueta (arriba)",
+          "top": [
+            "cover",
+            "eyebrow"
+          ]
         },
         {
-          "label": "Margen de la etiqueta",
+          "label": "Margen de la etiqueta (izquierda)",
           "left": [
             "cover",
             "eyebrow"
           ]
         },
         {
-          "label": "Margen del texto",
+          "label": "Margen del texto (izquierda)",
           "left": [
+            "cover",
+            "text"
+          ]
+        },
+        {
+          "label": "Margen del texto (abajo)",
+          "bottom": [
             "cover",
             "text"
           ]
@@ -325,10 +340,16 @@
           ]
         },
         {
-          "label": "Botón",
-          "size": "cta"
+          "label": "Alto de la portada",
+          "height": "cover"
+        },
+        {
+          "label": "Alto de la fila del botón (área táctil)",
+          "height": "cta"
         }
-      ]
+      ],
+      "redlines": true,
+      "note": "El ancho de la card es el de la columna (en Home, la pantalla menos 16 dp a cada lado). El botón se ajusta a su texto, así que su ancho no es fijo. El texto sobre la portada se coloca abajo, con 16 dp de margen."
     }
   }
 }
