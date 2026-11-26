@@ -195,7 +195,7 @@ MOTIconButton(
 ## Text field
 
 - Estado: ready · P0
-- Para qué: Un campo de texto recoge lo que la persona escribe en un formulario: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos OutlinedTextField de Material 3, enlazado al tema, sin wrapper MOT.
+- Para qué: Un campo de texto recoge lo que la persona escribe en un formulario: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos OutlinedTextField de Material 3, con el tema de la app y sin componente propio de MyOwnTrip.
 - Composable: `OutlinedTextField` — `androidx.compose.material3.OutlinedTextField`
 - Fuente: `androidx.compose.material3.OutlinedTextField`
 
@@ -306,14 +306,14 @@ MotDateRangeField(
 ## Filter chip
 
 - Estado: ready · P0
-- Para qué: Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. El runtime es el FilterChip de Material 3, sin wrapper MOT.
+- Para qué: Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. Es el FilterChip de Material 3, sin componente propio de MyOwnTrip.
 - Composable: `FilterChip` — `androidx.compose.material3.FilterChip`
 - Fuente: `app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt`
 
 ### Variantes
 
 - **Outlined · Unselected** → `FilterChip`: Opciones no activas en la fila (p. ej. «Archivados»).
-- **Outlined · Selected** → `FilterChip`: Filtro activo. M3 pone el check al inicio; no hace falta un leadingIcon propio.
+- **Outlined · Selected** → `FilterChip`: Filtro activo. La selección se ve en el relleno; la app no añade check.
 
 ### Cuándo usarlo
 
@@ -331,7 +331,7 @@ MotDateRangeField(
 ### Elegir variante
 
 - La opción no está activa → `FilterChip selected = false` — Outline sobre el fondo; label onSurface.
-- La opción está activa → `FilterChip selected = true` — Fill secondaryContainer y check leading de M3. En Wallet solo hay una seleccionada por eje.
+- La opción está activa → `FilterChip selected = true` — Relleno secondaryContainer, sin check: la app no pasa icono inicial. En Wallet solo hay una seleccionada por eje.
 
 ### Prohibido en este componente
 
