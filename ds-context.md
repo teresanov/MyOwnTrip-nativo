@@ -492,7 +492,7 @@ scope.launch {
 ## Stacked card
 
 - Estado: ready · P1
-- Para qué: Una stacked card agrupa un tema en vertical: titular, subtítulo y, si hace falta, media o un dismiss. Outlined en listas y empty states; Elevated cuando hay que destacarla. Filled está cortado. El runtime es MotStackedCard; Home vacío usa HomeEmptyStackedCard.
+- Para qué: Una stacked card agrupa en un bloque vertical la información de un solo tema: un título, un subtítulo y, según el caso, un texto de apoyo o una imagen a todo el ancho. En MyOwnTrip aparece en Home cuando no hay viajes que mostrar: al empezar (con el mapa), cuando solo quedan viajes pasados y cuando una búsqueda no encuentra nada. La card no se pulsa; si hace falta una acción, va en un botón aparte. Tiene dos estilos: con borde (Outlined), que es el que usa la app, y con sombra (Elevated).
 - Composable: `MotStackedCard` — `com.myowntrip.app.ui.components.MotStackedCard`
 - Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/StackedCard.kt`
 
@@ -527,8 +527,9 @@ scope.launch {
 
 ### Accesibilidad
 
-- Dismiss con contentDescription.
-- Imagen informativa con alt; si es decorativa, contentDescription null y el header lo dice todo.
+- El título y el subtítulo se leen en orden. La card no se anuncia como botón porque no se pulsa.
+- La imagen lleva descripción cuando aporta información (en Home vacío: «Mapa con chincheta de viaje»); si fuera decorativa, iría sin descripción.
+- El botón de cerrar, si se usa, tiene nombre accesible («Cerrar» por defecto).
 
 ### Uso típico
 
@@ -576,9 +577,10 @@ MotStackedCard(
 
 ### Accesibilidad
 
-- Único control: Ver detalles (48 dp).
-- Fase y countdown van en el contentDescription del bloque o del CTA.
-- Imagen decorativa: sin alt aparte.
+- Toda la card se anuncia desde el botón «Ver detalles»: su descripción junta la fase, la cuenta atrás, el nombre, las fechas y la acción, y su estado dice la fase del viaje.
+- La portada, la etiqueta y los textos sobre la foto se ocultan a los lectores de pantalla para no leerse dos veces.
+- Es el único elemento que se pulsa.
+- Pendiente: en tema oscuro el título y las fechas no se leen. Usan onPrimary, que en oscuro es casi negro (#1A2228), sobre un degradado negro: contraste de 1,30:1. La etiqueta tiene el mismo problema (ver Eyebrow label).
 
 ### Uso típico
 
@@ -628,9 +630,11 @@ TripHeroCard(
 
 ### Accesibilidad
 
-- Decorativo: semantics hideFromAccessibility si el padre incluye la fase.
-- Nunca role Button.
-- Contraste ≥ 4.5:1 label sobre contenedor en los tres colores.
+- Los lectores de pantalla no lo leen: el componente se oculta a propósito (hideFromAccessibility) para que la misma información no se anuncie dos veces.
+- Por eso quien lo usa tiene que repetir su texto en la descripción de lo que lo contiene. TripHeroCard lo hace: el botón «Ver detalles» se anuncia como «Próximo viaje. Sale en 12 días. Cracovia finde…».
+- Pendiente: en el Diario (álbum y piezas de un evento) ningún contenedor repite el texto, así que el título y la hora del evento no se anuncian.
+- No se pulsa: nunca lleva rol de botón.
+- Contraste medido del texto sobre su fondo: Tertiary 5,47:1 en claro y 1,32:1 en oscuro (no pasa); Surface 7,66:1 y 8,49:1; Secondary 9,41:1 y 7,63:1.
 
 ### Uso típico
 
