@@ -136,9 +136,12 @@ MOTButton(
 
 ### Variantes
 
-- **Standard · Square** → `MOTIconButton`: Único estilo con wrapper. App bars, filas, campos, cards.
-- **Filled / Tonal / Outlined**: Publicados en Figma (×4 con standard). Sin wrapper específico en Compose.
-- **Togglable (×4)**: Publicados en Figma. En Compose el estado activo se fuerza con forceActive en rememberMOTButtonShape.
+- **Square** → `MOTIconButton(type = Square)`: Por defecto. Rectangular en reposo y redondeado a 20 dp al interactuar, como Button. App bars, filas, campos y cards.
+- **Round** → `MOTIconButton(type = Round)`: Ya redondeado a 20 dp en reposo. No es un círculo: el único control circular es el FAB.
+- **Estilo Standard** → `MOTIconButton()`: Sin contenedor visible: solo el icono; la capa de estado aparece al interactuar. Es el estilo de todos los usos actuales de la app.
+- **Estilos Filled y Tonal** → `colors = IconButtonDefaults.filledIconButtonColors() / filledTonalIconButtonColors()`: Con contenedor de color. Es el estilo por defecto del set «Icon button» de Figma; en código se pide con colors.
+- **Tamaños XSmall · Small · Medium · Large** → `size = MOTIconButtonSize.*`: Alto del contenedor 32 · 40 · 56 · 96 dp. Small (40) es el de producto.
+- **Anchos Narrow · Default · Wide** → `width = MOTIconButtonWidth.*`: Más estrecho o más ancho que el cuadrado, para alinear con otros controles o dar más peso a la acción.
 
 ### Cuándo usarlo
 
@@ -154,9 +157,10 @@ MOTButton(
 
 ### Elegir variante
 
-- Acción común en app bar, fila o campo (todos los usos actuales) → `MOTIconButton` — Estilo standard: sin contenedor, bajo énfasis.
-- Necesitas separar el botón de una imagen o de un fondo variable → `Icon button Filled / Tonal / Outlined (set de Figma)` — Hoy sin wrapper propio en Compose: se pasa por el parámetro colors.
-- Representa un estado activable (favorito, marcador) → `Icon button togglable (set de Figma)` — Icono outline sin seleccionar y relleno al seleccionar.
+- Acción común en app bar, fila, campo o card (casi todos los usos) → `MOTIconButton Square, Small` — Sin contenedor visible: bajo énfasis.
+- El botón debe verse ya redondeado, sin esperar a la interacción → `MOTIconButton Round` — Mismo radio de 20 dp, en reposo.
+- Necesitas separarlo de una imagen o de un fondo variable → `MOTIconButton con colors Filled o Tonal` — No hay wrappers propios: el contenedor se pide con IconButtonDefaults.filledIconButtonColors() o filledTonalIconButtonColors(). Outlined no está disponible en el wrapper.
+- Representa un estado activable (favorito, marcador) → `Pendiente` — El wrapper no expone hoy un modo seleccionable.
 
 ### Prohibido en este componente
 
@@ -164,7 +168,7 @@ MOTButton(
 - No uses un icono ambiguo cuya acción no se entienda sin texto: en ese caso usa un Button.
 - No usar IconButton de M3 suelto: se pierde el morph de forma.
 - No dejar un icono como único contenido del botón sin nombre accesible en ningún sitio.
-- No usar Round en reposo: el Round de Figma es el destino del morph (20 dp), no un círculo.
+- No usar un círculo: Round es un radio de 20 dp, no Corner/Full. El único control circular es el FAB.
 
 ### Accesibilidad
 
