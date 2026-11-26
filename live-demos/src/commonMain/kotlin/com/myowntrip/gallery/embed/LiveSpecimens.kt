@@ -13,6 +13,14 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import com.myowntrip.app.ui.components.TripCoverPlaceholder
+import com.myowntrip.app.ui.components.TripHeroCard
+import com.myowntrip.app.ui.components.MotCardStyle
+import com.myowntrip.app.ui.components.MotStackedCard
+import com.myowntrip.app.ui.components.EyebrowLabelSize
+import com.myowntrip.app.ui.components.EyebrowLabelColor
+import com.myowntrip.app.ui.components.EyebrowLabel
 import com.myowntrip.app.ui.theme.MOTTab
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTHorizontalDivider
@@ -134,6 +142,10 @@ fun LiveSpecimen(
         "fab/anatomy" -> FabAnatomy()
         "app-bar/playground" -> AppBarPlayground(props)
         "app-bar/anatomy" -> AppBarAnatomy()
+        "eyebrow-label/playground" -> EyebrowPlayground(props)
+        "eyebrow-label/anatomy" -> EyebrowLabel(text = "Próximo viaje", modifier = Modifier.part("container"))
+        "stacked-card/playground" -> StackedCardPlayground(props)
+        "trip-hero-card/playground" -> TripHeroPlayground(props)
         // Cualquier specimen del catálogo (button/sizes, icon-button/round…) se puede incrustar por su id.
         else -> Catalog.firstOrNull { it.id == id }?.content?.invoke() ?: Text("Specimen desconocido: $id")
       }
@@ -668,5 +680,67 @@ private fun AppBarAnatomy() {
     actions = {
       MOTIconButton(onClick = {}, modifier = Modifier.part("action")) { Icon(MOTIcons.Edit, contentDescription = null) }
     },
+  )
+}
+
+/* ---------- Tramo 3: componentes movidos al design system ---------- */
+
+/** color: tertiary | surface | secondary · size: medium | small. */
+@Composable
+private fun EyebrowPlayground(p: Map<String, String>) {
+  EyebrowLabel(
+    text = p["text"]?.ifBlank { null } ?: "Próximo viaje",
+    color = when (p["color"]) {
+      "surface" -> EyebrowLabelColor.Surface
+      "secondary" -> EyebrowLabelColor.Secondary
+      else -> EyebrowLabelColor.Tertiary
+    },
+    size = if (p["size"] == "small") EyebrowLabelSize.Small else EyebrowLabelSize.Medium,
+  )
+}
+
+/** layout: media (Home vacío) | text (¿Listo para el siguiente?) | search (sin resultados). Textos de la app. */
+@Composable
+private fun StackedCardPlayground(p: Map<String, String>) {
+  val style = if (p["style"] == "elevated") MotCardStyle.Elevated else MotCardStyle.Outlined
+  val modifier = Modifier.width(PhoneWidth).padding(horizontal = MOTSpacing.screenHorizontal)
+  when (p["layout"]) {
+    "text" -> MotStackedCard(
+      style = style,
+      headerText = "¿Listo para el siguiente?",
+      subheadText = "Crea un cuaderno nuevo",
+      supportingText = "Tus documentos y recuerdos de viajes anteriores siguen en Wallet.",
+      modifier = modifier,
+    )
+    "search" -> MotStackedCard(
+      style = style,
+      headerText = "Ningún viaje coincide",
+      subheadText = "Prueba otro término o cambia los filtros.",
+      modifier = modifier,
+    )
+    else -> MotStackedCard(
+      style = style,
+      headerText = "Sin viajes todavía",
+      subheadText = "Planea tu primera aventura",
+      image = LiveAssets.homeEmptyMap?.let { BitmapPainter(it) },
+      imageContentDescription = "Mapa con chincheta de viaje",
+      modifier = modifier,
+    )
+  }
+}
+
+/** phase: upcoming | current | past. Textos como los calcula la app (TripCards.kt); portada de reserva. */
+@Composable
+private fun TripHeroPlayground(p: Map<String, String>) {
+  val phase = p["phase"] ?: "upcoming"
+  TripHeroCard(
+    eyebrow = when (phase) { "current" -> "En destino"; "past" -> "Recuerdo"; else -> "Próximo viaje" },
+    title = "Cracovia finde",
+    meta = "20 nov 2026 – 22 nov 2026 · 3 días",
+    stateDescription = when (phase) { "current" -> "Viaje en curso"; "past" -> "Viaje pasado"; else -> "Próximo viaje" },
+    countdown = if (phase == "upcoming") "Sale en 12 días" else null,
+    onClick = {},
+    modifier = Modifier.width(PhoneWidth).padding(horizontal = MOTSpacing.screenHorizontal),
+    cover = { m -> TripCoverPlaceholder(destination = "Cracovia", modifier = m) },
   )
 }

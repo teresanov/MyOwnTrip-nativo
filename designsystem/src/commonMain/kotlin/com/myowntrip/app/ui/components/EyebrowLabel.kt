@@ -11,7 +11,6 @@ import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
@@ -87,10 +86,3 @@ private fun eyebrowTokens(
   }
 }
 
-@Preview
-@Composable
-private fun EyebrowLabelPreview() {
-  MyOwnTripTheme {
-    EyebrowLabel(text = "Próximo viaje")
-  }
-}

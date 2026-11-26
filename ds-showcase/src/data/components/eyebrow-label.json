@@ -42,24 +42,53 @@
       }
     ],
     "related": [
-      { "label": "TripHeroCard", "href": "components/trip-hero-card.html" },
-      { "label": "Filter chip", "href": "components/filter-chip.html" }
+      {
+        "label": "TripHeroCard",
+        "href": "components/trip-hero-card.html"
+      },
+      {
+        "label": "Filter chip",
+        "href": "components/filter-chip.html"
+      }
     ]
   },
   "variants": [
-    { "id": "tertiary-medium", "label": "Tertiary · Medium", "composable": "EyebrowLabel", "usage": "Default en TripHeroCard." },
-    { "id": "tertiary-small", "label": "Tertiary · Small", "composable": "EyebrowLabel", "usage": "Overlays densos." },
-    { "id": "surface-medium", "label": "Surface · Medium", "composable": "EyebrowLabel", "usage": "Cards sin foto." },
-    { "id": "secondary-medium", "label": "Secondary · Medium", "composable": "EyebrowLabel", "usage": "Acento suave en superficie clara." }
+    {
+      "id": "tertiary-medium",
+      "label": "Tertiary · Medium",
+      "composable": "EyebrowLabel",
+      "usage": "Default en TripHeroCard."
+    },
+    {
+      "id": "tertiary-small",
+      "label": "Tertiary · Small",
+      "composable": "EyebrowLabel",
+      "usage": "Overlays densos."
+    },
+    {
+      "id": "surface-medium",
+      "label": "Surface · Medium",
+      "composable": "EyebrowLabel",
+      "usage": "Cards sin foto. Existe en el código, pero ninguna pantalla lo usa."
+    },
+    {
+      "id": "secondary-medium",
+      "label": "Secondary · Medium",
+      "composable": "EyebrowLabel",
+      "usage": "Acento suave en superficie clara. Existe en el código, pero ninguna pantalla lo usa."
+    }
   ],
   "anatomy": [
-    "<strong>Contenedor</strong> — píldora HUG, radio 8 dp, sin borde ni sombra.",
-    "<strong>Label</strong> — Inter Medium. labelMedium (Medium) o labelSmall (Small). Una línea."
+    "<strong>Contenedor</strong> — se ajusta al texto; radio 8 dp (shapes.small), sin borde ni sombra. Relleno de 8 dp a los lados en Medium y de 16 dp en Small; 4 dp arriba y abajo.",
+    "<strong>Etiqueta</strong> — labelMedium (Medium) o labelSmall (Small), una línea con puntos suspensivos si no cabe."
   ],
   "behavior": {
     "lead": "No es un chip. No tiene onClick, ripple ni estado selected.",
     "rows": [
-      { "state": "Siempre estático", "detail": "hideFromAccessibility en Compose: el padre ya anuncia la fase." }
+      {
+        "state": "Siempre estático",
+        "detail": "hideFromAccessibility en Compose: el padre ya anuncia la fase."
+      }
     ],
     "notes": [
       "Padding Compose: Medium 8×4 dp, Small 16×4 dp (así está el composable)."
@@ -72,18 +101,44 @@
   ],
   "tokens": {
     "color": [
-      { "token": "tertiaryFixedDim / onTertiaryContainer", "use": "Tertiary." },
-      { "token": "surfaceContainerHigh / onSurfaceVariant", "use": "Surface." },
-      { "token": "secondaryContainer / onSecondaryContainer", "use": "Secondary." }
+      {
+        "token": "tertiaryFixedDim / onTertiaryContainer",
+        "use": "Tertiary."
+      },
+      {
+        "token": "surfaceContainerHigh / onSurfaceVariant",
+        "use": "Surface."
+      },
+      {
+        "token": "secondaryContainer / onSecondaryContainer",
+        "use": "Secondary."
+      }
     ],
-    "shape": [{ "token": "shapes.small", "use": "8 dp." }],
+    "shape": [
+      {
+        "token": "shapes.small",
+        "use": "8 dp."
+      }
+    ],
     "spacing": [
-      { "token": "padding Medium", "use": "8 × 4 dp en EyebrowLabel.kt." },
-      { "token": "padding Small", "use": "16 × 4 dp en EyebrowLabel.kt." }
+      {
+        "token": "padding Medium",
+        "use": "8 × 4 dp en EyebrowLabel.kt."
+      },
+      {
+        "token": "padding Small",
+        "use": "16 × 4 dp en EyebrowLabel.kt."
+      }
     ],
     "type": [
-      { "token": "labelMedium", "use": "Size Medium." },
-      { "token": "labelSmall", "use": "Size Small." }
+      {
+        "token": "labelMedium",
+        "use": "Size Medium."
+      },
+      {
+        "token": "labelSmall",
+        "use": "Size Small."
+      }
     ]
   },
   "productRules": {
@@ -98,18 +153,36 @@
     ]
   },
   "screens": [
-    { "screen": "TripHeroCard", "uses": "Tertiary · Medium según fase del viaje" }
+    {
+      "screen": "TripHeroCard",
+      "uses": "Tertiary · Medium según fase del viaje"
+    }
   ],
   "implementation": {
-    "module": "app",
-    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/components/EyebrowLabel.kt",
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/EyebrowLabel.kt",
     "import": "com.myowntrip.app.ui.components.EyebrowLabel",
     "composable": "EyebrowLabel",
     "note": "No es un chip. hideFromAccessibility por defecto.",
     "params": [
-      { "name": "text", "type": "String", "default": "—", "note": "" },
-      { "name": "color", "type": "EyebrowLabelColor", "default": "Tertiary", "note": "Tertiary | Surface | Secondary." },
-      { "name": "size", "type": "EyebrowLabelSize", "default": "Medium", "note": "Medium | Small." }
+      {
+        "name": "text",
+        "type": "String",
+        "default": "—",
+        "note": ""
+      },
+      {
+        "name": "color",
+        "type": "EyebrowLabelColor",
+        "default": "Tertiary",
+        "note": "Tertiary | Surface | Secondary."
+      },
+      {
+        "name": "size",
+        "type": "EyebrowLabelSize",
+        "default": "Medium",
+        "note": "Medium | Small."
+      }
     ],
     "snippet": "EyebrowLabel(\n    text = \"Próximo viaje\",\n    color = EyebrowLabelColor.Tertiary,\n)"
   },
@@ -119,16 +192,46 @@
     "layer": "Componente MOT"
   },
   "changelog": [
-    { "date": "2026-06-17", "note": "Set Color × Size." },
-    { "date": "2026-11-24", "note": "Ficha usage-first en el showcase." }
+    {
+      "date": "2026-06-17",
+      "note": "Set Color × Size."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha usage-first en el showcase."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Movido al design system. Ejemplo y anatomía sobre el componente real."
+    }
   ],
   "anatomyDiagram": {
     "kind": "eyebrow",
     "values": {},
-    "measures": [
-      { "label": "Radio", "value": "8 dp" },
-      { "label": "Padding Medium", "value": "8 × 4 dp" },
-      { "label": "Padding Small", "value": "16 × 4 dp" }
-    ]
+    "live": {
+      "specimen": "eyebrow-label/anatomy",
+      "zoom": 3,
+      "height": 220,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "container",
+          "anchor": "at@0.5,0.5",
+          "side": "top"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Etiqueta completa",
+          "size": "container"
+        }
+      ]
+    }
   }
 }

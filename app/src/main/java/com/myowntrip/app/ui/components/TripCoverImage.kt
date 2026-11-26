@@ -15,9 +15,6 @@ import androidx.annotation.DrawableRes
 import coil3.compose.AsyncImage
 import com.myowntrip.app.domain.model.Trip
 import java.io.File
-import java.util.Locale
-
-private val CoverLocale = Locale("es", "ES")
 
 @Composable
 fun TripCoverImage(
@@ -47,25 +44,6 @@ fun TripCoverImage(
   }
 }
 
-@Composable
-fun TripCoverPlaceholder(
-  destination: String,
-  modifier: Modifier = Modifier,
-) {
-  Surface(
-    modifier = modifier,
-    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-    shape = MaterialTheme.shapes.small,
-  ) {
-    Box(contentAlignment = Alignment.Center) {
-      Text(
-        text = destination.take(2).uppercase(CoverLocale),
-        style = MaterialTheme.typography.headlineLarge,
-        color = MaterialTheme.colorScheme.tertiary,
-      )
-    }
-  }
-}
 
 @Composable
 fun TripCoverImage(

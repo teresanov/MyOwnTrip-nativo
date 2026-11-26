@@ -44,9 +44,9 @@ Se pueden hacer ya: todo está en `:designsystem` o es M3 directo.
 ### Tramo 3 — Componentes de producto que viven en `:app` → se MUEVEN a `:designsystem`
 **Decidido (2026-11-26):** se mueven al kit (KMP, `commonMain`), sin dependencias de Android. Compilar `:app` tras cada movimiento; mantener paquetes/imports o actualizar los consumidores.
 
-- [ ] Eyebrow label (`EyebrowLabel`)
-- [ ] Stacked card · Horizontal card (`MotStackedCard`, `MotHorizontalCard`)
-- [ ] TripHeroCard
+- [x] Eyebrow label (`EyebrowLabel`) — movido; demo y anatomía reales
+- [x] Stacked card · Horizontal card (`MotStackedCard`, `MotHorizontalCard`) — movidos; la imagen llega como Painter; cards de Home en `HomeStackedCards.kt` (app). Falta anatomía viva
+- [x] TripHeroCard — parte visual al DS (+ `TripCoverPlaceholder`); de Trip a textos en `TripCards.kt` (app). Falta anatomía viva
 - [ ] List item (`WalletDocumentRow`, `internal` en Wallet)
 - [ ] Swipeable list row (`SwipeableWalletDocumentRow`, `SwipeableTripListRow`)
 - [ ] Date & time pickers (`Mot*` en `ui/components/date/`)
@@ -65,7 +65,7 @@ Cada ficha de componente dice qué abre y en qué patrón aparece (enlace). La p
 Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, highlight, parse error) · Document attachment · Spread piece · Scrapbook page · Journal recording dialog.
 
 ### Pendientes detectados en revisión
-- [ ] Fraunces no se aplica en las demos: el título del Basic dialog (headlineSmall) sale en sans. Revisar carga de `fraunces.ttf` / `MotSkiaFonts.fraunces`.
+- [x] Fuentes en las demos: no se cargaba NINGUNA (ni Inter ni Fraunces): la cadena de promesas de `loadFont` fallaba con un cast. Arreglado (promesas anidadas + precarga).
 
 ### Tramo 5 — Cierre
 - [ ] Quitar del renderizador lo que ya no usa ninguna ficha (API heredada de `component-page.js`, `renderFigmaMap`).
@@ -81,6 +81,7 @@ Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, hi
    $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
    .\gradlew -p live-demos wasmJsBrowserDistribution
    cd ds-showcase; npm run live; npm run build; npx vite preview
+   # live-demos: usar `gradlew -p live-demos clean wasmJsBrowserDistribution` (el incremental falla)
    ```
 3. Patrón a copiar: Button (Kotlin `ButtonAnatomy` / `ButtonPlayground`; JS `live-inspector.js`).
 
@@ -96,3 +97,4 @@ Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, hi
 | 2026-11-26 | 1 | Text field: cabecera y Bien/Mal con el componente real (antes HTML inventado: label encima y texto de apoyo pegado a la caja). Nota de cabecera distingue real / recreación | Quedan réplicas HTML en cabecera y Bien/Mal de Button, Icon button, Filter chip, Snackbar y Basic dialog |
 | 2026-11-26 | 1 | Cabecera y Bien/Mal con el componente real en Button, Icon button, Filter chip, Snackbar y Basic dialog (specimens fijos `button/set`, `filter-chip/single`, `snackbar/static`, `basic-dialog/static`); textos reales de la app; confirmación destructiva en color error; Filter chip sin «check» en ninguna parte | Pendiente: Espaciado (spacing.js) aún usa botones HTML con icono y texto inventados («Abrir cuaderno»). Fraunces sin aplicar en las demos |
 | 2026-11-26 | 2 | Fichas nuevas Tabs, Divider, Assist chip, FAB, App bar: demo, anatomía y medidas reales; categoría Navegación | Falta revisión de Teresa. Corregido de paso: el Filter chip medía 48 dp (área táctil) en vez de 32 dp |
+| 2026-11-26 | 3 | Movidos al DS: EyebrowLabel, MotStackedCard (+MotCardStyle), MotHorizontalCard, TripHeroCard (visual) y TripCoverPlaceholder; app compila, tests y assembleDebug OK. Demos reales en sus fichas. Fuentes arregladas en todas las demos | live-demos: build siempre con `clean` (fallo interno del compilador Wasm en builds incrementales). Falta: List item, filas deslizables, date pickers, búsqueda/menú/hoja/speed dial. Revisión visual de las 3 fichas pendiente |

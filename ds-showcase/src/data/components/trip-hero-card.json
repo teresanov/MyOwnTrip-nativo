@@ -41,17 +41,30 @@
       }
     ],
     "related": [
-      { "label": "Eyebrow label", "href": "components/eyebrow-label.html" },
-      { "label": "Stacked card", "href": "components/stacked-card.html" },
-      { "label": "Button", "href": "components/button.html" }
+      {
+        "label": "Eyebrow label",
+        "href": "components/eyebrow-label.html"
+      },
+      {
+        "label": "Stacked card",
+        "href": "components/stacked-card.html"
+      },
+      {
+        "label": "Button",
+        "href": "components/button.html"
+      }
     ]
   },
   "variants": [
-    { "id": "elevated", "label": "Elevated", "composable": "TripHeroCard", "usage": "Default en Home." },
-    { "id": "outlined", "label": "Outlined", "composable": "TripHeroCard", "usage": "Misma anatomía con marco." }
+    {
+      "id": "single",
+      "label": "Única",
+      "composable": "TripHeroCard",
+      "usage": "Una por Home, para el viaje destacado."
+    }
   ],
   "anatomy": [
-    "<strong>Fondo</strong> — ElevatedCard u OutlinedCard, alto 280 dp, image fill.",
+    "<strong>Portada</strong> — 280 dp de alto, radio 12 dp (shapes.medium), sombra de 1 dp. Foto del viaje o, si no hay, las dos primeras letras del destino.",
     "<strong>Scrim</strong> — degradado para leer título y meta.",
     "<strong>Eyebrow</strong> — Tertiary · Medium. No interactivo.",
     "<strong>Countdown</strong> — opcional («Sale en 3 días»). Oculto si el viaje ya empezó o pasó.",
@@ -62,9 +75,18 @@
   "behavior": {
     "lead": "Una por Home. El único control es el CTA.",
     "rows": [
-      { "state": "Próximo", "detail": "Countdown visible. Eyebrow «Próximo viaje»." },
-      { "state": "En curso", "detail": "Sin countdown. Eyebrow «En destino»." },
-      { "state": "Pasado", "detail": "Sin countdown. Eyebrow «Recuerdo»." }
+      {
+        "state": "Próximo",
+        "detail": "Countdown visible. Eyebrow «Próximo viaje»."
+      },
+      {
+        "state": "En curso",
+        "detail": "Sin countdown. Eyebrow «En destino»."
+      },
+      {
+        "state": "Pasado",
+        "detail": "Sin countdown. Eyebrow «Recuerdo»."
+      }
     ]
   },
   "a11y": [
@@ -74,16 +96,42 @@
   ],
   "tokens": {
     "color": [
-      { "token": "scrim", "use": "Degradado sobre la foto." },
-      { "token": "onPrimary", "use": "Título y meta sobre el scrim." },
-      { "token": "tertiaryFixedDim", "use": "Eyebrow y countdown." },
-      { "token": "secondaryContainer", "use": "CTA tonal." }
+      {
+        "token": "scrim",
+        "use": "Degradado sobre la foto."
+      },
+      {
+        "token": "onPrimary",
+        "use": "Título y meta sobre el scrim."
+      },
+      {
+        "token": "tertiaryFixedDim",
+        "use": "Eyebrow y countdown."
+      },
+      {
+        "token": "secondaryContainer",
+        "use": "CTA tonal."
+      }
     ],
-    "shape": [{ "token": "shapes.medium", "use": "12 dp." }],
+    "shape": [
+      {
+        "token": "shapes.medium",
+        "use": "12 dp."
+      }
+    ],
     "type": [
-      { "token": "headlineSmall", "use": "Título. Fraunces." },
-      { "token": "bodyMedium", "use": "Meta. Inter." },
-      { "token": "labelLarge", "use": "CTA." }
+      {
+        "token": "headlineSmall",
+        "use": "Título. Fraunces."
+      },
+      {
+        "token": "bodyMedium",
+        "use": "Meta. Inter."
+      },
+      {
+        "token": "labelLarge",
+        "use": "CTA."
+      }
     ]
   },
   "productRules": {
@@ -99,18 +147,66 @@
     ]
   },
   "screens": [
-    { "screen": "HomeScreen", "uses": "Viaje destacado" }
+    {
+      "screen": "HomeScreen",
+      "uses": "Viaje destacado"
+    }
   ],
   "implementation": {
-    "module": "app",
-    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/components/TripHeroCard.kt",
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/TripHeroCard.kt",
     "import": "com.myowntrip.app.ui.components.TripHeroCard",
     "composable": "TripHeroCard",
-    "note": "Patrón de producto. El CTA es MOTTonalButton.",
+    "note": "El design system pinta la card con textos ya resueltos. En la app se llama con TripHeroCard(trip, today, onClick) (TripCards.kt), que calcula la fase, la cuenta atrás y las fechas. Sin foto, la portada es TripCoverPlaceholder: las dos primeras letras del destino.",
     "params": [
-      { "name": "trip", "type": "Trip", "default": "—", "note": "" },
-      { "name": "today", "type": "LocalDate", "default": "—", "note": "Fase y countdown." },
-      { "name": "onClick", "type": "() -> Unit", "default": "—", "note": "Solo el CTA." }
+      {
+        "name": "eyebrow",
+        "type": "String",
+        "default": "—",
+        "note": "«Próximo viaje», «En destino» o «Recuerdo»."
+      },
+      {
+        "name": "title",
+        "type": "String",
+        "default": "—",
+        "note": "Nombre del viaje."
+      },
+      {
+        "name": "meta",
+        "type": "String",
+        "default": "—",
+        "note": "Fechas y duración."
+      },
+      {
+        "name": "stateDescription",
+        "type": "String",
+        "default": "—",
+        "note": "Fase para lectores de pantalla."
+      },
+      {
+        "name": "countdown",
+        "type": "String?",
+        "default": "null",
+        "note": "Solo en viajes próximos."
+      },
+      {
+        "name": "ctaLabel",
+        "type": "String",
+        "default": "\"Ver detalles\"",
+        "note": ""
+      },
+      {
+        "name": "cover",
+        "type": "@Composable (Modifier) -> Unit",
+        "default": "—",
+        "note": "Foto del viaje o TripCoverPlaceholder."
+      },
+      {
+        "name": "onClick",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "Solo el botón."
+      }
     ],
     "snippet": "TripHeroCard(\n    trip = featured,\n    today = today,\n    onClick = { onTripClick(featured.id) },\n)"
   },
@@ -120,7 +216,17 @@
     "layer": "Patrón de producto"
   },
   "changelog": [
-    { "date": "2026-06-17", "note": "Eyebrow (no chip); CTA única acción." },
-    { "date": "2026-11-24", "note": "Ficha usage-first en el showcase." }
+    {
+      "date": "2026-06-17",
+      "note": "Eyebrow (no chip); CTA única acción."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha usage-first en el showcase."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Parte visual movida al design system. Corregido: hay una sola variante (no Elevated/Outlined). Ejemplo con el componente real."
+    }
   ]
 }

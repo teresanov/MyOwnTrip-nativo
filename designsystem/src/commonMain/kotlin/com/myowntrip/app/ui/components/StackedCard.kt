@@ -22,18 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.annotation.DrawableRes
-import coil3.compose.AsyncImage
 import com.myowntrip.app.ui.theme.MOTIconButton
-import com.myowntrip.app.R
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
@@ -52,8 +48,7 @@ fun MotStackedCard(
   modifier: Modifier = Modifier,
   supportingText: String? = null,
   leadingInitial: String? = null,
-  @DrawableRes imageRes: Int? = null,
-  imageUrl: String? = null,
+  image: Painter? = null,
   imageContentDescription: String? = null,
   imageHeight: Dp = 200.dp,
   onDismiss: (() -> Unit)? = null,
@@ -144,7 +139,7 @@ fun MotStackedCard(
         }
       }
     }
-    if (supportingText != null && leadingInitial == null && imageUrl == null && imageRes == null) {
+    if (supportingText != null && leadingInitial == null && image == null) {
       Text(
         text = supportingText,
         style = MaterialTheme.typography.bodyMedium,
@@ -157,20 +152,12 @@ fun MotStackedCard(
         maxLines = 4,
         overflow = TextOverflow.Ellipsis,
       )
-    } else if (supportingText != null && (leadingInitial != null || imageUrl != null || imageRes != null)) {
+    } else if (supportingText != null && (leadingInitial != null || image != null)) {
       // Media & text: supporting oculto en Home vacío Figma; reservado por si se activa la property.
     }
-    when {
-      imageRes != null -> Image(
-        painter = painterResource(imageRes),
-        contentDescription = imageContentDescription,
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(imageHeight),
-        contentScale = ContentScale.Crop,
-      )
-      imageUrl != null -> AsyncImage(
-        model = imageUrl,
+    if (image != null) {
+      Image(
+        painter = image,
         contentDescription = imageContentDescription,
         modifier = Modifier
           .fillMaxWidth()
@@ -198,61 +185,6 @@ fun MotStackedCard(
         content()
       }
     }
-  }
-}
-
-/** Stacked · Elevated · Text only — ejemplo de layout sin dismiss. */
-@Preview(name = "Stacked · Elevated · Text only")
-@Composable
-private fun MotStackedCardTextPreview() {
-  MyOwnTripTheme {
-    MotStackedCard(
-      style = MotCardStyle.Elevated,
-      headerText = "Título de ejemplo",
-      subheadText = "Subtítulo",
-      supportingText = "Texto de apoyo en una card elevada solo texto.",
-      modifier = Modifier.padding(MOTSpacing.screenHorizontal),
-    )
-  }
-}
-
-/** Home vacío — Stacked · Outlined · Media & text (`205:816`).
- *  Imagen: export del fill `Media` del design-file (node `I215:2935;58710:12855`).
- *  Re-exportar con `scripts/figma-export-home-empty-map.js` si cambia en Figma. */
-object HomeEmptyDesign {
-  @DrawableRes
-  val mapImageRes: Int = R.drawable.home_empty_map
-}
-
-@Composable
-fun HomeEmptyStackedCard(modifier: Modifier = Modifier) {
-  MotStackedCard(
-    style = MotCardStyle.Outlined,
-    headerText = "Sin viajes todavía",
-    subheadText = "Planea tu primera aventura",
-    imageRes = HomeEmptyDesign.mapImageRes,
-    imageContentDescription = "Mapa con chincheta de viaje",
-    modifier = modifier,
-  )
-}
-
-/** Home cap 1b — Stacked · Outlined · Text only (`313:501` · `Plan next trip`). */
-@Composable
-fun HomeOnlyPastPlanStackedCard(modifier: Modifier = Modifier) {
-  MotStackedCard(
-    style = MotCardStyle.Outlined,
-    headerText = "¿Listo para el siguiente?",
-    subheadText = "Crea un cuaderno nuevo",
-    supportingText = "Tus documentos y recuerdos de viajes anteriores siguen en Wallet.",
-    modifier = modifier,
-  )
-}
-
-@Preview(name = "Stacked · Outlined · Media & text")
-@Composable
-private fun MotStackedCardMediaPreview() {
-  MyOwnTripTheme {
-    HomeEmptyStackedCard(Modifier.padding(MOTSpacing.screenHorizontal))
   }
 }
 

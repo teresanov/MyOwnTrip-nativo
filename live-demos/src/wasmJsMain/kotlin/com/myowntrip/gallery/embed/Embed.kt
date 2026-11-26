@@ -1,10 +1,13 @@
 package com.myowntrip.gallery.embed
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
@@ -16,6 +19,8 @@ import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Int8Array
 import org.khronos.webgl.get
 import org.w3c.dom.Element
+import org.jetbrains.skia.Image as SkiaImage
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import org.w3c.dom.asList
 
 /** Huecos de la página que piden una demo viva: `<div data-mot-specimen="button/playground">`. */
@@ -43,22 +48,30 @@ fun mountLiveSpecimens(hosts: List<Element>) {
       Font("MOT-Fraunces-700", bytes, FontWeight.Bold),
     )
   }, onDone = done)
+  // Imagen de la card de Home vacío: el mismo .jpg que el drawable de la app. No bloquea el montaje.
+  loadFont("${base}../assets/home_empty_map.jpg", onLoaded = { bytes ->
+    LiveAssets.homeEmptyMap = SkiaImage.makeFromEncoded(bytes).toComposeImageBitmap()
+  }, onDone = {})
 }
 
 private fun loadFont(url: String, onLoaded: (ByteArray) -> Unit, onDone: () -> Unit) {
-  window.fetch(url)
-    .then { response -> response.arrayBuffer() }
-    .then { buffer ->
-      val arr = Int8Array(buffer as ArrayBuffer)
+  val fail: (JsAny) -> Nothing? = { e ->
+    // Sin fuente real: la demo se pinta con la genérica, pero se pinta.
+    println("MOT demos: no se pudo cargar la fuente $url: $e")
+    onDone()
+    null
+  }
+  // Las dos promesas van anidadas: si se encadenan, Kotlin tipa el segundo paso como Promise
+  // mientras el navegador ya entrega el ArrayBuffer, y el cast falla (la fuente nunca se asignaba).
+  window.fetch(url).then({ response ->
+    response.arrayBuffer().then({ buffer ->
+      val arr = Int8Array(buffer)
       onLoaded(ByteArray(arr.length) { i -> arr[i] })
       onDone()
       null
-    }
-    .catch { _ ->
-      // Sin fuente real: la demo se pinta con la genérica del sistema, pero se pinta.
-      onDone()
-      null
-    }
+    }, fail)
+    null
+  }, fail)
 }
 
 private fun readProps(el: Element): Map<String, String> {
@@ -116,6 +129,17 @@ private fun mount(host: Element) {
     }
   }
   ComposeViewport(host) {
-    LiveSpecimen(id, props, reduceMotion, sink, onMeta)
+    // En web, una fuente cargada desde bytes no se usa hasta precargarla en el resolver;
+    // sin esto todo el texto sale en la fuente por defecto (ni Inter ni Fraunces).
+    val resolver = LocalFontFamilyResolver.current
+    var fontsReady by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+      runCatching {
+        resolver.preload(MotSkiaFonts.inter)
+        resolver.preload(MotSkiaFonts.fraunces)
+      }.onFailure { println("MOT demos: no se pudieron precargar las fuentes: " + it.message) }
+      fontsReady = true
+    }
+    if (fontsReady) LiveSpecimen(id, props, reduceMotion, sink, onMeta)
   }
 }

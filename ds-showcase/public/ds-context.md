@@ -494,7 +494,7 @@ scope.launch {
 - Estado: ready · P1
 - Para qué: Una stacked card agrupa un tema en vertical: titular, subtítulo y, si hace falta, media o un dismiss. Outlined en listas y empty states; Elevated cuando hay que destacarla. Filled está cortado. El runtime es MotStackedCard; Home vacío usa HomeEmptyStackedCard.
 - Composable: `MotStackedCard` — `com.myowntrip.app.ui.components.MotStackedCard`
-- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/StackedCard.kt`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/StackedCard.kt`
 
 ### Variantes
 
@@ -537,7 +537,8 @@ MotStackedCard(
     style = MotCardStyle.Outlined,
     headerText = "Sin viajes todavía",
     subheadText = "Planea tu primera aventura",
-    media = { /* imageRes home_empty_map */ },
+    image = painterResource(R.drawable.home_empty_map),
+    imageContentDescription = "Mapa con chincheta de viaje",
 )
 ```
 
@@ -546,12 +547,11 @@ MotStackedCard(
 - Estado: ready · P1
 - Para qué: La TripHeroCard es la portada del viaje destacado en Home: imagen a sangrado, scrim, eyebrow de fase, countdown opcional, título, meta y un único CTA tonal «Ver detalles» debajo. No es una variante de Stacked card.
 - Composable: `TripHeroCard` — `com.myowntrip.app.ui.components.TripHeroCard`
-- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/TripHeroCard.kt`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/TripHeroCard.kt`
 
 ### Variantes
 
-- **Elevated** → `TripHeroCard`: Default en Home.
-- **Outlined** → `TripHeroCard`: Misma anatomía con marco.
+- **Única** → `TripHeroCard`: Una por Home, para el viaje destacado.
 
 ### Cuándo usarlo
 
@@ -595,14 +595,14 @@ TripHeroCard(
 - Estado: ready · P1
 - Para qué: Un eyebrow label marca fase o contexto («Próximo viaje», «En destino», «Recuerdo») sin ser pulsable. Sustituye al Assist chip cuando el fondo es una foto o un scrim y el outline no garantiza contraste. Los chips siguen siendo filtros y acciones.
 - Composable: `EyebrowLabel` — `com.myowntrip.app.ui.components.EyebrowLabel`
-- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/EyebrowLabel.kt`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/EyebrowLabel.kt`
 
 ### Variantes
 
 - **Tertiary · Medium** → `EyebrowLabel`: Default en TripHeroCard.
 - **Tertiary · Small** → `EyebrowLabel`: Overlays densos.
-- **Surface · Medium** → `EyebrowLabel`: Cards sin foto.
-- **Secondary · Medium** → `EyebrowLabel`: Acento suave en superficie clara.
+- **Surface · Medium** → `EyebrowLabel`: Cards sin foto. Existe en el código, pero ninguna pantalla lo usa.
+- **Secondary · Medium** → `EyebrowLabel`: Acento suave en superficie clara. Existe en el código, pero ninguna pantalla lo usa.
 
 ### Cuándo usarlo
 
