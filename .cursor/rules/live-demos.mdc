@@ -1,0 +1,19 @@
+---
+description: Demos vivas — specimens Compose incrustados en el showcase (matriz Figma+Compose)
+globs: live-demos/**
+alwaysApply: false
+---
+
+# Demos vivas — determinismo
+
+- Las demos se incrustan en las fichas de `ds-showcase/`; `live-demos/` solo las define y compila. No clonar componentes en HTML ni crear una web de galería aparte.
+- Kit compartido: `:designsystem`. No duplicar color/spacing/controles en `live-demos/`. No tocar `:app` por el Kotlin de las demos.
+
+Antes de crear o cambiar un specimen:
+
+1. **Matriz** Figma (ejes del set) × código del composable (parámetros, slots, defaults). Incluir enabled/disabled, loading si existe en código, icono/texto, padding, overflow, tema. No asumir el caso feliz.
+2. **Cobertura:** cada casuística acordada = specimen explícito. Tema y reduce-motion llegan como parámetros desde la ficha (`data-p-theme`, `data-p-reduce`).
+3. **Alcance DS:** solo piezas de `:designsystem` / composición de DS.
+4. **Cero inventos.** Si Figma o Compose no están claros, preguntar. Entregar: qué ejes de Figma cubre y qué gaps quedan.
+
+Compose es SoT de runtime. Un eje de Figma sin API en el wrapper = gap (documentar, no fingir property).

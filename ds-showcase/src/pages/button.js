@@ -15,27 +15,12 @@ import {
   renderVariantTable,
 } from "../lib/component-page.js";
 import { renderAnatomy, renderMeasures, STARS_ICON } from "../lib/anatomy-diagram.js";
+import { bootLiveSpecimens, liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
 
 initShowcasePage("components", { componentId: "button" });
 
-const VARIANT_CLASS = {
-  filled: "mot-btn--filled",
-  tonal: "mot-btn--tonal",
-  outlined: "mot-btn--outlined",
-  text: "mot-btn--text",
-};
-
-const FORCED_STATES = [
-  { id: "none", label: "Interactivo" },
-  { id: "hover", label: "Hover" },
-  { id: "focus", label: "Focus" },
-  { id: "pressed", label: "Pressed" },
-];
-
 const playgroundCanvas = `
-  <div class="btn-stage">
-    <button type="button" class="mot-btn mot-btn--filled" id="demo-btn">Guardar gasto</button>
-  </div>
+  ${liveHostHtml("button/playground", { variant: "filled", label: "Guardar gasto", enabled: true, reduce: false, theme: "light", icon: false }, { label: "MOTButton real" })}
   <p class="playground__status" id="demo-status"></p>
 `;
 
@@ -47,12 +32,6 @@ const playgroundControls = `
     </select>
   </label>
   <label class="control">
-    <span>Estado forzado</span>
-    <select id="demo-state">
-      ${FORCED_STATES.map((s) => `<option value="${s.id}">${s.label}</option>`).join("")}
-    </select>
-  </label>
-  <label class="control">
     <span>Etiqueta</span>
     <input type="text" id="demo-label" value="Guardar gasto" />
   </label>
@@ -61,8 +40,16 @@ const playgroundControls = `
     <span>Habilitado</span>
   </label>
   <label class="playground-check">
+    <input type="checkbox" id="demo-icon" />
+    <span>Icono</span>
+  </label>
+  <label class="playground-check">
     <input type="checkbox" id="demo-reduce" />
     <span>Reducir movimiento</span>
+  </label>
+  <label class="playground-check">
+    <input type="checkbox" id="demo-dark" />
+    <span>Tema oscuro</span>
   </label>
 `;
 
@@ -81,7 +68,7 @@ document.getElementById("component-main").innerHTML = [
     id: "ejemplo",
     title: "Ejemplo",
     hint:
-      "Pulsa y mantén para ver el morph: el radio pasa de 0 a 20 dp y el botón se comprime a 0.96. Es una reproducción en CSS de los tiempos reales de <code>AppMotion</code>; el muelle de salida se aproxima con una curva, porque CSS no tiene muelles.",
+      '<span class="live-badge">Compose real</span> Es <code>MOTButton</code> de la app, compilado a WebAssembly: el morph de 0 a 20 dp, la compresión a 0.96, el muelle de salida y las state layers son los del código, no una imitación. Pasa el cursor, enfoca con el tabulador o pulsa y mantén.',
     canvasHtml: playgroundCanvas,
     controlsHtml: playgroundControls,
   }),
@@ -108,40 +95,42 @@ document.getElementById("component-main").innerHTML = [
   renderRelated(data.usage?.related),
 ].join("");
 
-/* ---------- Playground ---------- */
+/* ---------- Playground (demo viva) ---------- */
 
-const btn = document.getElementById("demo-btn");
+const host = document.querySelector('[data-mot-specimen="button/playground"]');
 const status = document.getElementById("demo-status");
 const variantSel = document.getElementById("demo-variant");
-const stateSel = document.getElementById("demo-state");
 const labelInput = document.getElementById("demo-label");
 const enabledBox = document.getElementById("demo-enabled");
+const iconBox = document.getElementById("demo-icon");
 const reduceBox = document.getElementById("demo-reduce");
+const darkBox = document.getElementById("demo-dark");
 
 function sync() {
   const variant = variantSel.value;
-  const forced = stateSel.value;
-
-  btn.className = `mot-btn ${VARIANT_CLASS[variant]}`;
-  if (forced !== "none") btn.classList.add(`is-${forced}`);
-  if (reduceBox.checked) btn.classList.add("is-reduced");
-
-  btn.textContent = labelInput.value || "Etiqueta";
-  btn.disabled = !enabledBox.checked;
+  setLiveProps(host, {
+    variant,
+    label: labelInput.value || "Etiqueta",
+    enabled: enabledBox.checked,
+    icon: iconBox.checked,
+    reduce: reduceBox.checked,
+    theme: darkBox.checked ? "dark" : "light",
+  });
 
   const composable = data.variants.find((v) => v.id === variant)?.composable;
-  const padding = variant === "tonal" ? "MOTSpacing.ButtonXSmall (12 × 6)" : "MOTSpacing.ButtonSmall (24 × 8)";
+  const padding = variant === "tonal" || variant === "text" ? "MOTButtonSize.XSmall" : "MOTButtonSize.Small";
   status.innerHTML = enabledBox.checked
-    ? `<code>${composable}</code> · padding <code>${padding}</code>${
-        reduceBox.checked ? " · <code>LocalReduceMotion = true</code>: el cambio es instantáneo" : ""
+    ? `<code>${composable}</code> · tamaño por defecto <code>${padding}</code>${
+        reduceBox.checked ? " · <code>LocalReduceMotion = true</code>: el cambio de forma es instantáneo" : ""
       }`
-    : `<code>${composable}</code> · disabled: 38 % contenido y 12 % contenedor, sin cambio de color ni de forma`;
+    : `<code>${composable}(enabled = false)</code> · sin cambio de forma; contenido y contenedor con opacidad`;
 }
 
-[variantSel, stateSel, labelInput, enabledBox, reduceBox].forEach((el) => {
+[variantSel, labelInput, enabledBox, iconBox, reduceBox, darkBox].forEach((el) => {
   el.addEventListener("input", sync);
   el.addEventListener("change", sync);
 });
 
 sync();
+bootLiveSpecimens();
 setupToc();

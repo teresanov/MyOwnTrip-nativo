@@ -1,2 +1,4 @@
 node_modules/
 dist/
+# Bundle Wasm de live-demos/ (se genera con npm run live)
+public/live/

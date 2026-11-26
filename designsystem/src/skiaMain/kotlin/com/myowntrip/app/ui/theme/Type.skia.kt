@@ -7,13 +7,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 /**
- * Tipografía MOT en Wasm/Desktop hasta el paso 2 (composeResources / Fraunces+Inter).
+ * Familias en Wasm/Desktop. Arrancan con las genéricas del sistema; quien hospeda el DS
+ * (la galería o las demos del showcase) puede cargar los .ttf reales de designsystem y
+ * asignarlos aquí ANTES de la primera composición.
  */
-actual val FrauncesFamily: FontFamily = FontFamily.Serif
-actual val InterFamily: FontFamily = FontFamily.SansSerif
-actual val HandFamily: FontFamily = FontFamily.Cursive
+object MotSkiaFonts {
+  var fraunces: FontFamily = FontFamily.Serif
+  var inter: FontFamily = FontFamily.SansSerif
+  var hand: FontFamily = FontFamily.Cursive
+}
 
-actual val AppTypography = Typography(
+actual val FrauncesFamily: FontFamily get() = MotSkiaFonts.fraunces
+actual val InterFamily: FontFamily get() = MotSkiaFonts.inter
+actual val HandFamily: FontFamily get() = MotSkiaFonts.hand
+
+actual val AppTypography: Typography get() = motTypography()
+
+private fun motTypography() = Typography(
   displayLarge = TextStyle(fontFamily = FrauncesFamily, fontWeight = FontWeight.Normal, fontSize = 57.sp, lineHeight = 64.sp, letterSpacing = (-0.25).sp),
   displayMedium = TextStyle(fontFamily = FrauncesFamily, fontWeight = FontWeight.Normal, fontSize = 45.sp, lineHeight = 52.sp),
   displaySmall = TextStyle(fontFamily = FrauncesFamily, fontWeight = FontWeight.Normal, fontSize = 36.sp, lineHeight = 44.sp),

@@ -12,3 +12,8 @@ build/
 *.aab
 node_modules/
 deliverables/
+
+# Demos vivas (Compose → Wasm): salida y cachés de Gradle/Kotlin
+live-demos/build/
+live-demos/.kotlin/
+live-demos/.gradle/

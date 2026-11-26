@@ -13,4 +13,4 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "mot-gallery"
+rootProject.name = "mot-live-demos"

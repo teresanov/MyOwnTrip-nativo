@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
   kotlin("multiplatform") version "2.3.20"
@@ -7,19 +6,16 @@ plugins {
   id("org.jetbrains.compose") version "1.10.1"
 }
 
+// Kit compartido: el mismo código de :designsystem que usa la app (sin copiar nada aquí).
 val designsystemSrc = rootDir.resolve("../designsystem/src")
 
 kotlin {
-  jvm()
   @OptIn(ExperimentalWasmDsl::class)
   wasmJs {
-    outputModuleName.set("gallery")
+    outputModuleName.set("demos")
     browser {
       commonWebpackConfig {
-        outputFileName = "gallery.js"
-        devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-          port = 8080
-        }
+        outputFileName = "demos.js"
       }
     }
     binaries.executable()
@@ -40,20 +36,10 @@ kotlin {
       dependsOn(commonMain)
       kotlin.srcDir(designsystemSrc.resolve("skiaMain/kotlin"))
     }
-    val jvmMain by getting {
-      dependsOn(skiaMain)
-      dependencies {
-        implementation(compose.desktop.currentOs)
-      }
-    }
     val wasmJsMain by getting {
       dependsOn(skiaMain)
+      // Los .ttf reales de la app se sirven junto al bundle (font/inter.ttf…).
+      resources.srcDir(designsystemSrc.resolve("androidMain/res"))
     }
-  }
-}
-
-compose.desktop {
-  application {
-    mainClass = "com.myowntrip.gallery.MainKt"
   }
 }

@@ -1136,3 +1136,18 @@
 .spec-live--field { display: block; width: min(360px, 100%); }
 .specimen-stage .mot-field { width: min(360px, 100%); }
 .specimen-stage .snackbar-demo { max-width: 360px; }
+
+/* ---------- Demos vivas (Compose → WebAssembly) ---------- */
+
+.live-host { position: relative; width: 100%; overflow: hidden; border-radius: 8px; background: var(--surface); }
+.live-host canvas { display: block; }
+.live-host__msg {
+  position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 16px; text-align: center;
+  font-size: 0.8125rem; color: var(--on-surface-variant);
+}
+.live-host[data-mot-ready] .live-host__msg { display: none; }
+.live-host--error .live-host__msg { color: var(--error); }
+.live-badge {
+  display: inline-block; font: 600 0.6875rem Inter, system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--on-tertiary-container); background: var(--tertiary-container); padding: 2px 8px; border-radius: 6px;
+}

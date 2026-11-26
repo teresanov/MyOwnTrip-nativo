@@ -37,20 +37,26 @@ Figma conserva la **librería** (variables + component sets para diseñar pantal
 | Ready | Figma publicado + ficha showcase + Compose alineado |
 | Deprecated | Marcado en showcase; no usar en pantallas nuevas |
 
-## Canvas vivo
+## Demos vivas (componentes reales)
 
-Las demos interactivas **no** son HTML. Viven en [`gallery/`](../../gallery/): Compose Multiplatform (Wasm o Desktop) con cromado propio.
+La documentación se lee en un solo sitio: el showcase. Los ejemplos interactivos de cada ficha **no** se imitan en HTML ni CSS: son los componentes reales de `:designsystem`, compilados de Compose a WebAssembly e incrustados en la ficha.
+
+| Pieza | Papel |
+|-------|-------|
+| [`live-demos/`](../../live-demos/) | Taller: specimens en Kotlin que usan el kit `:designsystem` y se compilan a Wasm. No es una web aparte. |
+| `ds-showcase/public/live/` | Bundle compilado que carga la ficha (no se versiona). |
+| `ds-showcase/src/lib/live-specimen.js` | Hueco `data-mot-specimen` en la ficha + paso de parámetros (`data-p-*`) desde los controles HTML. |
 
 ```bash
-./gradlew -p gallery wasmJsBrowserDevelopmentRun
-./gradlew -p gallery run
+./gradlew -p live-demos wasmJsBrowserDistribution   # compilar (JDK de Android Studio)
+cd ds-showcase && npm run live                       # copiar a public/live/
 ```
 
-Kotlin 2.3 en `gallery/` vs app Android 2.2: proyectos Gradle separados. Detalle: [`gallery/README.md`](../../gallery/README.md).
+Kotlin 2.3 en `live-demos/` vs app Android 2.2: proyectos Gradle separados. Detalle: [`live-demos/README.md`](../../live-demos/README.md).
 
 ## Implementación (ficha escrita)
 
-**Carpeta:** [`ds-showcase/`](../../ds-showcase/) — web estática (Vite) para uso, tokens y a11y. El canvas del componente es `gallery/`.
+**Carpeta:** [`ds-showcase/`](../../ds-showcase/) — web estática (Vite) para uso, tokens y a11y. Las demos vivas salen de `live-demos/`.
 
 ```bash
 cd ds-showcase && npm install && npm run dev
