@@ -88,6 +88,10 @@ Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, hi
 
 ### Para mañana (orden propuesto)
 
+0. **Showcase como work in progress legible** (el portfolio lo presenta como WIP; que el estado se entienda solo):
+   - Usar las etiquetas de estado con criterio en el índice y en cada ficha: «Listo» = demo real + anatomía + medidas + revisada por Teresa; «En revisión» = hecha, sin revisar; «En construcción» = réplica HTML o sin demo (Date pickers, Patrones). Definir los tres en la página de Gobernanza o en Empezar.
+   - Quitar lo que parece descuido y no proceso: node-id de Figma en la cabecera de las fichas (dejar el enlace «Ver en Figma») y rutas de código largas (solo el nombre del archivo).
+   - Limpiar jerga en button, icon-button, text-field, filter-chip, basic-dialog, list-item y date-time-pickers («wrapper», «runtime», «drift», «TalkBack», «SoT»).
 1. **Búsqueda y menú de Home** (`app/.../components/home/HomeSearchAndFilter.kt`): separar al DS la barra de búsqueda (`HomeSearchBarRow`) y las piezas del menú (`HomeFilterMenuList`, `…SectionLabel`, `…ItemRow` con su check) como componentes genéricos; los filtros de viaje (`TripFilterPhase`, `TripSortOrder`) se quedan en la app. Ficha nueva o la del patrón «Filtrar en Home» con demo.
 2. **Date & time pickers** — esperando decisión de Teresa. Propuesta: pasarlos al DS común con `kotlinx-datetime` (nombres de meses/días en español propios, conversión java.time ↔ kotlinx en la frontera con la app), por fases y compilando la app en cada una. Alternativa: DS solo `androidMain` (rápido, sin demo).
 3. **Tramo 3b — patrones con demo viva**: «Confirmar antes de borrar» y «Elegir de una lista» ya se pueden; «Añadir desde el FAB» (FAB menu del Diario es M3; HomeSpeedDial ya está en el DS).
