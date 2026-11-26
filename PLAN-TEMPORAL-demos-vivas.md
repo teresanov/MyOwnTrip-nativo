@@ -60,7 +60,7 @@ Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, hi
 
 ### Tramo 5 — Cierre
 - [ ] Quitar del renderizador lo que ya no usa ninguna ficha (API heredada de `component-page.js`, `renderFigmaMap`).
-- [ ] GitHub Pages: compilar `live-demos` en el workflow (hoy la web publicada no tiene `public/live/`).
+- [x] GitHub Pages: compilar `live-demos` en el workflow (adelantado, commit bc5b39d; primer despliegue verificado en la web publicada)
 - [ ] Decidir `ds-docs/` (abandonado): borrar.
 - [ ] Borrar este archivo.
 

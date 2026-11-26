@@ -387,7 +387,7 @@ private fun DialogPlayground(p: Map<String, String>) {
     AlertDialog(
       onDismissRequest = { open = false },
       icon = if (withIcon) {
-        { Icon(MOTIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) }
+        { Icon(MOTIcons.Error, contentDescription = null, tint = MaterialTheme.colorScheme.error) }
       } else null,
       title = { Text(p["title"] ?: "¿Eliminar documento?") },
       text = { Text(p["body"] ?: "Se borrará el documento y su archivo del dispositivo.") },
@@ -404,7 +404,7 @@ private fun DialogAnatomy(p: Map<String, String>) {
   AlertDialog(
     onDismissRequest = {},
     modifier = Modifier.part("container"),
-    icon = { Icon(MOTIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.part("icon")) },
+    icon = { Icon(MOTIcons.Error, contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.part("icon")) },
     title = { Text("¿Eliminar «Lisboa 2026»?", Modifier.part("title")) },
     text = { Text("Se borrarán sus documentos y gastos. No se puede deshacer.", Modifier.part("body")) },
     confirmButton = { MOTTextButton(onClick = {}, modifier = Modifier.part("confirm")) { Text("Eliminar", color = MaterialTheme.colorScheme.error) } },
@@ -463,7 +463,7 @@ private fun DialogStatic(p: Map<String, String>) {
   AlertDialog(
     onDismissRequest = {},
     icon = if (p["icon"] == "true") {
-      { Icon(MOTIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) }
+      { Icon(MOTIcons.Error, contentDescription = null, tint = MaterialTheme.colorScheme.error) }
     } else null,
     title = { Text(p["title"] ?: "¿Eliminar documento?") },
     text = { Text(p["body"] ?: "Se borrará el documento y su archivo del dispositivo.") },
