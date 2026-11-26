@@ -1,15 +1,52 @@
 # Pipeline de diseño y documentación (MOT nativo)
 
-**Fecha:** 2026-10-30 · **Estado:** vigente
+**Fecha:** 2026-10-30 (§0 agentes: 2026-11-26) · **Estado:** vigente
 
-Guía de qué se crea, en qué orden y dónde vive cada cosa. No describe herramientas: describe el proceso.
+Guía de qué se crea, en qué orden y dónde vive cada cosa.
+
+---
+
+## 0. Agentes — una sola matriz (obligatorio)
+
+**No hay dos pipelines.** El repo archivo `../MyOwnTrip` (Pencil, ARC, `SemanticColors`) **no** aplica aquí.
+
+| Tipo de trabajo | SoT (quién manda) | Artefactos | Skill / regla |
+|-----------------|-------------------|------------|---------------|
+| **Tokens** (variables Figma M3/MOT/Shape/Typescale) | **Figma** `zrGAL4v6` → export | `variables.json`, `Color.kt`, `Theme.kt`, `MOTSpacing` | `myowntrip-ds-audit` · export + `diff-variables-kotlin.py` · cierre [`parity-log.md`](../parity-log.md) |
+| **Componentes** (composable, variantes, estados) | **Compose** (`app/`, `designsystem/`) | Sets librería Figma | Compose primero → espejo Figma · [`figma-compose-bindings.md`](../figma-compose-bindings.md) |
+| **Pantallas design-file** | **Compose** (`@Preview` por cap) | `Vf2tNMXy` solo **instancias** DS | `myowntrip-ds-parity` · [`figma-instances-only.mdc`](../../../.cursor/rules/figma-instances-only.mdc) |
+| **Paridad / cierres** | Bitácora única | [`parity-log.md`](../parity-log.md) | `myowntrip-ds-parity` |
+| **Ficha de componente (doc)** | Datos en repo | `ds-showcase/src/data/components/*.json` (+ deploy Vite; ver [`showcase.md`](../showcase.md); `ds-docs/` es evolución Starlight, no SoT distinto de proceso) | Tras Compose + Figma |
+| **Registro humano** | Notion | Changelog / Diario | No specs de componente |
+
+### Skills — qué usar y qué ignorar
+
+| Skill | Usar en MOT nativo cuando… |
+|-------|----------------------------|
+| **`myowntrip-ds-parity`** | Paridad caps, bindings, Figma espejo, append parity-log |
+| **`myowntrip-ds-audit`** | Drift tokens JSON ↔ Kotlin, gate `m3Canonical` en código |
+| **`ds-semantic-pipeline`** | **Solo** crear/editar **colecciones y alias de variables en Figma** (no UI Compose semántica legacy) |
+| **`myowntrip-context`** | Producto / JTBD, no paridad visual |
+
+| Skill / regla | Estado |
+|---------------|--------|
+| **`ds-audit`**, **`ds-index`** | **Legado ARC** — requieren `docs/design-system/index/components.index.json` (no existe). **No** usar para cerrar trabajo; usar bindings + parity-log |
+| **Pencil → Figma → Showcase** | **Obsoleto** en este repo |
+| **`SemanticColors` / tokens `text/*` por estado en UI** | **Prohibido** — ver [`m3-native-ui.mdc`](../../../.cursor/rules/m3-native-ui.mdc) |
+
+### Rutas canónicas (evitar 404 mental)
+
+- Dos frases (pantalla / token nuevo): **`docs/design-system/governance/agent-workflow.md`**
+- Pipeline completo: **`docs/design-system/governance/design-pipeline.md`** (este archivo)
+- Atajo válido: **`docs/design-system/design-pipeline.md`** → redirige aquí
+- Bitácora paridad: **`docs/design-system/parity-log.md`**
 
 ---
 
 ## 1. Principio: base en Figma, componentes en código
 
 - **Dos fuentes según el tipo de elemento:**
-  - **Tokens** (color, forma, tipografía, espaciado, elevación; primitivos y semánticos): se modifican **solo en las variables de Figma** (`zrGAL4v6`) y se exportan a código (`variables.json` → `Color.kt`, `Theme.kt`). Si Compose usa un token que no existe en Figma, se crea en Figma antes de darlo por cerrado.
+  - **Tokens** (color, forma, tipografía, espaciado en variables Figma): la **definición** de la variable vive en Figma (`zrGAL4v6`) y se exporta (`variables.json` → Kotlin). **`mot/*`:** espejo en `MOTSpacing` obligatorio en la misma tanda (ver [`agent-workflow.md`](agent-workflow.md) §2). No cerrar con variable Figma huérfana.
   - **Comportamiento y componentes**: nacen en **Compose** (`designsystem/`, `app/.../ui/components/`), sobre la base M3 y los átomos existentes.
 - **Figma** es la base de tokens y, para componentes, el espejo que reproduce Compose con paridad comprobada. El design-file `Vf2tNMXy` compone las pantallas con instancias.
 - **El showcase es documentación** del componente, no una fuente: explica lo que existe en Compose y en Figma.
@@ -134,8 +171,8 @@ Un componente solo pasa a **Ready** cuando cumple todo:
 
 ## 7. Puntos abiertos
 
-- **Tokens base: decidido (30 oct 2026).** Nacen en las variables de Figma y se exportan a código (`variables.json` → `Color.kt`), coherente con el Changelog DS (12 jun 2026) y con la skill `ds-semantic-pipeline` (Modo B, Figma-first).
-- **Índice de componentes** (`docs/design-system/index/components.index.json`): citado por las skills, pero no existe todavía en el repo.
+- **Tokens base: decidido (30 oct 2026).** Variables en Figma → export → Kotlin. Skill `ds-semantic-pipeline` = **solo edición en Figma**, no consumo UI legacy.
+- **Índice ARC** (`components.index.json`): **no existe**; mapa = [`figma-compose-bindings.md`](../figma-compose-bindings.md). Skills `ds-audit` / `ds-index` = legado.
 
 ---
 

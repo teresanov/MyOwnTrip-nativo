@@ -27,8 +27,12 @@ Guía de roles y delegación para Cursor. El producto vive en Compose; este arch
 |-----|----------------|--------|
 | **Producto / features** | `myowntrip-context`, `myowntrip-development.mdc` | Implementar JTBD, Room, pantallas nuevas en Kotlin |
 | **Auditoría tokens/Kotlin** | `myowntrip-ds-audit` | Tras export Figma, drift `Color.kt`, gate m3Canonical en código |
-| **Pipeline semántico Figma** | `ds-semantic-pipeline` | Crear colecciones/alias de variables en Figma (Modo B) |
+| **Variables solo en Figma** | `ds-semantic-pipeline` | Crear/editar colecciones y alias en librería DS (no UI Compose) |
 | **UX investigación** | `myowntrip-ux-notion` | Persona, hipótesis, Notion — no paridad visual |
+
+### Skills legado (no usar para cerrar tareas)
+
+`ds-audit`, `ds-index` — pipeline ARC / `components.index.json` (inexistente). Matriz única: [`design-pipeline.md`](docs/design-system/governance/design-pipeline.md) **§0**.
 
 ---
 

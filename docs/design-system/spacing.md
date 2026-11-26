@@ -6,7 +6,7 @@
 
 **En UI (Figma y Compose) solo semánticos.** Los primitivos (`spacing/12`, `spacing/16`…) viven en **Primitives · Space** y solo se usan como alias detrás de `mot/spacing/*` (o roles **Shape** / **M3**). Nunca bindear un primitivo directo en un frame de producto o en el contrato de un componente.
 
-**Gate (Figma ↔ Compose):** no crear `mot/*` en Figma sin espejo en Kotlin (`MOTSpacing` / `MaterialTheme.shapes`). Orden: Compose SoT → token/nombre → bind Figma. Kit baseline M3 ≠ producto si Compose no lo consume.
+**Gate (Figma ↔ Compose):** no cerrar tarea con `mot/*` **solo en Figma** — siempre espejo en **`MOTSpacing.kt`** (misma tanda). Orden habitual: pantalla en **Compose** usa o introduce el nombre → variable **MOT · Spacing** en Figma → export → parity-log. Si el hueco se detecta al enlazar en Figma, creas la variable allí **y** añades la constante en Kotlin antes del cierre. Guía breve: [`governance/agent-workflow.md`](governance/agent-workflow.md) §2.
 
 | Qué | Dónde | Notas |
 |-----|--------|--------|

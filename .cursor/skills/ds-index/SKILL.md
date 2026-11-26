@@ -1,45 +1,23 @@
 ---
 name: ds-index
-description: Genera y mantiene el indice canónico del DS (componentes, composición y tokens) para habilitar ARC (Audit/Report/Compose).
+description: >-
+  LEGADO ARC — índice components.index.json no existe en MOT nativo. Usar
+  figma-compose-bindings.md y parity-log. No invocar salvo regeneración explícita del índice.
+disable-model-invocation: true
 ---
 
-# DS Index - MyOwnTrip
+# DS Index (ARC) — LEGADO en MOT nativo
 
-Este skill crea/actualiza artefactos en `docs/design-system/index/` para que la IA no explore a ciegas.
+Skill para generar `docs/design-system/index/components.index.json` y artefactos ARC.
 
-## Inputs
+**Estado nov 2026:** la carpeta `docs/design-system/index/` **no está** en el repo. El mapa operativo es [`figma-compose-bindings.md`](../../../docs/design-system/figma-compose-bindings.md) + [`parity-log.md`](../../../docs/design-system/parity-log.md).
 
-- `ds-config.json`
-- `docs/design-system/templates/component-schema-contract.template.json`
-- Codebase Compose en `app/src/main/java/com/example/myowntrip/ui/`
+## Usar en su lugar
 
-## Salidas (fuente de verdad operativa)
+- Inventario componentes ↔ Figma: **bindings**
+- Cierre paridad: **`myowntrip-ds-parity`**
+- Pipeline: [`design-pipeline.md`](../../../docs/design-system/governance/design-pipeline.md) **§0**
 
-- `docs/design-system/index/components.index.json`
-- `docs/design-system/index/composition.index.json` (si aplica)
-- `docs/design-system/index/tokens.index.json` (si aplica)
+## Si el usuario pide «regenerar el índice»
 
-## Protocolo (ARC - Audit)
-
-1. **Inventario**: listar composables canónicos en `ui/components`.
-2. **Extraer API**: nombre del composable, params principales, enums de variants/sizes.
-3. **Extraer consumo**:
-   - Tokens semánticos usados (via `SemanticColors.*` o `MaterialTheme.colorScheme`).
-   - Hardcodes prohibidos (Color literals, PrimitiveColors en features).
-4. **Extraer composición**:
-   - Si el componente compone hijos (slots), registrar children canónicos esperados.
-5. **Registrar gates**:
-   - A11y mínimo, estados, do/don't Material revisados, paridad dark, composición canónica.
-
-## Reglas
-
-- No escribir “documentación bonita”: el índice debe ser **mínimo y ejecutable**.
-- Todo componente canónico debe tener `component:<Name>` como `id`.
-- La ausencia de información se marca como `dosDontsReviewed=false` o gates pendientes (no inventar).
-
-## Actualización incremental
-
-Cuando aparece un nuevo componente canónico:
-
-- Añadirlo al índice con flags “pendiente” donde falte evidencia.
-- Dejar una entrada `knowledge` si se requiere decisión nueva (ej. do/don't Material, constraints de contenido).
+Confirmar que quieren **crear** el pipeline ARC en nativo; si no, redirigir a bindings. No citar Pencil ni `SemanticColors` como consumo UI.

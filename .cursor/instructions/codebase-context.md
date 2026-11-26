@@ -20,7 +20,9 @@ App Android offline-first · libreta de viaje digital · **viajero urbano organi
 - Showcase: `docs/design-system/showcase.md`
 - Color: `docs/design-system/color.md` · Spacing: `docs/design-system/spacing.md`
 - Audits paridad: `docs/design-system/audits/`
-- Skills DS: `myowntrip-ds-parity/` (rol Compose↔Figma), `myowntrip-ds-audit/`, `ds-index/`, `ds-audit/`, `ds-semantic-pipeline/`
+- Skills DS vigentes: `myowntrip-ds-parity/`, `myowntrip-ds-audit/`, `ds-semantic-pipeline/` (solo vars Figma)
+- Skills LEGADO (no cerrar trabajo): `ds-index/`, `ds-audit/` — ver `docs/design-system/governance/design-pipeline.md` §0
+- Pipeline único: `docs/design-system/design-pipeline.md` → `governance/design-pipeline.md`
 - Roles agente: `AGENTS.md` (DS Parity + subagentes)
 
 ## Documentación producto

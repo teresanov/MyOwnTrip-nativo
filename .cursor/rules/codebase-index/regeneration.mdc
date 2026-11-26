@@ -5,9 +5,11 @@ alwaysApply: false
 
 # DS Codebase Index - Regeneration
 
+**MOT nativo:** no regenerar índice ARC hasta que exista `components.index.json`. Cierres → `parity-log.md`. §0 en [`design-pipeline.md`](../../../docs/design-system/governance/design-pipeline.md).
+
 Tras cualquier cambio en componentes canónicos o tema:
 
-- Regenerar (o actualizar) `docs/design-system/index/components.index.json`.
+- Regenerar (o actualizar) `docs/design-system/index/components.index.json` *(solo si el índice está adoptado en este repo)*.
 - Generar un reporte de auditoría si cambia algún gate, token consumido o composición.
 
 Los reportes deben ser:

@@ -9,7 +9,7 @@
 
 | # | Documento | Rol |
 |---|-----------|-----|
-| 1 | [design-pipeline.md](governance/design-pipeline.md) | Proceso y gates |
+| 1 | [agent-workflow.md](governance/agent-workflow.md) → [design-pipeline.md](design-pipeline.md) §0 | Dos frases (pantalla / token nuevo) + matriz agentes |
 | 2 | [figma-compose-bindings.md](figma-compose-bindings.md) | Sets Figma ↔ composables |
 | 3 | **Este archivo** | Pendiente + historial de cambios |
 | 4 | Contrato dominio (solo si aplica) | [figma-date-product-contract-2026-11-03.md](audits/figma-date-product-contract-2026-11-03.md) (date/time PRODUCT) |
@@ -36,6 +36,7 @@
 
 | Fecha | Ámbito | Cambio | Evidencia (Figma / código) | Estado |
 |-------|--------|--------|----------------------------|--------|
+| 2026-11-26 | gobernanza · pipeline | **Matriz única agentes:** §0 en `governance/design-pipeline.md`; atajo `design-pipeline.md`; skills `ds-audit`/`ds-index`/`ds-semantic-pipeline` acotados o legado; reglas index/metadata alineadas a Compose→Figma. | `AGENTS.md` · skills · rules | **Resuelto** |
 | 2026-11-24 | tokens · cierre | **Paridad tokens cerrada:** re-export DS (`zrGAL4v6`) 8 colecciones · 597 variables; `diff-variables-kotlin.py` → **0 drift** Light/Dark `Schemes/*` + Extended. Post-barrido audits; sin cola tokens salvo regresión. | MCP export · `variables.json` · `Color.kt` | **Resuelto** |
 | 2026-11-24 | docs · audits | **Archivo cerrado:** eliminados planes y snapshots (`disparity-remediation-plan`, `compose-figma-parity-plan`, fases `figma-*`, inventarios históricos). Vivientes: **parity-log** + contrato date/time + gap scrapbook tipografía. | `audits/README.md` | **Resuelto** |
 | 2026-11-24 | design-file · 02/03 | **02 solo crear** · **03 solo editar** — **8 caps** (crear 1/1b/2/3 · editar 1–4); **MotDateRangeField** en formulario; tabla Viajes en bindings. | `Vf2tNMXy` · `figma-compose-bindings.md` · `figma-app-flows` | **Resuelto** |

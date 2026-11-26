@@ -5,9 +5,11 @@ alwaysApply: false
 
 # Componentes - Metadata schema
 
+> **MOT nativo (nov 2026):** el índice `components.index.json` **no existe** aún. SoT operativo = [`figma-compose-bindings.md`](../../../docs/design-system/figma-compose-bindings.md) + [`parity-log.md`](../../../docs/design-system/parity-log.md). Esta regla aplica cuando se implemente ARC; no sustituye Compose → Figma.
+
 Todo componente canónico debe estar representado en:
 
-- `docs/design-system/index/components.index.json`
+- `docs/design-system/index/components.index.json` *(aspiracional; ver arriba)*
 
 Y debe declarar:
 
@@ -32,6 +34,6 @@ Regla de compatibilidad:
 - Si un target no se usa, no se declara.
 - Ningún target debe contener datos críticos que no estén también en `core`.
 - Compose/React deben poder funcionar solo con `core` + su target específico.
-- El pipeline de componentes es **Figma → Showcase** (+ Compose). Pencil ya no forma parte del flujo, así que no hay target `pencil`.
+- El pipeline de componentes es **Compose → Figma → Showcase → Notion** (`docs/design-system/governance/design-pipeline.md` §0). Pencil y «Figma-first en pantallas» no aplican en nativo.
 
 Al crear o documentar el componente, contrastar con **`refs/`** según **`.cursor/rules/components/material-reference-refs.mdc`**.

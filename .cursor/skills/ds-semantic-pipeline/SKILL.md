@@ -1,65 +1,53 @@
 ---
 name: ds-semantic-pipeline
-description: Pipeline para sincronizar variables de Figma a Compose usando consumo semantico y gobernanza de MyOwnTrip.
+description: >-
+  Solo edición de variables Figma (colecciones M3/MOT/Shape, alias, modes Light-Dark).
+  No usar para pantallas, componentes ni SemanticColors en Compose. Pipeline producto:
+  ver docs/design-system/governance/design-pipeline.md §0.
+disable-model-invocation: true
 ---
 
-# DS Semantic Pipeline - MyOwnTrip
+# DS Semantic Pipeline — MOT nativo (solo variables Figma)
 
-Usa este skill cuando el usuario pida sincronizar, auditar o escalar el sistema de tokens del DS entre Figma y Android Compose.
+**Alcance acotado:** crear o refactorizar **variables locales** en la librería Figma `zrGAL4v6` (primitivos, alias semánticos en Figma, modos). Export posterior → `variables.json` → `Color.kt` si aplica.
 
-**Contexto de pipeline:** cambios de **contrato/token global** siguen **Modo B (Figma-first)**; componentes nuevos siguen **Compose → Figma → Showcase → Notion** (`governance/design-pipeline.md`). Compose es la fuente de verdad.
+**Fuente de verdad del proceso completo:** [`docs/design-system/governance/design-pipeline.md`](../../../docs/design-system/governance/design-pipeline.md) — **§0 Agentes**.
 
-## Objetivo
+## No confundir con el pipeline de producto
 
-Mantener una cadena confiable:
+| Esto | SoT | Skill |
+|------|-----|--------|
+| Variables / tokens globales | Figma → export | **Este skill** (solo Figma) |
+| Composable, pantalla, cap | **Compose** → Figma espejo | **`myowntrip-ds-parity`** |
+| Cierre paridad | [`parity-log.md`](../../../docs/design-system/parity-log.md) | **`myowntrip-ds-parity`** |
 
-1. Primitivos en Figma
-2. Semanticos enlazados por alias
-3. Consumo en Compose solo desde semanticos
+**Prohibido en este repo (UI Compose):** consumir `SemanticColors`, `text/primary`, primitivos sueltos, tokens por estado (`hover`/`pressed`). En app solo `MaterialTheme.colorScheme`, `MOTSpacing`, `shapes.*` — ver [`m3-native-ui.mdc`](../../rules/m3-native-ui.mdc).
 
-## Reglas no negociables
+## Cuándo invocar
 
-- No consumir primitivas directas en componentes UI.
-- No copiar hex sueltos en semanticos; siempre alias a primitivas.
-- Mantener `Primitives · Color` como unica coleccion de primitivos de color.
-- Tipografia de documentacion/componentes en Figma: `Roboto Flex` con `text styles` del DS.
-- Antes de implementar un componente, consultar la guia oficial de Material 3 del componente y registrar do/don't aplicables.
+- Añadir o renombrar colección/variable en Figma DS
+- Reenlazar alias (semántico Figma → primitivo)
+- Auditar que en **Figma** no queden hex sueltos bindables
 
-## Inputs minimos
+**No invocar** para montar pantallas, paridad design-file ni sustituir `myowntrip-ds-audit` (diff Kotlin).
 
-- `ds-config.json` con `fileKey` y collections.
-- Estado actual de `ui/theme/Color.kt` y `ui/theme/Theme.kt`.
-- Variables locales de Figma extraidas via MCP.
+## Workflow (Figma-first solo tokens)
 
-## Workflow operativo
+1. Leer [`design-pipeline.md`](../../../docs/design-system/governance/design-pipeline.md) §1 (bidireccional tokens).
+2. Auditar subárbol variables en Figma (`resolveVariables` false/true).
+3. `Primitives · Color` única para primitivos; semánticos de producto en colecciones **M3** / **MOT · Spacing** / **Shape** (no `LEGACY · Semantic Layout`).
+4. Export: `python scripts/export_figma_variables_json.py`
+5. Diff: `python .cursor/skills/myowntrip-ds-audit/scripts/diff-variables-kotlin.py`
+6. Fila en [`parity-log.md`](../../../docs/design-system/parity-log.md) si hubo cambio publicado.
 
-1. Leer `ds-config.json`.
-2. Consultar normas externas: Material 3 (componente objetivo) y WCAG relevante.
-3. Obtener variables de Figma (primitivas y semanticas) desde el archivo configurado.
-4. Verificar que cada token semantico de color referencia una primitiva por alias.
-5. Generar o actualizar mapeo semantico para Compose.
-6. Verificar contrato de componente: estados, accesibilidad, interaccion, constraints de contenido y responsive.
-7. Validar quality gates:
-   - semantic-only consumption
-   - alias-chain valid
-   - material3 mapping valid
-   - contraste base
-   - touch target >= 48dp
-   - focus visible
-   - do/don't material documented
-8. Actualizar documentacion en `docs/design-system/`.
+## Inputs
 
-## Salida esperada
+- File key DS: `zrGAL4v6MEMc9hzZemU432`
+- Estado repo: `docs/design-system/variables.json`, `designsystem/.../Color.kt`, `Theme.kt`
 
-- Cambios en tema Compose alineados con semanticos.
-- Reporte de drift (si existe) entre Figma y Android.
-- Notas de gobernanza documentadas.
-- Registro de conformidad del componente con Material 3 + excepciones justificadas.
+`ds-config.json` del repo archivo **no** es SoT de este proyecto.
 
-## Criterios de rechazo
+## Salida
 
-- Se detectan componentes consumiendo primitivas directas.
-- Se detectan semanticos con hex hardcodeado.
-- Falta de paridad light/dark en tokens semanticos criticos.
-- No existe evidencia de consulta de guia Material 3 para el componente.
-- El componente no cumple requisitos minimos de accesibilidad.
+- Variables Figma enlazadas; export JSON actualizado si corresponde
+- Sin nuevos `figma-*-audit-*.md` — solo parity-log

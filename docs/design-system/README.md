@@ -22,6 +22,7 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 | [parity-log.md](parity-log.md) | **Bitácora única** paridad Compose ↔ Figma (pendiente + registro) |
 | [AGENTS.md](../../AGENTS.md) | Rol **DS Parity** y subagentes Cursor |
 | [audits/README.md](audits/README.md) | Índice audits (vivos vs histórico) |
+| [design-pipeline.md](design-pipeline.md) | Atajo → [governance/design-pipeline.md](governance/design-pipeline.md) (§0 matriz agentes) |
 | [governance/design-pipeline.md](governance/design-pipeline.md) | Flujo Compose → Figma → paridad → showcase |
 | [typography.md](typography.md) | Fraunces + Inter, mapeo a roles M3 |
 | [iconography.md](iconography.md) | Material Symbols Sharp + iconos propios |
@@ -39,13 +40,16 @@ M3 canónico con identidad editorial. Sin capa semántica propia ni pipeline Pen
 
 ## Pipeline activo
 
+**Lectura obligatoria agentes:** [governance/agent-workflow.md](governance/agent-workflow.md) (dos frases) · [governance/design-pipeline.md](governance/design-pipeline.md) §0.
+
 ```text
-Figma (variables · Desktop Bridge) → variables.json → Compose
-         ↓
-    Showcase externo (documentación de componentes)
+Pantallas (95 %):  Compose → Figma design-file (instancias + binds existentes) → parity-log / bindings
+Token nuevo:       Figma variable → variables.json → espejo Kotlin (misma tanda, 0 huérfanos)
+Color tema:        Figma M3 Schemes → export → Color.kt (diff 0)
+Docs componente:   Compose → Figma set → ds-showcase (ficha)
 ```
 
-Color: **no** MTB como bucle principal (re-harmoniza `primary`). Ver [color.md](color.md).
+Color: **no** MTB como bucle principal (re-harmoniza `primary`). Ver [color.md](color.md). Espaciado `mot/*`: [spacing.md](spacing.md).
 
 **Figma:** solo variables y component sets — **no** láminas ni guías en el archivo DS.  
 **Showcase:** fichas de componente, variantes, a11y, ejemplos — ver [showcase.md](showcase.md).

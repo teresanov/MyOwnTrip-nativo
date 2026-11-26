@@ -1,57 +1,29 @@
 ---
 name: ds-audit
-description: Audita el DS contra quality gates (tokens, a11y, Material usage, composición canónica) y genera reportes accionables.
+description: >-
+  LEGADO ARC — no usar para cierres en MOT nativo. Requiere components.index.json
+  inexistente. Usar myowntrip-ds-parity + parity-log o myowntrip-ds-audit para tokens.
+disable-model-invocation: true
 ---
 
-# DS Audit - MyOwnTrip
+# DS Audit (ARC) — LEGADO en MOT nativo
 
-Auditoría operativa del DS usando los artefactos del índice + knowledge base.
+Este skill describe el pipeline **ARC** del repo archivo (`../MyOwnTrip`): informes JSON bajo `docs/design-system/index/reports/`, gates con `SemanticColors`, índice `components.index.json`.
 
-Cierre de componente: validar gates del pipeline **Compose → Figma → Showcase → Notion** (`docs/design-system/governance/design-pipeline.md`). Compose es la fuente de verdad; Figma es espejo y el showcase documentación. Notion registra el trabajo, no documenta componentes.
+**En `MyOwnTrip_nativo` ese índice no existe y no es el pipeline vigente.**
 
-## Inputs
+## Usar en su lugar
 
-- `docs/design-system/index/components.index.json`
-- `docs/design-system/knowledge/manifest.json`
-- Código objetivo en `app/src/main/java/...`
+| Objetivo | Herramienta |
+|----------|-------------|
+| Paridad Compose ↔ Figma, caps, bindings | **`myowntrip-ds-parity`** + [`parity-log.md`](../../../docs/design-system/parity-log.md) |
+| Drift `variables.json` ↔ `Color.kt`, m3Canonical | **`myowntrip-ds-audit`** |
+| Mapa componentes ↔ código | [`figma-compose-bindings.md`](../../../docs/design-system/figma-compose-bindings.md) |
+| Proceso único | [`docs/design-system/governance/design-pipeline.md`](../../../docs/design-system/governance/design-pipeline.md) **§0** |
 
-## Output
+## Solo reactivar ds-audit si…
 
-- `docs/design-system/index/reports/audits/YYYY-MM-DD_HHMMSS.ds-audit.json` (u otra convención versionada; ver `index/reports/README.md`)
+- Se implementa y mantiene `docs/design-system/index/components.index.json` en este repo, **y**
+- Se actualiza este skill para gates **m3Canonical** (sin `SemanticColors` en UI).
 
-## Gates estándar (por componente)
-
-- `semantic-token-only-consumption`
-- `figma-alias-chain-valid` (cuando aplique)
-- `compose-material3-mapping-valid`
-- `dark-mode-parity`
-- `a11y-contrast-pass`
-- `a11y-touch-target-48dp`
-- `a11y-focus-visible`
-- `interaction-states-complete`
-- `material3-dos-donts-reviewed`
-- `canonical-subcomponents-enforced`
-- `content-constraints-defined`
-
-## Protocolo (ARC - Report)
-
-1. Seleccionar scope (componentes o paths).
-2. Para cada componente del índice:
-   - Escanear el archivo fuente por patrones prohibidos:
-     - `Color(0x` literals
-     - `PrimitiveColors.`
-     - `SemanticColors.Light` hardcodeado sin resolver modo
-   - Verificar gates declarados en el índice.
-3. Enriquecer cada violación con referencias:
-   - Primero buscar en knowledge base (`docs/design-system/knowledge/*.entry.json`).
-   - Si falta, registrar “pendiente” y proponer crear entry nueva.
-4. Generar reporte JSON compacto y accionable.
-
-## Protocolo (ARC - Compose / Heal)
-
-Cuando el usuario pida “arregla estas violaciones”, el agente debe:
-
-- aplicar la corrección mínima,
-- evitar romper el canon (usar subcomponentes DS),
-- actualizar el índice (si cambió la API),
-- y anexar una entry de knowledge si hubo decisión nueva.
+Hasta entonces: **no generar** `*.ds-audit.json` ni seguir protocolo ARC aquí.

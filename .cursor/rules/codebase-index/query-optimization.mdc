@@ -5,9 +5,11 @@ alwaysApply: false
 
 # DS Codebase Index - Query optimization
 
+**MOT nativo:** el índice ARC no existe. Usar [`figma-compose-bindings.md`](../../../docs/design-system/figma-compose-bindings.md) y [`parity-log.md`](../../../docs/design-system/parity-log.md). Ver [`design-pipeline.md`](../../../docs/design-system/governance/design-pipeline.md) §0.
+
 Si existe un índice, úsalo primero:
 
-- Para inventario: `docs/design-system/index/components.index.json`
+- Para inventario: `docs/design-system/index/components.index.json` *(no presente en nativo)*
 - Para gates y drift: `docs/design-system/index/reports/audits/*.ds-audit.json`
 - Para conocimiento: `docs/design-system/knowledge/manifest.json`
 
