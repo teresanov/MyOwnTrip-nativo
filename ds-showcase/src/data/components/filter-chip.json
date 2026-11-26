@@ -11,7 +11,7 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=53923-28270"
   },
   "usage": {
-    "purpose": "Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. El runtime es el FilterChip de Material 3, sin wrapper MOT.",
+    "purpose": "Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. Es el FilterChip de Material 3, sin componente propio de MyOwnTrip.",
     "when": [
       "Hay un conjunto cerrado de categorías y la persona cambia de una a otra con un toque.",
       "El valor se queda visible en la misma pantalla (no dispara una acción que cierra un flujo).",
@@ -48,7 +48,7 @@
       {
         "if": "La opción está activa",
         "use": "FilterChip selected = true",
-        "note": "Fill secondaryContainer y check leading de M3. En Wallet solo hay una seleccionada por eje."
+        "note": "Relleno secondaryContainer, sin check: la app no pasa icono inicial. En Wallet solo hay una seleccionada por eje."
       }
     ],
     "related": [
@@ -77,7 +77,7 @@
       "id": "outlined-selected",
       "label": "Outlined · Selected",
       "composable": "FilterChip",
-      "usage": "Filtro activo. M3 pone el check al inicio; no hace falta un leadingIcon propio."
+      "usage": "Filtro activo. La selección se ve en el relleno; la app no añade check."
     }
   ],
   "anatomy": [
@@ -87,7 +87,7 @@
     "<strong>Icono inicial</strong> — opcional (<code>leadingIcon</code>). El producto no lo usa: la selección se ve en el relleno del contenedor."
   ],
   "behavior": {
-    "lead": "El chip no cambia de radio al tocarlo: selected se lee por color y por el check. El morph 0→20 es del botón, no de este control.",
+    "lead": "El chip no cambia de radio al tocarlo: la selección se lee por el relleno del contenedor. El morph 0→20 es del botón, no de este control.",
     "rows": [
       {
         "state": "Unselected",
@@ -95,7 +95,7 @@
       },
       {
         "state": "Selected",
-        "detail": "Fill secondaryContainer, onSecondaryContainer, check leading. En Wallet, una sola opción por eje."
+        "detail": "Relleno secondaryContainer y texto onSecondaryContainer, sin check. En Wallet, una sola opción por eje."
       },
       {
         "state": "Hover / pressed",
@@ -172,7 +172,7 @@
     "Muestra los chips siempre en un conjunto; pueden desplazarse en horizontal.",
     "Etiquetas cortas, con la misma tipografía que los botones.",
     "Redacta con sustantivos que describan la categoría incluida en los resultados.",
-    "Al tocar, el chip se activa y aparece el check; Wallet usa una sola selección por eje."
+    "Al tocar, el chip se activa: cambia el relleno. Wallet usa una sola selección por eje."
   ],
   "donts": [
     "No sustituyas acciones principales por chips: avanzar o retroceder va en botones.",
@@ -221,8 +221,8 @@
       {
         "name": "leadingIcon",
         "type": "@Composable (() -> Unit)?",
-        "default": "check si selected",
-        "note": "No override en Wallet."
+        "default": "null",
+        "note": "Ninguna pantalla lo pasa."
       }
     ],
     "snippet": "Row(\n    modifier = Modifier.horizontalScroll(rememberScrollState()),\n    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),\n) {\n    FilterChip(\n        selected = filterPhase == WalletDocumentFilterPhase.Active,\n        onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Active) },\n        label = { Text(\"Activos\") },\n    )\n}"

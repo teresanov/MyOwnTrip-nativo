@@ -14,7 +14,7 @@ import {
   renderUsage,
   renderVariantTable,
 } from "../lib/component-page.js";
-import { renderAnatomy, renderMeasures, STARS_ICON } from "../lib/anatomy-diagram.js";
+import { renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
 import { bootLiveSpecimens, liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
 import { initLiveInspectors } from "../lib/live-inspector.js";
 
@@ -56,11 +56,7 @@ const playgroundControls = `
 
 document.getElementById("component-header").innerHTML = renderComponentHeader({
   ...data,
-  specimenHtml: `
-    <button type="button" class="mot-btn mot-btn--filled">${STARS_ICON}Abrir cuaderno</button>
-    <button type="button" class="mot-btn mot-btn--tonal">Siguiente</button>
-    <button type="button" class="mot-btn mot-btn--outlined">Cancelar</button>
-  `,
+  specimenHtml: liveHostHtml("button/set", { theme: "light" }, { height: 110, label: "MOTButton reales" }),
 });
 
 document.getElementById("component-main").innerHTML = [
@@ -76,10 +72,7 @@ document.getElementById("component-main").innerHTML = [
   renderGuidelines(data).replace(
     "</section>",
     `${renderDoDontPair({
-      doHtml: `
-        <button type="button" class="mot-btn mot-btn--filled">${STARS_ICON}Abrir cuaderno</button>
-        <button type="button" class="mot-btn mot-btn--outlined">Cancelar</button>
-      `,
+      doHtml: liveHostHtml("button/set", { set: "do", theme: "light" }, { height: 110, label: "Filled y Outlined reales" }),
       doCaption: "La jerarquía la marca la variante (Filled / Outlined), no un color inventado.",
       dontHtml: `<button type="button" class="fake-btn">Guardar</button>`,
       dontCaption: "Un botón a mano con hex y radio de píldora. No es el sistema.",

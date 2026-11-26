@@ -16,7 +16,7 @@ import {
   sectionOpen,
   table,
 } from "../lib/component-page.js";
-import { DIALOG_ERROR, renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
+import { renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
 import { bootLiveSpecimens, liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
 import { initLiveInspectors } from "../lib/live-inspector.js";
 
@@ -49,25 +49,22 @@ const SCENARIOS = {
   },
 };
 
-function dialogPanel({ icon, title, body, dismiss, confirm, destructive }, ids = {}) {
-  const titleId = ids.title || "";
-  const bodyId = ids.body || "";
-  return `
-    ${icon ? `<div class="dialog-demo__icon">${DIALOG_ERROR}</div>` : ""}
-    <h3 class="dialog-demo__title"${titleId ? ` id="${titleId}"` : ""}>${title}</h3>
-    <p class="dialog-demo__body"${bodyId ? ` id="${bodyId}"` : ""}>${body}</p>
-    <div class="dialog-demo__actions">
-      <button type="button" class="mot-btn mot-btn--text" ${ids.cancel ? `id="${ids.cancel}"` : "tabindex=\"-1\""}>${dismiss}</button>
-      <button type="button" class="mot-btn mot-btn--text${
-        destructive ? " dialog-demo__destructive" : ""
-      }" ${ids.confirm ? `id="${ids.confirm}"` : "tabindex=\"-1\""}>${confirm}</button>
-    </div>
-  `;
-}
+/** Parámetros de la demo para un escenario. */
+const scenarioProps = (s) => ({
+  icon: s.icon,
+  title: s.title,
+  body: s.body,
+  confirm: s.confirm,
+  dismiss: s.dismiss,
+  destructive: s.destructive,
+});
+
+const staticDialog = (props, label) =>
+  liveHostHtml("basic-dialog/static", { ...props, theme: "light" }, { height: 400, label });
 
 document.getElementById("component-header").innerHTML = renderComponentHeader({
   ...data,
-  specimenHtml: `<div class="dialog-demo dialog-demo--specimen">${dialogPanel(SCENARIOS.delete)}</div>`,
+  specimenHtml: staticDialog(scenarioProps(SCENARIOS.delete), "AlertDialog real"),
 });
 
 const screens = (data.screens || []).map((e) => [`<code>${e.screen}</code>`, e.pattern]);
@@ -103,15 +100,9 @@ document.getElementById("component-main").innerHTML = [
   renderGuidelines(data).replace(
     "</section>",
     `${renderDoDontPair({
-      doHtml: `<div class="dialog-demo dialog-demo--specimen">${dialogPanel(SCENARIOS.delete)}</div>`,
+      doHtml: staticDialog(scenarioProps(SCENARIOS.delete), "Diálogo bien planteado"),
       doCaption: "Pregunta concreta, consecuencia en el cuerpo, dos text buttons, destructivo en error.",
-      dontHtml: `<div class="dialog-demo dialog-demo--specimen">
-        <h3 class="dialog-demo__title">¡Atención!</h3>
-        <p class="dialog-demo__body">¿Estás seguro?</p>
-        <div class="dialog-demo__actions">
-          <button type="button" class="mot-btn mot-btn--filled" tabindex="-1">OK</button>
-        </div>
-      </div>`,
+      dontHtml: staticDialog({ title: "¡Atención!", body: "¿Estás seguro?", confirm: "OK", filledconfirm: true }, "Diálogo mal planteado"),
       dontCaption: "Alarma, pregunta vacía y un filled que no es MOTTextButton.",
     })}</section>`,
   ),
@@ -132,11 +123,7 @@ const darkBox = document.getElementById("dialog-dark");
 function sync() {
   const s = SCENARIOS[scenarioSel.value] || SCENARIOS.delete;
   setLiveProps(host, {
-    icon: s.icon,
-    title: s.title,
-    body: s.body,
-    confirm: s.confirm,
-    dismiss: s.dismiss,
+    ...scenarioProps(s),
     theme: darkBox.checked ? "dark" : "light",
   });
 }

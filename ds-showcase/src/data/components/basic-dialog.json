@@ -206,7 +206,7 @@
     "sourceFile": "app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletDialogs.kt",
     "import": "androidx.compose.material3.AlertDialog",
     "composable": "AlertDialog",
-    "note": "Las acciones son MOTTextButton. No hay wrapper MOT del diálogo.",
+    "note": "Las acciones son MOTTextButton.",
     "params": [
       {
         "name": "onDismissRequest",

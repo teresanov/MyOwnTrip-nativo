@@ -200,7 +200,7 @@
     "sourceFile": "androidx.compose.material3.SnackbarHost",
     "import": "androidx.compose.material3.SnackbarHost",
     "composable": "SnackbarHost / Snackbar",
-    "note": "Sin wrapper MOT. Vive en el Scaffold.",
+    "note": "Vive en el Scaffold de la pantalla.",
     "params": [
       {
         "name": "snackbarHostState",

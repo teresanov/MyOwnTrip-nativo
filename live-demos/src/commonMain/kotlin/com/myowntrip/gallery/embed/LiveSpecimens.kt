@@ -103,6 +103,11 @@ fun LiveSpecimen(
         "snackbar/anatomy" -> SnackbarAnatomy(props)
         "basic-dialog/playground" -> DialogPlayground(props)
         "basic-dialog/anatomy" -> DialogAnatomy(props)
+        // Ejemplos fijos para la cabecera de la ficha y para «Bien / Mal».
+        "button/set" -> ButtonSet(props)
+        "filter-chip/single" -> FilterChipSingle(props)
+        "snackbar/static" -> SnackbarStatic(props)
+        "basic-dialog/static" -> DialogStatic(props)
         // Cualquier specimen del catálogo (button/sizes, icon-button/round…) se puede incrustar por su id.
         else -> Catalog.firstOrNull { it.id == id }?.content?.invoke() ?: Text("Specimen desconocido: $id")
       }
@@ -237,8 +242,9 @@ private fun TextFieldPlayground(p: Map<String, String>) {
     },
     isError = error,
     supportingText = when {
-      error -> { { Text(p["errorText"] ?: "El destino es obligatorio") } }
-      support -> { { Text(p["supportText"] ?: "Ciudad o región") } }
+      // errorText vacío: error solo con color (ejemplo de lo que no se hace).
+      error && p["errortext"] != "" -> { { Text(p["errortext"] ?: "El destino es obligatorio") } }
+      support -> { { Text(p["supporttext"] ?: "Ciudad o región") } }
       else -> null
     },
   )
@@ -257,7 +263,7 @@ private fun TextFieldAnatomy(p: Map<String, String>) {
   BasicTextField(
     value = value,
     onValueChange = { value = it },
-    modifier = Modifier.width(280.dp).part("field"),
+    modifier = Modifier.width(220.dp).part("field"),
     textStyle = LocalTextStyle.current.copy(color = textColor),
     cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
     interactionSource = interaction,
@@ -385,7 +391,7 @@ private fun DialogPlayground(p: Map<String, String>) {
       } else null,
       title = { Text(p["title"] ?: "¿Eliminar documento?") },
       text = { Text(p["body"] ?: "Se borrará el documento y su archivo del dispositivo.") },
-      confirmButton = { MOTTextButton(onClick = { open = false }) { Text(p["confirm"] ?: "Eliminar") } },
+      confirmButton = { MOTTextButton(onClick = { open = false }) { ConfirmLabel(p) } },
       dismissButton = { MOTTextButton(onClick = { open = false }) { Text(p["dismiss"] ?: "Cancelar") } },
     )
   }
@@ -401,7 +407,72 @@ private fun DialogAnatomy(p: Map<String, String>) {
     icon = { Icon(MOTIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.part("icon")) },
     title = { Text("¿Eliminar «Lisboa 2026»?", Modifier.part("title")) },
     text = { Text("Se borrarán sus documentos y gastos. No se puede deshacer.", Modifier.part("body")) },
-    confirmButton = { MOTTextButton(onClick = {}, modifier = Modifier.part("confirm")) { Text("Eliminar") } },
+    confirmButton = { MOTTextButton(onClick = {}, modifier = Modifier.part("confirm")) { Text("Eliminar", color = MaterialTheme.colorScheme.error) } },
     dismissButton = { MOTTextButton(onClick = {}, modifier = Modifier.part("dismiss")) { Text("Cancelar") } },
+  )
+}
+
+/** Texto de la acción de confirmar: en error cuando la acción destruye algo (como en WalletDialogs). */
+@Composable
+private fun ConfirmLabel(p: Map<String, String>) {
+  val label = p["confirm"] ?: "Eliminar"
+  if (p["destructive"] == "true") Text(label, color = MaterialTheme.colorScheme.error) else Text(label)
+}
+
+/** Botones en fila con textos de la app. set=do: solo Filled + Outlined. */
+@Composable
+private fun ButtonSet(p: Map<String, String>) {
+  Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+    MOTButton(onClick = {}) { Text("Guardar cambios") }
+    if (p["set"] != "do") MOTTonalButton(onClick = {}) { Text("Registrar como gasto") }
+    MOTOutlinedButton(onClick = {}) { Text("Cancelar") }
+  }
+}
+
+/** Un chip suelto (ejemplo de mal uso: un verbo de acción no es un filtro). */
+@Composable
+private fun FilterChipSingle(p: Map<String, String>) {
+  FilterChip(selected = p["selected"] != "false", onClick = {}, label = { Text(p["label"] ?: "Guardar") })
+}
+
+/** Snackbar fijo, con los colores que pinta SnackbarHost. filled=true: acción con MOTButton (mal uso). */
+@Composable
+private fun SnackbarStatic(p: Map<String, String>) {
+  val action = p["action"]?.ifBlank { null }
+  Snackbar(
+    modifier = Modifier.padding(horizontal = 16.dp),
+    action = action?.let { label ->
+      {
+        if (p["filled"] == "true") {
+          MOTButton(onClick = {}) { Text(label) }
+        } else {
+          TextButton(
+            onClick = {},
+            colors = ButtonDefaults.textButtonColors(contentColor = SnackbarDefaults.actionColor),
+          ) { Text(label) }
+        }
+      }
+    },
+  ) { Text(p["message"] ?: "«Billete tren» archivado") }
+}
+
+/** Diálogo ya abierto. filledconfirm=true: confirmación con MOTButton y sin cancelar (mal uso). */
+@Composable
+private fun DialogStatic(p: Map<String, String>) {
+  val filled = p["filledconfirm"] == "true"
+  AlertDialog(
+    onDismissRequest = {},
+    icon = if (p["icon"] == "true") {
+      { Icon(MOTIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) }
+    } else null,
+    title = { Text(p["title"] ?: "¿Eliminar documento?") },
+    text = { Text(p["body"] ?: "Se borrará el documento y su archivo del dispositivo.") },
+    confirmButton = {
+      if (filled) MOTButton(onClick = {}) { Text(p["confirm"] ?: "OK") }
+      else MOTTextButton(onClick = {}) { ConfirmLabel(p) }
+    },
+    dismissButton = if (filled) null else {
+      { MOTTextButton(onClick = {}) { Text(p["dismiss"] ?: "Cancelar") } }
+    },
   )
 }

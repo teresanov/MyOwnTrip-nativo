@@ -1,10 +1,9 @@
 import data from "../data/components/snackbar.json";
 import { mountComponentPage } from "../lib/generic-component.js";
 import { liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
-import { snackbarHtml } from "../lib/specimens.js";
 
 mountComponentPage(data, {
-  specimenHtml: snackbarHtml(),
+  specimenHtml: liveHostHtml("snackbar/static", { action: "Deshacer", theme: "light" }, { height: 110, label: "Snackbar real" }),
   playground: {
     id: "ejemplo",
     title: "Ejemplo",
@@ -18,9 +17,9 @@ mountComponentPage(data, {
       <label class="playground-check"><input type="checkbox" id="snackbar-dark" /><span>Tema oscuro</span></label>`,
   },
   doDont: {
-    doHtml: snackbarHtml(),
-    doCaption: "Ack breve, una acción de texto, inverseSurface.",
-    dontHtml: `<div class="snackbar-demo"><span>Error crítico: no se pudo borrar</span><button type="button" class="mot-btn mot-btn--filled" tabindex="-1">OK</button></div>`,
+    doHtml: liveHostHtml("snackbar/static", { action: "Deshacer", theme: "light" }, { height: 110, label: "Snackbar real" }),
+    doCaption: "Confirmación breve y una acción de texto para deshacer.",
+    dontHtml: liveHostHtml("snackbar/static", { message: "Error crítico: no se pudo borrar", action: "OK", filled: true, theme: "light" }, { height: 110, label: "Snackbar con botón relleno" }),
     dontCaption: "Un error que exige decisión es un diálogo, no un snackbar con Filled.",
   },
   setup() {

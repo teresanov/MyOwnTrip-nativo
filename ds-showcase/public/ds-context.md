@@ -1,6 +1,6 @@
 # MyOwnTrip · Design System — contexto para agentes
 
-> Generado el 2026-11-24 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
+> Generado el 2026-11-26 desde `ds-showcase/src/data/`. **No editar a mano:** los cambios se pierden en el siguiente build.
 > Fuente de verdad del comportamiento: el código de `designsystem/` y `app/`.
 
 ## Principios
@@ -136,9 +136,12 @@ MOTButton(
 
 ### Variantes
 
-- **Standard · Square** → `MOTIconButton`: Único estilo con wrapper. App bars, filas, campos, cards.
-- **Filled / Tonal / Outlined**: Publicados en Figma (×4 con standard). Sin wrapper específico en Compose.
-- **Togglable (×4)**: Publicados en Figma. En Compose el estado activo se fuerza con forceActive en rememberMOTButtonShape.
+- **Square** → `MOTIconButton(type = Square)`: Por defecto. Rectangular en reposo y redondeado a 20 dp al interactuar, como Button. App bars, filas, campos y cards.
+- **Round** → `MOTIconButton(type = Round)`: Ya redondeado a 20 dp en reposo. No es un círculo: el único control circular es el FAB.
+- **Estilo Standard** → `MOTIconButton()`: Sin contenedor visible: solo el icono; la capa de estado aparece al interactuar. Es el estilo de todos los usos actuales de la app.
+- **Estilos Filled y Tonal** → `colors = IconButtonDefaults.filledIconButtonColors() / filledTonalIconButtonColors()`: Con contenedor de color. Es el estilo por defecto del set «Icon button» de Figma; en código se pide con colors.
+- **Tamaños XSmall · Small · Medium · Large** → `size = MOTIconButtonSize.*`: Alto del contenedor 32 · 40 · 56 · 96 dp. Small (40) es el de producto.
+- **Anchos Narrow · Default · Wide** → `width = MOTIconButtonWidth.*`: Más estrecho o más ancho que el cuadrado, para alinear con otros controles o dar más peso a la acción.
 
 ### Cuándo usarlo
 
@@ -154,9 +157,10 @@ MOTButton(
 
 ### Elegir variante
 
-- Acción común en app bar, fila o campo (todos los usos actuales) → `MOTIconButton` — Estilo standard: sin contenedor, bajo énfasis.
-- Necesitas separar el botón de una imagen o de un fondo variable → `Icon button Filled / Tonal / Outlined (set de Figma)` — Hoy sin wrapper propio en Compose: se pasa por el parámetro colors.
-- Representa un estado activable (favorito, marcador) → `Icon button togglable (set de Figma)` — Icono outline sin seleccionar y relleno al seleccionar.
+- Acción común en app bar, fila, campo o card (casi todos los usos) → `MOTIconButton Square, Small` — Sin contenedor visible: bajo énfasis.
+- El botón debe verse ya redondeado, sin esperar a la interacción → `MOTIconButton Round` — Mismo radio de 20 dp, en reposo.
+- Necesitas separarlo de una imagen o de un fondo variable → `MOTIconButton con colors Filled o Tonal` — No hay wrappers propios: el contenedor se pide con IconButtonDefaults.filledIconButtonColors() o filledTonalIconButtonColors(). Outlined no está disponible en el wrapper.
+- Representa un estado activable (favorito, marcador) → `Pendiente` — El wrapper no expone hoy un modo seleccionable.
 
 ### Prohibido en este componente
 
@@ -164,7 +168,7 @@ MOTButton(
 - No uses un icono ambiguo cuya acción no se entienda sin texto: en ese caso usa un Button.
 - No usar IconButton de M3 suelto: se pierde el morph de forma.
 - No dejar un icono como único contenido del botón sin nombre accesible en ningún sitio.
-- No usar Round en reposo: el Round de Figma es el destino del morph (20 dp), no un círculo.
+- No usar un círculo: Round es un radio de 20 dp, no Corner/Full. El único control circular es el FAB.
 
 ### Accesibilidad
 
@@ -191,73 +195,125 @@ MOTIconButton(
 ## Text field
 
 - Estado: ready · P0
-- Para qué: Los campos de texto recogen la información que el usuario escribe en formularios: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos siempre la variante Outlined de Material 3 (`OutlinedTextField`), enlazada al tema de la app sin wrapper MOT adicional.
-- Composable: sin documentar en la ficha
+- Para qué: Un campo de texto recoge lo que la persona escribe en un formulario: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos OutlinedTextField de Material 3, con el tema de la app y sin componente propio de MyOwnTrip.
+- Composable: `OutlinedTextField` — `androidx.compose.material3.OutlinedTextField`
+- Fuente: `androidx.compose.material3.OutlinedTextField`
 
 ### Variantes
 
-- **Outlined · Enabled**: Estado por defecto en pantallas de formulario.
-- **Outlined · Focused**: Borde y label en `primary`; state layer M3 en runtime.
-- **Outlined · Error**: Validación inline: borde + supporting text + icono de error (nunca solo color).
-- **Outlined · Disabled**: Opacidad 38% contenido / 12% contenedor; p. ej. campos bloqueados tras guardar viaje.
+- **Outlined · Enabled** → `OutlinedTextField`: Estado por defecto.
+- **Outlined · Focused** → `OutlinedTextField`: Borde y label en primary; state layer en runtime.
+- **Outlined · Error** → `OutlinedTextField`: Borde + supporting text + icono. Nunca solo color.
+- **Outlined · Disabled** → `OutlinedTextField`: 38 % contenido / 12 % contenedor.
+
+### Cuándo usarlo
+
+- Hay que escribir un dato (nombre, título, notas, importe).
+- El valor se valida en el propio campo, no en un diálogo.
+- Hace falta un teclado adecuado (texto, número, email).
+
+### Cuándo NO usarlo
+
+- Elegir una fecha o una hora → Date & time pickers
+- Elegir una categoría de un conjunto pequeño → Filter chip
+
+### Elegir variante
+
+- Formulario de producto (viajes, Wallet, gastos) → `OutlinedTextField` — Única variante en flujos nuevos.
+- El dato no valida → `isError + supportingText + icono` — Nunca solo el color del borde.
 
 ### Prohibido en este componente
 
-- No añadas TextField Filled en flujos nuevos salvo que documentes un gap explícito.
-- No inventes tokens por estado (`hover`, `pressed`) ni primitivos legacy en UI.
-- No uses Fraunces en label ni en el texto del input.
-- No simules campos con rectángulos sueltos en Figma: instancia el set Outlined.
+- No uses Fraunces en label ni en el input.
+- No inventes tokens por estado (hover, pressed).
+- No simules campos con rectángulos en Figma.
+- No TextField Filled en flujos nuevos sin gap explícito.
 
 ### Accesibilidad
 
-- Label asociado al campo (TalkBack lee label + valor + error).
-- Supporting text de error en `liveRegion` cuando cambia tras submit.
-- Teclado: `ImeAction` coherente (Next / Done).
-- Contraste label/input ≥ 4.5:1 sobre surface.
+- Label asociado: TalkBack lee label + valor + error.
+- Supporting text de error en liveRegion tras submit.
+- ImeAction Next / Done coherente con el formulario.
+
+### Uso típico
+
+```kotlin
+OutlinedTextField(
+    value = state.name,
+    onValueChange = viewModel::onNameChange,
+    label = { Text("Nombre del viaje") },
+    isError = state.nameError != null,
+    supportingText = state.nameError?.let { { Text(it) } },
+    modifier = Modifier.fillMaxWidth(),
+)
+```
 
 ## Date & time pickers
 
 - Estado: ready · P0
-- Para qué: Entrada de fechas y horas en formularios de viaje, Wallet y plan. El producto usa composables propios en `ui/components/date/` (campos Outlined + modales M3 adaptados), no los sets M3 de catálogo archivados en Figma. El rango de viaje permite teclado `dd/MM/yyyy` y calendario acotado; Wallet usa fecha única y hora 24 h.
-- Composable: sin documentar en la ficha
+- Para qué: La entrada de fechas y horas no usa el DatePicker de catálogo M3 tal cual. El producto tiene composables Mot* en ui/components/date/: campos Outlined y modales adaptados. El rango de viaje admite teclado dd/MM/yyyy y un calendario de un mes; Wallet usa fecha única y hora 24 h.
+- Composable: `MotDateRangeField` — `com.myowntrip.app.ui.components.date.MotDateRangeField`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/date`
 
 ### Variantes
 
-- **MotDateRangeField**: Crear y editar viaje — fechas inicio/fin.
-- **MotDateRangePickerDialog · Surface**: Days (mes con flechas), Year, Month — selección rango.
-- **MotDateField**: Wallet — fecha del documento.
-- **MotDatePickerDialog**: Picker día único desde MotDateField.
-- **MotTimeField**: Wallet y plan — hora 24 h.
-- **MotTimePickerDialog**: Teclado horario por defecto; reloj opcional.
+- **MotDateRangeField** → `MotDateRangeField`: Inicio y fin de viaje. Teclado + calendario.
+- **MotDateRangePickerDialog** → `MotDateRangePickerDialog`: Un mes (Days · Year · Month).
+- **MotDateField** → `MotDateField`: Fecha única en Wallet.
+- **MotDatePickerDialog** → `MotDatePickerDialog`: Día único, sin mode toggle.
+- **MotTimeField** → `MotTimeField`: Hora 24 h.
+- **MotTimePickerDialog** → `MotTimePickerDialog`: Teclado horario; reloj opcional.
+
+### Cuándo usarlo
+
+- Hay que recoger inicio y fin de un viaje.
+- Hay que recoger la fecha o la hora de un documento o de un bloque del plan.
+
+### Cuándo NO usarlo
+
+- Texto libre que no es una fecha → Text field
+
+### Elegir variante
+
+- Crear o editar viaje → `MotDateRangeField` — Dos OutlinedTextField + icono calendario → MotDateRangePickerDialog (un mes, no lista vertical).
+- Fecha de un documento (Wallet) → `MotDateField` — Campo read-only + MotDatePickerDialog.
+- Hora (Wallet, plan) → `MotTimeField` — TimeInput 24 h por defecto; reloj M3 opcional.
 
 ### Prohibido en este componente
 
-- No uses el kit M3 «Input date picker» / «Modal date picker» del ARCHIVE en design-file.
-- No sustituyas el calendario de un mes por DateRangePicker de lista vertical.
-- No enlaces tokens kit-only (`header-gap`, `field-top`, `label-gap`, `time-input/*`) en láminas PRODUCT.
-- No documentes MotTripDatePickerDialog como patrón de producto hasta que una pantalla lo use.
-- No dibujar campos con frames sueltos: Text field Outlined + icon slot.
-- No promover Keyboard picker `52949:28053` como SoT de producto.
-- No ampliar MOTSpacing.DatePicker.* de kit sin acuerdo explícito.
+- No uses el DateRangePicker de lista vertical.
+- No dibujes campos con frames: son Text field Outlined + icon button.
+- No promover el Keyboard picker de archivo como SoT.
 
 ### Accesibilidad
 
-- Campos read-only: contentDescription con label + valor formateado.
-- Iconos trailing: descripción «Abrir calendario» / «Abrir selector de hora».
-- Errores de parseo anunciados en supporting text al perder foco.
-- Modales: dismiss con back; Aceptar deshabilitado hasta rango completo (fin sin elegir).
+- Campos read-only: contentDescription con label + valor.
+- Trailing: «Abrir calendario» / «Abrir selector de hora».
+- Errores de parseo en supporting text al perder foco.
+- Aceptar deshabilitado hasta rango completo.
+
+### Uso típico
+
+```kotlin
+MotDateRangeField(
+    startDate = state.start,
+    endDate = state.end,
+    onRangeChange = viewModel::onDatesChange,
+    modifier = Modifier.fillMaxWidth(),
+)
+```
 
 ## Filter chip
 
 - Estado: ready · P0
-- Para qué: Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. El runtime es el FilterChip de Material 3, sin wrapper MOT.
+- Para qué: Un filter chip elige una opción dentro de un conjunto pequeño y la deja activa. En MyOwnTrip vive en filas horizontales con scroll —Activos / Archivados / Todos en Wallet— y en formularios con pocas categorías. Es el FilterChip de Material 3, sin componente propio de MyOwnTrip.
 - Composable: `FilterChip` — `androidx.compose.material3.FilterChip`
 - Fuente: `app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt`
 
 ### Variantes
 
 - **Outlined · Unselected** → `FilterChip`: Opciones no activas en la fila (p. ej. «Archivados»).
-- **Outlined · Selected** → `FilterChip`: Filtro activo. M3 pone el check al inicio; no hace falta un leadingIcon propio.
+- **Outlined · Selected** → `FilterChip`: Filtro activo. La selección se ve en el relleno; la app no añade check.
 
 ### Cuándo usarlo
 
@@ -275,7 +331,7 @@ MOTIconButton(
 ### Elegir variante
 
 - La opción no está activa → `FilterChip selected = false` — Outline sobre el fondo; label onSurface.
-- La opción está activa → `FilterChip selected = true` — Fill secondaryContainer y check leading de M3. En Wallet solo hay una seleccionada por eje.
+- La opción está activa → `FilterChip selected = true` — Relleno secondaryContainer, sin check: la app no pasa icono inicial. En Wallet solo hay una seleccionada por eje.
 
 ### Prohibido en este componente
 
@@ -380,142 +436,262 @@ AlertDialog(
 ## Snackbar
 
 - Estado: ready · P0
-- Para qué: Las snackbars confirman que una acción se completó o ofrecen una vía rápida para deshacerla, sin sacar al usuario de la pantalla. Aparecen en Day Hub, Diario, Gastos y Documentos cuando guardamos o revertimos cambios menores. En Compose van dentro de un `SnackbarHost` en el `Scaffold`, usando el componente `Snackbar` de Material 3.
-- Composable: sin documentar en la ficha
+- Para qué: Una snackbar confirma que una acción se completó o ofrece deshacerla, sin sacar a la persona de la pantalla. Aparece en Day Hub, Diario, Gastos y Documentos. En Compose vive en el SnackbarHost del Scaffold, con el Snackbar de Material 3.
+- Composable: `SnackbarHost / Snackbar` — `androidx.compose.material3.SnackbarHost`
+- Fuente: `androidx.compose.material3.SnackbarHost`
 
 ### Variantes
 
-- **Text only**: Ack simple sin acción.
-- **Text + action**: Deshacer o reintentar.
-- **Two lines**: Obligatoria cuando el mensaje ocupa dos líneas (p. ej. Wallet cap 1i «archivado» + Deshacer). No forzar One line y dejar que el texto se corte o desborde.
+- **Solo texto** → `Snackbar`: Ack sin acción.
+- **Texto + acción** → `Snackbar`: Deshacer o reintentar.
+- **Two lines** → `Snackbar`: Cuando el mensaje ocupa dos líneas.
+
+### Cuándo usarlo
+
+- Hay que acusar un guardado, un archivo o un cambio menor.
+- Se puede deshacer en el momento, con un solo verbo (Deshacer, Ver).
+- El mensaje no bloquea: la persona sigue usando la pantalla de detrás.
+
+### Cuándo NO usarlo
+
+- Hay que confirmar una pérdida de datos o una eliminación → Basic dialog
+- Un campo del formulario no valida → Text field con isError + supporting text + icono
+
+### Elegir variante
+
+- Ack simple (Gasto guardado) → `Snackbar sin acción` — Desaparece sola a los 4–10 s.
+- Se puede revertir (documento archivado) → `Snackbar + acción Deshacer` — Permanece hasta actuar o descartar.
+- El copy no cabe en una línea → `Two lines` — No recortes a One line.
 
 ### Prohibido en este componente
 
-- No lo uses para información crítica o que exige acción inmediata: ahí va un diálogo.
-- No añadas iconos; si el mensaje necesita un icono, usa otro componente, como un diálogo.
-- No uses texto con estilos ni enlaces en línea: si hace falta un enlace, usa un botón.
-- No uses botones Filled ni Elevated en un snackbar: atraen demasiada atención.
-- No lo coloques delante de la navegación, de elementos de uso frecuente ni delante o detrás de un FAB.
-- No apiles snackbars ni los pongas uno junto a otro.
-- No hagas del snackbar la única vía para acceder a un caso de uso esencial.
-- No usar snackbar para errores críticos — preferir dialog o inline error con icono.
+- No lo uses para información crítica: ahí va un diálogo.
+- No añadas iconos ni botones Filled.
+- No apiles snackbars ni los pongas delante de la navegación.
 - No sustituir confirmaciones H7 Wallet.
 - No tokens snackbar/hover.
-- No usar One line si el texto del preview/cap es de dos líneas.
 
 ### Accesibilidad
 
-- `SnackbarHostState` anuncia mensaje; acción focusable.
-- No depender solo del color inverse para significado.
-- Alternativa por tap si el gesto de dismiss no es obvio.
+- SnackbarHostState anuncia el mensaje; la acción es focusable.
+- No dependas solo del esquema inverse para el significado.
+- Si hay gesto de dismiss, tiene que haber tap equivalente.
+
+### Uso típico
+
+```kotlin
+val snackbarHostState = remember { SnackbarHostState() }
+Scaffold(
+    snackbarHost = { SnackbarHost(snackbarHostState) },
+) { /* … */ }
+scope.launch {
+    snackbarHostState.showSnackbar("Gasto guardado", actionLabel = "Deshacer")
+}
+```
 
 ## Stacked card
 
 - Estado: ready · P1
-- Para qué: Card vertical editorial: Outlined en listas/feeds, Elevated en destacados. Layouts Media & text (avatar + media + copy) y Text only (header + supporting + dismiss). Filled está CUT.
-- Composable: sin documentar en la ficha
+- Para qué: Una stacked card agrupa un tema en vertical: titular, subtítulo y, si hace falta, media o un dismiss. Outlined en listas y empty states; Elevated cuando hay que destacarla. Filled está cortado. El runtime es MotStackedCard; Home vacío usa HomeEmptyStackedCard.
+- Composable: `MotStackedCard` — `com.myowntrip.app.ui.components.MotStackedCard`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/StackedCard.kt`
 
 ### Variantes
 
-- **Outlined · Media & text**: Home vacío, cards editoriales en feed.
-- **Elevated · Text only**: Avisos descartables o mensajes destacados (si el producto los necesita).
-- **Outlined · Text only**: Mensajes inline en listas (filtro vacío).
+- **Outlined · Media & text** → `MotStackedCard`: Home vacío y cards editoriales con imagen.
+- **Outlined · Text only** → `MotStackedCard`: Mensajes inline (filtro vacío).
+- **Elevated · Text only** → `MotStackedCard`: Avisos destacados, dismiss opcional.
+
+### Cuándo usarlo
+
+- Hay un bloque editorial (empty state, aviso, pieza de feed) que no es una fila de lista.
+- El contenido es un solo tema: header + subhead, con o sin imagen.
+
+### Cuándo NO usarlo
+
+- Portada del viaje destacado en Home → TripHeroCard
+- Documento del Wallet en una lista → List item
+
+### Elegir variante
+
+- Empty state con imagen (Home sin viajes) → `MotStackedCard Outlined · Media & text` — HomeEmptyStackedCard: imagen bundled, sin red.
+- Mensaje inline en una lista (filtro vacío) → `MotStackedCard Outlined · Text only`
+- Aviso destacable y descartable → `MotStackedCard Elevated · Text only` — onDismiss mapea a Show secondary action.
 
 ### Prohibido en este componente
 
-- No fuerces contenido en cards cuando el espaciado, los titulares o los divisores darían una jerarquía más simple.
-- Evita poner texto o iconos sobre imágenes si no es necesario.
-- No Filled (CUT).
-- No OutlinedCard ad hoc en pantallas si encaja un layout de este set.
-- No icono decorativo arbitrario en Text only — copy + dismiss si aplica.
+- No fuerces contenido en cards cuando un titular y un hueco bastan.
+- No uses Stacked card para la portada de Home: eso es TripHeroCard.
+- No Filled.
+- No OutlinedCard ad hoc si encaja este layout.
 
 ### Accesibilidad
 
 - Dismiss con contentDescription.
-- Imagen media con alt cuando es informativa.
-- Avatar decorativo si el header ya se anuncia.
+- Imagen informativa con alt; si es decorativa, contentDescription null y el header lo dice todo.
+
+### Uso típico
+
+```kotlin
+MotStackedCard(
+    style = MotCardStyle.Outlined,
+    headerText = "Sin viajes todavía",
+    subheadText = "Planea tu primera aventura",
+    media = { /* imageRes home_empty_map */ },
+)
+```
 
 ## TripHeroCard
 
 - Estado: ready · P1
-- Para qué: Portada del viaje destacado en Home: Background con image fill + scrim editorial, Eyebrow label de fase, countdown opcional, título y meta; CTA tonal «Ver detalles» debajo de la portada (única acción). Patrón MyOwnTrip — no es variante de Stacked card.
-- Composable: sin documentar en la ficha
+- Para qué: La TripHeroCard es la portada del viaje destacado en Home: imagen a sangrado, scrim, eyebrow de fase, countdown opcional, título, meta y un único CTA tonal «Ver detalles» debajo. No es una variante de Stacked card.
+- Composable: `TripHeroCard` — `com.myowntrip.app.ui.components.TripHeroCard`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/TripHeroCard.kt`
 
 ### Variantes
 
-- **Elevated**: Default en Home — viaje destacado.
-- **Outlined**: Misma anatomía con marco Outlined.
+- **Elevated** → `TripHeroCard`: Default en Home.
+- **Outlined** → `TripHeroCard`: Misma anatomía con marco.
+
+### Cuándo usarlo
+
+- Home tiene un viaje que merece la portada (el destacado).
+- Hace falta foto, fase y un solo paso: ver el detalle.
+
+### Cuándo NO usarlo
+
+- Empty state sin viajes → Stacked card (HomeEmptyStackedCard)
+- Resto de viajes en lista → Swipeable list row (Horizontal card)
+
+### Elegir variante
+
+- Viaje destacado en Home → `TripHeroCard Elevated` — Default.
+- Misma anatomía con marco → `TripHeroCard Outlined` — Poco uso en Compose hoy.
 
 ### Prohibido en este componente
 
-- No usar Stacked · Media only para este patrón.
-- No Assist chip ni Filter chip en la portada.
-- No hacer clickable la portada ni el eyebrow.
-- No duplicar el saludo/displaySmall del hero de página.
-- No avatar ni menú en la portada.
+- No Stacked · Media only para este patrón.
+- No chip en la portada.
+- No hacer clickable la foto ni el eyebrow.
 
 ### Accesibilidad
 
-- Único control interactivo: CTA «Ver detalles» (48dp).
-- Eyebrow y textos de portada: incluir fase y countdown en contentDescription del bloque o del CTA según implementación.
-- stateDescription según fase (próximo / en curso / pasado).
-- Imagen decorativa — sin alt aparte.
-- Show countdown=false oculta la línea de countdown.
+- Único control: Ver detalles (48 dp).
+- Fase y countdown van en el contentDescription del bloque o del CTA.
+- Imagen decorativa: sin alt aparte.
+
+### Uso típico
+
+```kotlin
+TripHeroCard(
+    trip = featured,
+    today = today,
+    onClick = { onTripClick(featured.id) },
+)
+```
 
 ## Eyebrow label
 
 - Estado: ready · P1
-- Para qué: Etiqueta informativa no interactiva para contexto editorial (fase del viaje, categoría, aviso breve). Sustituye al Assist chip cuando el fondo es variable (fotos, scrims) y Outlined no garantiza contraste. Los chips del DS siguen reservados a filtros, selección y acciones.
-- Composable: sin documentar en la ficha
+- Para qué: Un eyebrow label marca fase o contexto («Próximo viaje», «En destino», «Recuerdo») sin ser pulsable. Sustituye al Assist chip cuando el fondo es una foto o un scrim y el outline no garantiza contraste. Los chips siguen siendo filtros y acciones.
+- Composable: `EyebrowLabel` — `com.myowntrip.app.ui.components.EyebrowLabel`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/EyebrowLabel.kt`
 
 ### Variantes
 
-- **Color=Tertiary · Size=Medium**: Default en TripHeroCard y portadas sobre media.
-- **Color=Tertiary · Size=Small**: Portadas compactas o overlays densos.
-- **Color=Surface · Size=Medium**: Etiqueta sobre surface o cards sin foto.
-- **Color=Surface · Size=Small**: Variante compacta en listas.
-- **Color=Secondary · Size=Medium**: Acento suave en superficies claras.
-- **Color=Secondary · Size=Small**: Misma función en espacios reducidos.
+- **Tertiary · Medium** → `EyebrowLabel`: Default en TripHeroCard.
+- **Tertiary · Small** → `EyebrowLabel`: Overlays densos.
+- **Surface · Medium** → `EyebrowLabel`: Cards sin foto.
+- **Secondary · Medium** → `EyebrowLabel`: Acento suave en superficie clara.
+
+### Cuándo usarlo
+
+- Hay que nombrar la fase de un viaje o una categoría editorial.
+- El fondo es variable (portada, scrim) o una superficie plana de card.
+- El texto se anuncia en el bloque padre: el label no es un control.
+
+### Cuándo NO usarlo
+
+- Filtrar o seleccionar una opción → Filter chip
+- Ejecutar una acción → Button
+
+### Elegir variante
+
+- Sobre foto o scrim (TripHeroCard) → `EyebrowLabelColor.Tertiary` — tertiaryFixedDim + onTertiaryContainer. Size Medium por defecto.
+- Sobre surface, sin foto → `EyebrowLabelColor.Surface o Secondary` — Small si el espacio es corto.
 
 ### Prohibido en este componente
 
-- No usar como sustituto de Filter chip ni Assist chip interactivo.
-- No añadir sombra Elevated ni borde Outlined — no es chip.
-- No hacer clickable en producto.
-- No usar Assist chip Elevated (CUT) para este patrón.
+- No sustituir Filter chip.
+- No hacerlo clickable.
+- No Assist chip Elevated (CUT).
 
 ### Accesibilidad
 
-- Decorativo en sí: el texto se anuncia en el bloque padre (card o sección).
-- Modifier.semantics { invisibleToUser() } si el padre ya incluye la fase en contentDescription.
-- Nunca role Button ni onClick.
-- Contraste mínimo 4.5:1 entre label y container en todos los pares Color.
+- Decorativo: semantics hideFromAccessibility si el padre incluye la fase.
+- Nunca role Button.
+- Contraste ≥ 4.5:1 label sobre contenedor en los tres colores.
+
+### Uso típico
+
+```kotlin
+EyebrowLabel(
+    text = "Próximo viaje",
+    color = EyebrowLabelColor.Tertiary,
+)
+```
 
 ## Swipeable list row
 
 - Estado: in-review · P1
-- Para qué: Fila de lista con acciones laterales tipo Gmail: deslizar para archivar o eliminar, con menú ⋮ equivalente por tap. Patrón Compose compartido en Home («Más viajes») y Wallet (lista plana). No usar en el hero destacado ni en carruseles.
-- Composable: sin documentar en la ficha
+- Para qué: Una fila swipeable guarda las acciones laterales tipo Gmail: deslizar para archivar o eliminar, y el mismo par en un menú ⋮ por tap. El patrón es Compose compartido: SwipeableTripListRow en Home («Más viajes») y SwipeableWalletDocumentRow en Wallet. No envuelve el hero ni los carruseles.
+- Composable: `SwipeableTripListRow` — `com.myowntrip.app.ui.components.home.SwipeableTripListRow`
+- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/home/SwipeableTripListRow.kt`
 
 ### Variantes
 
-- **Lista activa**: Swipe derecha → Archivar; swipe izquierda → Eliminar (con diálogo de confirmación).
-- **Lista archivados**: Swipe derecha → Restaurar; swipe izquierda → Eliminar.
+- **Lista activa** → `SwipeableWalletDocumentRow`: Archivar / Eliminar.
+- **Lista archivados** → `SwipeableWalletDocumentRow`: Restaurar / Eliminar.
+
+### Cuándo usarlo
+
+- La colección es una lista vertical de viajes o documentos.
+- Archivar y eliminar son acciones frecuentes, no el CTA de la pantalla.
+
+### Cuándo NO usarlo
+
+- Viaje destacado de Home → TripHeroCard
+- Carrusel de próximos en Wallet → La card del carrusel, sin swipe
+
+### Elegir variante
+
+- Lista activa → `showArchivedActions = false` — Derecha Archivar · izquierda abre el diálogo de eliminar.
+- Lista de archivados → `showArchivedActions = true` — Derecha Restaurar · izquierda eliminar.
 
 ### Prohibido en este componente
 
-- No envolver el viaje destacado (TripHeroCard) ni filas del carrusel Wallet «Próximos».
-- No usar swipe como única vía para eliminar sin alternativa por tap.
-- No colores primitivos en fondos de swipe — solo roles M3 del colorScheme.
-- No redibujar el swipe con frames sueltos: instanciar List Item - Swipe del DS.
+- No envolver TripHeroCard ni el carrusel Wallet «Próximos».
+- No colores primitivos en los fondos.
 
 ### Accesibilidad
 
-- customActions en semantics de la fila (TalkBack: acciones personalizadas).
-- Iconos de fondo con contentDescription («Archivar», «Eliminar», «Restaurar»).
-- Menú ⋮: contentDescription «Acciones del viaje» / «Acciones del documento».
-- Eliminar en menú: icono + texto error — nunca solo color.
-- Ver checklist manual: docs/ux/talkback-checklist-swipe.md
+- customActions de TalkBack: Archivar/Restaurar y Eliminar.
+- Menú ⋮: «Acciones del viaje» / «Acciones del documento».
+- Eliminar: icono + texto error, nunca solo color.
+
+### Uso típico
+
+```kotlin
+SwipeableTripListRow(
+    trip = trip,
+    today = today,
+    showArchivedActions = filterPhase == Archived,
+    onClick = { onTripClick(trip.id) },
+    onArchive = { onArchiveTrip(trip.id) },
+    onUnarchive = { onUnarchiveTrip(trip.id) },
+    onDeleteRequest = { requestDelete(trip.id) },
+)
+```
 
 ## List item
 

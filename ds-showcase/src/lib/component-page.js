@@ -113,7 +113,9 @@ export function renderSpecimenStage(innerHtml, caption) {
     </div>
     <p class="specimen-stage__note">${
       caption ||
-      "HTML con los mismos roles y medidas que Compose (1&nbsp;px = 1&nbsp;dp). No es el runtime de Android."
+      (innerHtml.includes("data-mot-specimen")
+        ? "El componente real de la app, compilado a WebAssembly."
+        : "Recreación en HTML con los mismos roles y medidas que Compose (1&nbsp;px = 1&nbsp;dp). No es el componente real.")
     }</p>
   `;
 }
@@ -335,6 +337,28 @@ export function renderTokens(tokens) {
 
 /* ---------- 9. Implementación (derivado) ---------- */
 
+const ORIGIN_LABEL = {
+  material3: "de Material 3, sin componente propio",
+  designsystem: "del design system de MyOwnTrip",
+  app: "de la propia app (todavía fuera del design system)",
+  "material3 + designsystem": "de Material 3, con botones del design system",
+};
+
+/** De dónde sale el componente y dónde verlo, en palabras y no en rutas de módulo. */
+function implementationOrigin(impl) {
+  const origin = ORIGIN_LABEL[impl.module];
+  const file = impl.sourceFile || "";
+  const parts = [];
+  if (origin) parts.push(`Viene ${origin}.`);
+  if (file && !file.startsWith("androidx.")) {
+    const name = file.split("/").pop();
+    const where = name.includes(".") ? `<code>${name}</code>` : `la carpeta <code>${name}</code>`;
+    const defines = file.startsWith("designsystem/") || file.includes("/ui/components/");
+    parts.push(defines ? `Está definido en ${where}.` : `Un ejemplo de uso en la app: ${where}.`);
+  }
+  return parts.join(" ");
+}
+
 export function renderImplementation(impl) {
   if (!impl) return "";
   const params = (impl.params || []).map((p) => [
@@ -346,9 +370,7 @@ export function renderImplementation(impl) {
 
   return (
     sectionOpen("implementacion", "Implementación", {
-      lead: `${impl.note || ""} Módulo <code>${impl.module || "?"}</code> · fuente <code>${
-        impl.sourceFile || "?"
-      }</code>`,
+      lead: `${impl.note || ""} ${implementationOrigin(impl)}`,
       generated: true,
     }) +
     (impl.import ? `<pre><code>import ${escapeHtml(impl.import)}</code></pre>` : "") +

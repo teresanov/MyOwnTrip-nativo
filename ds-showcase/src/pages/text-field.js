@@ -1,10 +1,9 @@
 import data from "../data/components/text-field.json";
 import { mountComponentPage } from "../lib/generic-component.js";
 import { liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
-import { fieldHtml } from "../lib/specimens.js";
 
 mountComponentPage(data, {
-  specimenHtml: fieldHtml({ label: "Nombre del viaje", value: "Barcelona 2026" }),
+  specimenHtml: liveHostHtml("text-field/playground", { label: "Nombre del viaje", value: "Cracovia finde", theme: "light" }, { height: 120, label: "OutlinedTextField real" }),
   playground: {
     id: "ejemplo",
     title: "Ejemplo",
@@ -32,13 +31,13 @@ mountComponentPage(data, {
       <label class="playground-check"><input type="checkbox" id="demo-dark" /><span>Tema oscuro</span></label>`,
   },
   doDont: {
-    doHtml: fieldHtml({ label: "Destino", value: "", error: "El destino es obligatorio" }),
-    doCaption: "Error con borde, label y texto. Nunca solo el color.",
-    dontHtml: fieldHtml({ label: "Destino", value: "" }),
-    dontCaption: "Un campo vacío sin mensaje no comunica el error.",
+    doHtml: liveHostHtml("text-field/playground", { label: "Destino", value: "", error: true, errortext: "El destino es obligatorio", theme: "light" }, { height: 130, label: "Campo con error y mensaje" }),
+    doCaption: "Error con borde, label y texto que explica qué falla.",
+    dontHtml: liveHostHtml("text-field/playground", { label: "Destino", value: "", error: true, errortext: "", theme: "light" }, { height: 130, label: "Campo con error sin mensaje" }),
+    dontCaption: "Solo el color del borde: no dice qué falla.",
   },
   setup() {
-    const host = document.querySelector('[data-mot-specimen="text-field/playground"]');
+    const host = document.querySelector('.playground__canvas [data-mot-specimen="text-field/playground"]');
     const status = document.getElementById("demo-status");
     const label = document.getElementById("demo-label");
     const error = document.getElementById("demo-error");

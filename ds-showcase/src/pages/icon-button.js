@@ -1,7 +1,6 @@
 import data from "../data/components/icon-button.json";
 import { mountComponentPage } from "../lib/generic-component.js";
 import { liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
-import { iconButtonHtml } from "../lib/specimens.js";
 
 const SIZES = ["XSmall", "Small", "Medium", "Large"];
 const WIDTHS = ["Narrow", "Default", "Wide"];
@@ -19,7 +18,7 @@ const select = (id, label, values, selected) => `
   </label>`;
 
 mountComponentPage(data, {
-  specimenHtml: iconButtonHtml("Editar"),
+  specimenHtml: liveHostHtml("icon-button/playground", { style: "standard", theme: "light" }, { height: 100, label: "MOTIconButton real" }),
   playground: {
     id: "ejemplo",
     title: "Ejemplo",
@@ -45,13 +44,13 @@ mountComponentPage(data, {
       <label class="playground-check"><input type="checkbox" id="demo-dark" /><span>Tema oscuro</span></label>`,
   },
   doDont: {
-    doHtml: iconButtonHtml("Editar"),
+    doHtml: liveHostHtml("icon-button/playground", { style: "standard", theme: "light" }, { height: 100, label: "MOTIconButton real" }),
     doCaption: "Icono inequívoco y nombre accesible. Standard, sin contenedor.",
     dontHtml: `<button type="button" class="fake-btn" aria-hidden="true">★</button>`,
     dontCaption: "Un símbolo sin nombre ni token. No es MOTIconButton.",
   },
   setup() {
-    const host = document.querySelector('[data-mot-specimen="icon-button/playground"]');
+    const host = document.querySelector('.playground__canvas [data-mot-specimen="icon-button/playground"]');
     const status = document.getElementById("demo-status");
     const [style, size, width, type, enabled, reduce, dark] = [
       "demo-style",

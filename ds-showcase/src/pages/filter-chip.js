@@ -16,27 +16,15 @@ import {
   sectionOpen,
   table,
 } from "../lib/component-page.js";
-import { CHIP_CHECK, renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
+import { renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
 import { bootLiveSpecimens, liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
 import { initLiveInspectors } from "../lib/live-inspector.js";
 
 initShowcasePage("components", { componentId: "filter-chip" });
 
-function chipButton(label, selected) {
-  return `<button type="button" class="filter-chip${
-    selected ? " filter-chip--selected" : ""
-  }" aria-pressed="${selected}" data-value="${label}">${selected ? CHIP_CHECK : ""}${label}</button>`;
-}
-
 document.getElementById("component-header").innerHTML = renderComponentHeader({
   ...data,
-  specimenHtml: `
-    <div class="filter-chip-row">
-      ${chipButton("Activos", true)}
-      ${chipButton("Archivados", false)}
-      ${chipButton("Todos", false)}
-    </div>
-  `,
+  specimenHtml: liveHostHtml("filter-chip/playground", { theme: "light" }, { height: 100, label: "FilterChip reales" }),
 });
 
 const screens = (data.screens || []).map((e) => [`<code>${e.screen}</code>`, e.pattern]);
@@ -64,12 +52,9 @@ document.getElementById("component-main").innerHTML = [
   renderGuidelines(data).replace(
     "</section>",
     `${renderDoDontPair({
-      doHtml: `<div class="filter-chip-row">${chipButton("Activos", true)}${chipButton(
-        "Archivados",
-        false,
-      )}${chipButton("Todos", false)}</div>`,
+      doHtml: liveHostHtml("filter-chip/playground", { theme: "light" }, { height: 100, label: "Filtros reales" }),
       doCaption: "Un conjunto, una selección, copy de categoría.",
-      dontHtml: `<button type="button" class="filter-chip filter-chip--selected">${CHIP_CHECK}Guardar</button>`,
+      dontHtml: liveHostHtml("filter-chip/single", { label: "Guardar", theme: "light" }, { height: 100, label: "Chip suelto con un verbo" }),
       dontCaption: "Un chip suelto con un verbo de acción. Eso es un botón.",
     })}</section>`,
   ),
@@ -84,7 +69,7 @@ document.getElementById("component-main").innerHTML = [
   renderRelated(data.usage?.related),
 ].join("");
 
-const host = document.querySelector('[data-mot-specimen="filter-chip/playground"]');
+const host = document.querySelector('.playground__canvas [data-mot-specimen="filter-chip/playground"]');
 const enabledBox = document.getElementById("demo-enabled");
 const darkBox = document.getElementById("demo-dark");
 const sync = () => setLiveProps(host, { enabled: enabledBox.checked, theme: darkBox.checked ? "dark" : "light" });

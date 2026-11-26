@@ -11,7 +11,7 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52798-24373"
   },
   "usage": {
-    "purpose": "Un campo de texto recoge lo que la persona escribe en un formulario: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos OutlinedTextField de Material 3, enlazado al tema, sin wrapper MOT.",
+    "purpose": "Un campo de texto recoge lo que la persona escribe en un formulario: nombre del viaje, importes, títulos de documentos y notas. En pantallas nuevas usamos OutlinedTextField de Material 3, con el tema de la app y sin componente propio de MyOwnTrip.",
     "when": [
       "Hay que escribir un dato (nombre, título, notas, importe).",
       "El valor se valida en el propio campo, no en un diálogo.",
@@ -203,7 +203,7 @@
     "sourceFile": "androidx.compose.material3.OutlinedTextField",
     "import": "androidx.compose.material3.OutlinedTextField",
     "composable": "OutlinedTextField",
-    "note": "Sin wrapper MOT.",
+    "note": "",
     "params": [
       {
         "name": "value",
@@ -262,7 +262,7 @@
     "values": {},
     "live": {
       "specimen": "text-field/anatomy",
-      "zoom": 1.6,
+      "zoom": 1.4,
       "height": 320,
       "markers": [
         {
