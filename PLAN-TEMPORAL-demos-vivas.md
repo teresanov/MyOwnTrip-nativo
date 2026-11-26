@@ -75,15 +75,34 @@ Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, hi
 
 ## Cómo retomar
 
-1. Leer este archivo y marcar dónde se quedó.
+1. Leer este archivo: «Para mañana» primero, luego el Registro.
 2. Comandos (raíz del repo, PowerShell):
    ```powershell
    $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
-   .\gradlew -p live-demos wasmJsBrowserDistribution
-   cd ds-showcase; npm run live; npm run build; npx vite preview
-   # live-demos: usar `gradlew -p live-demos clean wasmJsBrowserDistribution` (el incremental falla)
+   .\gradlew -p live-demos clean wasmJsBrowserDistribution   # SIEMPRE con clean: el incremental de Kotlin/Wasm falla (ArrayIndexOutOfBounds interno)
+   cd ds-showcase; npm run live; npm run build               # build OBLIGATORIO: vite preview sirve dist/
+   npx vite preview --port 4179                              # http://localhost:4179/MyOwnTrip-nativo/
+   .\gradlew testDebugUnitTest :app:assembleDebug            # tras mover código al DS (assemble detecta clases duplicadas)
    ```
-3. Patrón a copiar: Button (Kotlin `ButtonAnatomy` / `ButtonPlayground`; JS `live-inspector.js`).
+3. Patrón a copiar: Button (`ButtonAnatomy` / `ButtonPlayground`) y, para piezas internas, `Modifier.motPart("…")` dentro del componente del DS.
+
+### Para mañana (orden propuesto)
+
+1. **Búsqueda y menú de Home** (`app/.../components/home/HomeSearchAndFilter.kt`): separar al DS la barra de búsqueda (`HomeSearchBarRow`) y las piezas del menú (`HomeFilterMenuList`, `…SectionLabel`, `…ItemRow` con su check) como componentes genéricos; los filtros de viaje (`TripFilterPhase`, `TripSortOrder`) se quedan en la app. Ficha nueva o la del patrón «Filtrar en Home» con demo.
+2. **Date & time pickers** — esperando decisión de Teresa. Propuesta: pasarlos al DS común con `kotlinx-datetime` (nombres de meses/días en español propios, conversión java.time ↔ kotlinx en la frontera con la app), por fases y compilando la app en cada una. Alternativa: DS solo `androidMain` (rápido, sin demo).
+3. **Tramo 3b — patrones con demo viva**: «Confirmar antes de borrar» y «Elegir de una lista» ya se pueden; «Añadir desde el FAB» (FAB menu del Diario es M3; HomeSpeedDial ya está en el DS).
+4. Revisión de Teresa de List item y Swipeable list row.
+5. Figma (parity-log, Pendiente): enlazar `Primary Fixed` (título/fechas de TripHeroCard) y `On Tertiary Fixed` (Eyebrow Tertiary); Eyebrow sin repetición en el Diario (a11y); `"$date · 2026"` fijo en ScrapbookAlbum (año escrito a mano, revisar).
+
+### Lecciones técnicas (no repetir)
+
+- **Vista previa de T3 sin fotogramas** cuando la ventana no está visible: Compose no mide nada. Verificar con Chrome headless:
+  `chrome --headless=new --window-size=1280,12000 --virtual-time-budget=25000 --dump-dom URL` (tablas de medidas) o `--screenshot` sobre una página de prueba temporal en `dist/` (borrarla después).
+- **Fuentes de las demos**: `loadFont` usa promesas anidadas (encadenadas, Kotlin tipaba Promise y el cast fallaba: no se cargaba ninguna fuente) + precarga en `LocalFontFamilyResolver`.
+- **Props de las demos**: los atributos `data-p-*` llegan en minúsculas (`errortext`, no `errorText`).
+- **Inspector**: solo dibuja/mide las piezas que declara la ficha (`markers` + `rows`); `redlines: true` pinta cotas fijas; `note` va bajo la tabla; usar zoom 1,5 (o 2) para que 1 dp no redondee.
+- **Mover al DS**: mismo paquete (la app no cambia imports); `@Preview` a `androidMain`; si la parte de app conserva un archivo, darle otro nombre (clase `XxxKt` duplicada); nada de java.time, Coil ni `R` en `commonMain`.
+- **No inventar** en demos ni fichas: textos, iconos y variantes salen de un uso real (`grep` en `app/`).
 
 ## Registro
 
