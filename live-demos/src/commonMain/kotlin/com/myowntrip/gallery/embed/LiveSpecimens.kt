@@ -13,6 +13,35 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.Surface
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarDefaults
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalDensity
@@ -22,10 +51,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.myowntrip.app.ui.theme.MOTButton
 import com.myowntrip.app.ui.theme.MOTButtonSize
+import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.theme.MOTIconButtonSize
+import com.myowntrip.app.ui.theme.MOTIconButtonType
+import com.myowntrip.app.ui.theme.MOTIconButtonWidth
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MOTTonalButton
+import com.myowntrip.app.ui.theme.MotExposedDropdownTrailingIcon
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 import com.myowntrip.gallery.catalog.Catalog
 
@@ -54,16 +88,25 @@ fun LiveSpecimen(
     darkTheme = props["theme"] == "dark",
     reduceMotion = reduceMotion || props["reduce"] == "true",
   ) {
-    Box(
-      Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
-      contentAlignment = Alignment.Center,
-    ) {
+    Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface) {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
       when (id) {
         "button/playground" -> ButtonPlayground(props)
         "button/anatomy" -> ButtonAnatomy(props, onMeta)
+        "icon-button/playground" -> IconButtonPlayground(props)
+        "icon-button/anatomy" -> IconButtonAnatomy(props, onMeta)
+        "text-field/playground" -> TextFieldPlayground(props)
+        "text-field/anatomy" -> TextFieldAnatomy(props)
+        "filter-chip/playground" -> FilterChipPlayground(props)
+        "filter-chip/anatomy" -> FilterChipAnatomy()
+        "snackbar/playground" -> SnackbarPlayground(props)
+        "snackbar/anatomy" -> SnackbarAnatomy(props)
+        "basic-dialog/playground" -> DialogPlayground(props)
+        "basic-dialog/anatomy" -> DialogAnatomy(props)
         // Cualquier specimen del catálogo (button/sizes, icon-button/round…) se puede incrustar por su id.
         else -> Catalog.firstOrNull { it.id == id }?.content?.invoke() ?: Text("Specimen desconocido: $id")
       }
+    }
     }
   }
   }
@@ -113,4 +156,252 @@ private fun ButtonAnatomy(p: Map<String, String>, onMeta: (Map<String, Float>) -
       }
     }
   }
+}
+
+private fun iconButtonSize(p: Map<String, String>) =
+  MOTIconButtonSize.entries.firstOrNull { it.name.equals(p["size"], true) } ?: MOTIconButtonSize.Small
+
+private fun iconButtonWidth(p: Map<String, String>) =
+  MOTIconButtonWidth.entries.firstOrNull { it.name.equals(p["width"], true) } ?: MOTIconButtonWidth.Default
+
+/** Estilo de color: el wrapper es Standard por defecto; Filled y Tonal se piden con colors (roles del tema). */
+@Composable
+private fun iconButtonColors(p: Map<String, String>) = when (p["style"]) {
+  "filled" -> IconButtonDefaults.filledIconButtonColors()
+  "tonal" -> IconButtonDefaults.filledTonalIconButtonColors()
+  else -> IconButtonDefaults.iconButtonColors()
+}
+
+private fun iconButtonType(p: Map<String, String>) =
+  MOTIconButtonType.entries.firstOrNull { it.name.equals(p["type"], true) } ?: MOTIconButtonType.Square
+
+@Composable
+private fun IconButtonPlayground(p: Map<String, String>) {
+  MOTIconButton(
+    onClick = {},
+    enabled = p["enabled"] != "false",
+    size = iconButtonSize(p),
+    width = iconButtonWidth(p),
+    type = iconButtonType(p),
+    colors = iconButtonColors(p),
+  ) {
+    Icon(MOTIcons.Edit, contentDescription = "Editar")
+  }
+}
+
+/** Icon button para anatomía y medidas, con sus piezas marcadas (ver [ButtonAnatomy]). */
+@Composable
+private fun IconButtonAnatomy(p: Map<String, String>, onMeta: (Map<String, Float>) -> Unit) {
+  val touch: Dp = LocalMinimumInteractiveComponentSize.current
+  SideEffect { onMeta(mapOf("touchDp" to touch.value)) }
+  CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+    MOTIconButton(
+      onClick = {},
+      modifier = Modifier.part("container"),
+      size = iconButtonSize(p),
+      width = iconButtonWidth(p),
+      type = iconButtonType(p),
+      colors = iconButtonColors(p),
+    ) {
+      Icon(MOTIcons.Edit, contentDescription = "Editar", modifier = Modifier.part("icon"))
+    }
+  }
+}
+
+/**
+ * Text field tal como lo usa la app: icono final solo en campos de fecha (calendario) y en
+ * desplegables (chevron); texto de apoyo opcional, obligatorio cuando hay error.
+ */
+@Composable
+private fun TextFieldPlayground(p: Map<String, String>) {
+  var value by remember { mutableStateOf(p["value"] ?: "") }
+  var expanded by remember { mutableStateOf(false) }
+  val error = p["error"] == "true"
+  val enabled = p["enabled"] != "false"
+  val support = p["support"] == "true"
+  OutlinedTextField(
+    value = value,
+    onValueChange = { value = it },
+    modifier = Modifier.width(280.dp),
+    enabled = enabled,
+    singleLine = true,
+    label = { Text(p["label"] ?: "Destino") },
+    trailingIcon = when (p["trailing"]) {
+      "calendar" -> {
+        { MOTIconButton(onClick = {}, enabled = enabled) { Icon(MOTIcons.CalendarMonth, contentDescription = "Abrir calendario") } }
+      }
+      "dropdown" -> {
+        { MOTIconButton(onClick = { expanded = !expanded }, enabled = enabled) { MotExposedDropdownTrailingIcon(expanded = expanded) } }
+      }
+      else -> null
+    },
+    isError = error,
+    supportingText = when {
+      error -> { { Text(p["errorText"] ?: "El destino es obligatorio") } }
+      support -> { { Text(p["supportText"] ?: "Ciudad o región") } }
+      else -> null
+    },
+  )
+}
+
+/**
+ * Text field para anatomía y medidas. Es la misma composición que OutlinedTextField
+ * (BasicTextField + DecorationBox + Container), abierta para marcar cada pieza.
+ */
+@Composable
+private fun TextFieldAnatomy(p: Map<String, String>) {
+  var value by remember { mutableStateOf(p["value"] ?: "Lisboa") }
+  val interaction = remember { MutableInteractionSource() }
+  val colors = OutlinedTextFieldDefaults.colors()
+  val textColor = MaterialTheme.colorScheme.onSurface
+  BasicTextField(
+    value = value,
+    onValueChange = { value = it },
+    modifier = Modifier.width(280.dp).part("field"),
+    textStyle = LocalTextStyle.current.copy(color = textColor),
+    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+    interactionSource = interaction,
+    singleLine = true,
+  ) { inner ->
+    OutlinedTextFieldDefaults.DecorationBox(
+      value = value,
+      innerTextField = { Box(Modifier.part("input")) { inner() } },
+      enabled = true,
+      singleLine = true,
+      visualTransformation = VisualTransformation.None,
+      interactionSource = interaction,
+      label = { Text("Destino", Modifier.part("label")) },
+      trailingIcon = { Icon(MOTIcons.CalendarMonth, contentDescription = null, modifier = Modifier.part("trailing")) },
+      supportingText = { Text("Ciudad o región", Modifier.part("support")) },
+      colors = colors,
+      container = {
+        OutlinedTextFieldDefaults.Container(
+          enabled = true,
+          isError = false,
+          interactionSource = interaction,
+          modifier = Modifier.part("container"),
+          colors = colors,
+        )
+      },
+    )
+  }
+}
+
+private val ChipOptions = listOf("Activos", "Archivados", "Todos")
+
+@Composable
+private fun FilterChipPlayground(p: Map<String, String>) {
+  // Una sola opción seleccionada por eje, como en Wallet.
+  var selected by remember { mutableStateOf("Activos") }
+  val enabled = p["enabled"] != "false"
+  Row(horizontalArrangement = Arrangement.spacedBy(com.myowntrip.app.ui.theme.MOTSpacing.Chip.gap)) {
+    ChipOptions.forEach { option ->
+      FilterChip(
+        selected = option == selected,
+        onClick = { selected = option },
+        label = { Text(option) },
+        enabled = enabled,
+      )
+    }
+  }
+}
+
+/** Dos chips (uno seleccionado) para medir pieza, label y hueco entre chips. */
+@Composable
+private fun FilterChipAnatomy() {
+  Row(horizontalArrangement = Arrangement.spacedBy(com.myowntrip.app.ui.theme.MOTSpacing.Chip.gap)) {
+    FilterChip(
+      selected = true,
+      onClick = {},
+      modifier = Modifier.part("container"),
+      label = { Text("Vuelos", Modifier.part("label")) },
+    )
+    FilterChip(
+      selected = false,
+      onClick = {},
+      modifier = Modifier.part("chip2"),
+      label = { Text("Hoteles", Modifier.part("label2")) },
+    )
+  }
+}
+
+@Composable
+private fun SnackbarPlayground(p: Map<String, String>) {
+  val host = remember { SnackbarHostState() }
+  val scope = rememberCoroutineScope()
+  val withAction = p["action"] != "false"
+  val withClose = p["close"] == "true"
+  Box(Modifier.fillMaxSize()) {
+    MOTButton(
+      onClick = {
+        scope.launch {
+          host.currentSnackbarData?.dismiss()
+          host.showSnackbar(
+            message = p["message"] ?: "Gasto guardado",
+            actionLabel = if (withAction) "Deshacer" else null,
+            withDismissAction = withClose,
+            duration = SnackbarDuration.Short,
+          )
+        }
+      },
+      modifier = Modifier.align(Alignment.TopCenter).padding(top = 24.dp),
+    ) { Text("Guardar gasto") }
+    SnackbarHost(host, Modifier.align(Alignment.BottomCenter).padding(16.dp))
+  }
+}
+
+/** Snackbar con sus piezas marcadas; mismos colores que el que pinta SnackbarHost. */
+@Composable
+private fun SnackbarAnatomy(p: Map<String, String>) {
+  Snackbar(
+    // Sin ancho fijo: Modifier.width rompe la maquetación interna del Snackbar (acción fuera, cerrar encima del texto).
+    modifier = Modifier.padding(horizontal = 56.dp).part("container"),
+    action = {
+      TextButton(
+        onClick = {},
+        colors = ButtonDefaults.textButtonColors(contentColor = SnackbarDefaults.actionColor),
+      ) { Text("Deshacer", Modifier.part("action")) }
+    },
+    dismissAction = {
+      androidx.compose.material3.IconButton(onClick = {}) {
+        Icon(MOTIcons.Close, contentDescription = null, modifier = Modifier.part("close"))
+      }
+    },
+  ) {
+    Text(p["message"] ?: "Gasto guardado", Modifier.part("message"))
+  }
+}
+
+@Composable
+private fun DialogPlayground(p: Map<String, String>) {
+  var open by remember { mutableStateOf(false) }
+  val withIcon = p["icon"] == "true"
+  MOTButton(onClick = { open = true }) { Text("Mostrar diálogo") }
+  if (open) {
+    AlertDialog(
+      onDismissRequest = { open = false },
+      icon = if (withIcon) {
+        { Icon(MOTIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) }
+      } else null,
+      title = { Text(p["title"] ?: "¿Eliminar documento?") },
+      text = { Text(p["body"] ?: "Se borrará el documento y su archivo del dispositivo.") },
+      confirmButton = { MOTTextButton(onClick = { open = false }) { Text(p["confirm"] ?: "Eliminar") } },
+      dismissButton = { MOTTextButton(onClick = { open = false }) { Text(p["dismiss"] ?: "Cancelar") } },
+    )
+  }
+}
+
+/** Diálogo abierto con sus piezas marcadas. La pantalla de detrás mide el scrim. */
+@Composable
+private fun DialogAnatomy(p: Map<String, String>) {
+  Box(Modifier.fillMaxSize().part("scrim"))
+  AlertDialog(
+    onDismissRequest = {},
+    modifier = Modifier.part("container"),
+    icon = { Icon(MOTIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.part("icon")) },
+    title = { Text("¿Eliminar «Lisboa 2026»?", Modifier.part("title")) },
+    text = { Text("Se borrarán sus documentos y gastos. No se puede deshacer.", Modifier.part("body")) },
+    confirmButton = { MOTTextButton(onClick = {}, modifier = Modifier.part("confirm")) { Text("Eliminar") } },
+    dismissButton = { MOTTextButton(onClick = {}, modifier = Modifier.part("dismiss")) { Text("Cancelar") } },
+  )
 }

@@ -45,9 +45,18 @@
       }
     ],
     "related": [
-      { "label": "Button", "href": "components/button.html" },
-      { "label": "Filter chip", "href": "components/filter-chip.html" },
-      { "label": "Snackbar", "href": "components/snackbar.html" }
+      {
+        "label": "Button",
+        "href": "components/button.html"
+      },
+      {
+        "label": "Filter chip",
+        "href": "components/filter-chip.html"
+      },
+      {
+        "label": "Snackbar",
+        "href": "components/snackbar.html"
+      }
     ]
   },
   "variants": [
@@ -75,9 +84,18 @@
   "behavior": {
     "lead": "El diálogo atrapa el foco. No es un sitio para un tercer botón ni para un flujo largo.",
     "rows": [
-      { "state": "Abrir", "detail": "Scrim + panel. Foco al botón de descartar (el seguro)." },
-      { "state": "Descartar", "detail": "Cancelar, clic en scrim o Back llaman onDismissRequest. Esa acción nunca se deshabilita." },
-      { "state": "Confirmar", "detail": "Cierra y ejecuta. Si es destructivo, el label va en error y el supporting text ya dijo la consecuencia." }
+      {
+        "state": "Abrir",
+        "detail": "Scrim + panel. Foco al botón de descartar (el seguro)."
+      },
+      {
+        "state": "Descartar",
+        "detail": "Cancelar, clic en scrim o Back llaman onDismissRequest. Esa acción nunca se deshabilita."
+      },
+      {
+        "state": "Confirmar",
+        "detail": "Cierra y ejecuta. Si es destructivo, el label va en error y el supporting text ya dijo la consecuencia."
+      }
     ],
     "notes": [
       "Como máximo dos acciones. Si hay una sola, es confirmar lectura.",
@@ -94,24 +112,60 @@
   ],
   "tokens": {
     "color": [
-      { "token": "surfaceContainerHigh", "use": "Contenedor." },
-      { "token": "onSurface / onSurfaceVariant", "use": "Headline y supporting text." },
-      { "token": "error", "use": "Icono y confirm destructivo." },
-      { "token": "scrim", "use": "Overlay." }
+      {
+        "token": "surfaceContainerHigh",
+        "use": "Contenedor."
+      },
+      {
+        "token": "onSurface / onSurfaceVariant",
+        "use": "Headline y supporting text."
+      },
+      {
+        "token": "error",
+        "use": "Icono y confirm destructivo."
+      },
+      {
+        "token": "scrim",
+        "use": "Overlay."
+      }
     ],
     "shape": [
-      { "token": "shapes.extraLarge", "use": "28 dp. No mezclar con Corner/Medium de cards." }
+      {
+        "token": "shapes.extraLarge",
+        "use": "28 dp. No mezclar con Corner/Medium de cards."
+      }
     ],
     "spacing": [
-      { "token": "mot/padding/dialog/container", "use": "24 dp alrededor del panel." },
-      { "token": "mot/spacing/dialog/section-gap", "use": "16 dp entre bloques (icono–título, cuerpo–acciones)." },
-      { "token": "mot/spacing/dialog/divider-gap", "use": "12 dp alrededor de un divisor interno, si lo hay." },
-      { "token": "mot/spacing/dialog/actions-gap", "use": "8 dp entre los dos text buttons." }
+      {
+        "token": "MOTSpacing.Dialog.container",
+        "use": "24 dp alrededor del contenido del panel."
+      },
+      {
+        "token": "MOTSpacing.Dialog.sectionGap",
+        "use": "16 dp entre bloques (icono–título, texto–acciones)."
+      },
+      {
+        "token": "MOTSpacing.Dialog.dividerGap",
+        "use": "12 dp alrededor de un divisor interno, si lo hay."
+      },
+      {
+        "token": "MOTSpacing.Dialog.actionsGap",
+        "use": "8 dp entre los dos botones de texto."
+      }
     ],
     "type": [
-      { "token": "headlineSmall", "use": "Título. Fraunces (Display/Headline)." },
-      { "token": "bodyMedium", "use": "Supporting text. Inter." },
-      { "token": "labelLarge", "use": "Acciones vía MOTTextButton." }
+      {
+        "token": "headlineSmall",
+        "use": "Título. Fraunces (Display/Headline)."
+      },
+      {
+        "token": "bodyMedium",
+        "use": "Supporting text. Inter."
+      },
+      {
+        "token": "labelLarge",
+        "use": "Acciones vía MOTTextButton."
+      }
     ]
   },
   "guidelines": {
@@ -154,44 +208,181 @@
     "composable": "AlertDialog",
     "note": "Las acciones son MOTTextButton. No hay wrapper MOT del diálogo.",
     "params": [
-      { "name": "onDismissRequest", "type": "() -> Unit", "default": "—", "note": "Scrim y Back." },
-      { "name": "icon", "type": "@Composable (() -> Unit)?", "default": "null", "note": "MOTIcons.Error + tint error en eliminar/descartar." },
-      { "name": "title", "type": "@Composable () -> Unit", "default": "—", "note": "Headline." },
-      { "name": "text", "type": "@Composable (() -> Unit)?", "default": "null", "note": "Supporting; puede anidar Switch en confirmar guardado." },
-      { "name": "confirmButton", "type": "@Composable () -> Unit", "default": "—", "note": "MOTTextButton." },
-      { "name": "dismissButton", "type": "@Composable (() -> Unit)?", "default": "null", "note": "MOTTextButton; nunca disabled." }
+      {
+        "name": "onDismissRequest",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "Scrim y Back."
+      },
+      {
+        "name": "icon",
+        "type": "@Composable (() -> Unit)?",
+        "default": "null",
+        "note": "MOTIcons.Error + tint error en eliminar/descartar."
+      },
+      {
+        "name": "title",
+        "type": "@Composable () -> Unit",
+        "default": "—",
+        "note": "Headline."
+      },
+      {
+        "name": "text",
+        "type": "@Composable (() -> Unit)?",
+        "default": "null",
+        "note": "Supporting; puede anidar Switch en confirmar guardado."
+      },
+      {
+        "name": "confirmButton",
+        "type": "@Composable () -> Unit",
+        "default": "—",
+        "note": "MOTTextButton."
+      },
+      {
+        "name": "dismissButton",
+        "type": "@Composable (() -> Unit)?",
+        "default": "null",
+        "note": "MOTTextButton; nunca disabled."
+      }
     ],
     "snippet": "AlertDialog(\n    onDismissRequest = onDismiss,\n    icon = {\n        Icon(MOTIcons.Error, contentDescription = null,\n            tint = MaterialTheme.colorScheme.error)\n    },\n    title = { Text(\"¿Eliminar documento?\") },\n    text = { Text(\"Se borrará «$entryTitle»…\") },\n    confirmButton = {\n        MOTTextButton(onClick = onConfirmDelete) {\n            Text(\"Eliminar\", color = MaterialTheme.colorScheme.error)\n        }\n    },\n    dismissButton = {\n        MOTTextButton(onClick = onDismiss) { Text(\"Cancelar\") }\n    },\n)"
   },
   "decisions": {
-    "source": "Compose AlertDialog + MOTTextButton · set de librería 50723:10929",
+    "source": "Compose AlertDialog + MOTTextButton · set de la librería de Figma",
     "why": "Interrumpir solo para confirmar o advertir pérdida de datos.",
     "layer": "M3 AlertDialog; acciones MOTTextButton"
   },
   "changelog": [
-    { "date": "2026-10-29", "note": "Extra-large + mot/padding|spacing/dialog/*." },
-    { "date": "2026-10-30", "note": "Playground modal con Escape y scrim." },
-    { "date": "2026-11-24", "note": "Ficha usage-first: anatomía, medidas y pantallas Compose. Se retira la tabla de node-ids de Wallet en Figma." }
+    {
+      "date": "2026-10-29",
+      "note": "Extra-large + variables de espaciado del diálogo."
+    },
+    {
+      "date": "2026-10-30",
+      "note": "Playground modal con Escape y scrim."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha usage-first: anatomía, medidas y pantallas Compose. Se retira la tabla de node-ids de Wallet en Figma."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Ejemplo, anatomía y medidas sobre el AlertDialog real (Compose en WebAssembly)."
+    }
   ],
   "screens": [
-    { "screen": "WalletConfirmDialog", "pattern": "Sin icono · Cancelar / Guardar · cuerpo puede llevar Switch de plan" },
-    { "screen": "WalletDeleteEntryDialog", "pattern": "Icono error · Cancelar / Eliminar" },
-    { "screen": "WalletDiscardDialog", "pattern": "Icono error · Seguir editando / Descartar" },
-    { "screen": "DeleteTripDialog", "pattern": "¿Eliminar viaje?" }
+    {
+      "screen": "WalletConfirmDialog",
+      "pattern": "Sin icono · Cancelar / Guardar · cuerpo puede llevar Switch de plan"
+    },
+    {
+      "screen": "WalletDeleteEntryDialog",
+      "pattern": "Icono error · Cancelar / Eliminar"
+    },
+    {
+      "screen": "WalletDiscardDialog",
+      "pattern": "Icono error · Seguir editando / Descartar"
+    },
+    {
+      "screen": "DeleteTripDialog",
+      "pattern": "¿Eliminar viaje?"
+    }
   ],
   "anatomyDiagram": {
     "kind": "dialog",
-    "values": {
-      "pad": 24,
-      "section": 16,
-      "actions": 8,
-      "radius": 28
-    },
-    "measures": [
-      { "label": "Padding del contenedor", "value": "24 dp" },
-      { "label": "Hueco entre bloques", "value": "16 dp" },
-      { "label": "Hueco entre acciones", "value": "8 dp" },
-      { "label": "Radio", "value": "28 dp" }
-    ]
+    "values": {},
+    "live": {
+      "specimen": "basic-dialog/anatomy",
+      "zoom": 1,
+      "height": 440,
+      "markers": [
+        {
+          "n": 1,
+          "part": "scrim",
+          "anchor": "at@0.06,0.1",
+          "side": "inset",
+          "dx": 26,
+          "dy": 0
+        },
+        {
+          "n": 2,
+          "part": "container",
+          "anchor": "left@0.2",
+          "side": "left"
+        },
+        {
+          "n": 3,
+          "part": "icon",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 4,
+          "part": "title",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 5,
+          "part": "body",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 6,
+          "part": "confirm",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Panel",
+          "size": "container"
+        },
+        {
+          "label": "Espacio a la izquierda del contenido",
+          "left": [
+            "container",
+            "title"
+          ]
+        },
+        {
+          "label": "Espacio sobre el icono",
+          "top": [
+            "container",
+            "icon"
+          ]
+        },
+        {
+          "label": "Icono–título",
+          "vgap": [
+            "icon",
+            "title"
+          ]
+        },
+        {
+          "label": "Título–texto",
+          "vgap": [
+            "title",
+            "body"
+          ]
+        },
+        {
+          "label": "Texto–acciones",
+          "vgap": [
+            "body",
+            "confirm"
+          ]
+        },
+        {
+          "label": "Hueco entre acciones",
+          "gap": [
+            "dismiss",
+            "confirm"
+          ]
+        }
+      ]
+    }
   }
 }

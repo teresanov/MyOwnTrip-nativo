@@ -17,6 +17,8 @@ import {
   table,
 } from "../lib/component-page.js";
 import { CHIP_CHECK, renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
+import { bootLiveSpecimens, liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
+import { initLiveInspectors } from "../lib/live-inspector.js";
 
 initShowcasePage("components", { componentId: "filter-chip" });
 
@@ -51,15 +53,13 @@ document.getElementById("component-main").innerHTML = [
   renderPlayground({
     id: "ejemplo",
     title: "Ejemplo",
-    hint: "Pulsa un chip para cambiar el filtro. En Wallet la fila hace scroll horizontal y solo hay una opción seleccionada por eje.",
+    hint: '<span class="live-badge">Compose real</span> Son <code>FilterChip</code> de Material 3 con el tema de la app, compilados a WebAssembly. Pulsa un chip: solo hay una opción seleccionada por eje, como en Wallet.',
     canvasHtml: `
-      <div class="filter-chip-row filter-chip-demo" role="group" aria-label="Filtro de documentos">
-        ${chipButton("Activos", true)}
-        ${chipButton("Archivados", false)}
-        ${chipButton("Todos", false)}
-      </div>
-      <p class="playground__status" id="filter-chip-status" aria-live="polite">Filtro activo: Activos</p>
-    `,
+      ${liveHostHtml("filter-chip/playground", { enabled: true, theme: "light" }, { height: 140, label: "FilterChip real" })}
+      <p class="playground__status"><code>FilterChip(selected, onClick, label = { Text(…) })</code></p>`,
+    controlsHtml: `
+      <label class="playground-check"><input type="checkbox" id="demo-enabled" checked /><span>Habilitado</span></label>
+      <label class="playground-check"><input type="checkbox" id="demo-dark" /><span>Tema oscuro</span></label>`,
   }),
   renderGuidelines(data).replace(
     "</section>",
@@ -84,21 +84,12 @@ document.getElementById("component-main").innerHTML = [
   renderRelated(data.usage?.related),
 ].join("");
 
-const chips = document.querySelectorAll(".filter-chip-demo .filter-chip");
-const statusEl = document.getElementById("filter-chip-status");
-
-chips.forEach((chip) => {
-  chip.addEventListener("click", () => {
-    chips.forEach((other) => {
-      other.classList.remove("filter-chip--selected");
-      other.setAttribute("aria-pressed", "false");
-      other.innerHTML = other.dataset.value;
-    });
-    chip.classList.add("filter-chip--selected");
-    chip.setAttribute("aria-pressed", "true");
-    chip.innerHTML = CHIP_CHECK + chip.dataset.value;
-    statusEl.textContent = `Filtro activo: ${chip.dataset.value}`;
-  });
-});
-
+const host = document.querySelector('[data-mot-specimen="filter-chip/playground"]');
+const enabledBox = document.getElementById("demo-enabled");
+const darkBox = document.getElementById("demo-dark");
+const sync = () => setLiveProps(host, { enabled: enabledBox.checked, theme: darkBox.checked ? "dark" : "light" });
+[enabledBox, darkBox].forEach((el) => el.addEventListener("change", sync));
+sync();
+initLiveInspectors();
+bootLiveSpecimens();
 setupToc();

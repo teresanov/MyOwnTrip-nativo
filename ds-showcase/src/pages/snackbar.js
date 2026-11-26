@@ -1,5 +1,6 @@
 import data from "../data/components/snackbar.json";
 import { mountComponentPage } from "../lib/generic-component.js";
+import { liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
 import { snackbarHtml } from "../lib/specimens.js";
 
 mountComponentPage(data, {
@@ -7,15 +8,15 @@ mountComponentPage(data, {
   playground: {
     id: "ejemplo",
     title: "Ejemplo",
-    hint: "Simula el feedback tras guardar un gasto. El mensaje aparece abajo y se oculta solo.",
-    canvasHtml: `<button type="button" class="mot-btn mot-btn--filled" id="snackbar-trigger">Simular «Gasto guardado»</button>`,
+    hint: '<span class="live-badge">Compose real</span> Es <code>SnackbarHost</code> de Material 3 con el tema de la app, compilado a WebAssembly. Pulsa «Guardar gasto»: el snackbar entra desde abajo, se oculta solo y la acción lo cierra.',
+    canvasHtml: `
+      ${liveHostHtml("snackbar/playground", { action: true, close: false, theme: "light" }, { height: 220, label: "Snackbar real" })}
+      <p class="playground__status"><code>snackbarHostState.showSnackbar(message, actionLabel, withDismissAction)</code></p>`,
     controlsHtml: `
-      <label class="playground-check">
-        <input type="checkbox" id="snackbar-with-action" checked />
-        <span>Incluir acción «Deshacer»</span>
-      </label>`,
+      <label class="playground-check"><input type="checkbox" id="snackbar-with-action" checked /><span>Acción «Deshacer»</span></label>
+      <label class="playground-check"><input type="checkbox" id="snackbar-with-close" /><span>Botón de cerrar</span></label>
+      <label class="playground-check"><input type="checkbox" id="snackbar-dark" /><span>Tema oscuro</span></label>`,
   },
-  extraAfterUsage: `<div class="snackbar-host" id="snackbar-host" hidden aria-live="polite"></div>`,
   doDont: {
     doHtml: snackbarHtml(),
     doCaption: "Ack breve, una acción de texto, inverseSurface.",
@@ -23,30 +24,13 @@ mountComponentPage(data, {
     dontCaption: "Un error que exige decisión es un diálogo, no un snackbar con Filled.",
   },
   setup() {
-    const host = document.getElementById("snackbar-host");
-    const trigger = document.getElementById("snackbar-trigger");
-    const withAction = document.getElementById("snackbar-with-action");
-    if (!host || !trigger) return;
-    let hideTimer = null;
-    function hideSnackbar() {
-      host.hidden = true;
-      host.innerHTML = "";
-      if (hideTimer) clearTimeout(hideTimer);
-      hideTimer = null;
-    }
-    function showSnackbar() {
-      hideSnackbar();
-      host.innerHTML = snackbarHtml({
-        action: withAction.checked ? "Deshacer" : "",
-      }).replace('tabindex="-1"', 'id="snackbar-undo"').replace('aria-label="Cerrar"', 'id="snackbar-close" aria-label="Cerrar"');
-      host.hidden = false;
-      document.getElementById("snackbar-close")?.addEventListener("click", hideSnackbar);
-      document.getElementById("snackbar-undo")?.addEventListener("click", () => {
-        hideSnackbar();
-        trigger.focus();
-      });
-      hideTimer = setTimeout(hideSnackbar, 4500);
-    }
-    trigger.addEventListener("click", showSnackbar);
+    const host = document.querySelector('[data-mot-specimen="snackbar/playground"]');
+    const action = document.getElementById("snackbar-with-action");
+    const close = document.getElementById("snackbar-with-close");
+    const dark = document.getElementById("snackbar-dark");
+    const sync = () =>
+      setLiveProps(host, { action: action.checked, close: close.checked, theme: dark.checked ? "dark" : "light" });
+    [action, close, dark].forEach((el) => el.addEventListener("change", sync));
+    sync();
   },
 });

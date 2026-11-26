@@ -52,9 +52,18 @@
       }
     ],
     "related": [
-      { "label": "Button", "href": "components/button.html" },
-      { "label": "Basic dialog", "href": "components/basic-dialog.html" },
-      { "label": "Eyebrow label", "href": "components/eyebrow-label.html" }
+      {
+        "label": "Button",
+        "href": "components/button.html"
+      },
+      {
+        "label": "Basic dialog",
+        "href": "components/basic-dialog.html"
+      },
+      {
+        "label": "Eyebrow label",
+        "href": "components/eyebrow-label.html"
+      }
     ]
   },
   "variants": [
@@ -74,16 +83,28 @@
   "anatomy": [
     "<strong>Contenedor</strong> — píldora outlined, radio fijo 8 dp (<code>Corner/Small</code> ↔ <code>shapes.small</code>). No morfa.",
     "<strong>Label</strong> — Inter <code>labelLarge</code>. Sustantivo de categoría, no un verbo de acción.",
-    "<strong>Check (selected)</strong> — icono leading 18 dp que añade Material 3 al seleccionar. Wallet no pasa un icono propio.",
-    "<strong>Fila</strong> — scroll horizontal, hueco <code>MOTSpacing.componentSm</code> (8 dp) entre chips."
+    "<strong>Fila</strong> — scroll horizontal, hueco <code>MOTSpacing.componentSm</code> (8 dp) entre chips.",
+    "<strong>Icono inicial</strong> — opcional (<code>leadingIcon</code>). El producto no lo usa: la selección se ve en el relleno del contenedor."
   ],
   "behavior": {
     "lead": "El chip no cambia de radio al tocarlo: selected se lee por color y por el check. El morph 0→20 es del botón, no de este control.",
     "rows": [
-      { "state": "Unselected", "detail": "Fondo transparente, borde outline, label onSurface." },
-      { "state": "Selected", "detail": "Fill secondaryContainer, onSecondaryContainer, check leading. En Wallet, una sola opción por eje." },
-      { "state": "Hover / pressed", "detail": "State layer M3 sobre onSurface (unselected) o onSecondaryContainer (selected). Sin elevación." },
-      { "state": "Disabled", "detail": "38 % de contenido; no se usa en Wallet hoy." }
+      {
+        "state": "Unselected",
+        "detail": "Fondo transparente, borde outline, label onSurface."
+      },
+      {
+        "state": "Selected",
+        "detail": "Fill secondaryContainer, onSecondaryContainer, check leading. En Wallet, una sola opción por eje."
+      },
+      {
+        "state": "Hover / pressed",
+        "detail": "State layer M3 sobre onSurface (unselected) o onSecondaryContainer (selected). Sin elevación."
+      },
+      {
+        "state": "Disabled",
+        "detail": "38 % de contenido; no se usa en Wallet hoy."
+      }
     ],
     "notes": [
       "Home no usa FilterChip para el filtro de viajes: el patrón es Menu.",
@@ -98,20 +119,44 @@
   ],
   "tokens": {
     "color": [
-      { "token": "secondaryContainer / onSecondaryContainer", "use": "Selected." },
-      { "token": "outline / onSurface", "use": "Unselected." }
+      {
+        "token": "secondaryContainer / onSecondaryContainer",
+        "use": "Selected."
+      },
+      {
+        "token": "outline / onSurface",
+        "use": "Unselected."
+      }
     ],
     "shape": [
-      { "token": "shapes.small", "use": "8 dp fijos. No usar Extra-small (ese radio es del Text field)." }
+      {
+        "token": "shapes.small",
+        "use": "8 dp fijos. No usar Extra-small (ese radio es del Text field)."
+      }
     ],
     "spacing": [
-      { "token": "mot/padding/chip/horizontal-lg", "use": "16 dp — lados sin icono." },
-      { "token": "mot/padding/chip/horizontal-sm", "use": "8 dp — lado del check cuando selected." },
-      { "token": "mot/padding/chip/vertical", "use": "6 dp." },
-      { "token": "mot/spacing/chip/gap · MOTSpacing.componentSm", "use": "8 dp entre chips y entre check y label." }
+      {
+        "token": "MOTSpacing.Chip.horizontalLg",
+        "use": "16 dp a los lados del label."
+      },
+      {
+        "token": "MOTSpacing.Chip.horizontalSm",
+        "use": "8 dp en el lado de un icono, si lo hay."
+      },
+      {
+        "token": "MOTSpacing.Chip.vertical",
+        "use": "6 dp arriba y abajo."
+      },
+      {
+        "token": "MOTSpacing.Chip.gap",
+        "use": "8 dp entre chips de una fila."
+      }
     ],
     "type": [
-      { "token": "labelLarge", "use": "Inter 14 Medium. Misma familia que el botón." }
+      {
+        "token": "labelLarge",
+        "use": "Inter 14 Medium. Misma familia que el botón."
+      }
     ]
   },
   "guidelines": {
@@ -153,49 +198,139 @@
     "sourceFile": "app/src/main/java/com/myowntrip/app/ui/features/wallet/WalletScreen.kt",
     "import": "androidx.compose.material3.FilterChip",
     "composable": "FilterChip",
-    "note": "Sin wrapper MOT. El check leading lo pone M3 al selected; Wallet no pasa leadingIcon.",
+    "note": "No hay componente propio de MyOwnTrip: se usa el FilterChip de Material 3 tal cual, con el tema de la app. Ninguna pantalla le pasa icono inicial; la selección se ve en el relleno del contenedor. Se usa en Wallet, Gastos, Diario, Restaurantes y Sitios.",
     "params": [
-      { "name": "selected", "type": "Boolean", "default": "—", "note": "Obligatorio." },
-      { "name": "onClick", "type": "() -> Unit", "default": "—", "note": "Cambia el filtro; no navega." },
-      { "name": "label", "type": "@Composable () -> Unit", "default": "—", "note": "Text con el sustantivo." },
-      { "name": "leadingIcon", "type": "@Composable (() -> Unit)?", "default": "check si selected", "note": "No override en Wallet." }
+      {
+        "name": "selected",
+        "type": "Boolean",
+        "default": "—",
+        "note": "Obligatorio."
+      },
+      {
+        "name": "onClick",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "Cambia el filtro; no navega."
+      },
+      {
+        "name": "label",
+        "type": "@Composable () -> Unit",
+        "default": "—",
+        "note": "Text con el sustantivo."
+      },
+      {
+        "name": "leadingIcon",
+        "type": "@Composable (() -> Unit)?",
+        "default": "check si selected",
+        "note": "No override en Wallet."
+      }
     ],
     "snippet": "Row(\n    modifier = Modifier.horizontalScroll(rememberScrollState()),\n    horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentSm),\n) {\n    FilterChip(\n        selected = filterPhase == WalletDocumentFilterPhase.Active,\n        onClick = { onFilterPhaseChange(WalletDocumentFilterPhase.Active) },\n        label = { Text(\"Activos\") },\n    )\n}"
   },
   "decisions": {
-    "source": "Compose FilterChip (M3) · set de librería 53923:28270",
+    "source": "Compose FilterChip (M3) · set de la librería de Figma",
     "why": "Elegir una opción dentro de un conjunto pequeño con un toque, sin cerrar la pantalla.",
     "layer": "M3 directo, sin wrapper"
   },
   "changelog": [
-    { "date": "2026-10-29", "note": "Fase B.3: Corner/Small + mot/padding/chip/*." },
-    { "date": "2026-10-30", "note": "Playground interactivo." },
-    { "date": "2026-11-24", "note": "Ficha usage-first: anatomía y medidas en el showcase; la librería deja de ser la documentación." }
+    {
+      "date": "2026-10-29",
+      "note": "Radio Small y espaciado del chip enlazados a variables."
+    },
+    {
+      "date": "2026-10-30",
+      "note": "Playground interactivo."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha usage-first: anatomía y medidas en el showcase; la librería deja de ser la documentación."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Ejemplo, anatomía y medidas sobre el FilterChip real (Compose en WebAssembly). Corregido: Material 3 no añade el check por sí solo."
+    }
   ],
   "screens": [
-    { "screen": "WalletScreen", "pattern": "WalletDocumentFilterChips — Activos / Archivados / Todos" },
-    { "screen": "ExpenseFormScreen", "pattern": "Categoría y método de pago" },
-    { "screen": "JournalAddScreen", "pattern": "Tipo de entrada" }
+    {
+      "screen": "WalletScreen",
+      "pattern": "WalletDocumentFilterChips — Activos / Archivados / Todos"
+    },
+    {
+      "screen": "ExpenseFormScreen",
+      "pattern": "Categoría y método de pago"
+    },
+    {
+      "screen": "JournalAddScreen",
+      "pattern": "Tipo de entrada"
+    }
   ],
   "anatomyDiagram": {
     "kind": "filter-chip",
-    "values": {
-      "padH": 16,
-      "padHSelected": 8,
-      "padV": 6,
-      "gap": 8,
-      "icon": 18,
-      "radius": 8,
-      "height": 32
-    },
-    "measures": [
-      { "label": "Alto visible", "value": "32 dp" },
-      { "label": "Padding horizontal (sin check)", "value": "16 dp" },
-      { "label": "Padding leading (con check)", "value": "8 dp" },
-      { "label": "Padding vertical", "value": "6 dp" },
-      { "label": "Check", "value": "18 dp" },
-      { "label": "Hueco check–label y entre chips", "value": "8 dp" },
-      { "label": "Radio", "value": "8 dp" }
-    ]
+    "values": {},
+    "live": {
+      "specimen": "filter-chip/anatomy",
+      "zoom": 2,
+      "height": 260,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.3",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "label",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "chip2",
+          "anchor": "bottom@0.3",
+          "side": "bottom"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Chip",
+          "size": "container"
+        },
+        {
+          "label": "Espacio a la izquierda del label",
+          "left": [
+            "container",
+            "label"
+          ]
+        },
+        {
+          "label": "Espacio a la derecha del label",
+          "right": [
+            "container",
+            "label"
+          ]
+        },
+        {
+          "label": "Espacio sobre el label",
+          "top": [
+            "container",
+            "label"
+          ]
+        },
+        {
+          "label": "Hueco entre chips",
+          "gap": [
+            "container",
+            "chip2"
+          ]
+        }
+      ],
+      "gaps": [
+        [
+          "container",
+          "chip2"
+        ]
+      ]
+    }
   }
 }

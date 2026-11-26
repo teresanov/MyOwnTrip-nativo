@@ -288,7 +288,7 @@ function renderLiveAnatomy(anatomy, live) {
     }) +
     `<div class="ad-layout ad-layout--live">
        <figure class="ad-figure li-wrap" data-inspect="anatomy" data-legend="#li-legend" data-markers='${JSON.stringify(live.markers)}'>
-         ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light" }, { height: live.height, label: "Anatomía del componente real" })}
+         ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light", ...(live.props || {}) }, { height: live.height, label: "Anatomía del componente real" })}
          <svg class="li-overlay" aria-hidden="true"></svg>
        </figure>
        ${legend}
@@ -305,8 +305,8 @@ function renderLiveMeasures(diagram) {
       lead: "Pasa el cursor sobre el componente: como el inspector del navegador, se resalta cada pieza con su tamaño y sus distancias en dp. En el contenedor, el verde es el espacio interior y el azul, el contenido. Los números se miden en el componente real, no se escriben a mano.",
     }) +
     `<div class="ad-layout ad-layout--live">
-       <figure class="ad-figure li-wrap" data-inspect="measures" data-table="#li-measures">
-         ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light" }, { height: live.height, label: "Medidas del componente real" })}
+       <figure class="ad-figure li-wrap" data-inspect="measures" data-table="#li-measures" data-rows='${JSON.stringify(live.rows || null)}' data-gaps='${JSON.stringify(live.gaps || [])}'>
+         ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light", ...(live.props || {}) }, { height: live.height, label: "Medidas del componente real" })}
          <svg class="li-overlay" aria-hidden="true"></svg>
          <div class="li-hit" aria-hidden="true"></div>
        </figure>

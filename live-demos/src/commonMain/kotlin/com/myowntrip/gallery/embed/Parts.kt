@@ -5,7 +5,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 
 /**
@@ -20,5 +20,5 @@ val LocalPartSink = staticCompositionLocalOf { PartSink { _, _ -> } }
 
 fun Modifier.part(name: String): Modifier = composed {
   val sink = LocalPartSink.current
-  onGloballyPositioned { sink.report(name, it.boundsInRoot()) }
+  onGloballyPositioned { sink.report(name, it.boundsInWindow()) }
 }

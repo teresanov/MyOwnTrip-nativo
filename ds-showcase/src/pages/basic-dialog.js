@@ -17,6 +17,8 @@ import {
   table,
 } from "../lib/component-page.js";
 import { DIALOG_ERROR, renderAnatomy, renderMeasures } from "../lib/anatomy-diagram.js";
+import { bootLiveSpecimens, liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
+import { initLiveInspectors } from "../lib/live-inspector.js";
 
 initShowcasePage("components", { componentId: "basic-dialog" });
 
@@ -82,8 +84,10 @@ document.getElementById("component-main").innerHTML = [
   renderPlayground({
     id: "ejemplo",
     title: "Ejemplo",
-    hint: "Abre el diálogo, cambia el escenario y cierra con Cancelar, el scrim o Escape. Las acciones son MOTTextButton, como en Compose.",
-    canvasHtml: `<button type="button" class="mot-btn mot-btn--filled" id="dialog-open">Mostrar diálogo</button>`,
+    hint: '<span class="live-badge">Compose real</span> Es el <code>AlertDialog</code> de Material 3 con acciones <code>MOTTextButton</code>, compilado a WebAssembly. Ábrelo, cambia el escenario y ciérralo con una acción o pulsando fuera.',
+    canvasHtml: `
+      ${liveHostHtml("basic-dialog/playground", { theme: "light" }, { height: 420, label: "AlertDialog real" })}
+      <p class="playground__status"><code>AlertDialog(onDismissRequest, icon, title, text, confirmButton, dismissButton)</code></p>`,
     controlsHtml: `
       <label class="control">
         <span>Escenario</span>
@@ -93,18 +97,9 @@ document.getElementById("component-main").innerHTML = [
           <option value="discard">Descartar cambios</option>
         </select>
       </label>
+      <label class="playground-check"><input type="checkbox" id="dialog-dark" /><span>Tema oscuro</span></label>
     `,
   }),
-  `<div class="dialog-overlay" id="dialog-overlay" hidden>
-    <div class="dialog-demo" role="alertdialog" aria-modal="true" aria-labelledby="dialog-demo-title" aria-describedby="dialog-demo-body" id="dialog-panel">
-      ${dialogPanel(SCENARIOS.delete, {
-        title: "dialog-demo-title",
-        body: "dialog-demo-body",
-        cancel: "dialog-cancel",
-        confirm: "dialog-confirm",
-      })}
-    </div>
-  </div>`,
   renderGuidelines(data).replace(
     "</section>",
     `${renderDoDontPair({
@@ -131,52 +126,22 @@ document.getElementById("component-main").innerHTML = [
   renderRelated(data.usage?.related),
 ].join("");
 
-const overlay = document.getElementById("dialog-overlay");
-const panel = document.getElementById("dialog-panel");
-const openBtn = document.getElementById("dialog-open");
+const host = document.querySelector('[data-mot-specimen="basic-dialog/playground"]');
 const scenarioSel = document.getElementById("dialog-scenario");
-let lastFocus = null;
-
-function paintScenario() {
+const darkBox = document.getElementById("dialog-dark");
+function sync() {
   const s = SCENARIOS[scenarioSel.value] || SCENARIOS.delete;
-  panel.innerHTML = dialogPanel(s, {
-    title: "dialog-demo-title",
-    body: "dialog-demo-body",
-    cancel: "dialog-cancel",
-    confirm: "dialog-confirm",
+  setLiveProps(host, {
+    icon: s.icon,
+    title: s.title,
+    body: s.body,
+    confirm: s.confirm,
+    dismiss: s.dismiss,
+    theme: darkBox.checked ? "dark" : "light",
   });
-  bindActions();
 }
-
-function bindActions() {
-  document.getElementById("dialog-cancel")?.addEventListener("click", () => closeDialog());
-  document.getElementById("dialog-confirm")?.addEventListener("click", () => closeDialog());
-}
-
-function openDialog() {
-  paintScenario();
-  lastFocus = document.activeElement;
-  overlay.hidden = false;
-  document.getElementById("dialog-cancel")?.focus();
-}
-
-function closeDialog(returnFocus = true) {
-  overlay.hidden = true;
-  if (returnFocus && lastFocus instanceof HTMLElement) lastFocus.focus();
-}
-
-openBtn.addEventListener("click", openDialog);
-scenarioSel.addEventListener("change", () => {
-  if (!overlay.hidden) paintScenario();
-});
-overlay.addEventListener("click", (e) => {
-  if (e.target === overlay) closeDialog();
-});
-document.addEventListener("keydown", (e) => {
-  if (!overlay.hidden && e.key === "Escape") {
-    e.preventDefault();
-    closeDialog();
-  }
-});
-bindActions();
+[scenarioSel, darkBox].forEach((el) => el.addEventListener("change", sync));
+sync();
+initLiveInspectors();
+bootLiveSpecimens();
 setupToc();

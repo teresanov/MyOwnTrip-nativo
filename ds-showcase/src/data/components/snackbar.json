@@ -47,27 +47,57 @@
       }
     ],
     "related": [
-      { "label": "Basic dialog", "href": "components/basic-dialog.html" },
-      { "label": "Button", "href": "components/button.html" }
+      {
+        "label": "Basic dialog",
+        "href": "components/basic-dialog.html"
+      },
+      {
+        "label": "Button",
+        "href": "components/button.html"
+      }
     ]
   },
   "variants": [
-    { "id": "text-only", "label": "Solo texto", "composable": "Snackbar", "usage": "Ack sin acción." },
-    { "id": "text-action", "label": "Texto + acción", "composable": "Snackbar", "usage": "Deshacer o reintentar." },
-    { "id": "two-lines", "label": "Two lines", "composable": "Snackbar", "usage": "Cuando el mensaje ocupa dos líneas." }
+    {
+      "id": "text-only",
+      "label": "Solo texto",
+      "composable": "Snackbar",
+      "usage": "Ack sin acción."
+    },
+    {
+      "id": "text-action",
+      "label": "Texto + acción",
+      "composable": "Snackbar",
+      "usage": "Deshacer o reintentar."
+    },
+    {
+      "id": "two-lines",
+      "label": "Two lines",
+      "composable": "Snackbar",
+      "usage": "Cuando el mensaje ocupa dos líneas."
+    }
   ],
   "anatomy": [
     "<strong>Contenedor</strong> — inverseSurface, radio 4 dp (<code>Corner/Extra-small</code>).",
     "<strong>Mensaje</strong> — bodyMedium, inverseOnSurface.",
     "<strong>Acción</strong> — opcional, labelLarge, inversePrimary. Un solo verbo.",
-    "<strong>Cerrar</strong> — icon button inverse, si Show close."
+    "<strong>Cerrar</strong> — icon button inverse, si se pide (withDismissAction)."
   ],
   "behavior": {
     "lead": "Un snackbar a la vez. El siguiente reemplaza al anterior.",
     "rows": [
-      { "state": "Sin acción", "detail": "Se oculta sola (duración corta M3, ~4 s en este playground)." },
-      { "state": "Con acción", "detail": "Permanece hasta Deshacer, cerrar o timeout." },
-      { "state": "Posición", "detail": "Abajo, delante del contenido, por encima del FAB; nunca delante de la navegación." }
+      {
+        "state": "Sin acción",
+        "detail": "Se oculta sola (duración corta M3, ~4 s en este playground)."
+      },
+      {
+        "state": "Con acción",
+        "detail": "Permanece hasta Deshacer, cerrar o timeout."
+      },
+      {
+        "state": "Posición",
+        "detail": "Abajo, delante del contenido, por encima del FAB; nunca delante de la navegación."
+      }
     ],
     "notes": [
       "No hay icono en el snackbar. Si el mensaje necesita uno, es un diálogo.",
@@ -81,23 +111,52 @@
   ],
   "tokens": {
     "color": [
-      { "token": "inverseSurface / inverseOnSurface", "use": "Contenedor y mensaje." },
-      { "token": "inversePrimary", "use": "Acción." }
+      {
+        "token": "inverseSurface / inverseOnSurface",
+        "use": "Contenedor y mensaje."
+      },
+      {
+        "token": "inversePrimary",
+        "use": "Acción."
+      }
     ],
-    "shape": [{ "token": "shapes.extraSmall", "use": "4 dp." }],
+    "shape": [
+      {
+        "token": "shapes.extraSmall",
+        "use": "4 dp."
+      }
+    ],
     "spacing": [
-      { "token": "mot/padding/snackbar/horizontal", "use": "16 dp." },
-      { "token": "mot/padding/snackbar/vertical", "use": "12 dp." },
-      { "token": "mot/spacing/snackbar/gap", "use": "12 dp entre mensaje y acción." }
+      {
+        "token": "MOTSpacing.Snackbar.horizontal",
+        "use": "16 dp a los lados."
+      },
+      {
+        "token": "MOTSpacing.Snackbar.vertical",
+        "use": "12 dp arriba y abajo."
+      },
+      {
+        "token": "MOTSpacing.Snackbar.gap",
+        "use": "12 dp entre mensaje y acción."
+      }
     ],
     "type": [
-      { "token": "bodyMedium", "use": "Mensaje." },
-      { "token": "labelLarge", "use": "Acción." }
+      {
+        "token": "bodyMedium",
+        "use": "Mensaje."
+      },
+      {
+        "token": "labelLarge",
+        "use": "Acción."
+      }
     ]
   },
   "guidelines": {
     "links": [
-      { "label": "Material Design 3 · Snackbar", "url": "https://m3.material.io/components/snackbar/guidelines" }
+      {
+        "label": "Material Design 3 · Snackbar",
+        "url": "https://m3.material.io/components/snackbar/guidelines"
+      }
     ],
     "consulted": "2026-11-10"
   },
@@ -123,9 +182,18 @@
     ]
   },
   "screens": [
-    { "screen": "ExpenseFormScreen", "uses": "Gasto guardado · Deshacer" },
-    { "screen": "WalletScreen", "uses": "Documento archivado · Deshacer" },
-    { "screen": "JournalAddScreen", "uses": "Recuerdo guardado" }
+    {
+      "screen": "ExpenseFormScreen",
+      "uses": "Gasto guardado · Deshacer"
+    },
+    {
+      "screen": "WalletScreen",
+      "uses": "Documento archivado · Deshacer"
+    },
+    {
+      "screen": "JournalAddScreen",
+      "uses": "Recuerdo guardado"
+    }
   ],
   "implementation": {
     "module": "material3",
@@ -134,28 +202,104 @@
     "composable": "SnackbarHost / Snackbar",
     "note": "Sin wrapper MOT. Vive en el Scaffold.",
     "params": [
-      { "name": "snackbarHostState", "type": "SnackbarHostState", "default": "remember { … }", "note": "Un host por pantalla." },
-      { "name": "message", "type": "String", "default": "—", "note": "showSnackbar(message, actionLabel)." }
+      {
+        "name": "snackbarHostState",
+        "type": "SnackbarHostState",
+        "default": "remember { … }",
+        "note": "Un host por pantalla."
+      },
+      {
+        "name": "message",
+        "type": "String",
+        "default": "—",
+        "note": "showSnackbar(message, actionLabel)."
+      }
     ],
     "snippet": "val snackbarHostState = remember { SnackbarHostState() }\nScaffold(\n    snackbarHost = { SnackbarHost(snackbarHostState) },\n) { /* … */ }\nscope.launch {\n    snackbarHostState.showSnackbar(\"Gasto guardado\", actionLabel = \"Deshacer\")\n}"
   },
   "decisions": {
-    "source": "Compose Snackbar (M3) · set de librería 53977:33575",
+    "source": "Compose Snackbar (M3) · set de la librería de Figma",
     "why": "Confirmar o deshacer sin interrumpir la pantalla.",
     "layer": "M3 directo en SnackbarHost"
   },
   "changelog": [
-    { "date": "2026-10-29", "note": "Inverse + Extra-small + mot/padding|spacing/snackbar/*." },
-    { "date": "2026-11-24", "note": "Ficha usage-first en el showcase." }
+    {
+      "date": "2026-10-29",
+      "note": "Inverse, radio Extra-small y espaciado del snackbar enlazados a variables."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha usage-first en el showcase."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Ejemplo, anatomía y medidas sobre el Snackbar real (Compose en WebAssembly)."
+    }
   ],
   "anatomyDiagram": {
     "kind": "snackbar",
-    "values": { "padH": 16, "padV": 12, "gap": 12 },
-    "measures": [
-      { "label": "Padding horizontal", "value": "16 dp" },
-      { "label": "Padding vertical", "value": "12 dp" },
-      { "label": "Hueco mensaje–acción", "value": "12 dp" },
-      { "label": "Radio", "value": "4 dp" }
-    ]
+    "values": {},
+    "live": {
+      "specimen": "snackbar/anatomy",
+      "zoom": 1.2,
+      "height": 260,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.3",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "message",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "action",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        },
+        {
+          "n": 4,
+          "part": "close",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Contenedor",
+          "size": "container"
+        },
+        {
+          "label": "Espacio a la izquierda del mensaje",
+          "left": [
+            "container",
+            "message"
+          ]
+        },
+        {
+          "label": "Hueco mensaje–acción",
+          "gap": [
+            "message",
+            "action"
+          ]
+        },
+        {
+          "label": "Icono de cerrar",
+          "size": "close"
+        },
+        {
+          "label": "Espacio a la derecha",
+          "right": [
+            "container",
+            "close"
+          ]
+        }
+      ]
+    }
   }
 }

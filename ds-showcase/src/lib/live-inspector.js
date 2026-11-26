@@ -58,6 +58,11 @@ function anchorPoint(r, spec) {
     case "right": return { x: r.x + r.w, y: r.y + r.h * t };
     case "top": return { x: r.x + r.w * t, y: r.y };
     case "bottom": return { x: r.x + r.w * t, y: r.y + r.h };
+    case "at": {
+      // "at@0.08,0.12": punto interior (fracciones de ancho y alto).
+      const [fx, fy] = f.split(",").map(Number);
+      return { x: r.x + r.w * fx, y: r.y + r.h * fy };
+    }
     default: return { x: r.x + r.w / 2, y: r.y + r.h / 2 };
   }
 }
@@ -65,8 +70,19 @@ function anchorPoint(r, spec) {
 function drawAnatomy(svg, geo, markers, highlight) {
   svg.replaceChildren();
   const { parts } = geo;
-  const outer = parts.touch || parts.container;
-  if (!outer) return;
+  const rects = Object.entries(parts)
+    .filter(([k]) => !BACKDROP.has(k))
+    .map(([, r]) => r);
+  if (!rects.length) return;
+  // Los marcadores van fuera de todo el componente (unión de sus piezas, incluida el área táctil).
+  const x0 = Math.min(...rects.map((r) => r.x));
+  const y0 = Math.min(...rects.map((r) => r.y));
+  const outer = {
+    x: x0,
+    y: y0,
+    w: Math.max(...rects.map((r) => r.x + r.w)) - x0,
+    h: Math.max(...rects.map((r) => r.y + r.h)) - y0,
+  };
 
   if (parts.touch) {
     svg.append(el("rect", { x: parts.touch.x, y: parts.touch.y, width: parts.touch.w, height: parts.touch.h, class: "li-touch" }));
@@ -87,6 +103,15 @@ function drawAnatomy(svg, geo, markers, highlight) {
     if (m.side === "right") mx = outer.x + outer.w + GAP;
     if (m.side === "top") my = outer.y - GAP;
     if (m.side === "bottom") my = outer.y + outer.h + GAP;
+    if (m.side === "inset") {
+      mx = a.x + (m.dx || 0);
+      my = a.y + (m.dy || 0);
+    }
+    // Que el marcador no se salga del recuadro (componentes anchos como el diálogo).
+    const W = svg.clientWidth || svg.getBoundingClientRect().width;
+    const H = svg.clientHeight || svg.getBoundingClientRect().height;
+    mx = Math.min(Math.max(mx, 16), W - 16);
+    my = Math.min(Math.max(my, 16), H - 16);
     const on = highlight === m.part;
     const g = el("g", { class: `li-marker${on ? " is-on" : ""}` });
     g.append(
@@ -130,9 +155,26 @@ const LABELS = {
   icon: "Icono",
   label: "Label",
   touch: "Área táctil",
+  field: "Campo",
+  input: "Texto",
+  trailing: "Icono final",
+  support: "Texto de apoyo",
+  chip2: "Chip sin seleccionar",
+  label2: "Label",
+  message: "Mensaje",
+  action: "Acción",
+  close: "Cerrar",
+  title: "Título",
+  body: "Texto",
+  confirm: "Acción de confirmar",
+  dismiss: "Acción de descartar",
+  scrim: "Scrim",
 };
-// Orden de prueba al pasar el cursor: primero lo más pequeño.
-const HIT_ORDER = ["icon", "label", "content", "container", "touch"];
+// Piezas que ocupan toda la escena: no cuentan para colocar los marcadores alrededor del componente.
+const BACKDROP = new Set(["scrim"]);
+// Al pasar el cursor gana la pieza más pequeña que contiene el punto (como en las DevTools).
+const NOT_HITTABLE = new Set(["stateLayer"]);
+const area = (r) => r.w * r.h;
 
 function hLine(svg, x1, x2, y, text) {
   if (Math.abs(x2 - x1) < 1) return;
@@ -167,11 +209,11 @@ function tooltip(svg, r, text, bounds) {
   );
 }
 
-function drawInspect(svg, geo, name, bounds) {
+function drawInspect(svg, geo, name, bounds, gaps = []) {
   svg.replaceChildren();
   const { parts, zoom } = geo;
   const c = parts.container;
-  const n = parts.content;
+  const n = parts.content || parts.icon;
   if (!c) return;
   const z = (v) => fmt(dp(v, zoom));
 
@@ -185,6 +227,7 @@ function drawInspect(svg, geo, name, bounds) {
     svg.append(el("rect", { x: r.x, y: r.y, width: r.w, height: r.h, class: "li-box-touch" }));
     vLine(svg, r.y, r.y + r.h, r.x + r.w + 10, `${z(r.h)} dp`);
   } else if (name === "container" && n) {
+    // Sin pieza «contenido» (icon button), el icono hace de contenido.
     // Como DevTools: espacio interior en verde, contenido en azul.
     svg.append(el("rect", { x: c.x, y: c.y, width: c.w, height: c.h, class: "li-pad" }));
     svg.append(el("rect", { x: n.x, y: n.y, width: n.w, height: n.h, class: "li-content" }));
@@ -208,12 +251,61 @@ function drawInspect(svg, geo, name, bounds) {
     }
     vLine(svg, c.y, r.y, r.x + r.w + 8, z(r.y - c.y));
   }
+  // Huecos entre piezas hermanas (p. ej. entre dos chips): se marcan al pasar por cualquiera de las dos.
+  gaps.forEach(([a, b]) => {
+    if (name !== a && name !== b) return;
+    const A = parts[a];
+    const B = parts[b];
+    if (!A || !B) return;
+    const other = name === a ? B : A;
+    svg.append(el("rect", { x: other.x, y: other.y, width: other.w, height: other.h, class: "li-ghost" }));
+    hLine(svg, A.x + A.w, B.x, Math.max(A.y + A.h, B.y + B.h) + 12, `${z(B.x - A.x - A.w)} dp`);
+  });
   tooltip(svg, r, `${LABELS[name] || name} · ${z(r.w)} × ${z(r.h)} dp`, bounds);
 }
 
-function measuresTable(geo, tbody) {
+/** Filas declaradas en la ficha: { label, size | height | left | top | right | gap | vgap }. */
+function declaredRows(geo, rows) {
   const { parts, zoom } = geo;
-  const { container: c, content: n, icon: i, label: l, touch: t } = parts;
+  const z = (v) => `${fmt(dp(v, zoom))} dp`;
+  const P = (n) => parts[n];
+  return rows
+    .map((r) => {
+      try {
+        if (r.size) return [r.label, `${z(P(r.size).w)} × ${z(P(r.size).h)}`];
+        if (r.height) return [r.label, z(P(r.height).h)];
+        if (r.width) return [r.label, z(P(r.width).w)];
+        if (r.left) return [r.label, z(P(r.left[1]).x - P(r.left[0]).x)];
+        if (r.top) return [r.label, z(P(r.top[1]).y - P(r.top[0]).y)];
+        if (r.right) {
+          const [o, i] = r.right.map(P);
+          return [r.label, z(o.x + o.w - i.x - i.w)];
+        }
+        if (r.gap) {
+          const [a, b] = r.gap.map(P);
+          return [r.label, z(b.x - a.x - a.w)];
+        }
+        if (r.vgap) {
+          const [a, b] = r.vgap.map(P);
+          return [r.label, z(b.y - a.y - a.h)];
+        }
+      } catch {
+        return null;
+      }
+      return null;
+    })
+    .filter(Boolean);
+}
+
+function measuresTable(geo, tbody, declared) {
+  if (declared?.length) {
+    const rows = declaredRows(geo, declared);
+    tbody.innerHTML = rows.map(([a, b]) => `<tr><td>${a}</td><td><strong>${b}</strong></td></tr>`).join("");
+    return;
+  }
+  const { parts, zoom } = geo;
+  const { container: c, icon: i, label: l, touch: t } = parts;
+  const n = parts.content || i;
   if (!c || !n) return;
   const z = (v) => `${fmt(dp(v, zoom))} dp`;
   const rows = [
@@ -233,13 +325,15 @@ function attachMeasures(wrap) {
   const svg = wrap.querySelector("svg.li-overlay");
   const hit = wrap.querySelector(".li-hit");
   const tbody = document.querySelector(wrap.getAttribute("data-table"));
+  const declared = JSON.parse(wrap.getAttribute("data-rows") || "null");
+  const gaps = JSON.parse(wrap.getAttribute("data-gaps") || "[]");
   let geo = null;
   let current = null;
 
   host.addEventListener("mot:parts", () => {
     geo = readGeometry(host);
-    if (geo && tbody) measuresTable(geo, tbody);
-    if (geo) drawInspect(svg, geo, current, { w: wrap.clientWidth, h: wrap.clientHeight });
+    if (geo && tbody) measuresTable(geo, tbody, declared);
+    if (geo) drawInspect(svg, geo, current, { w: wrap.clientWidth, h: wrap.clientHeight }, gaps);
   });
 
   hit.addEventListener("mousemove", (e) => {
@@ -247,18 +341,18 @@ function attachMeasures(wrap) {
     const b = wrap.getBoundingClientRect();
     const x = e.clientX - b.left;
     const y = e.clientY - b.top;
-    const name = HIT_ORDER.find((k) => {
-      const r = geo.parts[k];
-      return r && x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
-    }) || null;
+    const hits = Object.entries(geo.parts)
+      .filter(([k, r]) => !NOT_HITTABLE.has(k) && x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h)
+      .sort((a, b) => area(a[1]) - area(b[1]));
+    const name = hits[0]?.[0] || null;
     if (name !== current) {
       current = name;
-      drawInspect(svg, geo, current, { w: b.width, h: b.height });
+      drawInspect(svg, geo, current, { w: b.width, h: b.height }, gaps);
     }
   });
   hit.addEventListener("mouseleave", () => {
     current = null;
-    if (geo) drawInspect(svg, geo, null, { w: wrap.clientWidth, h: wrap.clientHeight });
+    if (geo) drawInspect(svg, geo, null, { w: wrap.clientWidth, h: wrap.clientHeight }, gaps);
   });
 }
 

@@ -35,19 +35,24 @@
     ],
     "chooseVariant": [
       {
-        "if": "Acción común en app bar, fila o campo (todos los usos actuales)",
-        "use": "MOTIconButton",
-        "note": "Estilo standard: sin contenedor, bajo énfasis."
+        "if": "Acción común en app bar, fila, campo o card (casi todos los usos)",
+        "use": "MOTIconButton Square, Small",
+        "note": "Sin contenedor visible: bajo énfasis."
       },
       {
-        "if": "Necesitas separar el botón de una imagen o de un fondo variable",
-        "use": "Icon button Filled / Tonal / Outlined (set de Figma)",
-        "note": "Hoy sin wrapper propio en Compose: se pasa por el parámetro colors."
+        "if": "El botón debe verse ya redondeado, sin esperar a la interacción",
+        "use": "MOTIconButton Round",
+        "note": "Mismo radio de 20 dp, en reposo."
+      },
+      {
+        "if": "Necesitas separarlo de una imagen o de un fondo variable",
+        "use": "MOTIconButton con colors Filled o Tonal",
+        "note": "No hay wrappers propios: el contenedor se pide con IconButtonDefaults.filledIconButtonColors() o filledTonalIconButtonColors(). Outlined no está disponible en el wrapper."
       },
       {
         "if": "Representa un estado activable (favorito, marcador)",
-        "use": "Icon button togglable (set de Figma)",
-        "note": "Icono outline sin seleccionar y relleno al seleccionar."
+        "use": "Pendiente",
+        "note": "El wrapper no expone hoy un modo seleccionable."
       }
     ],
     "related": [
@@ -96,57 +101,64 @@
     "donts": [
       "No usar IconButton de M3 suelto: se pierde el morph de forma.",
       "No dejar un icono como único contenido del botón sin nombre accesible en ningún sitio.",
-      "No usar Round en reposo: el Round de Figma es el destino del morph (20 dp), no un círculo."
+      "No usar un círculo: Round es un radio de 20 dp, no Corner/Full. El único control circular es el FAB."
     ]
   },
   "variants": [
     {
+      "id": "square",
+      "label": "Square",
+      "composable": "MOTIconButton(type = Square)",
+      "usage": "Por defecto. Rectangular en reposo y redondeado a 20 dp al interactuar, como Button. App bars, filas, campos y cards."
+    },
+    {
+      "id": "round",
+      "label": "Round",
+      "composable": "MOTIconButton(type = Round)",
+      "usage": "Ya redondeado a 20 dp en reposo. No es un círculo: el único control circular es el FAB."
+    },
+    {
       "id": "standard",
-      "label": "Standard · Square",
-      "composable": "MOTIconButton",
-      "usage": "Único estilo con wrapper. App bars, filas, campos, cards.",
-      "figmaNode": "57994:10081"
+      "label": "Estilo Standard",
+      "composable": "MOTIconButton()",
+      "usage": "Sin contenedor visible: solo el icono; la capa de estado aparece al interactuar. Es el estilo de todos los usos actuales de la app."
     },
     {
-      "id": "container",
-      "label": "Filled / Tonal / Outlined",
-      "composable": null,
-      "usage": "Publicados en Figma (×4 con standard). Sin wrapper específico en Compose.",
-      "figmaNode": "57994:10081"
+      "id": "filled-tonal",
+      "label": "Estilos Filled y Tonal",
+      "composable": "colors = IconButtonDefaults.filledIconButtonColors() / filledTonalIconButtonColors()",
+      "usage": "Con contenedor de color. Es el estilo por defecto del set «Icon button» de Figma; en código se pide con colors."
     },
     {
-      "id": "togglable",
-      "label": "Togglable (×4)",
-      "composable": null,
-      "usage": "Publicados en Figma. En Compose el estado activo se fuerza con forceActive en rememberMOTButtonShape.",
-      "figmaNode": "57994:10081"
-    }
-  ],
-  "sets": [
+      "id": "sizes",
+      "label": "Tamaños XSmall · Small · Medium · Large",
+      "composable": "size = MOTIconButtonSize.*",
+      "usage": "Alto del contenedor 32 · 40 · 56 · 96 dp. Small (40) es el de producto."
+    },
     {
-      "figma": "Icon button (+ outline / standard / tonal + togglable)",
-      "node": "57994:10081",
-      "compose": "MOTIconButton",
-      "note": "Square en reposo. Round = Corner/Large-increased (destino del morph, no círculo). Sin XLarge."
+      "id": "widths",
+      "label": "Anchos Narrow · Default · Wide",
+      "composable": "width = MOTIconButtonWidth.*",
+      "usage": "Más estrecho o más ancho que el cuadrado, para alinear con otros controles o dar más peso a la acción."
     }
   ],
   "anatomy": [
     "<strong>Contenedor</strong> — superficie pulsable. Radio 0 dp en reposo y 20 dp en interacción (misma regla que Button).",
     "<strong>Icono</strong> — Material Symbols Sharp w300, 24 dp. Su significado debe ser inequívoco.",
-    "<strong>State layer</strong> — capa de color en runtime para hover, focus y pressed.",
+    "<strong>State layer</strong> — capa del color del icono con la opacidad del estado (hover, foco, pulsado).",
     "<strong>Área táctil</strong> — mínimo 48 dp; el IconButton de M3 ya la garantiza."
   ],
   "behavior": {
     "lead": "Hereda el comportamiento de forma de Button: rectángulo en reposo y 20 dp en interacción, con squish a 0.96 al pulsar. Todo viene de rememberMOTButtonShape y motButtonPressSquish.",
     "rows": [
       {
-        "state": "Reposo y disabled",
+        "state": "Square · reposo y disabled",
         "corner": "0 dp",
         "figma": "Corner/None",
         "extra": "Sin escala."
       },
       {
-        "state": "Hover / Focus",
+        "state": "Square · hover y focus",
         "corner": "20 dp",
         "figma": "Corner/Large-increased",
         "extra": "Sin escala."
@@ -158,10 +170,10 @@
         "extra": "Escala 0.96."
       },
       {
-        "state": "Togglable · Selected",
+        "state": "Round · todos los estados",
         "corner": "20 dp",
         "figma": "Corner/Large-increased",
-        "extra": "Vía forceActive = true."
+        "extra": "Radio fijo; al pulsar, escala 0.96."
       }
     ],
     "notes": [
@@ -194,8 +206,8 @@
     ],
     "spacing": [
       {
-        "token": "mot/padding/icon-button/{0, 10, md, lg, wide}",
-        "use": "Padding de chrome en Figma (0 / 10 / 16 / 32 / 32×16). En Compose manda el touch target de M3, no MOTSpacing."
+        "token": "MOTIconButtonSize.containerSize(width)",
+        "use": "Tamaño del contenedor por tamaño y ancho (Small · Default = 40 × 40 dp). El icono es de 24 dp."
       }
     ]
   },
@@ -230,7 +242,7 @@
     "sourceFile": "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTButtons.kt",
     "import": "com.myowntrip.app.ui.theme.MOTIconButton",
     "composable": "MOTIconButton",
-    "note": "Envuelve el IconButton de M3 solo para aplicar el morph de forma y el squish. No expone estilos Filled, Tonal ni Outlined.",
+    "note": "Envuelve el IconButton de M3 para aplicar el tamaño del sistema, el morph de forma y la compresión al pulsar.",
     "params": [
       {
         "name": "onClick",
@@ -242,13 +254,31 @@
         "name": "modifier",
         "type": "Modifier",
         "default": "Modifier",
-        "note": "El wrapper le añade motButtonPressSquish."
+        "note": "El wrapper le añade el tamaño del contenedor y la compresión al pulsar."
       },
       {
         "name": "enabled",
         "type": "Boolean",
         "default": "true",
         "note": ""
+      },
+      {
+        "name": "size",
+        "type": "MOTIconButtonSize",
+        "default": "Small",
+        "note": "XSmall · Small · Medium · Large."
+      },
+      {
+        "name": "width",
+        "type": "MOTIconButtonWidth",
+        "default": "Default",
+        "note": "Narrow · Default · Wide."
+      },
+      {
+        "name": "type",
+        "type": "MOTIconButtonType",
+        "default": "Square",
+        "note": "Round = radio de 20 dp en reposo."
       },
       {
         "name": "interactionSource",
@@ -285,7 +315,7 @@
   "changelog": [
     {
       "date": "2026-10-29",
-      "note": "Fase C: pads mot/padding/icon-button/*, radios Content bound a Corner/None y Corner/Large-increased."
+      "note": "Espaciados del icon button y radios de reposo e interacción enlazados a variables en Figma."
     },
     {
       "date": "2026-11-17",
@@ -298,32 +328,48 @@
     {
       "date": "2026-11-24",
       "note": "Ejemplar vivo y playground. Un solo enlace de librería; sin tabla Figma ↔ Compose."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Ejemplo, anatomía y medidas sobre el MOTIconButton real (Compose en WebAssembly). Ficha alineada con la API actual: tamaño, ancho y tipo Square/Round."
     }
   ],
   "anatomyDiagram": {
     "kind": "icon-button",
-    "values": {
-      "container": 40,
-      "icon": 24,
-      "touch": 48
-    },
-    "measures": [
-      {
-        "label": "Contenedor",
-        "value": "40 × 40 dp"
-      },
-      {
-        "label": "Icono",
-        "value": "24 dp"
-      },
-      {
-        "label": "Espacio alrededor del icono",
-        "value": "8 dp"
-      },
-      {
-        "label": "Área táctil mínima",
-        "value": "48 × 48 dp"
+    "values": {},
+    "live": {
+      "specimen": "icon-button/anatomy",
+      "zoom": 3,
+      "height": 300,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.3",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "icon",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "stateLayer",
+          "anchor": "right@0.7",
+          "side": "right"
+        },
+        {
+          "n": 4,
+          "part": "touch",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        }
+      ],
+      "props": {
+        "style": "filled"
       }
-    ]
+    }
   }
 }

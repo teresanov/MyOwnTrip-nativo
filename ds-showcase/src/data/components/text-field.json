@@ -42,35 +42,76 @@
       }
     ],
     "related": [
-      { "label": "Date & time pickers", "href": "components/date-time-pickers.html" },
-      { "label": "Filter chip", "href": "components/filter-chip.html" },
-      { "label": "Button", "href": "components/button.html" }
+      {
+        "label": "Date & time pickers",
+        "href": "components/date-time-pickers.html"
+      },
+      {
+        "label": "Filter chip",
+        "href": "components/filter-chip.html"
+      },
+      {
+        "label": "Button",
+        "href": "components/button.html"
+      }
     ]
   },
   "variants": [
-    { "id": "outlined-enabled", "label": "Outlined · Enabled", "composable": "OutlinedTextField", "usage": "Estado por defecto." },
-    { "id": "outlined-focus", "label": "Outlined · Focused", "composable": "OutlinedTextField", "usage": "Borde y label en primary; state layer en runtime." },
-    { "id": "outlined-error", "label": "Outlined · Error", "composable": "OutlinedTextField", "usage": "Borde + supporting text + icono. Nunca solo color." },
-    { "id": "outlined-disabled", "label": "Outlined · Disabled", "composable": "OutlinedTextField", "usage": "38 % contenido / 12 % contenedor." }
+    {
+      "id": "outlined-enabled",
+      "label": "Outlined · Enabled",
+      "composable": "OutlinedTextField",
+      "usage": "Estado por defecto."
+    },
+    {
+      "id": "outlined-focus",
+      "label": "Outlined · Focused",
+      "composable": "OutlinedTextField",
+      "usage": "Borde y label en primary; state layer en runtime."
+    },
+    {
+      "id": "outlined-error",
+      "label": "Outlined · Error",
+      "composable": "OutlinedTextField",
+      "usage": "Borde + supporting text + icono. Nunca solo color."
+    },
+    {
+      "id": "outlined-disabled",
+      "label": "Outlined · Disabled",
+      "composable": "OutlinedTextField",
+      "usage": "38 % contenido / 12 % contenedor."
+    }
   ],
   "anatomy": [
     "<strong>Contenedor</strong> — caja outlined, radio 4 dp (<code>shapes.extraSmall</code>).",
     "<strong>Label</strong> — Inter bodySmall, flotante. Nunca Fraunces.",
     "<strong>Input</strong> — Inter bodyLarge.",
-    "<strong>Supporting text</strong> — hint o error (bodySmall + error).",
-    "<strong>Iconos</strong> — leading/trailing opcionales (buscar, borrar, error)."
+    "<strong>Texto de apoyo</strong> — opcional: una pista breve. Con error es obligatorio, porque explica qué falla (bodySmall en color error).",
+    "<strong>Icono final</strong> — opcional. En la app solo aparece en campos de fecha (calendario, abre el selector) y en desplegables (chevron). No hay icono inicial ni botón de borrar."
   ],
   "behavior": {
     "lead": "El estado se lee de un vistazo: vacío, con texto, foco, error, disabled.",
     "rows": [
-      { "state": "Enabled", "detail": "Borde outline, label onSurfaceVariant." },
-      { "state": "Focused", "detail": "Borde y label primary." },
-      { "state": "Error", "detail": "Borde error, supporting text e icono." },
-      { "state": "Disabled", "detail": "Opacidad 38/12. Sin color de estado guardado." }
+      {
+        "state": "Enabled",
+        "detail": "Borde outline, label onSurfaceVariant."
+      },
+      {
+        "state": "Focused",
+        "detail": "Borde y label primary."
+      },
+      {
+        "state": "Error",
+        "detail": "Borde error, supporting text e icono."
+      },
+      {
+        "state": "Disabled",
+        "detail": "Opacidad 38/12. Sin color de estado guardado."
+      }
     ],
     "notes": [
       "Filled no entra en flujos nuevos salvo gap documentado.",
-      "Figma tiene mot/padding/text-field/* (16 / 4); el padding interno real lo pone OutlinedTextField de M3."
+      "El espacio interior lo pone OutlinedTextField de Material 3; la sección Medidas lo mide en el componente real."
     ]
   },
   "a11y": [
@@ -80,23 +121,48 @@
   ],
   "tokens": {
     "color": [
-      { "token": "outline / outlineVariant", "use": "Borde en reposo." },
-      { "token": "primary", "use": "Foco." },
-      { "token": "error", "use": "Validación." }
+      {
+        "token": "outline / outlineVariant",
+        "use": "Borde en reposo."
+      },
+      {
+        "token": "primary",
+        "use": "Foco."
+      },
+      {
+        "token": "error",
+        "use": "Validación."
+      }
     ],
-    "shape": [{ "token": "shapes.extraSmall", "use": "4 dp." }],
+    "shape": [
+      {
+        "token": "shapes.extraSmall",
+        "use": "4 dp."
+      }
+    ],
     "spacing": [
-      { "token": "mot/padding/text-field/horizontal", "use": "16 dp en Figma. Compose usa el padding de M3." },
-      { "token": "mot/padding/text-field/vertical", "use": "4 dp en Figma." }
+      {
+        "token": "OutlinedTextField (Material 3)",
+        "use": "Espacio interior del propio componente: 16 dp a los lados. Ver Medidas."
+      }
     ],
     "type": [
-      { "token": "bodyLarge", "use": "Input. Inter." },
-      { "token": "bodySmall", "use": "Label y supporting." }
+      {
+        "token": "bodyLarge",
+        "use": "Input. Inter."
+      },
+      {
+        "token": "bodySmall",
+        "use": "Label y supporting."
+      }
     ]
   },
   "guidelines": {
     "links": [
-      { "label": "Material Design 3 · Text fields", "url": "https://m3.material.io/components/text-fields/overview" }
+      {
+        "label": "Material Design 3 · Text fields",
+        "url": "https://m3.material.io/components/text-fields/overview"
+      }
     ],
     "consulted": "2026-11-10"
   },
@@ -119,9 +185,18 @@
     ]
   },
   "screens": [
-    { "screen": "CreateTripScreen", "fields": "Nombre del viaje, Destino" },
-    { "screen": "WalletFormScreen", "fields": "Título, notas, metadatos" },
-    { "screen": "ExpenseFormScreen", "fields": "Importe, concepto, categoría" }
+    {
+      "screen": "CreateTripScreen",
+      "fields": "Nombre del viaje, Destino"
+    },
+    {
+      "screen": "WalletFormScreen",
+      "fields": "Título, notas, metadatos"
+    },
+    {
+      "screen": "ExpenseFormScreen",
+      "fields": "Importe, concepto, categoría"
+    }
   ],
   "implementation": {
     "module": "material3",
@@ -130,30 +205,142 @@
     "composable": "OutlinedTextField",
     "note": "Sin wrapper MOT.",
     "params": [
-      { "name": "value", "type": "String", "default": "—", "note": "" },
-      { "name": "onValueChange", "type": "(String) -> Unit", "default": "—", "note": "" },
-      { "name": "label", "type": "@Composable () -> Unit", "default": "—", "note": "Text." },
-      { "name": "isError", "type": "Boolean", "default": "false", "note": "Nunca el único indicador." },
-      { "name": "supportingText", "type": "@Composable (() -> Unit)?", "default": "null", "note": "Hint o error." }
+      {
+        "name": "value",
+        "type": "String",
+        "default": "—",
+        "note": ""
+      },
+      {
+        "name": "onValueChange",
+        "type": "(String) -> Unit",
+        "default": "—",
+        "note": ""
+      },
+      {
+        "name": "label",
+        "type": "@Composable () -> Unit",
+        "default": "—",
+        "note": "Text."
+      },
+      {
+        "name": "isError",
+        "type": "Boolean",
+        "default": "false",
+        "note": "Nunca el único indicador."
+      },
+      {
+        "name": "supportingText",
+        "type": "@Composable (() -> Unit)?",
+        "default": "null",
+        "note": "Hint o error."
+      }
     ],
     "snippet": "OutlinedTextField(\n    value = state.name,\n    onValueChange = viewModel::onNameChange,\n    label = { Text(\"Nombre del viaje\") },\n    isError = state.nameError != null,\n    supportingText = state.nameError?.let { { Text(it) } },\n    modifier = Modifier.fillMaxWidth(),\n)"
   },
   "decisions": {
-    "source": "Compose OutlinedTextField (M3) · set de librería 52798:24373",
+    "source": "Compose OutlinedTextField (M3) · set de la librería de Figma",
     "why": "Recoger texto en formularios con el campo outlined del tema.",
     "layer": "M3 directo"
   },
   "changelog": [
-    { "date": "2026-10-29", "note": "Outlined → Extra-small + mot/padding/text-field/*." },
-    { "date": "2026-11-24", "note": "Ficha usage-first en el showcase." }
+    {
+      "date": "2026-10-29",
+      "note": "Outlined: radio Extra-small y espaciado interior del sistema."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha usage-first en el showcase."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Ejemplo, anatomía y medidas sobre el OutlinedTextField real (Compose en WebAssembly)."
+    }
   ],
   "anatomyDiagram": {
     "kind": "text-field",
-    "values": { "padH": 16, "padV": 4 },
-    "measures": [
-      { "label": "Padding horizontal (Figma)", "value": "16 dp" },
-      { "label": "Padding vertical (Figma)", "value": "4 dp" },
-      { "label": "Radio", "value": "4 dp" }
-    ]
+    "values": {},
+    "live": {
+      "specimen": "text-field/anatomy",
+      "zoom": 1.6,
+      "height": 320,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.25",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "label",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "input",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 4,
+          "part": "support",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        },
+        {
+          "n": 5,
+          "part": "trailing",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Contenedor",
+          "size": "container"
+        },
+        {
+          "label": "Espacio a la izquierda del texto",
+          "left": [
+            "container",
+            "input"
+          ]
+        },
+        {
+          "label": "Espacio sobre el texto",
+          "top": [
+            "container",
+            "input"
+          ]
+        },
+        {
+          "label": "Icono final",
+          "size": "trailing"
+        },
+        {
+          "label": "Espacio a la derecha del icono",
+          "right": [
+            "container",
+            "trailing"
+          ]
+        },
+        {
+          "label": "Separación hasta el texto de apoyo",
+          "vgap": [
+            "container",
+            "support"
+          ]
+        },
+        {
+          "label": "Sangría del texto de apoyo",
+          "left": [
+            "container",
+            "support"
+          ]
+        }
+      ]
+    }
   }
 }

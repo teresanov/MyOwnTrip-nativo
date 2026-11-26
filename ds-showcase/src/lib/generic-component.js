@@ -16,6 +16,8 @@ import {
   table,
 } from "./component-page.js";
 import { renderAnatomy, renderMeasures } from "./anatomy-diagram.js";
+import { initLiveInspectors } from "./live-inspector.js";
+import { bootLiveSpecimens } from "./live-specimen.js";
 
 /** Dónde aparece en la app. `screens[]` = { screen, uses | pattern | fields }. */
 export function renderScreens(screens) {
@@ -75,5 +77,8 @@ export function mountComponentPage(data, opts = {}) {
   ].join("");
 
   if (setup) setup();
+  // Demos vivas (Compose → Wasm): anatomía/medidas y carga del bundle al llegar a la primera demo.
+  initLiveInspectors();
+  bootLiveSpecimens();
   setupToc();
 }
