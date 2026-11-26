@@ -32,3 +32,8 @@ Contexto completo en texto plano: [ds-context.md](https://teresanov.github.io/My
 - [Eyebrow label](https://teresanov.github.io/MyOwnTrip-nativo/components/eyebrow-label.html): Etiqueta informativa no interactiva sobre media o surface.
 - [Swipeable list row](https://teresanov.github.io/MyOwnTrip-nativo/components/swipeable-list-row.html): Swipe para archivar o eliminar, con alternativa accesible.
 - [List item](https://teresanov.github.io/MyOwnTrip-nativo/components/list-item.html): Fila de lista con icono, titular, texto de apoyo y acciones al final (Wallet).
+- [Tabs](https://teresanov.github.io/MyOwnTrip-nativo/components/tabs.html): Cambia entre vistas hermanas: Plan y Diario, o las secciones de un viaje.
+- [Divider](https://teresanov.github.io/MyOwnTrip-nativo/components/divider.html): Línea fina que separa filas de lista y bloques de formulario.
+- [Assist chip](https://teresanov.github.io/MyOwnTrip-nativo/components/assist-chip.html): Aviso de cambio en el plan, en el detalle de Wallet, que lleva al día.
+- [FAB](https://teresanov.github.io/MyOwnTrip-nativo/components/fab.html): Acción principal flotante: añadir documento, actividad, gasto o sitio.
+- [App bar](https://teresanov.github.io/MyOwnTrip-nativo/components/app-bar.html): Barra superior: volver, título de la pantalla y una acción.

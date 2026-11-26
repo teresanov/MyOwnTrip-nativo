@@ -1,4 +1,4 @@
-import{i as a,c as d,s as t,d as s}from"./bootstrap-BsJu56ug.js";a("governance");const i=d.components.reduce((e,o)=>(e[o.status]=(e[o.status]||0)+1,e),{}),n=["ready","in-review","draft","deprecated"],c={ready:"Listo","in-review":"En revisión",draft:"Borrador",deprecated:"Obsoleto"};document.getElementById("page-header").innerHTML=`
+import{i as a,c as d,s as t,d as s}from"./bootstrap-Cd92Zey5.js";a("governance");const i=d.components.reduce((e,o)=>(e[o.status]=(e[o.status]||0)+1,e),{}),n=["ready","in-review","draft","deprecated"],c={ready:"Listo","in-review":"En revisión",draft:"Borrador",deprecated:"Obsoleto"};document.getElementById("page-header").innerHTML=`
   <p class="page-header__eyebrow">Gobernanza</p>
   <h1>Reglas del sistema</h1>
   <p class="page-header__lead">
