@@ -138,7 +138,7 @@
     {
       "id": "fab",
       "name": "FAB",
-      "status": "in-review",
+      "status": "ready",
       "priority": "P1",
       "category": "acciones",
       "href": "components/fab.html",

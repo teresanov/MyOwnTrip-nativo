@@ -105,7 +105,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 | Segmented button + BB | Toggles Mapa/Lista/Día | **0** Compose → demovido de Should |
 | Chip groups · Suggestion · Input chip | Filtros densos / tags | **0** Compose (Filter+Assist sí) |
 | Sliders Standard/Centered/Range | Controles valor | **0** Compose |
-| Extended FAB | CTA extendido | **0** Compose (FAB circular sí) |
+| Extended FAB | CTA extendido | **0** Compose (FAB sí: M3, esquina Large) |
 | List item Accordion | Expandible | **0** Compose |
 | Badges | Contadores | **0** Compose |
 | Rich tooltip | Sobre Plain | 0 Compose |
@@ -173,7 +173,7 @@ Código canónico: **Light + Dark** → [`variables.json`](variables.json) · [`
 - **ADR 004:** corner Square → `Corner/None` (0) · Round destino → `Corner/Large-increased` (20) — binding aplicado en librería (auditoría 2026-06-12)
 - **Icon button** (4) + **Icon togglable** (4): Square **+** Round (morph destino 20dp) · sin XLarge
 - **Toggle** (4): Square **+** Round (morph) · sin XLarge
-- **Segmented** + BB + **FAB menu** + FAB/Extended: KEEP · FAB = circular (excepción); segmented Square+Round
+- **Segmented** + BB + **FAB menu** + FAB/Extended: KEEP · FAB = M3 esquina Large; círculo solo en FAB menu abierto; segmented Square+Round
 - **XLarge:** eliminado en todos los sets (−410)
 - **CUT:** Split button (144) · Connected + Standard button groups + BB Connected (86) — **hecho**
 - **Checklist binding:** [shape.md](shape.md) § Binding Figma

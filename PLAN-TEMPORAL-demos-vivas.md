@@ -52,6 +52,15 @@ Se pueden hacer ya: todo está en `:designsystem` o es M3 directo.
 - [ ] Date & time pickers (`Mot*` en `ui/components/date/`)
 - [ ] Search bar + Menu (`HomeSearchBar`, `HomeFilterDropdownMenu`) · Bottom sheet (`HomeFabAddSheet`) · Speed dial (`HomeSpeedDial`)
 
+### Tramo 3b — Patrones con demo viva (flujo completo y su motion)
+Cada ficha de componente dice qué abre y en qué patrón aparece (enlace). La página de Patrones enseña el flujo entero en Compose real.
+
+- [ ] Elegir fechas: campo → icono calendario → selector → campo relleno (tras mover date pickers)
+- [ ] Añadir desde el FAB: FAB menu del Diario (M3, botón a círculo) · HomeSpeedDial (tras moverlo)
+- [ ] Elegir de una lista: campo desplegable → menú (chevron gira)
+- [ ] Confirmar antes de borrar: app bar → Basic dialog → snackbar con deshacer
+- [ ] Filtrar en Home: search bar → menú (ya documentado, falta demo; tras mover)
+
 ### Tramo 4 — Piezas muy de producto (decidir si llevan ficha)
 Plan day card · Plan activity · Plan timeline block · Wallet (offline, QR, highlight, parse error) · Document attachment · Spread piece · Scrapbook page · Journal recording dialog.
 

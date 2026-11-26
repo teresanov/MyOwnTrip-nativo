@@ -1,7 +1,7 @@
 {
   "id": "fab",
   "name": "FAB",
-  "status": "in-review",
+  "status": "ready",
   "priority": "P1",
   "category": "acciones",
   "summary": "Acción principal flotante de la pantalla.",
@@ -11,7 +11,7 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=57998-43426"
   },
   "usage": {
-    "purpose": "El botón de acción flotante (FAB) lleva la acción principal de una pantalla y flota sobre el contenido, abajo a la derecha. En MyOwnTrip añade contenido en las pestañas del viaje (documento, actividad, gasto, sitio) y en el día, dispara la cámara y, en Home, abre el menú de acciones rápidas. Es el FloatingActionButton de Material 3, sin componente propio.",
+    "purpose": "El botón de acción flotante (FAB) lleva la acción principal de una pantalla y flota sobre el contenido, abajo a la derecha. En MyOwnTrip añade contenido en las pestañas del viaje (documento, actividad, gasto, sitio) y en el día, y dispara la cámara. Es el FloatingActionButton de Material 3 sin personalizar: ni forma ni colores propios. Cuando el FAB abre varias opciones se convierte en un menú (FAB menu), que es un componente aparte.",
     "when": [
       "La pantalla tiene una acción principal clara, casi siempre añadir.",
       "La acción tiene que estar a mano mientras se desplaza el contenido."
@@ -30,14 +30,19 @@
     ],
     "chooseVariant": [
       {
-        "if": "Añadir en la pestaña o pantalla actual",
+        "if": "Una sola acción: añadir en la pestaña o pantalla actual",
         "use": "FloatingActionButton + icono Añadir",
         "note": "Sin texto: el nombre va en contentDescription («Añadir gasto»)."
       },
       {
-        "if": "Varias formas de añadir, en Home",
-        "use": "Menú de acciones rápidas (HomeSpeedDial)",
-        "note": "El FAB abre y cierra el menú; el icono pasa de Añadir a Cerrar."
+        "if": "Varias formas de añadir en la misma pantalla (Diario)",
+        "use": "FAB menu: FloatingActionButtonMenu + ToggleFloatingActionButton",
+        "note": "Al abrir el menú, el botón pasa de esquina redondeada a círculo y el icono de Añadir a Cerrar."
+      },
+      {
+        "if": "Acciones rápidas de Home",
+        "use": "HomeSpeedDial",
+        "note": "Menú propio de la app sobre un FAB normal: no cambia de forma."
       }
     ],
     "related": [
@@ -65,6 +70,10 @@
       "uses": "Capturar foto"
     },
     {
+      "screen": "JournalCaptureHost (Diario)",
+      "uses": "FAB menu: foto, texto, audio, pegatina o boceto"
+    },
+    {
       "screen": "Home (HomeSpeedDial)",
       "uses": "Abrir acciones rápidas"
     }
@@ -74,17 +83,23 @@
       "id": "fab",
       "label": "FAB",
       "composable": "FloatingActionButton",
-      "usage": "Acción principal de la pantalla."
+      "usage": "Una acción principal."
+    },
+    {
+      "id": "menu",
+      "label": "FAB menu",
+      "composable": "FloatingActionButtonMenu + ToggleFloatingActionButton",
+      "usage": "Varias acciones de añadir (Diario). El botón abierto es circular."
     },
     {
       "id": "small",
       "label": "FAB pequeño",
       "composable": "SmallFloatingActionButton",
-      "usage": "Solo dentro del menú de acciones rápidas de Home."
+      "usage": "Solo en las opciones del menú de Home."
     }
   ],
   "anatomy": [
-    "<strong>Contenedor</strong> — 56 × 56 dp, primaryContainer, sombra de nivel 3; esquina Large (16 dp), la forma por defecto de Material 3.",
+    "<strong>Contenedor</strong> — 56 × 56 dp, primaryContainer, sombra de nivel 3; esquina Large (16 dp), la forma estándar del FAB de Material 3.",
     "<strong>Icono</strong> — 24 dp, onPrimaryContainer."
   ],
   "behavior": {
@@ -104,7 +119,8 @@
       }
     ],
     "notes": [
-      "Forma pendiente de decidir: la documentación de marca y Figma lo describen circular, pero el código usa la forma por defecto de Material 3 (esquina Large, 16 dp). Registrado en el parity-log."
+      "El FAB no usa el morph de forma de los botones del sistema: es el de Material 3 tal cual.",
+      "El círculo solo aparece en el botón del FAB menu cuando el menú está abierto."
     ]
   },
   "a11y": [
@@ -125,7 +141,7 @@
     "shape": [
       {
         "token": "shapes.large",
-        "use": "16 dp (forma por defecto de Material 3)."
+        "use": "16 dp (forma estándar del FAB de Material 3)."
       }
     ]
   },
@@ -171,12 +187,16 @@
   "decisions": {
     "source": "FloatingActionButton de Material 3 · set de la librería de Figma",
     "why": "Añadir es la acción principal de cada pestaña del viaje.",
-    "layer": "Material 3 directo, en el Scaffold de la pantalla."
+    "layer": "Material 3 directo, sin personalizar, en el Scaffold de la pantalla."
   },
   "changelog": [
     {
       "date": "2026-11-26",
       "note": "Ficha nueva, con ejemplo, anatomía y medidas sobre el componente real (Compose en WebAssembly)."
+    },
+    {
+      "date": "2026-11-26",
+      "note": "Forma aclarada: esquina Large (estándar de M3); el círculo es del FAB menu abierto."
     }
   ],
   "anatomyDiagram": {

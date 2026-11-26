@@ -15,7 +15,7 @@ Empezar **M3 puro**: `androidx.compose.material3.*` con el tema MTB.
 | API | `rememberMOTButtonShape()` — ver [shape.md](shape.md) |
 | Figma | Button Square: bindear reposo a `Corner/None`; KEEP Round en toggle/segmented como destino morph |
 
-Cards **12dp** y chips **8dp** fijos; FAB circular (excepción).
+Cards **12dp** y chips **8dp** fijos; FAB de Material 3 sin personalizar (esquina Large, 16 dp); el botón del FAB menu pasa a círculo al abrirse.
 
 **Cards — layouts** (Figma `52346:27573`): `Text only`, `Media only`, `Media & text`, `Slot` — ver [figma-prune-inventory.md](figma-prune-inventory.md) § Cards · **Compose:** [`figma-compose-bindings.md`](figma-compose-bindings.md) (`MotStackedCard`, `MotHorizontalCard`).
 
