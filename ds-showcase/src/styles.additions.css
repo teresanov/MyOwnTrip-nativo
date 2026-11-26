@@ -1151,3 +1151,33 @@
   display: inline-block; font: 600 0.6875rem Inter, system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase;
   color: var(--on-tertiary-container); background: var(--tertiary-container); padding: 2px 8px; border-radius: 6px;
 }
+
+/* ---------- Anatomía y medidas sobre el componente real ---------- */
+
+.ad-layout--live { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+.li-wrap { position: relative; padding: 0; overflow: hidden; }
+.li-wrap .live-host { border-radius: 12px; }
+.li-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.li-hit { position: absolute; inset: 0; cursor: crosshair; }
+
+.li-touch { fill: none; stroke: var(--outline); stroke-width: 1.25; stroke-dasharray: 5 4; }
+.li-hl { fill: color-mix(in srgb, var(--tertiary) 14%, transparent); stroke: var(--tertiary); stroke-width: 1.5; }
+.li-leader { stroke: var(--tertiary); stroke-width: 1.25; }
+.li-dot { fill: var(--tertiary); stroke: var(--surface); stroke-width: 1.5; }
+.li-badge { fill: var(--tertiary); }
+.li-badge-text { fill: var(--on-tertiary); font: 600 12px Inter, system-ui, sans-serif; }
+.li-marker { transition: opacity 0.15s; }
+.li-marker.is-on .li-badge { fill: var(--on-tertiary-container); }
+.ad-legend li[data-part] { cursor: default; border-radius: 6px; padding-top: 2px; padding-bottom: 2px; outline: none; }
+.ad-legend li.is-on { background: color-mix(in srgb, var(--tertiary) 10%, transparent); }
+
+/* Convención del inspector del navegador (contenido azul, espacio interior verde), con roles del tema. */
+.li-content { fill: color-mix(in srgb, var(--info) 40%, transparent); stroke: var(--info); stroke-width: 1; }
+.li-pad { fill: color-mix(in srgb, var(--success) 35%, transparent); }
+.li-ghost { fill: none; stroke: var(--info); stroke-width: 1; stroke-dasharray: 3 3; }
+.li-box-touch { fill: color-mix(in srgb, var(--warning) 25%, transparent); stroke: var(--warning); stroke-dasharray: 5 4; }
+.li-red { stroke: var(--error); stroke-width: 1; }
+.li-red-text { fill: var(--error); font: 600 11px Inter, system-ui, sans-serif; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
+.li-tip { fill: var(--inverse-surface); }
+.li-tip-text { fill: var(--inverse-on-surface); font: 500 11px Inter, system-ui, sans-serif; }
+.li-note { font-size: 0.8125rem; color: var(--on-surface-variant); margin-top: 10px; }

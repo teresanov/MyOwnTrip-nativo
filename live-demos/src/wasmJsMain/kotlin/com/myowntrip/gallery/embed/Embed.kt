@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
@@ -78,7 +79,43 @@ private fun mount(host: Element) {
   host.addEventListener("mot:props", { props = readProps(host) })
   val reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
   host.setAttribute("data-mot-ready", "true")
+  // Geometría de las piezas → la ficha (anatomía y medidas), en px CSS relativos al hueco.
+  val parts = mutableMapOf<String, Rect>()
+  val meta = mutableMapOf<String, Float>()
+  var scheduled = false
+  fun post() {
+    scheduled = false
+    val k = meta["cssPerPx"] ?: 1f
+    val json = buildString {
+      append("{\"meta\":{")
+      append(meta.entries.joinToString(",") { "\"${it.key}\":${it.value}" })
+      append("},\"parts\":{")
+      append(parts.entries.joinToString(",") { (n, r) ->
+        "\"$n\":[${r.left * k},${r.top * k},${r.width * k},${r.height * k}]"
+      })
+      append("}}")
+    }
+    host.setAttribute("data-mot-parts", json)
+    host.dispatchEvent(org.w3c.dom.events.Event("mot:parts"))
+  }
+  fun schedule() {
+    if (scheduled) return
+    scheduled = true
+    window.setTimeout({ post(); null }, 0)
+  }
+  val sink = PartSink { name, bounds ->
+    if (parts[name] != bounds) {
+      parts[name] = bounds
+      schedule()
+    }
+  }
+  val onMeta: (Map<String, Float>) -> Unit = { m ->
+    if (m.any { meta[it.key] != it.value }) {
+      meta.putAll(m)
+      schedule()
+    }
+  }
   ComposeViewport(host) {
-    LiveSpecimen(id, props, reduceMotion)
+    LiveSpecimen(id, props, reduceMotion, sink, onMeta)
   }
 }

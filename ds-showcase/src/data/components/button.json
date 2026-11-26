@@ -343,7 +343,7 @@
     "values": {
       "padH": 24,
       "padV": 8,
-      "icon": 18,
+      "icon": 20,
       "gap": 8,
       "label": 90,
       "height": 40,
@@ -374,6 +374,43 @@
         "label": "Área táctil mínima",
         "value": "48 dp"
       }
-    ]
+    ],
+    "live": {
+      "specimen": "button/anatomy",
+      "zoom": 2,
+      "height": 300,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "left@0.3",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "label",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "icon",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 4,
+          "part": "stateLayer",
+          "anchor": "right@0.7",
+          "side": "right"
+        },
+        {
+          "n": 5,
+          "part": "touch",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        }
+      ]
+    }
   }
 }

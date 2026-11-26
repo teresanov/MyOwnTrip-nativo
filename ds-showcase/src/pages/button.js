@@ -16,6 +16,7 @@ import {
 } from "../lib/component-page.js";
 import { renderAnatomy, renderMeasures, STARS_ICON } from "../lib/anatomy-diagram.js";
 import { bootLiveSpecimens, liveHostHtml, setLiveProps } from "../lib/live-specimen.js";
+import { initLiveInspectors } from "../lib/live-inspector.js";
 
 initShowcasePage("components", { componentId: "button" });
 
@@ -132,5 +133,6 @@ function sync() {
 });
 
 sync();
+initLiveInspectors();
 bootLiveSpecimens();
 setupToc();

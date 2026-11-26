@@ -7,6 +7,7 @@
  * Los marcadores 1..n siguen el orden de `anatomy[]`.
  */
 import { sectionOpen, table } from "./component-page.js";
+import { liveHostHtml } from "./live-specimen.js";
 import { eyebrowHtml, fieldHtml, snackbarHtml } from "./specimens.js";
 
 const FONT = "Inter, system-ui, sans-serif";
@@ -276,8 +277,51 @@ const BUILDERS = {
 /* ---------- Secciones ---------- */
 
 /** Anatomía: dibujo con marcadores a la izquierda y leyenda numerada (anatomy[]) a la derecha. */
+/** Anatomía sobre el componente real: marcadores con línea guía hasta cada pieza medida en Compose. */
+function renderLiveAnatomy(anatomy, live) {
+  const legend = `<ol class="list-anatomy ad-legend" id="li-legend">${anatomy
+    .map((a, i) => `<li tabindex="0" data-part="${live.markers[i]?.part || ""}">${a}</li>`)
+    .join("")}</ol>`;
+  return (
+    sectionOpen("anatomia", "Anatomía", {
+      lead: "Las partes del componente y cómo las llamamos en diseño y en código. El dibujo es el componente real de la app: cada línea llega a la pieza que mide Compose. Pasa el cursor por la lista para resaltar cada parte.",
+    }) +
+    `<div class="ad-layout ad-layout--live">
+       <figure class="ad-figure li-wrap" data-inspect="anatomy" data-legend="#li-legend" data-markers='${JSON.stringify(live.markers)}'>
+         ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light" }, { height: live.height, label: "Anatomía del componente real" })}
+         <svg class="li-overlay" aria-hidden="true"></svg>
+       </figure>
+       ${legend}
+     </div></section>`
+  );
+}
+
+/** Medidas sobre el componente real: inspector al pasar el cursor y tabla medida en Compose. */
+function renderLiveMeasures(diagram) {
+  const live = diagram.live;
+  const v = diagram.values || {};
+  return (
+    sectionOpen("medidas", "Medidas", {
+      lead: "Pasa el cursor sobre el componente: como el inspector del navegador, se resalta cada pieza con su tamaño y sus distancias en dp. En el contenedor, el verde es el espacio interior y el azul, el contenido. Los números se miden en el componente real, no se escriben a mano.",
+    }) +
+    `<div class="ad-layout ad-layout--live">
+       <figure class="ad-figure li-wrap" data-inspect="measures" data-table="#li-measures">
+         ${liveHostHtml(live.specimen, { zoom: live.zoom, theme: "light" }, { height: live.height, label: "Medidas del componente real" })}
+         <svg class="li-overlay" aria-hidden="true"></svg>
+         <div class="li-hit" aria-hidden="true"></div>
+       </figure>
+       <div>
+         <table><thead><tr><th>Medida</th><th>Medido en Compose</th></tr></thead>
+           <tbody id="li-measures"><tr><td colspan="2">Midiendo el componente…</td></tr></tbody></table>
+         ${v.padH != null ? `<p class="li-note">Padding declarado en código: ${v.padH} × ${v.padV} dp. El espacio arriba y abajo puede ser mayor porque el contenedor tiene una altura mínima y centra el contenido.</p>` : ""}
+       </div>
+     </div></section>`
+  );
+}
+
 export function renderAnatomy(anatomy, diagram) {
   if (!anatomy?.length) return "";
+  if (diagram?.live) return renderLiveAnatomy(anatomy, diagram.live);
   const built = diagram && BUILDERS[diagram.kind]?.(diagram.values);
   const legend = `<ol class="list-anatomy ad-legend">${anatomy.map((a) => `<li>${a}</li>`).join("")}</ol>`;
   return (
@@ -293,6 +337,7 @@ export function renderAnatomy(anatomy, diagram) {
 
 /** Medidas: mismo componente con las cotas (padding, huecos, área táctil) y la tabla de valores. */
 export function renderMeasures(diagram) {
+  if (diagram?.live) return renderLiveMeasures(diagram);
   const built = diagram && BUILDERS[diagram.kind]?.(diagram.values);
   if (!built) return "";
   return (
