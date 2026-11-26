@@ -13,7 +13,7 @@ echo   http://localhost:8080/
 echo No cierres esta ventana mientras la uses.
 echo.
 
-call "%~dp0gradlew.bat" -p gallery wasmJsBrowserStoriesDevelopmentRun
+call "%~dp0gradlew.bat" -p gallery wasmJsBrowserDevelopmentRun
 echo.
 echo Se ha parado. Si ha fallado, copia el texto rojo y pegalo en el chat.
 pause

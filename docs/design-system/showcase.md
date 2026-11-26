@@ -37,16 +37,16 @@ Figma conserva la **librería** (variables + component sets para diseñar pantal
 | Ready | Figma publicado + ficha showcase + Compose alineado |
 | Deprecated | Marcado en showcase; no usar en pantallas nuevas |
 
-## Canvas vivo (Storytale)
+## Canvas vivo
 
-Las demos interactivas **no** son HTML. Viven en [`gallery/`](../../gallery/): Compose Multiplatform + [Storytale](https://aryapreetam.github.io/storytale/) → Wasm (enlace de portfolio) o Desktop (compartir pantalla del PC).
+Las demos interactivas **no** son HTML. Viven en [`gallery/`](../../gallery/): Compose Multiplatform (Wasm o Desktop) con cromado propio.
 
 ```bash
 ./gradlew -p gallery wasmJsBrowserDevelopmentRun
-./gradlew -p gallery jvmStoriesRun
+./gradlew -p gallery run
 ```
 
-Kotlin 2.3 (exigido por Storytale) vs app Android 2.2: proyectos Gradle separados. Detalle: [`gallery/README.md`](../../gallery/README.md).
+Kotlin 2.3 en `gallery/` vs app Android 2.2: proyectos Gradle separados. Detalle: [`gallery/README.md`](../../gallery/README.md).
 
 ## Implementación (ficha escrita)
 

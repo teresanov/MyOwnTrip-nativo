@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
   kotlin("multiplatform") version "2.3.20"
   kotlin("plugin.compose") version "2.3.20"
   id("org.jetbrains.compose") version "1.10.1"
-  id("io.github.aryapreetam.storytale") version "0.0.7"
 }
 
 val designsystemSrc = rootDir.resolve("../designsystem/src")
@@ -13,7 +13,15 @@ kotlin {
   jvm()
   @OptIn(ExperimentalWasmDsl::class)
   wasmJs {
-    browser()
+    outputModuleName.set("gallery")
+    browser {
+      commonWebpackConfig {
+        outputFileName = "gallery.js"
+        devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+          port = 8080
+        }
+      }
+    }
     binaries.executable()
   }
 
@@ -34,9 +42,18 @@ kotlin {
     }
     val jvmMain by getting {
       dependsOn(skiaMain)
+      dependencies {
+        implementation(compose.desktop.currentOs)
+      }
     }
     val wasmJsMain by getting {
       dependsOn(skiaMain)
     }
+  }
+}
+
+compose.desktop {
+  application {
+    mainClass = "com.myowntrip.gallery.MainKt"
   }
 }

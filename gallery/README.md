@@ -1,45 +1,32 @@
-# Galería Storytale — MyOwnTrip
+# Galería — MyOwnTrip
 
-Canvas vivo del design system: **Compose real** (Skia) en el navegador o en una ventana de escritorio. No es HTML. No es el teléfono.
+Canvas vivo del design system: **Compose real** (Skia) en el navegador o en escritorio. App propia (árbol + canvas), no Storytale.
 
-Storytale 0.0.7 pide Kotlin 2.3; la app Android sigue en 2.2.10. Por eso este proyecto es un Gradle aparte (`gallery/`), no un módulo de `:app`.
+Kotlin 2.3 + Compose Multiplatform aquí; la app Android sigue en 2.2.10. Por eso este proyecto es un Gradle aparte (`gallery/`).
 
 ## Arrancar
 
-En Windows: **doble clic** en [`arrancar-galeria.bat`](../arrancar-galeria.bat) (en la raíz del repo). Ese archivo elige el Java de Android Studio solo; no hace falta tocar nada más. Cuando compile, abre http://localhost:8080/
-
-Desde una terminal, el mismo archivo:
+En Windows: **doble clic** en [`arrancar-galeria.bat`](../arrancar-galeria.bat). Usa el Java de Android Studio. Abre http://localhost:8080/
 
 ```powershell
 .\arrancar-galeria.bat
 ```
 
-Escritorio (compartir pantalla del PC), con el Java correcto:
+Escritorio:
 
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
-.\gradlew -p gallery jvmStoriesRun
+.\gradlew -p gallery run
 ```
 
-Si una tarea no aparece:
-
-```bash
-./gradlew -p gallery tasks --group storytale
-```
-
-## Publicar (GitHub Pages)
+## Publicar
 
 ```bash
 ./gradlew -p gallery wasmJsBrowserDistribution
 ```
 
-El estático sale bajo `gallery/build/`. El directorio exacto lo imprime Gradle (`dist/wasmJs/…`). Eso es lo que se sube a Pages: un link de portfolio.
+El estático sale bajo `gallery/build/`. El directorio exacto lo imprime Gradle.
 
-## Qué hay ahora
+## Catálogo
 
-Stories de `MOTButton`, tonal, outlined, text e icon button, con knobs (label, enabled, dark, reduce motion). El kit sale de `designsystem/src/commonMain` + `skiaMain` (mismas fuentes que `:app`; Android-only en `androidMain`: `R.font`, dynamic color, `Settings`).
-
-## Próximo
-
-- Fraunces/Inter vía composeResources (paso 2).
-- Stories del resto del kit (chip, dialog, text field).
+Un archivo de specimens por componente. **Default** es el caso de producto (Filled Small / Icon Square Small 40×40). Tema y reduce-motion van en la barra, no en cada specimen.
