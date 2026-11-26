@@ -87,6 +87,9 @@
         "state": "Pasado",
         "detail": "Sin countdown. Eyebrow «Recuerdo»."
       }
+    ],
+    "notes": [
+      "Por revisar en la app: con la letra del sistema muy grande, el texto más largo puede llegar a la etiqueta, porque la portada no crece."
     ]
   },
   "a11y": [
@@ -349,7 +352,7 @@
         }
       ],
       "redlines": true,
-      "note": "El ancho de la card es el de la columna (en Home, la pantalla menos 16 dp a cada lado). El botón se ajusta a su texto, así que su ancho no es fijo. El texto sobre la portada se coloca abajo, con 16 dp de margen."
+      "note": "El alto es fijo: portada de 280 dp, 8 dp de separación y fila del botón de 48 dp (336 dp en total). Un título largo ocupa hasta dos líneas y las fechas otras dos, con puntos suspensivos si no caben; el texto está pegado abajo y crece hacia arriba sobre la foto, no alarga la card. Lo que cambia es el ancho: el de la columna (en Home, la pantalla menos 16 dp a cada lado). El botón se ajusta a su texto."
     }
   }
 }
