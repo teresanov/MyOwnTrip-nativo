@@ -23,8 +23,10 @@ Contexto completo en texto plano: [ds-context.md](https://teresanov.github.io/My
 - [Button](https://teresanov.github.io/MyOwnTrip-nativo/components/button.html): Ejecuta una acción: confirmar, guardar, continuar.
 - [Icon button](https://teresanov.github.io/MyOwnTrip-nativo/components/icon-button.html): Acción compacta solo con icono: volver, editar, borrar, filtrar.
 - [Text field](https://teresanov.github.io/MyOwnTrip-nativo/components/text-field.html): Entrada de texto en formularios de viaje, wallet y gastos.
-- [Date & time pickers](https://teresanov.github.io/MyOwnTrip-nativo/components/date-time-pickers.html): Fechas y hora: rango de viaje, Wallet y plan — campos Outlined + modales Mot*.
+- [Date & time pickers](https://teresanov.github.io/MyOwnTrip-nativo/components/date-time-pickers.html): Fechas y hora: rango de viaje, Wallet y plan. Campos de texto con borde y diálogos propios.
 - [Filter chip](https://teresanov.github.io/MyOwnTrip-nativo/components/filter-chip.html): Filtros en Wallet, gastos y journal; Home usa Menu.
+- [Menu](https://teresanov.github.io/MyOwnTrip-nativo/components/menu.html): Lista de opciones para elegir una: filtrar y ordenar los viajes de Home.
+- [Search bar](https://teresanov.github.io/MyOwnTrip-nativo/components/search-bar.html): Busca en una lista y abre sus filtros: la lista de viajes de Home.
 - [Basic dialog](https://teresanov.github.io/MyOwnTrip-nativo/components/basic-dialog.html): Confirmar, eliminar o descartar antes de un cambio irreversible.
 - [Snackbar](https://teresanov.github.io/MyOwnTrip-nativo/components/snackbar.html): Feedback breve tras guardar, con opción de deshacer.
 - [Stacked card](https://teresanov.github.io/MyOwnTrip-nativo/components/stacked-card.html): Stacked y Horizontal — contenedor de viaje, gasto o entrada.
@@ -36,4 +38,4 @@ Contexto completo en texto plano: [ds-context.md](https://teresanov.github.io/My
 - [Divider](https://teresanov.github.io/MyOwnTrip-nativo/components/divider.html): Línea fina que separa filas de lista y bloques de formulario.
 - [Assist chip](https://teresanov.github.io/MyOwnTrip-nativo/components/assist-chip.html): Aviso de cambio en el plan, en el detalle de Wallet, que lleva al día.
 - [FAB](https://teresanov.github.io/MyOwnTrip-nativo/components/fab.html): Acción principal flotante: añadir documento, actividad, gasto o sitio.
-- [App bar](https://teresanov.github.io/MyOwnTrip-nativo/components/app-bar.html): Barra superior: volver, título de la pantalla y una acción.
+- [App bar](https://teresanov.github.io/MyOwnTrip-nativo/components/app-bar.html): Barra superior: volver, título de la pantalla y sus acciones.
