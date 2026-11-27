@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -29,12 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
-import java.time.LocalDate
-import java.time.Month
-import java.time.format.TextStyle
-import java.util.Locale
-
-private val Spanish = Locale("es", "ES")
+import kotlinx.datetime.LocalDate
 
 /** Rejillas año/mes alineadas a `DatePicker` M3 (mismos [DatePickerColors] que el modal). */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +38,7 @@ private val Spanish = Locale("es", "ES")
 internal fun MotYearPickerGrid(
   yearRange: IntRange,
   selectedYear: Int,
+  currentYear: Int,
   colors: DatePickerColors,
   onYearSelected: (Int) -> Unit,
 ) {
@@ -56,7 +53,7 @@ internal fun MotYearPickerGrid(
   ) {
     items(yearRange.toList()) { year ->
       val selected = year == selectedYear
-      val isCurrent = year == LocalDate.now().year
+      val isCurrent = year == currentYear
       MotPickerCell(
         label = year.toString(),
         selected = selected,
@@ -89,16 +86,12 @@ internal fun MotMonthPickerGrid(
     horizontalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
     verticalArrangement = Arrangement.spacedBy(MOTSpacing.componentXs),
   ) {
-    items(Month.entries.size) { index ->
-      val month = Month.entries[index]
-      val monthValue = month.value
+    items(12) { index ->
+      val monthValue = index + 1
       val enabled = isMonthInSelectableRange(selectedYear, monthValue, minDate, maxDate)
-      val selected = monthValue == selectedMonth
       MotPickerCell(
-        label = month.getDisplayName(TextStyle.SHORT, Spanish).replaceFirstChar {
-          if (it.isLowerCase()) it.titlecase(Spanish) else it.toString()
-        },
-        selected = selected,
+        label = MotMonthShortNames[index].capitalizeFirst(),
+        selected = monthValue == selectedMonth,
         enabled = enabled,
         selectedContainerColor = colors.selectedYearContainerColor,
         selectedContentColor = colors.selectedYearContentColor,
@@ -114,9 +107,9 @@ internal fun MotPickerCell(
   label: String,
   selected: Boolean,
   onClick: () -> Unit,
-  selectedContainerColor: androidx.compose.ui.graphics.Color,
-  selectedContentColor: androidx.compose.ui.graphics.Color,
-  contentColor: androidx.compose.ui.graphics.Color,
+  selectedContainerColor: Color,
+  selectedContentColor: Color,
+  contentColor: Color,
   enabled: Boolean = true,
   emphasized: Boolean = false,
 ) {
@@ -172,17 +165,4 @@ internal fun MotPickerCell(
       }
     }
   }
-}
-
-internal fun isMonthInSelectableRange(
-  year: Int,
-  month: Int,
-  minDate: LocalDate,
-  maxDate: LocalDate,
-): Boolean {
-  val start = LocalDate.of(year, month, 1)
-  val end = start.withDayOfMonth(start.lengthOfMonth())
-  if (end.isBefore(minDate)) return false
-  if (start.isAfter(maxDate)) return false
-  return true
 }

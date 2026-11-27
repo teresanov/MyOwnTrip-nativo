@@ -59,41 +59,42 @@ document.getElementById("main").innerHTML = `
   <section class="section">
     <h2 id="wrapper">Cuándo crear un componente propio</h2>
     <p class="section-lead">
-      Por defecto se usa <code>androidx.compose.material3.*</code>. Un wrapper <code>MOT*</code> o
-      <code>MyOwnTrip*</code> solo se justifica si se cumple un criterio <strong>y</strong> queda documentado.
+      Por defecto se usa el componente de Material 3 tal cual, con el tema de la app. Un componente propio
+      (los que empiezan por <code>MOT</code> o <code>Mot</code>) solo se justifica si cumple uno de estos criterios
+      <strong>y</strong> queda documentado en esta web.
     </p>
     <table>
       <thead><tr><th>Criterio</th><th>Ejemplo válido</th><th>Ejemplo inválido</th></tr></thead>
       <tbody>
         <tr>
-          <td>Un default de producto repetido en 3 pantallas o más</td>
-          <td>Chip de categoría con glifo propio sobre un rol M3</td>
-          <td>Copiar el <code>Button</code> del repo archivo</td>
+          <td>Una configuración de la app que se repite en tres pantallas o más</td>
+          <td>La fila de documento de Wallet (<code>MotListItem</code>): icono en círculo, aviso del plan y disponibilidad sin conexión</td>
+          <td>Copiar el botón del proyecto antiguo</td>
         </tr>
         <tr>
-          <td>Comportamiento que M3 no ofrece</td>
+          <td>Un comportamiento que Material 3 no ofrece</td>
           <td><code>MOTButton</code>: aplica el morph de forma del ADR 004</td>
-          <td>Renombrar <code>Button</code> sin cambiar nada</td>
+          <td>Renombrar el botón de Material 3 sin cambiar nada</td>
         </tr>
         <tr>
-          <td>Composición no cubierta por M3</td>
-          <td>Tarjeta de entrada Wallet con layout editorial fijo</td>
-          <td>Un wrapper que esconde <code>colorScheme</code></td>
+          <td>Una composición que Material 3 no trae</td>
+          <td>La portada del viaje en Home (<code>TripHeroCard</code>)</td>
+          <td>Un componente que esconde los colores del tema tras parámetros propios</td>
         </tr>
       </tbody>
     </table>
     <div class="guideline-grid" style="margin-top:24px">
       <div class="guideline-col guideline-col--do">
-        <h3 class="subsection-title">La API del wrapper</h3>
+        <h3 class="subsection-title">Cómo es por dentro</h3>
         <ul class="list-dos">
-          <li>Delega en el componente M3 subyacente.</li>
-          <li>Expone parámetros alineados a M3: <code>modifier</code>, <code>enabled</code>, <code>colors</code> del tema.</li>
+          <li>Usa el componente de Material 3 y le añade solo lo que justifica su existencia.</li>
+          <li>Ofrece los mismos parámetros que Material 3: <code>modifier</code>, <code>enabled</code>, <code>colors</code> del tema.</li>
         </ul>
       </div>
       <div class="guideline-col guideline-col--dont">
         <h3 class="subsection-title">Lo que no hace</h3>
         <ul class="list-dos list-dos--dont">
-          <li>No reintroduce ejes del DS archivado (<code>MyOwnTripButtonVariant</code>).</li>
+          <li>No recupera variantes del sistema antiguo.</li>
           <li>No oculta los roles del tema tras parámetros propios.</li>
         </ul>
       </div>
@@ -101,28 +102,61 @@ document.getElementById("main").innerHTML = `
   </section>
 
   <section class="section">
-    <h2 id="gate-m3">Gate bloqueante: M3 canónico</h2>
-    <p class="section-lead">Se pasa antes que cualquier otro. Si falla uno, la pantalla no se cierra.</p>
-    <ol class="list-steps list-steps--compact">
-      <li>Prohibidos los tokens de color por estado (<code>hover</code>, <code>pressed</code>, <code>focus</code>, <code>disabled</code>).</li>
-      <li>Los estados son state layers en runtime: 8 / 10 / 10 / 16 %; disabled 38 % y 12 %.</li>
-      <li>La UI solo usa roles de <code>colorScheme</code>; nunca primitivos ni <code>AppColors</code> en pantallas.</li>
-      <li><code>tertiary</code> (acento de marca) y <code>error</code> (validación) son rojos distintos a propósito.</li>
-      <li>Los errores se comunican con icono y texto, nunca solo con color.</li>
-      <li>Fraunces en Display y Headline; Inter de Title hacia abajo.</li>
-    </ol>
+    <h2 id="gate-m3">Reglas que bloquean el cierre de una pantalla</h2>
+    <p class="section-lead">
+      Antes de dar por terminada una pantalla, en Figma o en Compose, se revisan estas seis reglas.
+      Son <strong>bloqueantes</strong>: si una no se cumple, la pantalla no se cierra hasta corregirla.
+      Se revisan antes que todo lo demás porque las seis salen de usar Material 3 como es, y saltarse
+      una rompe el tema oscuro, la accesibilidad o la coherencia entre Figma y la app.
+    </p>
+    <table>
+      <thead><tr><th>Regla</th><th>Qué significa</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Sin colores por estado</td>
+          <td>No existen variables como «Button Hover» o «Button Press».</td>
+          <td>El color de cada estado lo calcula Material 3; una variable por estado se queda vieja en cuanto cambia el tema.</td>
+        </tr>
+        <tr>
+          <td>Los estados son una capa encima</td>
+          <td>En los estados Hover, Focus, Press y Drag aparece sobre el componente un velo del color de su contenido al 8, 10, 10 y 16 % de opacidad. Deshabilitado: el contenido al 38 % y el contenedor al 12 %.</td>
+          <td>Así funciona igual en tema claro y oscuro sin añadir colores.</td>
+        </tr>
+        <tr>
+          <td>Solo roles del tema</td>
+          <td>Las pantallas usan roles (<code>primary</code>, <code>surface</code>, <code>onSurfaceVariant</code>…), nunca un código de color ni un tono suelto de la paleta.</td>
+          <td>El rol cambia solo con el tema; un color fijo no.</td>
+        </tr>
+        <tr>
+          <td><code>tertiary</code> no es <code>error</code></td>
+          <td><code>tertiary</code> es el ocre de la marca; <code>error</code> es el rojo de los avisos. No se intercambian.</td>
+          <td>Un acento de marca no puede leerse como un fallo, ni un fallo pasar por decoración.</td>
+        </tr>
+        <tr>
+          <td>Errores con icono y texto</td>
+          <td>Un error nunca se comunica solo con color.</td>
+          <td>Quien no distingue bien los colores también tiene que entenderlo.</td>
+        </tr>
+        <tr>
+          <td>Fraunces solo en títulos</td>
+          <td>Fraunces en los estilos Display y Headline; Inter de Title hacia abajo, y siempre en botones, campos y chips.</td>
+          <td>La voz editorial va en los títulos; el resto tiene que leerse rápido.</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
   <section class="section">
-    <h2 id="gates">Gates complementarias</h2>
+    <h2 id="gates">Otras comprobaciones</h2>
+    <p class="section-lead">No bloquean por sí solas, pero cada una tiene su momento.</p>
     <table>
-      <thead><tr><th>Gate</th><th>Criterio</th><th>Cuándo</th></tr></thead>
+      <thead><tr><th>Comprobación</th><th>Qué se mira</th><th>Cuándo</th></tr></thead>
       <tbody>
-        <tr><td><code>semanticTokenOnlyConsumption</code></td><td>Sin <code>AppColors</code> en <code>ui/features/</code></td><td>Cada PR de UI</td></tr>
-        <tr><td><code>figmaAliasChainValid</code></td><td>Las variables aliasan a roles M3; sin tokens por estado; sin páginas de doc en Figma</td><td>Cambio en la librería</td></tr>
-        <tr><td><code>showcaseDocComplete</code></td><td>El componente nuevo o modificado tiene ficha aquí</td><td>Cada componente</td></tr>
-        <tr><td><code>a11yCheck</code></td><td>TalkBack, contraste, área táctil 48 dp, escalado al 200 %</td><td>Cada pantalla</td></tr>
-        <tr><td><code>visualRegression</code></td><td>Esta web contra el emulador, subconjunto MVP</td><td>Tras un cambio visual grande</td></tr>
+        <tr><td>Pantallas sin colores sueltos</td><td>Ninguna pantalla de la app usa colores fuera del tema.</td><td>En cada cambio de pantalla</td></tr>
+        <tr><td>Variables de Figma enlazadas</td><td>Cada variable de la librería apunta a un rol de Material 3; no hay variables por estado ni páginas de documentación en Figma.</td><td>Al cambiar la librería</td></tr>
+        <tr><td>Ficha en esta web</td><td>Todo componente nuevo o modificado tiene su ficha aquí.</td><td>En cada componente</td></tr>
+        <tr><td>Accesibilidad</td><td>Lector de pantalla, contraste, área táctil de 48 dp y texto ampliado al 200 %.</td><td>En cada pantalla</td></tr>
+        <tr><td>Comparación visual</td><td>Esta web contra la app en el emulador, en un grupo de pantallas de referencia.</td><td>Tras un cambio visual grande</td></tr>
       </tbody>
     </table>
   </section>

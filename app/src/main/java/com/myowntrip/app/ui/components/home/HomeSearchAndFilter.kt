@@ -1,60 +1,39 @@
 package com.myowntrip.app.ui.components.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.myowntrip.app.ui.theme.MOTIconButton
+import com.myowntrip.app.ui.components.MotMenuDropdown
+import com.myowntrip.app.ui.components.MotMenuGroup
+import com.myowntrip.app.ui.components.MotMenuItem
+import com.myowntrip.app.ui.components.MotMenuPanel
+import com.myowntrip.app.ui.components.MotMenuSectionLabel
+import com.myowntrip.app.ui.components.MotSearchBar
 import com.myowntrip.app.ui.features.trips.TripFilterPhase
 import com.myowntrip.app.ui.features.trips.TripSortOrder
-import com.myowntrip.app.ui.theme.MOTIcons
-import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MyOwnTripTheme
 
-/** Medidas Figma `228:8306` · cap 3 Home. Shape/gap → tema M3 / [MOTSpacing.Menu]. */
+/*
+ * Búsqueda y menú de filtros de Home. Las piezas visuales están en el design system
+ * (MotSearchBar, MotMenuDropdown, MotMenuPanel, MotMenuItem); aquí solo van las opciones
+ * de viajes (TripFilterPhase, TripSortOrder) y la colocación en la pantalla.
+ */
+
 object HomeFilterMenuSpec {
-  val Width = 328.dp
-  /** Desde el borde superior del body (debajo de status) en design-file. */
+  /** Altura del menú en modo overlay, desde el borde superior del cuerpo de Home. */
   val OverlayTop = 192.dp
-  val ItemHeight = 44.dp
-  val LeadingIconSize = 20.dp
-  val Elevation = 3.dp
 }
 
-/** Search bar + tune — design-file caps 2/3 · patrón home-filter-menu. */
 @Composable
 fun HomeSearchBar(
   query: String,
@@ -70,132 +49,30 @@ fun HomeSearchBar(
   modifier: Modifier = Modifier,
   filterMenuPresentation: HomeFilterMenuPresentation = HomeFilterMenuPresentation.Dropdown,
 ) {
-  val pressed = query.isNotEmpty()
-  val searchShape = RoundedCornerShape(28.dp)
   val showInlineMenu = filterMenuPresentation == HomeFilterMenuPresentation.Dropdown
-
-  Box(modifier = modifier.fillMaxWidth()) {
-    if (pressed) {
-      Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = searchShape,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-      ) {
-        HomeSearchBarRow(
-          query = query,
-          onQueryChange = onQueryChange,
-          placeholder = placeholder,
-          onFilterMenuExpandedChange = onFilterMenuExpandedChange,
-          showLeadingSearchIcon = false,
+  MotSearchBar(
+    query = query,
+    onQueryChange = onQueryChange,
+    placeholder = placeholder,
+    onFilterClick = { onFilterMenuExpandedChange(true) },
+    modifier = modifier,
+    menu = {
+      if (showInlineMenu && filterMenuExpanded) {
+        HomeFilterDropdownMenu(
+          expanded = filterMenuExpanded,
+          onDismissRequest = { onFilterMenuExpandedChange(false) },
+          filterPhase = filterPhase,
+          onFilterPhaseChange = onFilterPhaseChange,
+          sortOrder = sortOrder,
+          onSortOrderChange = onSortOrderChange,
+          filterMenuFooter = filterMenuFooter,
+          modifier = Modifier.align(Alignment.TopEnd),
         )
       }
-    } else {
-      OutlinedCard(modifier = Modifier.fillMaxWidth()) {
-        HomeSearchBarRow(
-          query = query,
-          onQueryChange = onQueryChange,
-          placeholder = placeholder,
-          onFilterMenuExpandedChange = onFilterMenuExpandedChange,
-          showLeadingSearchIcon = true,
-        )
-      }
-    }
-    if (showInlineMenu && filterMenuExpanded) {
-      HomeFilterDropdownMenu(
-        expanded = filterMenuExpanded,
-        onDismissRequest = { onFilterMenuExpandedChange(false) },
-        filterPhase = filterPhase,
-        onFilterPhaseChange = onFilterPhaseChange,
-        sortOrder = sortOrder,
-        onSortOrderChange = onSortOrderChange,
-        filterMenuFooter = filterMenuFooter,
-        modifier = Modifier.align(Alignment.TopEnd),
-      )
-    }
-  }
+    },
+  )
 }
 
-@Composable
-private fun HomeSearchBarRow(
-  query: String,
-  onQueryChange: (String) -> Unit,
-  placeholder: String,
-  onFilterMenuExpandedChange: (Boolean) -> Unit,
-  showLeadingSearchIcon: Boolean,
-) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .heightIn(min = 56.dp),
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    if (showLeadingSearchIcon) {
-      Icon(
-        imageVector = MOTIcons.Search,
-        contentDescription = null,
-        modifier = Modifier
-          .padding(start = MOTSpacing.layoutMd)
-          .size(24.dp),
-        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
-    }
-    BasicTextField(
-      value = query,
-      onValueChange = onQueryChange,
-      modifier = Modifier
-        .weight(1f)
-        .padding(
-          start = if (showLeadingSearchIcon) MOTSpacing.componentSm else 20.dp,
-          end = MOTSpacing.componentSm,
-          top = 14.dp,
-          bottom = 14.dp,
-        ),
-      textStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = MaterialTheme.colorScheme.onSurface,
-      ),
-      singleLine = true,
-      cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-      decorationBox = { innerTextField ->
-        Box(contentAlignment = Alignment.CenterStart) {
-          if (query.isEmpty()) {
-            Text(
-              text = placeholder,
-              style = MaterialTheme.typography.bodyLarge,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-              maxLines = 1,
-              overflow = TextOverflow.Ellipsis,
-            )
-          }
-          innerTextField()
-        }
-      },
-    )
-    if (query.isNotEmpty()) {
-      MOTIconButton(
-        onClick = { onQueryChange("") },
-        modifier = Modifier.semantics { contentDescription = "Borrar búsqueda" },
-      ) {
-        Icon(
-          imageVector = MOTIcons.Close,
-          contentDescription = null,
-          tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-      }
-    }
-    MOTIconButton(
-      onClick = { onFilterMenuExpandedChange(true) },
-      modifier = Modifier.semantics { contentDescription = "Filtros y ordenación" },
-    ) {
-      Icon(
-        imageVector = MOTIcons.Tune,
-        contentDescription = null,
-        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeFilterDropdownMenu(
   expanded: Boolean,
@@ -207,27 +84,12 @@ fun HomeFilterDropdownMenu(
   filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
 ) {
-  DropdownMenu(
-    expanded = expanded,
-    onDismissRequest = onDismissRequest,
-    modifier = modifier,
-    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-    shadowElevation = HomeFilterMenuSpec.Elevation,
-    shape = MaterialTheme.shapes.large,
-  ) {
-    HomeFilterMenuPanelContent(
-      filterPhase = filterPhase,
-      onFilterPhaseChange = onFilterPhaseChange,
-      sortOrder = sortOrder,
-      onSortOrderChange = onSortOrderChange,
-      dismissMenu = onDismissRequest,
-      filterMenuFooter = filterMenuFooter,
-      modifier = Modifier.width(HomeFilterMenuSpec.Width),
-    )
+  MotMenuDropdown(expanded = expanded, onDismissRequest = onDismissRequest, modifier = modifier) {
+    HomeFilterMenuGroups(filterPhase, onFilterPhaseChange, sortOrder, onSortOrderChange)
+    filterMenuFooter(onDismissRequest)
   }
 }
 
-/** Panel overlay 328dp — Figma `228:8306` · `filter_menu`. */
 @Composable
 fun HomeFilterMenuPanel(
   filterPhase: TripFilterPhase,
@@ -238,23 +100,9 @@ fun HomeFilterMenuPanel(
   filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
 ) {
-  Surface(
-    modifier = modifier
-      .width(HomeFilterMenuSpec.Width)
-      .clip(MaterialTheme.shapes.large),
-    shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerLow,
-    shadowElevation = HomeFilterMenuSpec.Elevation,
-    tonalElevation = 0.dp,
-  ) {
-    HomeFilterMenuPanelContent(
-      filterPhase = filterPhase,
-      onFilterPhaseChange = onFilterPhaseChange,
-      sortOrder = sortOrder,
-      onSortOrderChange = onSortOrderChange,
-      dismissMenu = dismissMenu,
-      filterMenuFooter = filterMenuFooter,
-    )
+  MotMenuPanel(modifier = modifier) {
+    HomeFilterMenuGroups(filterPhase, onFilterPhaseChange, sortOrder, onSortOrderChange)
+    filterMenuFooter(dismissMenu)
   }
 }
 
@@ -268,7 +116,7 @@ fun HomeFilterMenuOverlay(
   onDismiss: () -> Unit,
   filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
   modifier: Modifier = Modifier,
-  overlayTop: androidx.compose.ui.unit.Dp = HomeFilterMenuSpec.OverlayTop,
+  overlayTop: Dp = HomeFilterMenuSpec.OverlayTop,
 ) {
   if (!visible) return
 
@@ -298,165 +146,63 @@ fun HomeFilterMenuOverlay(
   }
 }
 
+/** Las opciones de viajes: qué viajes mostrar y en qué orden. */
 @Composable
-internal fun HomeFilterMenuPanelContent(
+private fun HomeFilterMenuGroups(
   filterPhase: TripFilterPhase,
   onFilterPhaseChange: (TripFilterPhase) -> Unit,
   sortOrder: TripSortOrder,
   onSortOrderChange: (TripSortOrder) -> Unit,
-  dismissMenu: () -> Unit,
-  filterMenuFooter: @Composable (dismissMenu: () -> Unit) -> Unit = {},
-  modifier: Modifier = Modifier,
 ) {
-  Column(
-    modifier = modifier.padding(vertical = MOTSpacing.Menu.groupGap),
-    verticalArrangement = Arrangement.spacedBy(MOTSpacing.Menu.groupGap),
-  ) {
-    HomeFilterMenuList {
-      HomeFilterMenuSectionLabel("Mostrar")
-      HomeFilterMenuItemRow(
-        label = "Todos los viajes",
-        selected = filterPhase == TripFilterPhase.All,
-        onClick = { onFilterPhaseChange(TripFilterPhase.All) },
-      )
-      HomeFilterMenuItemRow(
-        label = "En curso",
-        selected = filterPhase == TripFilterPhase.Current,
-        onClick = { onFilterPhaseChange(TripFilterPhase.Current) },
-      )
-      HomeFilterMenuItemRow(
-        label = "Próximos",
-        selected = filterPhase == TripFilterPhase.Upcoming,
-        onClick = { onFilterPhaseChange(TripFilterPhase.Upcoming) },
-      )
-      HomeFilterMenuItemRow(
-        label = "Pasados",
-        selected = filterPhase == TripFilterPhase.Past,
-        onClick = { onFilterPhaseChange(TripFilterPhase.Past) },
-      )
-      HomeFilterMenuItemRow(
-        label = "Archivados",
-        selected = filterPhase == TripFilterPhase.Archived,
-        onClick = { onFilterPhaseChange(TripFilterPhase.Archived) },
-      )
-    }
-    HomeFilterMenuList {
-      HomeFilterMenuSectionLabel("Ordenar")
-      HomeFilterMenuItemRow(
-        label = "Fecha — próximo primero",
-        selected = sortOrder == TripSortOrder.DateUpcoming,
-        onClick = { onSortOrderChange(TripSortOrder.DateUpcoming) },
-      )
-      HomeFilterMenuItemRow(
-        label = "Nombre A—Z",
-        selected = sortOrder == TripSortOrder.NameAz,
-        onClick = { onSortOrderChange(TripSortOrder.NameAz) },
-      )
-      HomeFilterMenuItemRow(
-        label = "Destino A—Z",
-        selected = sortOrder == TripSortOrder.DestinationAz,
-        onClick = { onSortOrderChange(TripSortOrder.DestinationAz) },
-      )
-    }
-    filterMenuFooter(dismissMenu)
+  MotMenuGroup {
+    MotMenuSectionLabel("Mostrar")
+    MotMenuItem(
+      label = "Todos los viajes",
+      selected = filterPhase == TripFilterPhase.All,
+      onClick = { onFilterPhaseChange(TripFilterPhase.All) },
+    )
+    MotMenuItem(
+      label = "En curso",
+      selected = filterPhase == TripFilterPhase.Current,
+      onClick = { onFilterPhaseChange(TripFilterPhase.Current) },
+    )
+    MotMenuItem(
+      label = "Próximos",
+      selected = filterPhase == TripFilterPhase.Upcoming,
+      onClick = { onFilterPhaseChange(TripFilterPhase.Upcoming) },
+    )
+    MotMenuItem(
+      label = "Pasados",
+      selected = filterPhase == TripFilterPhase.Past,
+      onClick = { onFilterPhaseChange(TripFilterPhase.Past) },
+    )
+    MotMenuItem(
+      label = "Archivados",
+      selected = filterPhase == TripFilterPhase.Archived,
+      onClick = { onFilterPhaseChange(TripFilterPhase.Archived) },
+    )
   }
-}
-
-@Composable
-internal fun HomeFilterMenuList(content: @Composable () -> Unit) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .clip(MaterialTheme.shapes.small),
-  ) {
-    content()
-  }
-}
-
-@Composable
-internal fun HomeFilterMenuSectionLabel(text: String) {
-  Box(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = MOTSpacing.componentXs)
-      .heightIn(min = 32.dp)
-      .padding(start = MOTSpacing.componentMd, end = MOTSpacing.componentMd, top = 6.dp),
-    contentAlignment = Alignment.CenterStart,
-  ) {
-    Text(
-      text = text,
-      style = MaterialTheme.typography.labelLarge,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
+  MotMenuGroup {
+    MotMenuSectionLabel("Ordenar")
+    MotMenuItem(
+      label = "Fecha — próximo primero",
+      selected = sortOrder == TripSortOrder.DateUpcoming,
+      onClick = { onSortOrderChange(TripSortOrder.DateUpcoming) },
+    )
+    MotMenuItem(
+      label = "Nombre A—Z",
+      selected = sortOrder == TripSortOrder.NameAz,
+      onClick = { onSortOrderChange(TripSortOrder.NameAz) },
+    )
+    MotMenuItem(
+      label = "Destino A—Z",
+      selected = sortOrder == TripSortOrder.DestinationAz,
+      onClick = { onSortOrderChange(TripSortOrder.DestinationAz) },
     )
   }
 }
 
-@Composable
-internal fun HomeFilterMenuItemRow(
-  label: String,
-  selected: Boolean,
-  onClick: () -> Unit,
-  destructive: Boolean = false,
-) {
-  val scheme = MaterialTheme.colorScheme
-  val itemShape = MaterialTheme.shapes.medium
-
-  Box(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = MOTSpacing.componentXs, vertical = MOTSpacing.Menu.groupGap),
-  ) {
-    Row(
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(HomeFilterMenuSpec.ItemHeight)
-        .then(
-          if (selected) {
-            Modifier
-              .background(scheme.secondaryContainer, itemShape)
-              .border(1.dp, scheme.outline, itemShape)
-          } else {
-            Modifier
-          },
-        )
-        .clickable(onClick = onClick)
-        .padding(horizontal = 12.dp)
-        .semantics(mergeDescendants = true) {
-          if (selected) stateDescription = "Seleccionado"
-        },
-      verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-      Box(
-        modifier = Modifier.size(HomeFilterMenuSpec.LeadingIconSize),
-        contentAlignment = Alignment.Center,
-      ) {
-        if (selected) {
-          Icon(
-            imageVector = MOTIcons.Check,
-            contentDescription = null,
-            modifier = Modifier.size(HomeFilterMenuSpec.LeadingIconSize),
-            tint = scheme.primary,
-          )
-        }
-      }
-      Text(
-        text = label,
-        style = MaterialTheme.typography.labelLarge,
-        color = when {
-          destructive -> scheme.error
-          selected -> scheme.onSecondaryContainer
-          else -> scheme.onSurface
-        },
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.weight(1f),
-      )
-    }
-  }
-}
-
-@Preview(name = "Filter menu · Figma 228:8306", widthDp = 328)
+@Preview(name = "Menú de filtros de Home", widthDp = 328)
 @Composable
 private fun HomeFilterMenuPanelPreview() {
   MyOwnTripTheme {

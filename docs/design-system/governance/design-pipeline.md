@@ -216,4 +216,4 @@ Ejemplo: el campo de hora (`.Building Blocks/Input`, `Direct Input (keyboard) in
 
 El kit M3 importado (**Input / Modal / Keyboard picker**) que **no** coincide con el composable **no** manda por sí solo; se alinea al código o se archiva. Contrato: [figma-date-product-contract-2026-11-03.md](../audits/figma-date-product-contract-2026-11-03.md). Cambios: [parity-log.md](../parity-log.md).
 
-**`MotTripDatePickerDialog`:** sin pantalla consumidora → no PRODUCT en Figma hasta uso en app.
+**`MotTripDatePickerDialog`:** retirado del código el 2026-11-27 (ninguna pantalla lo usaba).

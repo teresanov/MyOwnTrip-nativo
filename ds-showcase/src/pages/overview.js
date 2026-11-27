@@ -53,7 +53,7 @@ document.getElementById("main").innerHTML = `
     </a>
     <a class="entry-card" href="${assetUrl("gobernanza.html")}">
       <h3>Gobernanza</h3>
-      <p>Estados, criterios para crear un componente propio y gates antes de cerrar.</p>
+      <p>Estados de las fichas, cuándo crear un componente propio y qué se comprueba antes de cerrar.</p>
     </a>
   </div>
 
@@ -84,9 +84,6 @@ document.getElementById("main").innerHTML = `
       ${draft === 1 ? "sigue" : "siguen"} <strong>en construcción</strong>.
     </p>
     <p class="section-lead">
-      <strong>Search bar</strong> y <strong>Menu</strong> viven en Figma y en Compose pero no tienen
-      ficha en el índice; Home los documenta en
-      <a href="${assetUrl("patterns.html")}#home-filter-menu">Patrones · menú de filtros</a>.
       Las diferencias pendientes entre Figma y la app se siguen en el repositorio, no en esta tabla.
     </p>
     <table>

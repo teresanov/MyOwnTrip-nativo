@@ -1,0 +1,307 @@
+{
+  "id": "search-bar",
+  "name": "Search bar",
+  "status": "in-review",
+  "priority": "P1",
+  "category": "formularios",
+  "summary": "Busca en una lista y abre sus filtros: la lista de viajes de Home.",
+  "figma": {
+    "label": "Search bar",
+    "node": "52977:33813",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=52977-33813"
+  },
+  "usage": {
+    "purpose": "La barra de búsqueda filtra una lista mientras se escribe y, con el botón del final, abre el menú para filtrar y ordenar esa lista. En MyOwnTrip está encima de la lista de viajes de Home: se escribe el nombre o el destino del viaje, y el botón de filtros abre el menú con «Mostrar» y «Ordenar». Es MotSearchBar, del design system.",
+    "when": [
+      "Una lista crece lo bastante como para que buscar sea más rápido que desplazarse.",
+      "La misma lista se puede filtrar u ordenar, y esas opciones no tienen por qué estar siempre a la vista."
+    ],
+    "whenNot": [
+      {
+        "case": "Escribir un dato de un formulario",
+        "use": "Text field",
+        "href": "components/text-field.html"
+      },
+      {
+        "case": "Pocas categorías que conviene ver siempre",
+        "use": "Filter chip",
+        "href": "components/filter-chip.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "La barra está vacía",
+        "use": "Con borde y lupa al principio",
+        "note": "Placeholder «Buscar viajes»."
+      },
+      {
+        "if": "Hay texto escrito",
+        "use": "Relleno surfaceContainerHigh, sin lupa",
+        "note": "Aparece el botón «Borrar búsqueda» antes del de filtros."
+      }
+    ],
+    "related": [
+      {
+        "label": "Menu",
+        "href": "components/menu.html"
+      },
+      {
+        "label": "Patrón: menú de filtros de Home",
+        "href": "patterns.html#home-filter-menu"
+      }
+    ]
+  },
+  "screens": [
+    {
+      "screen": "Home (lista de viajes)",
+      "uses": "«Buscar viajes» · filtros y ordenación"
+    }
+  ],
+  "variants": [
+    {
+      "id": "empty",
+      "label": "Vacía",
+      "composable": "MotSearchBar(query = \"\")",
+      "usage": "Tarjeta con borde, lupa y placeholder."
+    },
+    {
+      "id": "query",
+      "label": "Con texto",
+      "composable": "MotSearchBar(query = \"Cracovia\")",
+      "usage": "Relleno surfaceContainerHigh y botón de borrar."
+    }
+  ],
+  "anatomy": [
+    "<strong>Contenedor</strong> — 56 dp de alto y esquinas de 28 dp. Vacío: tarjeta con borde outlineVariant. Con texto: relleno surfaceContainerHigh.",
+    "<strong>Lupa</strong> — 24 dp en onSurfaceVariant, solo con la barra vacía.",
+    "<strong>Texto</strong> — bodyLarge: el placeholder en onSurfaceVariant y lo escrito en onSurface.",
+    "<strong>Borrar búsqueda</strong> — icon button con una X; solo aparece con texto.",
+    "<strong>Filtros</strong> — icon button con el icono tune; abre el menú de filtros."
+  ],
+  "anatomyDiagram": {
+    "kind": "search-bar",
+    "values": {},
+    "live": {
+      "specimen": "search-bar/anatomy",
+      "props": {},
+      "zoom": 1,
+      "height": 240,
+      "redlines": true,
+      "markers": [
+        {
+          "n": 1,
+          "part": "container",
+          "anchor": "top@0.75",
+          "side": "top"
+        },
+        {
+          "n": 2,
+          "part": "leadingIcon",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 3,
+          "part": "input",
+          "anchor": "top@0.4",
+          "side": "top"
+        },
+        {
+          "n": 4,
+          "part": "clear",
+          "anchor": "bottom@0.5",
+          "side": "bottom"
+        },
+        {
+          "n": 5,
+          "part": "filter",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Alto de la barra",
+          "height": "container"
+        },
+        {
+          "label": "Relleno a la izquierda",
+          "left": [
+            "container",
+            "leadingIcon"
+          ]
+        },
+        {
+          "label": "Lupa–texto",
+          "gap": [
+            "leadingIcon",
+            "input"
+          ]
+        },
+        {
+          "label": "Texto–botón de filtros",
+          "gap": [
+            "input",
+            "filter"
+          ]
+        },
+        {
+          "label": "Botón de filtros hasta el borde",
+          "right": [
+            "container",
+            "filter"
+          ]
+        },
+        {
+          "label": "Botón de filtros",
+          "size": "filter"
+        }
+      ],
+      "note": "Arriba, la barra vacía; debajo, con texto: sin lupa (el texto empieza a 20 dp del borde) y con el botón de borrar. El botón de filtros llega hasta el borde derecho, así que su icono queda a 8 dp del borde. El ancho es el de la pantalla menos sus márgenes."
+    }
+  },
+  "behavior": {
+    "lead": "La lista se filtra a medida que se escribe; no hay botón de buscar.",
+    "rows": [
+      {
+        "state": "Vacía",
+        "detail": "Borde, lupa y «Buscar viajes»."
+      },
+      {
+        "state": "Con texto",
+        "detail": "Cambia a relleno, desaparece la lupa y aparece «Borrar búsqueda». Borrar deja la barra vacía y la lista completa."
+      },
+      {
+        "state": "Filtros",
+        "detail": "Abre el menú anclado a la barra, arriba a la derecha. Elegir una opción la aplica y cierra el menú."
+      }
+    ],
+    "notes": []
+  },
+  "a11y": [
+    "El placeholder no sustituye a una etiqueta: la barra se anuncia como campo de texto con «Buscar viajes».",
+    "Los dos botones tienen nombre: «Borrar búsqueda» y «Filtros y ordenación».",
+    "Los botones tienen un área táctil de 48 dp."
+  ],
+  "tokens": {
+    "color": [
+      {
+        "token": "outlineVariant",
+        "use": "Borde de la barra vacía."
+      },
+      {
+        "token": "surfaceContainerHigh",
+        "use": "Relleno con texto."
+      },
+      {
+        "token": "onSurfaceVariant",
+        "use": "Lupa, placeholder e iconos."
+      },
+      {
+        "token": "onSurface",
+        "use": "Texto escrito."
+      },
+      {
+        "token": "primary",
+        "use": "Cursor."
+      }
+    ],
+    "spacing": [
+      {
+        "token": "MOTSpacing.layoutMd",
+        "use": "16 dp antes de la lupa."
+      },
+      {
+        "token": "MOTSpacing.componentSm",
+        "use": "8 dp entre la lupa y el texto, y tras el texto."
+      }
+    ],
+    "type": [
+      {
+        "token": "bodyLarge",
+        "use": "Placeholder y texto escrito."
+      }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Search",
+        "url": "https://m3.material.io/components/search/guidelines"
+      }
+    ],
+    "consulted": "2026-11-27"
+  },
+  "dos": [
+    "Usa un placeholder que diga qué se busca: «Buscar viajes».",
+    "Filtra la lista mientras se escribe."
+  ],
+  "donts": [
+    "No pongas los filtros como chips fijos debajo de la barra en Home: van en el menú."
+  ],
+  "productRules": {
+    "dos": [
+      "Una sola barra por pantalla, encima de la lista que filtra."
+    ],
+    "donts": [
+      "No añadir un botón de buscar: la lista ya responde al escribir."
+    ]
+  },
+  "implementation": {
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotSearchBar.kt",
+    "import": "com.myowntrip.app.ui.components.MotSearchBar",
+    "composable": "MotSearchBar",
+    "note": "En Home la usa HomeSearchBar (app), que le añade el menú con las opciones de viajes.",
+    "params": [
+      {
+        "name": "query",
+        "type": "String",
+        "default": "—",
+        "note": "Texto escrito."
+      },
+      {
+        "name": "onQueryChange",
+        "type": "(String) -> Unit",
+        "default": "—",
+        "note": "También al borrar."
+      },
+      {
+        "name": "placeholder",
+        "type": "String",
+        "default": "—",
+        "note": "«Buscar viajes»."
+      },
+      {
+        "name": "onFilterClick",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "Abre el menú."
+      },
+      {
+        "name": "filterContentDescription",
+        "type": "String",
+        "default": "\"Filtros y ordenación\"",
+        "note": ""
+      },
+      {
+        "name": "menu",
+        "type": "@Composable BoxScope.() -> Unit",
+        "default": "{}",
+        "note": "El menú, anclado a la barra."
+      }
+    ],
+    "snippet": "MotSearchBar(\n    query = query,\n    onQueryChange = onQueryChange,\n    placeholder = \"Buscar viajes\",\n    onFilterClick = { menuOpen = true },\n    menu = {\n        MotMenuDropdown(\n            expanded = menuOpen,\n            onDismissRequest = { menuOpen = false },\n            modifier = Modifier.align(Alignment.TopEnd),\n        ) { /* grupos y opciones */ }\n    },\n)"
+  },
+  "decisions": {
+    "source": "Compose MotSearchBar (design system) · componente Search bar de la librería de Figma",
+    "why": "Buscar y filtrar la lista de viajes sin ocupar espacio fijo con chips.",
+    "layer": "Componente del design system; las opciones de viajes las pone la app."
+  },
+  "changelog": [
+    {
+      "date": "2026-11-27",
+      "note": "Pasa de la app al design system (MotSearchBar). Ficha nueva, con ejemplo, anatomía y medidas sobre el componente real."
+    }
+  ]
+}

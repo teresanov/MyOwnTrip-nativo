@@ -12,9 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.myowntrip.app.ui.components.home.ClearAllDataDialog
-import com.myowntrip.app.ui.components.home.HomeFilterMenuItemRow
-import com.myowntrip.app.ui.components.home.HomeFilterMenuList
-import com.myowntrip.app.ui.components.home.HomeFilterMenuSectionLabel
+import com.myowntrip.app.ui.components.MotMenuItem
+import com.myowntrip.app.ui.components.MotMenuGroup
+import com.myowntrip.app.ui.components.MotMenuSectionLabel
 import com.myowntrip.app.ui.theme.MOTSpacing
 import com.myowntrip.app.ui.theme.MOTTextButton
 import kotlinx.coroutines.CoroutineScope
@@ -91,9 +91,9 @@ private fun DevWipeEmptyStateAction(onClick: () -> Unit) {
 
 @Composable
 private fun DevSeedPastTripsMenuSection(onClick: () -> Unit) {
-  HomeFilterMenuList {
-    HomeFilterMenuSectionLabel("Demo")
-    HomeFilterMenuItemRow(
+  MotMenuGroup {
+    MotMenuSectionLabel("Demo")
+    MotMenuItem(
       label = "Cargar viajes pasados de demo",
       selected = false,
       onClick = onClick,
@@ -103,9 +103,9 @@ private fun DevSeedPastTripsMenuSection(onClick: () -> Unit) {
 
 @Composable
 private fun DevWipeFilterMenuSection(onClick: () -> Unit) {
-  HomeFilterMenuList {
-    HomeFilterMenuSectionLabel("Datos")
-    HomeFilterMenuItemRow(
+  MotMenuGroup {
+    MotMenuSectionLabel("Datos")
+    MotMenuItem(
       label = "Borrar todos los datos",
       selected = false,
       onClick = onClick,

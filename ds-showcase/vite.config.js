@@ -31,6 +31,8 @@ const PAGES = [
   ["assist-chip", "components/assist-chip.html"],
   ["fab", "components/fab.html"],
   ["app-bar", "components/app-bar.html"],
+  ["search-bar", "components/search-bar.html"],
+  ["menu", "components/menu.html"],
   // Resto
   ["patterns", "patterns.html"],
   ["governance", "gobernanza.html"],

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -87,7 +88,7 @@ fun MotListItem(
         style = MaterialTheme.typography.titleMedium,
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.motPart("title"),
+        modifier = Modifier.fillMaxWidth().motPart("title"),
       )
     },
     supportingContent = {
@@ -100,7 +101,7 @@ fun MotListItem(
           style = MaterialTheme.typography.bodyMedium,
           maxLines = 2,
           overflow = TextOverflow.Ellipsis,
-          modifier = Modifier.motPart("supporting"),
+          modifier = Modifier.fillMaxWidth().motPart("supporting"),
         )
       } else {
         Text(
@@ -109,7 +110,7 @@ fun MotListItem(
           color = MaterialTheme.colorScheme.onSurfaceVariant,
           maxLines = 2,
           overflow = TextOverflow.Ellipsis,
-          modifier = Modifier.motPart("supporting"),
+          modifier = Modifier.fillMaxWidth().motPart("supporting"),
         )
       }
     },

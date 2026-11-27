@@ -14,6 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.myowntrip.app.ui.components.MotSwipeableRow
+import com.myowntrip.app.ui.components.MotSwipeRowBackground
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.foundation.layout.offset
 import com.myowntrip.app.ui.components.MotListItem
 import com.myowntrip.app.ui.theme.LocalMotPartReporter
 import androidx.compose.ui.layout.boundsInWindow
@@ -84,6 +89,7 @@ import com.myowntrip.app.ui.theme.MOTIconButtonSize
 import com.myowntrip.app.ui.theme.MOTIconButtonType
 import com.myowntrip.app.ui.theme.MOTIconButtonWidth
 import com.myowntrip.app.ui.theme.MOTIcons
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.myowntrip.app.ui.theme.MOTOutlinedButton
 import com.myowntrip.app.ui.theme.MOTTextButton
 import com.myowntrip.app.ui.theme.MOTTonalButton
@@ -154,6 +160,12 @@ fun LiveSpecimen(
         "trip-hero-card/playground" -> TripHeroPlayground(props)
         "list-item/playground" -> ListItemPlayground(props)
         "swipeable-list-row/playground" -> SwipeRowPlayground(props)
+        "swipeable-list-row/anatomy" -> SwipeRowAnatomy(props)
+        "search-bar/playground" -> SearchBarPlayground(props)
+        "search-bar/anatomy" -> SearchBarAnatomy()
+        "menu/static" -> MenuStatic(props)
+        "date-time-pickers/playground" -> DatePickersPlayground(props)
+        "date-time-pickers/anatomy" -> DatePickersAnatomy()
         // Cualquier specimen del catálogo (button/sizes, icon-button/round…) se puede incrustar por su id.
         else -> Catalog.firstOrNull { it.id == id }?.content?.invoke() ?: Text("Specimen desconocido: $id")
       }
@@ -535,7 +547,7 @@ private val DayTabs = listOf("Plan", "Diario")
 private val TripTabs = listOf("Wallet", "Plan", "Diario", "Gastos", "Sitios")
 
 /** Ancho de pantalla de móvil para las piezas que ocupan todo el ancho. */
-private val PhoneWidth = 360.dp
+internal val PhoneWidth = 360.dp
 
 /** row=fixed: TabRow de DayHub (2 pestañas). row=scrollable: ScrollableTabRow del viaje (5 pestañas). */
 @Composable
@@ -656,20 +668,33 @@ private fun FabAnatomy() {
   }
 }
 
-/** TopAppBar como en la app: volver + título + acción opcional (editar o borrar). */
+/**
+ * TopAppBar como en la app: siempre volver + título; las acciones dependen de la pantalla.
+ * case: form (Nuevo viaje, sin acciones) · trip (Editar viaje) · document (Eliminar documento) ·
+ * viewer (Abrir con otra app) · memory (Editar y Eliminar recuerdo) · sketch (Guardar boceto).
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBarPlayground(p: Map<String, String>) {
+  @Composable
+  fun action(icon: ImageVector, label: String) =
+    MOTIconButton(onClick = {}) { Icon(icon, contentDescription = label) }
   TopAppBar(
     modifier = Modifier.width(PhoneWidth),
-    title = { Text(p["title"] ?: "Editar viaje", maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) },
+    title = { Text(p["title"] ?: "Nuevo viaje", maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) },
     navigationIcon = {
       MOTIconButton(onClick = {}) { Icon(MOTIcons.ArrowBack, contentDescription = "Volver") }
     },
     actions = {
-      when (p["action"]) {
-        "edit" -> MOTIconButton(onClick = {}) { Icon(MOTIcons.Edit, contentDescription = "Editar viaje") }
-        "delete" -> MOTIconButton(onClick = {}) { Icon(MOTIcons.Delete, contentDescription = "Eliminar documento") }
+      when (p["case"]) {
+        "trip" -> action(MOTIcons.Edit, "Editar viaje")
+        "document" -> action(MOTIcons.Delete, "Eliminar documento")
+        "viewer" -> action(MOTIcons.OpenInNew, "Abrir con otra app")
+        "memory" -> {
+          action(MOTIcons.Edit, "Editar recuerdo")
+          action(MOTIcons.Delete, "Eliminar recuerdo")
+        }
+        "sketch" -> action(MOTIcons.Save, "Guardar boceto")
         else -> {}
       }
     },
@@ -764,7 +789,11 @@ private fun TripHeroPlayground(p: Map<String, String>) {
  * El indicador del final es una copia del compacto de Wallet (WalletOfflineIndicator vive en la app).
  */
 @Composable
-private fun WalletLikeRow(p: Map<String, String>, menu: (@Composable () -> Unit)? = null) {
+private fun WalletLikeRow(
+  p: Map<String, String>,
+  modifier: Modifier = Modifier,
+  menu: (@Composable () -> Unit)? = null,
+) {
   val warning = p["warning"] == "true"
   val availability = p["availability"] ?: "none"
   val offlineIcon = when (availability) {
@@ -786,7 +815,7 @@ private fun WalletLikeRow(p: Map<String, String>, menu: (@Composable () -> Unit)
       }
     },
     onClick = {},
-    modifier = Modifier.width(width),
+    modifier = modifier.width(width),
     warningSuffix = if (warning) " · Actualizada en el plan · Día 2" else null,
     dimmed = availability == "offline" && !warning,
     trailing = if (offlineIcon != null || menu != null) {
@@ -805,13 +834,50 @@ private fun WalletLikeRow(p: Map<String, String>, menu: (@Composable () -> Unit)
   )
 }
 
+/** La fila sola, sin deslizamiento: el botón ⋮ lo añade la fila deslizable (ver swipeable-list-row). */
 @Composable
 private fun ListItemPlayground(p: Map<String, String>) {
-  WalletLikeRow(p, menu = if (p["menu"] == "true") {
-    { MOTIconButton(onClick = {}) { Icon(MOTIcons.MoreVert, contentDescription = "Acciones del documento", modifier = Modifier.size(22.dp)) } }
-  } else {
-    null
-  })
+  WalletLikeRow(p)
+}
+
+/** Botón ⋮ quieto, igual que el de MotSwipeableRow, para las filas que se enseñan a medio deslizar. */
+@Composable
+private fun StillMenuButton() {
+  MOTIconButton(onClick = {}) { Icon(MOTIcons.MoreVert, contentDescription = null, modifier = Modifier.size(22.dp)) }
+}
+
+/**
+ * Anatomía de la fila deslizable: en reposo (con ⋮), a medio deslizar hacia la derecha (archivar) y hacia
+ * la izquierda (eliminar). El fondo es el real ([MotSwipeRowBackground]); la fila se desplaza como al arrastrar.
+ * Solo la fila en reposo informa de sus piezas de contenido; las otras dos, solo de su fondo.
+ */
+@Composable
+private fun SwipeRowAnatomy(p: Map<String, String>) {
+  val report = LocalMotPartReporter.current
+  val onlyBackgrounds: ((String, LayoutCoordinates) -> Unit)? = report?.let { r ->
+    { name, coords -> if (name.startsWith("archive") || name.startsWith("delete")) r(name, coords) }
+  }
+  Column(Modifier.width(PhoneWidth), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    MotSwipeableRow(
+      archived = false,
+      itemNoun = "documento",
+      onArchive = {},
+      onUnarchive = {},
+      onDeleteRequest = {},
+    ) { menuButton ->
+      WalletLikeRow(p, menu = { menuButton(Modifier) })
+    }
+    CompositionLocalProvider(LocalMotPartReporter provides onlyBackgrounds) {
+      Box(Modifier.width(PhoneWidth).clipToBounds()) {
+        MotSwipeRowBackground(SwipeToDismissBoxValue.StartToEnd, archived = false, modifier = Modifier.matchParentSize())
+        WalletLikeRow(p, modifier = Modifier.offset(x = 104.dp), menu = { StillMenuButton() })
+      }
+      Box(Modifier.width(PhoneWidth).clipToBounds()) {
+        MotSwipeRowBackground(SwipeToDismissBoxValue.EndToStart, archived = false, modifier = Modifier.matchParentSize())
+        WalletLikeRow(p, modifier = Modifier.offset(x = (-104).dp), menu = { StillMenuButton() })
+      }
+    }
+  }
 }
 
 /** Fila deslizable de Wallet: desliza con el ratón o el dedo, o usa ⋮. Debajo, la última acción. */

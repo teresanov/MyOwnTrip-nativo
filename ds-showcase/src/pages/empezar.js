@@ -125,10 +125,10 @@ document.getElementById("main").innerHTML = `
         </ul>
       </li>
       <li>
-        <strong>Gates antes de cerrar.</strong>
-        Un <em>gate</em> es una comprobación que debe cumplirse para aceptar un cambio: que no haya colores ni
+        <strong>Comprobaciones antes de cerrar.</strong>
+        Una pantalla no se da por terminada hasta pasar unas comprobaciones: que no haya colores ni
         tamaños escritos a mano, que el componente usado exista en la librería de Figma, que la ficha esté
-        al día. Los gates están descritos en <a href="${assetUrl("gobernanza.html")}">Gobernanza</a>.
+        al día. Seis de ellas son bloqueantes; todas están en <a href="${assetUrl("gobernanza.html")}#gate-m3">Gobernanza</a>.
       </li>
     </ol>
 

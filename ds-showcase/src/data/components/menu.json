@@ -1,0 +1,311 @@
+{
+  "id": "menu",
+  "name": "Menu",
+  "status": "in-review",
+  "priority": "P1",
+  "category": "formularios",
+  "summary": "Lista de opciones para elegir una: filtrar y ordenar los viajes de Home.",
+  "figma": {
+    "label": "Menu",
+    "node": "58966:3975",
+    "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58966-3975"
+  },
+  "usage": {
+    "purpose": "Un menú de selección muestra, encima de la pantalla, grupos de opciones de las que se elige una. En MyOwnTrip lo abre el botón de filtros de la barra de búsqueda de Home, con dos grupos: «Mostrar» (qué viajes) y «Ordenar» (en qué orden). Elegir una opción la aplica y cierra el menú. Lo forman piezas del design system: MotMenuDropdown, MotMenuGroup, MotMenuSectionLabel y MotMenuItem.",
+    "when": [
+      "Hay varias opciones excluyentes y no hace falta tenerlas siempre a la vista.",
+      "Las opciones se agrupan por lo que cambian (qué se muestra, en qué orden)."
+    ],
+    "whenNot": [
+      {
+        "case": "Acciones sobre un elemento (archivar, eliminar)",
+        "use": "Menú de acciones de Material 3, como el ⋮ de la fila deslizable",
+        "href": "components/swipeable-list-row.html"
+      },
+      {
+        "case": "Pocas opciones que conviene ver siempre",
+        "use": "Filter chip",
+        "href": "components/filter-chip.html"
+      },
+      {
+        "case": "Elegir un valor dentro de un formulario",
+        "use": "Campo desplegable (Text field con chevron)",
+        "href": "components/text-field.html"
+      }
+    ],
+    "chooseVariant": [
+      {
+        "if": "Se abre desde un botón",
+        "use": "MotMenuDropdown",
+        "note": "Anclado al botón; se cierra al tocar fuera."
+      },
+      {
+        "if": "Hay que colocarlo a mano o enseñarlo quieto",
+        "use": "MotMenuPanel",
+        "note": "El mismo menú sin ventana propia."
+      }
+    ],
+    "related": [
+      {
+        "label": "Search bar",
+        "href": "components/search-bar.html"
+      },
+      {
+        "label": "Patrón: menú de filtros de Home",
+        "href": "patterns.html#home-filter-menu"
+      }
+    ]
+  },
+  "screens": [
+    {
+      "screen": "Home (lista de viajes)",
+      "uses": "Mostrar: Todos los viajes, En curso, Próximos, Pasados, Archivados · Ordenar: Fecha, Nombre, Destino"
+    }
+  ],
+  "variants": [
+    {
+      "id": "dropdown",
+      "label": "Desplegable",
+      "composable": "MotMenuDropdown",
+      "usage": "Se abre desde un botón, encima de la pantalla."
+    },
+    {
+      "id": "panel",
+      "label": "Panel",
+      "composable": "MotMenuPanel",
+      "usage": "Sin ventana propia, colocado a mano."
+    }
+  ],
+  "anatomy": [
+    "<strong>Panel</strong> — 328 dp de ancho, surfaceContainerLow, esquina Large (16 dp) y sombra baja.",
+    "<strong>Título de grupo</strong> — labelLarge en onSurfaceVariant: «Mostrar», «Ordenar». No se puede pulsar.",
+    "<strong>Opción seleccionada</strong> — 44 dp de alto, relleno secondaryContainer con borde outline y esquina Medium (12 dp).",
+    "<strong>Check</strong> — 20 dp en primary, a la izquierda; solo en la opción seleccionada. Las demás reservan el mismo hueco para que los textos alineen.",
+    "<strong>Opción</strong> — labelLarge en onSurface, sin fondo."
+  ],
+  "anatomyDiagram": {
+    "kind": "menu",
+    "values": {},
+    "live": {
+      "specimen": "menu/static",
+      "props": {
+        "show": "0",
+        "sort": "0"
+      },
+      "zoom": 1,
+      "height": 560,
+      "redlines": true,
+      "markers": [
+        {
+          "n": 1,
+          "part": "panel",
+          "anchor": "right@0.4",
+          "side": "right"
+        },
+        {
+          "n": 2,
+          "part": "sectionLabel",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 3,
+          "part": "selectedItem",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 4,
+          "part": "check",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 5,
+          "part": "label",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Ancho del panel",
+          "width": "panel"
+        },
+        {
+          "label": "Margen de la opción",
+          "left": [
+            "panel",
+            "selectedItem"
+          ]
+        },
+        {
+          "label": "Alto de la opción",
+          "height": "selectedItem"
+        },
+        {
+          "label": "Relleno de la opción",
+          "left": [
+            "selectedItem",
+            "check"
+          ]
+        },
+        {
+          "label": "Check",
+          "size": "check"
+        },
+        {
+          "label": "Check–texto",
+          "gap": [
+            "check",
+            "selectedLabel"
+          ]
+        }
+      ],
+      "note": "El alto del panel depende del número de opciones. Entre grupos y alrededor de cada opción hay 2 dp."
+    }
+  },
+  "behavior": {
+    "lead": "Elegir una opción la aplica y cierra el menú.",
+    "rows": [
+      {
+        "state": "Abrir",
+        "detail": "Desde el botón de filtros. El menú aparece anclado al botón, encima de la lista."
+      },
+      {
+        "state": "Elegir",
+        "detail": "Marca la opción, aplica el filtro o el orden y cierra el menú."
+      },
+      {
+        "state": "Cerrar sin elegir",
+        "detail": "Tocar fuera o el gesto Atrás cierran el menú sin cambiar nada."
+      }
+    ],
+    "notes": [
+      "La marca de la opción activa es un check a la izquierda. Un chevron significaría que la opción abre otro nivel, y aquí no lo hay."
+    ]
+  },
+  "a11y": [
+    "La opción seleccionada se anuncia con «Seleccionado».",
+    "Los títulos de grupo se leen como texto y no se pueden pulsar.",
+    "Cada opción tiene 44 dp de alto más el margen: el área táctil llega a 48 dp."
+  ],
+  "tokens": {
+    "color": [
+      {
+        "token": "surfaceContainerLow",
+        "use": "Panel."
+      },
+      {
+        "token": "secondaryContainer / onSecondaryContainer",
+        "use": "Opción seleccionada y su texto."
+      },
+      {
+        "token": "outline",
+        "use": "Borde de la opción seleccionada."
+      },
+      {
+        "token": "primary",
+        "use": "Check."
+      },
+      {
+        "token": "onSurface",
+        "use": "Texto de las opciones."
+      },
+      {
+        "token": "onSurfaceVariant",
+        "use": "Títulos de grupo."
+      }
+    ],
+    "spacing": [
+      {
+        "token": "MOTSpacing.Menu.groupGap",
+        "use": "2 dp entre grupos y alrededor de cada opción."
+      },
+      {
+        "token": "MOTSpacing.componentXs",
+        "use": "4 dp de margen lateral de las opciones."
+      }
+    ],
+    "shape": [
+      {
+        "token": "shapes.large",
+        "use": "Panel (16 dp)."
+      },
+      {
+        "token": "shapes.medium",
+        "use": "Opción seleccionada (12 dp)."
+      }
+    ],
+    "type": [
+      {
+        "token": "labelLarge",
+        "use": "Títulos de grupo y opciones."
+      }
+    ]
+  },
+  "guidelines": {
+    "links": [
+      {
+        "label": "Material Design 3 · Menus",
+        "url": "https://m3.material.io/components/menus/guidelines"
+      }
+    ],
+    "consulted": "2026-11-27"
+  },
+  "dos": [
+    "Agrupa las opciones por lo que cambian y dale a cada grupo un título corto.",
+    "Marca la opción activa con el check a la izquierda."
+  ],
+  "donts": [
+    "No pongas un chevron en una opción que no abre otro nivel.",
+    "No uses un botón de radio para marcar la opción activa: eso es un control de formulario."
+  ],
+  "productRules": {
+    "dos": [
+      "Elegir una opción cierra el menú."
+    ],
+    "donts": [
+      "No mezclar en el mismo menú opciones de filtro y acciones sobre un elemento."
+    ]
+  },
+  "implementation": {
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotMenu.kt",
+    "import": "com.myowntrip.app.ui.components.MotMenuDropdown",
+    "composable": "MotMenuDropdown",
+    "note": "Las opciones de viajes (TripFilterPhase, TripSortOrder) están en la app, en HomeSearchAndFilter.kt.",
+    "params": [
+      {
+        "name": "expanded",
+        "type": "Boolean",
+        "default": "—",
+        "note": ""
+      },
+      {
+        "name": "onDismissRequest",
+        "type": "() -> Unit",
+        "default": "—",
+        "note": "Tocar fuera o Atrás."
+      },
+      {
+        "name": "content",
+        "type": "@Composable ColumnScope.() -> Unit",
+        "default": "—",
+        "note": "MotMenuGroup con MotMenuSectionLabel y MotMenuItem."
+      }
+    ],
+    "snippet": "MotMenuDropdown(expanded = open, onDismissRequest = { open = false }) {\n    MotMenuGroup {\n        MotMenuSectionLabel(\"Mostrar\")\n        MotMenuItem(\"Todos los viajes\", selected = phase == All, onClick = { onPhase(All) })\n        MotMenuItem(\"En curso\", selected = phase == Current, onClick = { onPhase(Current) })\n    }\n}"
+  },
+  "decisions": {
+    "source": "Compose MotMenuDropdown y piezas (design system) · componente Menu de la librería de Figma",
+    "why": "Filtrar y ordenar sin ocupar espacio fijo en Home, con la opción activa a la vista al abrir.",
+    "layer": "Componentes del design system; las opciones las pone la app."
+  },
+  "changelog": [
+    {
+      "date": "2026-11-27",
+      "note": "Las piezas del menú pasan de la app al design system. Ficha nueva, con anatomía y medidas sobre el componente real."
+    }
+  ]
+}

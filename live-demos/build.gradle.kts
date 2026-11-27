@@ -30,6 +30,7 @@ kotlin {
         implementation(compose.material3)
         implementation(compose.ui)
         implementation(compose.components.resources)
+        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
       }
     }
     val skiaMain by creating {

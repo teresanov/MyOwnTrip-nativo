@@ -1,25 +1,20 @@
 package com.myowntrip.app.ui.components.date
 
-/**
- * Calendario mes a mes custom (legacy). **Producto** usa [DateRangePicker] / [DatePicker] M3
- * en [MotDateRangePickerDialog] / [MotDatePickerDialog]. Se mantiene para tests de selección de rango.
- */
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,27 +35,11 @@ import androidx.compose.ui.unit.dp
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.TextStyle
-import java.util.Locale
+import com.myowntrip.app.ui.theme.motPart
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.isoDayNumber
 
-private val Spanish = Locale("es", "ES")
 private val DayShape = CircleShape
-
-internal enum class MotCalendarSelectionMode {
-  Single,
-  Range,
-}
-
-internal enum class MotDayRangeRole {
-  None,
-  RangeMiddle,
-  RangeStart,
-  RangeEnd,
-  Selected,
-}
 
 /** Vista del calendario (días / rejilla año / rejilla mes). */
 internal enum class MotCalendarPickerSurface {
@@ -69,12 +48,16 @@ internal enum class MotCalendarPickerSurface {
   Month,
 }
 
+/**
+ * Calendario de un mes con flechas, acotado a [minDate]…[maxDate]. Tocar el título abre la rejilla
+ * de años y luego la de meses. Lo usa [MotDateRangePickerDialog].
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MotBoundedMonthCalendar(
   mode: MotCalendarSelectionMode,
-  displayedMonth: YearMonth,
-  onMonthChange: (YearMonth) -> Unit,
+  displayedMonth: MotYearMonth,
+  onMonthChange: (MotYearMonth) -> Unit,
   minDate: LocalDate,
   maxDate: LocalDate,
   colors: DatePickerColors,
@@ -85,18 +68,12 @@ internal fun MotBoundedMonthCalendar(
   selectedEnd: LocalDate? = null,
   onDateSelected: (LocalDate) -> Unit,
   modifier: Modifier = Modifier,
+  today: LocalDate = motToday(),
 ) {
   val yearRange = minDate.year..maxDate.year
-  val canGoPrevious = displayedMonth > YearMonth.from(minDate)
-  val canGoNext = displayedMonth < YearMonth.from(maxDate)
-  val monthLabel = buildString {
-    append(
-      displayedMonth.month.getDisplayName(TextStyle.FULL, Spanish)
-        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Spanish) else it.toString() },
-    )
-    append(' ')
-    append(displayedMonth.year)
-  }
+  val canGoPrevious = displayedMonth > MotYearMonth.from(minDate)
+  val canGoNext = displayedMonth < MotYearMonth.from(maxDate)
+  val monthLabel = "${MotMonthNames[displayedMonth.month - 1].capitalizeFirst()} ${displayedMonth.year}"
 
   Column(modifier = modifier.fillMaxWidth()) {
     Row(
@@ -109,13 +86,11 @@ internal fun MotBoundedMonthCalendar(
       when (pickerSurface) {
         MotCalendarPickerSurface.Days -> {
           MOTIconButton(
-            onClick = { onMonthChange(displayedMonth.minusMonths(1)) },
+            onClick = { onMonthChange(displayedMonth.plusMonths(-1)) },
             enabled = canGoPrevious,
+            modifier = Modifier.motPart("previousMonth"),
           ) {
-            Icon(
-              MOTIcons.KeyboardArrowLeft,
-              contentDescription = "Mes anterior",
-            )
+            Icon(MOTIcons.KeyboardArrowLeft, contentDescription = "Mes anterior")
           }
         }
         MotCalendarPickerSurface.Year,
@@ -132,10 +107,7 @@ internal fun MotBoundedMonthCalendar(
               )
             },
           ) {
-            Icon(
-              MOTIcons.ArrowBack,
-              contentDescription = "Volver",
-            )
+            Icon(MOTIcons.ArrowBack, contentDescription = "Volver")
           }
         }
       }
@@ -169,6 +141,7 @@ internal fun MotBoundedMonthCalendar(
         Row(
           verticalAlignment = Alignment.CenterVertically,
           horizontalArrangement = Arrangement.Center,
+          modifier = Modifier.motPart("monthTitle"),
         ) {
           Text(
             text = navTitle,
@@ -193,11 +166,9 @@ internal fun MotBoundedMonthCalendar(
           MOTIconButton(
             onClick = { onMonthChange(displayedMonth.plusMonths(1)) },
             enabled = canGoNext,
+            modifier = Modifier.motPart("nextMonth"),
           ) {
-            Icon(
-              MOTIcons.KeyboardArrowRight,
-              contentDescription = "Mes siguiente",
-            )
+            Icon(MOTIcons.KeyboardArrowRight, contentDescription = "Mes siguiente")
           }
         }
         MotCalendarPickerSurface.Year,
@@ -213,15 +184,10 @@ internal fun MotBoundedMonthCalendar(
         MotYearPickerGrid(
           yearRange = yearRange,
           selectedYear = displayedMonth.year,
+          currentYear = today.year,
           colors = colors,
           onYearSelected = { year ->
-            onMonthChange(
-              clampYearMonth(
-                YearMonth.of(year, displayedMonth.month),
-                minDate,
-                maxDate,
-              ),
-            )
+            onMonthChange(clampYearMonth(MotYearMonth(year, displayedMonth.month), minDate, maxDate))
             onPickerSurfaceChange(MotCalendarPickerSurface.Month)
           },
         )
@@ -229,32 +195,29 @@ internal fun MotBoundedMonthCalendar(
       MotCalendarPickerSurface.Month -> {
         MotMonthPickerGrid(
           selectedYear = displayedMonth.year,
-          selectedMonth = displayedMonth.monthValue,
+          selectedMonth = displayedMonth.month,
           minDate = minDate,
           maxDate = maxDate,
           colors = colors,
           onMonthSelected = { month ->
-            onMonthChange(
-              clampYearMonth(
-                YearMonth.of(displayedMonth.year, month),
-                minDate,
-                maxDate,
-              ),
-            )
+            onMonthChange(clampYearMonth(MotYearMonth(displayedMonth.year, month), minDate, maxDate))
             onPickerSurfaceChange(MotCalendarPickerSurface.Days)
           },
         )
       }
       MotCalendarPickerSurface.Days -> {
+        // Mismas columnas que la rejilla de días: mismo margen lateral y mismo hueco entre columnas.
         Row(
           modifier = Modifier
             .fillMaxWidth()
-            .padding(top = MOTSpacing.componentXs),
-          horizontalArrangement = Arrangement.SpaceAround,
+            .padding(top = MOTSpacing.componentXs)
+            .padding(horizontal = MOTSpacing.layoutMd)
+            .motPart("weekdays"),
+          horizontalArrangement = Arrangement.spacedBy(MOTSpacing.DatePicker.dayGridGap),
         ) {
-          DayOfWeek.entries.forEach { day ->
+          MotWeekdayInitials.forEach { initial ->
             Text(
-              text = day.getDisplayName(TextStyle.NARROW, Spanish).uppercase(Spanish),
+              text = initial,
               style = MaterialTheme.typography.labelMedium,
               color = colors.weekdayContentColor,
               textAlign = TextAlign.Center,
@@ -265,8 +228,7 @@ internal fun MotBoundedMonthCalendar(
 
         val firstOfMonth = displayedMonth.atDay(1)
         val daysInMonth = displayedMonth.lengthOfMonth()
-        val leadingEmpty = (firstOfMonth.dayOfWeek.value + 6) % 7
-        val today = LocalDate.now()
+        val leadingEmpty = firstOfMonth.dayOfWeek.isoDayNumber - 1
         val cells = buildList {
           repeat(leadingEmpty) { add(null) }
           repeat(daysInMonth) { add(displayedMonth.atDay(it + 1)) }
@@ -298,13 +260,12 @@ internal fun MotBoundedMonthCalendar(
               } else {
                 val enabled = isDateInSelectableRange(date, minDate, maxDate)
                 val role = when (mode) {
-                  MotCalendarSelectionMode.Single -> {
+                  MotCalendarSelectionMode.Single ->
                     if (selectedDate == date) MotDayRangeRole.Selected else MotDayRangeRole.None
-                  }
                   MotCalendarSelectionMode.Range -> dayRangeRole(date, selectedStart, selectedEnd)
                 }
                 MotCalendarDayCell(
-                  day = date.dayOfMonth,
+                  day = date.day,
                   role = role,
                   enabled = enabled,
                   isToday = date == today,
@@ -345,10 +306,18 @@ private fun MotCalendarDayCell(
     isToday -> colors.todayContentColor
     else -> colors.dayContentColor
   }
+  val part = when {
+    role == MotDayRangeRole.RangeStart || role == MotDayRangeRole.Selected -> "rangeStart"
+    role == MotDayRangeRole.RangeEnd -> "rangeEnd"
+    role == MotDayRangeRole.RangeMiddle -> "rangeMiddle"
+    isToday -> "today"
+    else -> null
+  }
 
   Box(
     modifier = Modifier
       .aspectRatio(1f)
+      .then(if (part != null) Modifier.motPart(part) else Modifier)
       .clip(DayShape)
       .then(
         if (isToday && role == MotDayRangeRole.None) {
@@ -372,51 +341,5 @@ private fun MotCalendarDayCell(
       style = MaterialTheme.typography.bodyLarge,
       color = content,
     )
-  }
-}
-
-internal fun isDateInSelectableRange(
-  date: LocalDate,
-  minDate: LocalDate,
-  maxDate: LocalDate,
-): Boolean = !date.isBefore(minDate) && !date.isAfter(maxDate)
-
-internal fun dayRangeRole(
-  date: LocalDate,
-  start: LocalDate?,
-  end: LocalDate?,
-): MotDayRangeRole {
-  if (start == null) return MotDayRangeRole.None
-  if (end == null) {
-    return if (date == start) MotDayRangeRole.RangeStart else MotDayRangeRole.None
-  }
-  val rangeStart = minOf(start, end)
-  val rangeEnd = maxOf(start, end)
-  return when {
-    date == rangeStart && date == rangeEnd -> MotDayRangeRole.Selected
-    date == rangeStart -> MotDayRangeRole.RangeStart
-    date == rangeEnd -> MotDayRangeRole.RangeEnd
-    date.isAfter(rangeStart) && date.isBefore(rangeEnd) -> MotDayRangeRole.RangeMiddle
-    else -> MotDayRangeRole.None
-  }
-}
-
-internal fun applyRangeSelection(
-  date: LocalDate,
-  start: LocalDate?,
-  end: LocalDate?,
-): Pair<LocalDate, LocalDate?> = when {
-  start == null || end != null -> date to null
-  date.isBefore(start) -> date to start
-  else -> start to date
-}
-
-internal fun clampYearMonth(month: YearMonth, minDate: LocalDate, maxDate: LocalDate): YearMonth {
-  val minMonth = YearMonth.from(minDate)
-  val maxMonth = YearMonth.from(maxDate)
-  return when {
-    month.isBefore(minMonth) -> minMonth
-    month.isAfter(maxMonth) -> maxMonth
-    else -> month
   }
 }

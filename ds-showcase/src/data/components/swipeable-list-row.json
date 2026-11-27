@@ -1,7 +1,7 @@
 {
   "id": "swipeable-list-row",
   "name": "Swipeable list row",
-  "status": "draft",
+  "status": "in-review",
   "priority": "P1",
   "category": "contenido",
   "summary": "Fila que se desliza para archivar o eliminar, con las mismas acciones en el menú ⋮.",
@@ -69,11 +69,94 @@
     }
   ],
   "anatomy": [
-    "<strong>Fila</strong> — el contenido: la fila del documento o la card del viaje.",
-    "<strong>Fondo al deslizar a la derecha</strong> — secondaryContainer con el icono de archivar o de restaurar.",
-    "<strong>Fondo al deslizar a la izquierda</strong> — errorContainer con el icono de eliminar.",
-    "<strong>Botón ⋮</strong> — abre un menú con las mismas dos acciones; Eliminar va en color error y con su icono."
+    "<strong>Fila</strong> — el contenido que se desliza: en Wallet, la fila del documento (List item); en Home, la card del viaje.",
+    "<strong>Botón ⋮</strong> — abre un menú con las mismas dos acciones que el deslizamiento; Eliminar va en color error y con su icono.",
+    "<strong>Fondo de archivar</strong> — asoma al deslizar hacia la derecha: secondaryContainer, del alto de la fila.",
+    "<strong>Icono de archivar</strong> — Archivar, o Restaurar en la lista de archivados; 24 dp en onSecondaryContainer, pegado al borde izquierdo.",
+    "<strong>Fondo de eliminar</strong> — asoma al deslizar hacia la izquierda: errorContainer, del alto de la fila.",
+    "<strong>Icono de eliminar</strong> — 24 dp en onErrorContainer, pegado al borde derecho."
   ],
+  "anatomyDiagram": {
+    "kind": "swipeable-list-row",
+    "values": {},
+    "live": {
+      "specimen": "swipeable-list-row/anatomy",
+      "props": {},
+      "zoom": 1,
+      "height": 380,
+      "redlines": true,
+      "markers": [
+        {
+          "n": 1,
+          "part": "row",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "menu",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 3,
+          "part": "archiveBackground",
+          "anchor": "at@0.03,0.85",
+          "side": "left"
+        },
+        {
+          "n": 4,
+          "part": "archiveIcon",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 5,
+          "part": "deleteBackground",
+          "anchor": "at@0.97,0.85",
+          "side": "right"
+        },
+        {
+          "n": 6,
+          "part": "deleteIcon",
+          "anchor": "right@0.5",
+          "side": "right"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Margen del icono de archivar",
+          "left": [
+            "archiveBackground",
+            "archiveIcon"
+          ]
+        },
+        {
+          "label": "Margen del icono de eliminar",
+          "right": [
+            "deleteBackground",
+            "deleteIcon"
+          ]
+        },
+        {
+          "label": "Icono de la acción",
+          "size": "archiveIcon"
+        },
+        {
+          "label": "Botón ⋮",
+          "size": "menu"
+        },
+        {
+          "label": "Botón ⋮ hasta el borde",
+          "right": [
+            "row",
+            "menu"
+          ]
+        }
+      ],
+      "note": "Arriba, la fila en reposo; debajo, a medio deslizar hacia cada lado. El fondo siempre ocupa el alto de la fila. Al soltar pasado el 45 % del ancho se lanza la acción y la fila vuelve a su sitio."
+    }
+  },
   "behavior": {
     "lead": "Ninguna acción se completa solo por deslizar del todo: al pasar el 45 % del ancho, se lanza la acción y la fila vuelve a su sitio.",
     "rows": [
@@ -195,6 +278,10 @@
     {
       "date": "2026-11-26",
       "note": "Las dos filas deslizables pasan a un único componente del design system (MotSwipeableRow). Ficha reescrita, con ejemplo real."
+    },
+    {
+      "date": "2026-11-27",
+      "note": "Anatomía y medidas sobre el componente real: la fila en reposo y a medio deslizar hacia cada lado."
     }
   ]
 }

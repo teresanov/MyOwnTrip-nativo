@@ -10,7 +10,7 @@
       "selection": {
         "title": "Qué icono marca la opción activa",
         "paragraphs": [
-          "En este menú la marca es <code>check</code>, a la izquierda. Todas las filas reservan la misma caja de 24 dp, también las que no están activas, para que los textos alineen.",
+          "En este menú la marca es <code>check</code>, a la izquierda. Todas las filas reservan la misma caja de 20 dp, también las que no están activas, para que los textos alineen.",
           "<code>chevron_right</code> significaría que la fila abre un submenú. Aquí no hay submenú: pulsar cierra y aplica. Un radio (<code>radio_button_checked</code>) es el control de un formulario que sigue abierto; no es este patrón."
         ],
         "donts": [

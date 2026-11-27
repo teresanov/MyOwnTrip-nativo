@@ -250,10 +250,10 @@ OutlinedTextField(
 
 ## Date & time pickers
 
-- Estado: draft · P0
-- Para qué: Los campos de fecha y hora recogen cuándo empieza y acaba un viaje, y la fecha y la hora de un documento o de una actividad del plan. No usan tal cual el selector de fechas de Material 3: la app tiene sus propios campos y diálogos (MotDate y MotTime), construidos sobre los de Material 3. El rango del viaje se escribe con el teclado (dd/mm/aaaa) o se elige en un calendario de un mes; Wallet usa una fecha y una hora de 24 h.
+- Estado: in-review · P0
+- Para qué: Los campos de fecha y hora recogen cuándo empieza y acaba un viaje, y la fecha y la hora de un documento o de una actividad del plan. No usan tal cual el selector de fechas de Material 3: el design system tiene sus propios campos y diálogos (MotDate y MotTime), construidos sobre los de Material 3. El rango del viaje se escribe con el teclado (dd/mm/aaaa) o se elige en un calendario de un mes; Wallet usa una fecha y una hora de 24 h.
 - Composable: `MotDateRangeField` — `com.myowntrip.app.ui.components.date.MotDateRangeField`
-- Fuente: `app/src/main/java/com/myowntrip/app/ui/components/date/MotDateFormFields.kt`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/date/MotDateFormFields.kt`
 
 ### Variantes
 
@@ -263,6 +263,7 @@ OutlinedTextField(
 - **MotDatePickerDialog** → `MotDatePickerDialog`: Un solo día, sin botón para cambiar al teclado.
 - **MotTimeField** → `MotTimeField`: Hora en formato de 24 h.
 - **MotTimePickerDialog** → `MotTimePickerDialog`: Hora escrita con el teclado; esfera de reloj opcional.
+- **MotTimeTextField** → `MotTimeTextField`: Hora del plan, guardada como texto.
 
 ### Cuándo usarlo
 
@@ -278,6 +279,7 @@ OutlinedTextField(
 - Crear o editar viaje → `MotDateRangeField` — Dos campos de texto y un botón de calendario que abre MotDateRangePickerDialog: un mes cada vez, no una lista vertical de meses.
 - Fecha de un documento (Wallet) → `MotDateField` — Campo de solo lectura que abre MotDatePickerDialog.
 - Hora (Wallet, plan) → `MotTimeField` — Hora de 24 h escrita con el teclado; la esfera de reloj de Material 3 es opcional.
+- Hora que la pantalla guarda como texto (plan del día) → `MotTimeTextField` — El mismo campo de hora, pero recibe y devuelve «19:30» en vez de una hora.
 
 ### Prohibido en este componente
 
@@ -363,6 +365,114 @@ Row(
         label = { Text("Activos") },
     )
 }
+```
+
+## Menu
+
+- Estado: in-review · P1
+- Para qué: Un menú de selección muestra, encima de la pantalla, grupos de opciones de las que se elige una. En MyOwnTrip lo abre el botón de filtros de la barra de búsqueda de Home, con dos grupos: «Mostrar» (qué viajes) y «Ordenar» (en qué orden). Elegir una opción la aplica y cierra el menú. Lo forman piezas del design system: MotMenuDropdown, MotMenuGroup, MotMenuSectionLabel y MotMenuItem.
+- Composable: `MotMenuDropdown` — `com.myowntrip.app.ui.components.MotMenuDropdown`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotMenu.kt`
+
+### Variantes
+
+- **Desplegable** → `MotMenuDropdown`: Se abre desde un botón, encima de la pantalla.
+- **Panel** → `MotMenuPanel`: Sin ventana propia, colocado a mano.
+
+### Cuándo usarlo
+
+- Hay varias opciones excluyentes y no hace falta tenerlas siempre a la vista.
+- Las opciones se agrupan por lo que cambian (qué se muestra, en qué orden).
+
+### Cuándo NO usarlo
+
+- Acciones sobre un elemento (archivar, eliminar) → Menú de acciones de Material 3, como el ⋮ de la fila deslizable
+- Pocas opciones que conviene ver siempre → Filter chip
+- Elegir un valor dentro de un formulario → Campo desplegable (Text field con chevron)
+
+### Elegir variante
+
+- Se abre desde un botón → `MotMenuDropdown` — Anclado al botón; se cierra al tocar fuera.
+- Hay que colocarlo a mano o enseñarlo quieto → `MotMenuPanel` — El mismo menú sin ventana propia.
+
+### Prohibido en este componente
+
+- No pongas un chevron en una opción que no abre otro nivel.
+- No uses un botón de radio para marcar la opción activa: eso es un control de formulario.
+- No mezclar en el mismo menú opciones de filtro y acciones sobre un elemento.
+
+### Accesibilidad
+
+- La opción seleccionada se anuncia con «Seleccionado».
+- Los títulos de grupo se leen como texto y no se pueden pulsar.
+- Cada opción tiene 44 dp de alto más el margen: el área táctil llega a 48 dp.
+
+### Uso típico
+
+```kotlin
+MotMenuDropdown(expanded = open, onDismissRequest = { open = false }) {
+    MotMenuGroup {
+        MotMenuSectionLabel("Mostrar")
+        MotMenuItem("Todos los viajes", selected = phase == All, onClick = { onPhase(All) })
+        MotMenuItem("En curso", selected = phase == Current, onClick = { onPhase(Current) })
+    }
+}
+```
+
+## Search bar
+
+- Estado: in-review · P1
+- Para qué: La barra de búsqueda filtra una lista mientras se escribe y, con el botón del final, abre el menú para filtrar y ordenar esa lista. En MyOwnTrip está encima de la lista de viajes de Home: se escribe el nombre o el destino del viaje, y el botón de filtros abre el menú con «Mostrar» y «Ordenar». Es MotSearchBar, del design system.
+- Composable: `MotSearchBar` — `com.myowntrip.app.ui.components.MotSearchBar`
+- Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotSearchBar.kt`
+
+### Variantes
+
+- **Vacía** → `MotSearchBar(query = "")`: Tarjeta con borde, lupa y placeholder.
+- **Con texto** → `MotSearchBar(query = "Cracovia")`: Relleno surfaceContainerHigh y botón de borrar.
+
+### Cuándo usarlo
+
+- Una lista crece lo bastante como para que buscar sea más rápido que desplazarse.
+- La misma lista se puede filtrar u ordenar, y esas opciones no tienen por qué estar siempre a la vista.
+
+### Cuándo NO usarlo
+
+- Escribir un dato de un formulario → Text field
+- Pocas categorías que conviene ver siempre → Filter chip
+
+### Elegir variante
+
+- La barra está vacía → `Con borde y lupa al principio` — Placeholder «Buscar viajes».
+- Hay texto escrito → `Relleno surfaceContainerHigh, sin lupa` — Aparece el botón «Borrar búsqueda» antes del de filtros.
+
+### Prohibido en este componente
+
+- No pongas los filtros como chips fijos debajo de la barra en Home: van en el menú.
+- No añadir un botón de buscar: la lista ya responde al escribir.
+
+### Accesibilidad
+
+- El placeholder no sustituye a una etiqueta: la barra se anuncia como campo de texto con «Buscar viajes».
+- Los dos botones tienen nombre: «Borrar búsqueda» y «Filtros y ordenación».
+- Los botones tienen un área táctil de 48 dp.
+
+### Uso típico
+
+```kotlin
+MotSearchBar(
+    query = query,
+    onQueryChange = onQueryChange,
+    placeholder = "Buscar viajes",
+    onFilterClick = { menuOpen = true },
+    menu = {
+        MotMenuDropdown(
+            expanded = menuOpen,
+            onDismissRequest = { menuOpen = false },
+            modifier = Modifier.align(Alignment.TopEnd),
+        ) { /* grupos y opciones */ }
+    },
+)
 ```
 
 ## Basic dialog
@@ -647,7 +757,7 @@ EyebrowLabel(
 
 ## Swipeable list row
 
-- Estado: draft · P1
+- Estado: in-review · P1
 - Para qué: Una fila deslizable añade a una fila de lista dos acciones rápidas: deslizar hacia la derecha para archivar (o restaurar, en la lista de archivados) y hacia la izquierda para eliminar. Las mismas acciones están siempre en el menú ⋮ de la fila, para quien no puede o no sabe deslizar. En MyOwnTrip se usa en los documentos de Wallet y en la lista de viajes de Home. Es MotSwipeableRow, del design system.
 - Composable: `MotSwipeableRow` — `com.myowntrip.app.ui.components.MotSwipeableRow`
 - Fuente: `designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/MotSwipeableRow.kt`
@@ -958,7 +1068,7 @@ Scaffold(
 ## App bar
 
 - Estado: in-review · P1
-- Para qué: La barra superior (top app bar) da título a la pantalla y reúne la navegación hacia atrás y sus acciones. En MyOwnTrip todas las pantallas interiores la usan con el mismo esquema: flecha de volver, título y, a veces, una acción (editar, borrar, guardar). Es el TopAppBar pequeño de Material 3, con MOTIconButton en los iconos.
+- Para qué: La barra superior da título a la pantalla y reúne la vuelta atrás y las acciones sobre lo que se está viendo. En MyOwnTrip todas las pantallas interiores la llevan, siempre con la flecha de volver y el título. Las acciones dependen de la pantalla: los formularios no tienen ninguna y los detalles tienen una o dos sobre el elemento que muestran. Es el TopAppBar pequeño de Material 3, con MOTIconButton en los iconos.
 - Composable: `TopAppBar` — `androidx.compose.material3.TopAppBar`
 - Fuente: `app/src/main/java/com/myowntrip/app/ui/features/trips/EditTripScreen.kt`
 
@@ -968,27 +1078,32 @@ Scaffold(
 
 ### Cuándo usarlo
 
-- La pantalla es interior: se llega desde otra (un detalle, un formulario, un editor).
+- La pantalla es interior: se llega desde otra (un detalle, un formulario, un editor, la cámara).
 - La pantalla necesita un título y una forma de volver.
 
 ### Cuándo NO usarlo
 
 - Cambiar entre vistas hermanas de la misma pantalla → Tabs, debajo de la barra
-- La acción principal es añadir → FAB
+- La acción principal de la pantalla es añadir → FAB
+- Guardar un formulario → Button al final del formulario
 
 ### Elegir variante
 
-- Pantalla interior (todas las de la app) → `TopAppBar + volver` — Título a la izquierda, junto a la flecha.
-- La pantalla edita o borra lo que muestra → `+ una acción en actions` — Editar viaje, Eliminar documento, Borrar gasto o sitio, Guardar boceto, Abrir con otra app.
+- Formulario o tarea: crear, editar, escanear, hacer una foto → `Volver + título, sin acciones` — Nuevo viaje, Editar viaje, Nueva nota, Añadir gasto, Escanear QR, Hacer foto. Guardar va en un botón dentro del formulario, no en la barra.
+- Detalle de un elemento → `Volver + nombre del elemento + una acción` — Detalle del viaje: Editar viaje. Documento de Wallet: Eliminar documento. Sitio: Borrar sitio. Visor de archivo: Abrir con otra app.
+- Detalle con dos acciones sobre el mismo elemento → `Volver + título + dos acciones` — Recuerdo del Diario: Editar recuerdo y Eliminar recuerdo. Es el máximo en la app.
+- Editor que guarda lo que hay en pantalla → `Volver + título + Guardar` — Boceto: Guardar boceto.
+- La pantalla tiene vistas hermanas → `Tabs debajo de la barra` — Detalle del viaje (Plan, Wallet, Gastos…) y Día del plan.
 
 ### Prohibido en este componente
 
-- No llenes la barra de acciones.
+- No llenes la barra de acciones: lo demás va en la pantalla o en un menú.
+- No pongas en la barra la acción de guardar un formulario: va en un botón al final.
 
 ### Accesibilidad
 
-- La flecha de volver lleva contentDescription «Volver».
-- Cada acción lleva su nombre: «Editar viaje», «Eliminar documento».
+- La flecha se anuncia como «Volver».
+- Cada acción lleva el nombre completo de lo que hace: «Editar viaje», «Eliminar documento», «Abrir con otra app».
 - Los iconos tienen un área táctil de 48 dp.
 
 ### Uso típico

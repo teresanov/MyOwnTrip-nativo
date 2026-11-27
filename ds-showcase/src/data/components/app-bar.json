@@ -4,16 +4,16 @@
   "status": "in-review",
   "priority": "P1",
   "category": "navegacion",
-  "summary": "Barra superior con volver, título y acciones.",
+  "summary": "Barra superior: volver, título de la pantalla y sus acciones.",
   "figma": {
     "label": "App bar",
     "node": "58114:20565",
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=58114-20565"
   },
   "usage": {
-    "purpose": "La barra superior (top app bar) da título a la pantalla y reúne la navegación hacia atrás y sus acciones. En MyOwnTrip todas las pantallas interiores la usan con el mismo esquema: flecha de volver, título y, a veces, una acción (editar, borrar, guardar). Es el TopAppBar pequeño de Material 3, con MOTIconButton en los iconos.",
+    "purpose": "La barra superior da título a la pantalla y reúne la vuelta atrás y las acciones sobre lo que se está viendo. En MyOwnTrip todas las pantallas interiores la llevan, siempre con la flecha de volver y el título. Las acciones dependen de la pantalla: los formularios no tienen ninguna y los detalles tienen una o dos sobre el elemento que muestran. Es el TopAppBar pequeño de Material 3, con MOTIconButton en los iconos.",
     "when": [
-      "La pantalla es interior: se llega desde otra (un detalle, un formulario, un editor).",
+      "La pantalla es interior: se llega desde otra (un detalle, un formulario, un editor, la cámara).",
       "La pantalla necesita un título y una forma de volver."
     ],
     "whenNot": [
@@ -23,21 +23,41 @@
         "href": "components/tabs.html"
       },
       {
-        "case": "La acción principal es añadir",
+        "case": "La acción principal de la pantalla es añadir",
         "use": "FAB",
         "href": "components/fab.html"
+      },
+      {
+        "case": "Guardar un formulario",
+        "use": "Button al final del formulario",
+        "href": "components/button.html"
       }
     ],
     "chooseVariant": [
       {
-        "if": "Pantalla interior (todas las de la app)",
-        "use": "TopAppBar + volver",
-        "note": "Título a la izquierda, junto a la flecha."
+        "if": "Formulario o tarea: crear, editar, escanear, hacer una foto",
+        "use": "Volver + título, sin acciones",
+        "note": "Nuevo viaje, Editar viaje, Nueva nota, Añadir gasto, Escanear QR, Hacer foto. Guardar va en un botón dentro del formulario, no en la barra."
       },
       {
-        "if": "La pantalla edita o borra lo que muestra",
-        "use": "+ una acción en actions",
-        "note": "Editar viaje, Eliminar documento, Borrar gasto o sitio, Guardar boceto, Abrir con otra app."
+        "if": "Detalle de un elemento",
+        "use": "Volver + nombre del elemento + una acción",
+        "note": "Detalle del viaje: Editar viaje. Documento de Wallet: Eliminar documento. Sitio: Borrar sitio. Visor de archivo: Abrir con otra app."
+      },
+      {
+        "if": "Detalle con dos acciones sobre el mismo elemento",
+        "use": "Volver + título + dos acciones",
+        "note": "Recuerdo del Diario: Editar recuerdo y Eliminar recuerdo. Es el máximo en la app."
+      },
+      {
+        "if": "Editor que guarda lo que hay en pantalla",
+        "use": "Volver + título + Guardar",
+        "note": "Boceto: Guardar boceto."
+      },
+      {
+        "if": "La pantalla tiene vistas hermanas",
+        "use": "Tabs debajo de la barra",
+        "note": "Detalle del viaje (Plan, Wallet, Gastos…) y Día del plan."
       }
     ],
     "related": [
@@ -53,20 +73,24 @@
   },
   "screens": [
     {
-      "screen": "TripDetailScreen",
-      "uses": "Nombre del viaje · Volver · Editar viaje"
+      "screen": "Detalle del viaje",
+      "uses": "Nombre del viaje · Volver · Editar viaje · tabs debajo"
     },
     {
-      "screen": "EditTripScreen",
-      "uses": "Editar viaje · Volver"
+      "screen": "Editar viaje / Nuevo viaje",
+      "uses": "Título fijo · Volver · sin acciones"
     },
     {
-      "screen": "WalletDetailScreen",
+      "screen": "Documento de Wallet",
       "uses": "Título del documento · Volver · Eliminar documento"
     },
     {
-      "screen": "DayHubScreen",
-      "uses": "«Día N · fecha» · Volver"
+      "screen": "Recuerdo del Diario",
+      "uses": "«Recuerdo» · Volver · Editar recuerdo · Eliminar recuerdo"
+    },
+    {
+      "screen": "Día del plan",
+      "uses": "«Día N · fecha» · Volver · tabs debajo"
     }
   ],
   "variants": [
@@ -78,10 +102,10 @@
     }
   ],
   "anatomy": [
-    "<strong>Contenedor</strong> — 64 dp de alto, surface, sin sombra.",
-    "<strong>Volver</strong> — MOTIconButton con la flecha (ArrowBack).",
-    "<strong>Título</strong> — titleLarge en onSurface, una línea con puntos suspensivos si no cabe.",
-    "<strong>Acción</strong> — opcional: MOTIconButton en onSurfaceVariant."
+    "<strong>Contenedor</strong> — 64 dp de alto, color surface, sin sombra.",
+    "<strong>Volver</strong> — MOTIconButton con la flecha. Está en todas las barras de la app.",
+    "<strong>Título</strong> — titleLarge en onSurface, una línea; si no cabe, termina en puntos suspensivos.",
+    "<strong>Acciones</strong> — opcionales, de cero a dos MOTIconButton en onSurfaceVariant."
   ],
   "behavior": {
     "lead": "La barra es fija.",
@@ -93,8 +117,8 @@
     ]
   },
   "a11y": [
-    "La flecha de volver lleva contentDescription «Volver».",
-    "Cada acción lleva su nombre: «Editar viaje», «Eliminar documento».",
+    "La flecha se anuncia como «Volver».",
+    "Cada acción lleva el nombre completo de lo que hace: «Editar viaje», «Eliminar documento», «Abrir con otra app».",
     "Los iconos tienen un área táctil de 48 dp."
   ],
   "tokens": {
@@ -129,11 +153,12 @@
     "consulted": "2026-11-26"
   },
   "dos": [
-    "Usa el título para decir dónde está la persona.",
-    "Pon en la barra solo las acciones más importantes de la pantalla."
+    "Usa el título para decir dónde está la persona: el nombre del viaje, del documento o de la tarea.",
+    "Pon en la barra solo las acciones sobre lo que se está viendo, y como mucho dos."
   ],
   "donts": [
-    "No llenes la barra de acciones."
+    "No llenes la barra de acciones: lo demás va en la pantalla o en un menú.",
+    "No pongas en la barra la acción de guardar un formulario: va en un botón al final."
   ],
   "implementation": {
     "module": "material3",
@@ -158,7 +183,7 @@
         "name": "actions",
         "type": "@Composable RowScope.() -> Unit",
         "default": "{}",
-        "note": "Una acción como mucho en la app."
+        "note": "De cero a dos MOTIconButton."
       }
     ],
     "snippet": "TopAppBar(\n    title = { Text(\"Editar viaje\") },\n    navigationIcon = {\n        MOTIconButton(onClick = onBack) {\n            Icon(MOTIcons.ArrowBack, contentDescription = \"Volver\")\n        }\n    },\n)"
@@ -172,6 +197,10 @@
     {
       "date": "2026-11-26",
       "note": "Ficha nueva, con ejemplo, anatomía y medidas sobre el componente real (Compose en WebAssembly)."
+    },
+    {
+      "date": "2026-11-27",
+      "note": "Casos revisados contra las 21 barras de la app: los formularios no llevan acciones y el recuerdo del Diario lleva dos. El ejemplo deja elegir la pantalla."
     }
   ],
   "anatomyDiagram": {

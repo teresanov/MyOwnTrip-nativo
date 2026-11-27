@@ -143,12 +143,12 @@
     }
   ],
   "anatomy": [
-    "<strong>Contenedor</strong> — la fila entera, pulsable, con fondo surface. Con aviso, lleva un borde izquierdo de 4 dp en warning.",
-    "<strong>Icono</strong> — círculo de 40 dp en surfaceContainer con el icono del tipo (24 dp, onSurfaceVariant).",
+    "<strong>Contenedor</strong> — la fila entera, pulsable, con fondo surface. Con aviso del plan, lleva un borde izquierdo de 4 dp en warning.",
+    "<strong>Icono</strong> — círculo de 40 dp en surfaceContainer con el icono del tipo de documento (24 dp, onSurfaceVariant).",
     "<strong>Punto de aviso</strong> — 10 dp en warning, abajo a la derecha del icono, solo con aviso del plan.",
     "<strong>Título</strong> — titleMedium, hasta dos líneas.",
     "<strong>Texto de apoyo</strong> — bodyMedium en onSurfaceVariant: tipo · fecha. El aviso se añade al final en warning.",
-    "<strong>Final</strong> — opcional: indicador de sin conexión, QR o nube (18 dp, tertiary) y el botón ⋮ cuando la fila se desliza."
+    "<strong>Final</strong> — opcional: indicador de disponibilidad (guardado en el móvil o en la nube, 18 dp en tertiary). En la lista de Wallet, la fila deslizable añade aquí el botón ⋮."
   ],
   "behavior": {
     "lead": "Toda la fila se pulsa y abre el detalle del documento.",
@@ -341,19 +341,17 @@
       "specimen": "list-item/playground",
       "props": {
         "warning": "true",
-        "availability": "offline",
-        "menu": "true",
-        "width": "250"
+        "availability": "offline"
       },
-      "zoom": 1.5,
-      "height": 320,
+      "zoom": 1,
+      "height": 220,
       "redlines": true,
       "markers": [
         {
           "n": 1,
           "part": "container",
-          "anchor": "left@0.5",
-          "side": "left"
+          "anchor": "top@0.9",
+          "side": "top"
         },
         {
           "n": 2,
@@ -370,20 +368,20 @@
         {
           "n": 4,
           "part": "title",
-          "anchor": "top@0.6",
+          "anchor": "top@0.35",
           "side": "top"
         },
         {
           "n": 5,
           "part": "supporting",
-          "anchor": "bottom@0.6",
+          "anchor": "bottom@0.35",
           "side": "bottom"
         },
         {
           "n": 6,
           "part": "trailing",
-          "anchor": "right@0.5",
-          "side": "right"
+          "anchor": "bottom@0.5",
+          "side": "bottom"
         }
       ],
       "rows": [
@@ -402,10 +400,38 @@
           ]
         },
         {
+          "label": "Texto–final",
+          "gap": [
+            "title",
+            "trailing"
+          ]
+        },
+        {
           "label": "Relleno a la derecha",
           "right": [
             "container",
             "trailing"
+          ]
+        },
+        {
+          "label": "Relleno arriba",
+          "top": [
+            "container",
+            "title"
+          ]
+        },
+        {
+          "label": "Título–texto de apoyo",
+          "vgap": [
+            "title",
+            "supporting"
+          ]
+        },
+        {
+          "label": "Relleno abajo",
+          "bottom": [
+            "container",
+            "supporting"
           ]
         },
         {
@@ -417,7 +443,7 @@
           "height": "warningDot"
         }
       ],
-      "note": "El alto de la fila depende del texto (el título puede ocupar dos líneas); el ancho, el de la lista."
+      "note": "El alto de la fila depende del texto. Con título y una línea de apoyo, el contenido va centrado (18 dp arriba y abajo). Con tres líneas, como aquí con el aviso del plan, Material 3 lo alinea arriba a 12 dp y el resto del alto queda debajo. El ancho es el de la lista. Con aviso del plan, el borde izquierdo mide 4 dp."
     }
   }
 }

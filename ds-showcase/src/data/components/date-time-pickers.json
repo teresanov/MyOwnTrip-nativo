@@ -1,17 +1,17 @@
 {
   "id": "date-time-pickers",
   "name": "Date & time pickers",
-  "status": "draft",
+  "status": "in-review",
   "priority": "P0",
   "category": "entrada",
-  "summary": "Fechas y horas de viaje, Wallet y plan: campos Outlined + modales Mot*.",
+  "summary": "Fechas y horas de viaje, Wallet y plan: campos de texto con borde y diálogos propios sobre Material 3.",
   "figma": {
     "label": "MotDateRangeField",
     "node": "61340:8809",
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61340-8809"
   },
   "usage": {
-    "purpose": "Los campos de fecha y hora recogen cuándo empieza y acaba un viaje, y la fecha y la hora de un documento o de una actividad del plan. No usan tal cual el selector de fechas de Material 3: la app tiene sus propios campos y diálogos (MotDate y MotTime), construidos sobre los de Material 3. El rango del viaje se escribe con el teclado (dd/mm/aaaa) o se elige en un calendario de un mes; Wallet usa una fecha y una hora de 24 h.",
+    "purpose": "Los campos de fecha y hora recogen cuándo empieza y acaba un viaje, y la fecha y la hora de un documento o de una actividad del plan. No usan tal cual el selector de fechas de Material 3: el design system tiene sus propios campos y diálogos (MotDate y MotTime), construidos sobre los de Material 3. El rango del viaje se escribe con el teclado (dd/mm/aaaa) o se elige en un calendario de un mes; Wallet usa una fecha y una hora de 24 h.",
     "when": [
       "Hay que recoger inicio y fin de un viaje.",
       "Hay que recoger la fecha o la hora de un documento o de un bloque del plan."
@@ -38,38 +38,103 @@
         "if": "Hora (Wallet, plan)",
         "use": "MotTimeField",
         "note": "Hora de 24 h escrita con el teclado; la esfera de reloj de Material 3 es opcional."
+      },
+      {
+        "if": "Hora que la pantalla guarda como texto (plan del día)",
+        "use": "MotTimeTextField",
+        "note": "El mismo campo de hora, pero recibe y devuelve «19:30» en vez de una hora."
       }
     ],
     "related": [
-      { "label": "Text field", "href": "components/text-field.html" },
-      { "label": "Icon button", "href": "components/icon-button.html" },
-      { "label": "Basic dialog", "href": "components/basic-dialog.html" }
+      {
+        "label": "Text field",
+        "href": "components/text-field.html"
+      },
+      {
+        "label": "Icon button",
+        "href": "components/icon-button.html"
+      },
+      {
+        "label": "Basic dialog",
+        "href": "components/basic-dialog.html"
+      }
     ]
   },
   "variants": [
-    { "id": "mot-date-range-field", "label": "MotDateRangeField", "composable": "MotDateRangeField", "usage": "Inicio y fin del viaje, con el teclado o con el calendario." },
-    { "id": "mot-date-range-dialog", "label": "MotDateRangePickerDialog", "composable": "MotDateRangePickerDialog", "usage": "Calendario de un mes, con vistas de días, años y meses." },
-    { "id": "mot-date-field", "label": "MotDateField", "composable": "MotDateField", "usage": "Fecha única en Wallet." },
-    { "id": "mot-date-dialog", "label": "MotDatePickerDialog", "composable": "MotDatePickerDialog", "usage": "Un solo día, sin botón para cambiar al teclado." },
-    { "id": "mot-time-field", "label": "MotTimeField", "composable": "MotTimeField", "usage": "Hora en formato de 24 h." },
-    { "id": "mot-time-dialog", "label": "MotTimePickerDialog", "composable": "MotTimePickerDialog", "usage": "Hora escrita con el teclado; esfera de reloj opcional." }
+    {
+      "id": "mot-date-range-field",
+      "label": "MotDateRangeField",
+      "composable": "MotDateRangeField",
+      "usage": "Inicio y fin del viaje, con el teclado o con el calendario."
+    },
+    {
+      "id": "mot-date-range-dialog",
+      "label": "MotDateRangePickerDialog",
+      "composable": "MotDateRangePickerDialog",
+      "usage": "Calendario de un mes, con vistas de días, años y meses."
+    },
+    {
+      "id": "mot-date-field",
+      "label": "MotDateField",
+      "composable": "MotDateField",
+      "usage": "Fecha única en Wallet."
+    },
+    {
+      "id": "mot-date-dialog",
+      "label": "MotDatePickerDialog",
+      "composable": "MotDatePickerDialog",
+      "usage": "Un solo día, sin botón para cambiar al teclado."
+    },
+    {
+      "id": "mot-time-field",
+      "label": "MotTimeField",
+      "composable": "MotTimeField",
+      "usage": "Hora en formato de 24 h."
+    },
+    {
+      "id": "mot-time-dialog",
+      "label": "MotTimePickerDialog",
+      "composable": "MotTimePickerDialog",
+      "usage": "Hora escrita con el teclado; esfera de reloj opcional."
+    },
+    {
+      "id": "mot-time-text-field",
+      "label": "MotTimeTextField",
+      "composable": "MotTimeTextField",
+      "usage": "Hora del plan, guardada como texto."
+    }
   ],
   "anatomy": [
-    "<strong>Rango</strong> — dos campos de texto y un icon button de calendario.",
-    "<strong>Fecha</strong> — campo de solo lectura con un icono de calendario al final.",
-    "<strong>Hora</strong> — campo de solo lectura con un icono de reloj al final.",
-    "<strong>Diálogos</strong> — el selector se abre en un diálogo de radio Extra-large, con acciones MOTTextButton."
+    "<strong>Campo de inicio</strong> — campo de texto con borde: se escribe «dd/mm/aaaa». Al salir del campo se comprueba la fecha.",
+    "<strong>Campo de fin</strong> — igual que el de inicio. Si el fin va antes que el inicio, se ordenan solos.",
+    "<strong>Botón de calendario</strong> — icon button que abre el diálogo con el calendario.",
+    "<strong>Fechas elegidas</strong> — encabezado del diálogo: el rango con su año, o «Introduce las fechas» mientras falta el fin.",
+    "<strong>Mes y año</strong> — al tocarlo se elige el año y luego el mes, en una rejilla.",
+    "<strong>Flechas</strong> — mes anterior y siguiente. Se desactivan en el primer y el último mes que se pueden elegir.",
+    "<strong>Inicio y fin del rango</strong> — círculo relleno en primary.",
+    "<strong>Días intermedios</strong> — círculo con fondo suave (secondaryContainer).",
+    "<strong>Hoy</strong> — círculo con borde. El resto de días llevan un círculo del color de la superficie (surface)."
   ],
   "behavior": {
-    "lead": "Esta ficha todavía no tiene el componente real: el ejemplo es una recreación del campo, sin el calendario.",
+    "lead": "Los campos de texto se pueden escribir; el icono del final abre el diálogo con el selector.",
     "rows": [
-      { "state": "Teclado (rango)", "detail": "dd/mm/aaaa. Desde hoy hasta dentro de 10 años." },
-      { "state": "Calendario (rango)", "detail": "Un mes, con flechas para cambiar de mes. Desde hoy hasta dentro de 2 años. Sin la lista vertical de meses de Material 3." },
-      { "state": "Hora", "detail": "Hora de 24 h con el teclado. Cancelar no cambia nada; Aceptar guarda." }
+      {
+        "state": "Teclado (rango)",
+        "detail": "dd/mm/aaaa. Desde hoy hasta dentro de 10 años."
+      },
+      {
+        "state": "Calendario (rango)",
+        "detail": "Un mes, con flechas para cambiar de mes. Desde hoy hasta dentro de 2 años. Sin la lista vertical de meses de Material 3."
+      },
+      {
+        "state": "Hora",
+        "detail": "Hora de 24 h con el teclado. Cancelar no cambia nada; Aceptar guarda."
+      }
     ],
     "notes": [
       "No se usan tal cual los selectores de fecha de Material 3 (Input date picker, Modal date picker): están archivados en Figma.",
-      "MotTripDatePickerDialog existe en el código, pero ninguna pantalla lo usa todavía: no forma parte del sistema hasta entonces."
+      "Los nombres de los meses y de los días están en el propio design system, en español, para que no dependan del idioma del teléfono.",
+      "Cada día lleva un círculo del color de la superficie sobre el fondo del diálogo. Es intencionado, aunque Material 3 no pone fondo a los días sin seleccionar."
     ]
   },
   "a11y": [
@@ -80,19 +145,42 @@
   ],
   "tokens": {
     "color": [
-      { "token": "surfaceContainerHigh", "use": "Modales." },
-      { "token": "primary", "use": "Día seleccionado." }
+      {
+        "token": "surfaceContainerHigh",
+        "use": "Modales."
+      },
+      {
+        "token": "primary",
+        "use": "Día seleccionado."
+      }
     ],
     "spacing": [
-      { "token": "MOTSpacing.componentSm", "use": "Gap entre los dos campos del rango." },
-      { "token": "mot/spacing/date-picker/day-grid-gap", "use": "2 dp en la rejilla." }
+      {
+        "token": "MOTSpacing.componentSm",
+        "use": "Gap entre los dos campos del rango y el botón."
+      },
+      {
+        "token": "MOTSpacing.DatePicker.dayGridGap",
+        "use": "2 dp entre días en la rejilla."
+      }
     ],
-    "shape": [{ "token": "shapes.extraLarge", "use": "Modales." }]
+    "shape": [
+      {
+        "token": "shapes.extraLarge",
+        "use": "Modales."
+      }
+    ]
   },
   "guidelines": {
     "links": [
-      { "label": "Material Design 3 · Date pickers", "url": "https://m3.material.io/components/date-pickers/overview" },
-      { "label": "Material Design 3 · Time pickers", "url": "https://m3.material.io/components/time-pickers/overview" }
+      {
+        "label": "Material Design 3 · Date pickers",
+        "url": "https://m3.material.io/components/date-pickers/overview"
+      },
+      {
+        "label": "Material Design 3 · Time pickers",
+        "url": "https://m3.material.io/components/time-pickers/overview"
+      }
     ],
     "consulted": "2026-11-18"
   },
@@ -114,25 +202,161 @@
     ]
   },
   "screens": [
-    { "screen": "CreateTripScreen / EditTripScreen", "fields": "MotDateRangeField" },
-    { "screen": "WalletFormScreen", "fields": "MotDateField · MotTimeField" },
-    { "screen": "AddPlanActivitySheet", "fields": "MotTimeField" }
+    {
+      "screen": "CreateTripScreen / EditTripScreen",
+      "fields": "MotDateRangeField"
+    },
+    {
+      "screen": "WalletFormScreen",
+      "fields": "MotDateField · MotTimeField"
+    },
+    {
+      "screen": "AddPlanActivitySheet · DayPlanSchedule · MoveBlockDayDialog · UpdateDocumentPlanSheet",
+      "fields": "MotTimeTextField"
+    }
   ],
   "implementation": {
-    "module": "app",
-    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/components/date/MotDateFormFields.kt",
+    "module": "designsystem",
+    "sourceFile": "designsystem/src/commonMain/kotlin/com/myowntrip/app/ui/components/date/MotDateFormFields.kt",
     "import": "com.myowntrip.app.ui.components.date.MotDateRangeField",
     "composable": "MotDateRangeField",
-    "note": "Familia de campos y diálogos MotDate y MotTime, construidos sobre el campo de texto y los diálogos de Material 3.",
+    "note": "Familia de campos y diálogos MotDate y MotTime, construidos sobre el campo de texto y los diálogos de Material 3. Trabajan con las fechas de kotlinx-datetime; la app, que usa java.time, las convierte en MotDateFieldsJavaTime.kt.",
     "snippet": "MotDateRangeField(\n    startDate = state.start,\n    endDate = state.end,\n    onRangeChange = viewModel::onDatesChange,\n    modifier = Modifier.fillMaxWidth(),\n)"
   },
   "decisions": {
-    "source": "Compose: campos y diálogos MotDate y MotTime (app)",
-    "why": "El calendario de un mes y la hora de 24 h son decisiones de la app, no lo que trae Material 3.",
-    "layer": "Componentes de la app sobre Material 3"
+    "source": "Compose: campos y diálogos MotDate y MotTime (design system)",
+    "why": "El calendario de un mes y la hora de 24 h son decisiones del producto, no lo que trae Material 3.",
+    "layer": "Componentes del design system sobre Material 3"
   },
   "changelog": [
-    { "date": "2026-11-18", "note": "Ficha inicial." },
-    { "date": "2026-11-24", "note": "Ficha nueva, sin tablas de correspondencias con Figma." }
-  ]
+    {
+      "date": "2026-11-18",
+      "note": "Ficha inicial."
+    },
+    {
+      "date": "2026-11-24",
+      "note": "Ficha nueva, sin tablas de correspondencias con Figma."
+    },
+    {
+      "date": "2026-11-27",
+      "note": "Los campos y diálogos pasan al design system: ejemplo con el componente real, anatomía y medidas. Se retira MotTripDatePickerDialog, que ninguna pantalla usaba."
+    }
+  ],
+  "anatomyDiagram": {
+    "kind": "date-time-pickers",
+    "values": {},
+    "live": {
+      "specimen": "date-time-pickers/anatomy",
+      "props": {},
+      "zoom": 1,
+      "height": 640,
+      "redlines": true,
+      "markers": [
+        {
+          "n": 1,
+          "part": "startField",
+          "anchor": "left@0.35",
+          "side": "left"
+        },
+        {
+          "n": 2,
+          "part": "endField",
+          "anchor": "top@0.5",
+          "side": "top"
+        },
+        {
+          "n": 3,
+          "part": "calendarButton",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 4,
+          "part": "headline",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 5,
+          "part": "monthTitle",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 6,
+          "part": "nextMonth",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 7,
+          "part": "rangeEnd",
+          "anchor": "left@0.5",
+          "side": "left"
+        },
+        {
+          "n": 8,
+          "part": "rangeMiddle",
+          "anchor": "right@0.5",
+          "side": "right"
+        },
+        {
+          "n": 9,
+          "part": "today",
+          "anchor": "left@0.5",
+          "side": "left"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Campo–campo",
+          "gap": [
+            "startField",
+            "endField"
+          ]
+        },
+        {
+          "label": "Campo–botón de calendario",
+          "gap": [
+            "endField",
+            "calendarButton"
+          ]
+        },
+        {
+          "label": "Botón de calendario",
+          "size": "calendarButton"
+        },
+        {
+          "label": "Encabezado hasta el borde del diálogo",
+          "left": [
+            "dialog",
+            "headline"
+          ]
+        },
+        {
+          "label": "Flecha de mes",
+          "size": "nextMonth"
+        },
+        {
+          "label": "Iniciales hasta el borde del diálogo",
+          "left": [
+            "dialog",
+            "weekdays"
+          ]
+        },
+        {
+          "label": "Día",
+          "size": "rangeStart"
+        },
+        {
+          "label": "Día–día",
+          "gap": [
+            "rangeStart",
+            "rangeMiddle"
+          ]
+        }
+      ],
+      "note": "Arriba, el campo de rango; debajo, el calendario del diálogo, quieto y sin los botones Cancelar y Aceptar. El tamaño de los días sale del ancho: siete columnas con 2 dp entre ellas. «Hoy» es el 1 de julio de 2026 para que las medidas no cambien."
+    }
+  }
 }

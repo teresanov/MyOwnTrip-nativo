@@ -91,39 +91,7 @@ fun MotSwipeableRow(
     enableDismissFromStartToEnd = true,
     enableDismissFromEndToStart = true,
     backgroundContent = {
-      when (dismissState.dismissDirection) {
-        SwipeToDismissBoxValue.StartToEnd -> {
-          Box(
-            modifier = Modifier
-              .fillMaxSize()
-              .background(MaterialTheme.colorScheme.secondaryContainer)
-              .padding(horizontal = MOTSpacing.ListItem.horizontal),
-            contentAlignment = Alignment.CenterStart,
-          ) {
-            Icon(
-              imageVector = if (archived) MOTIcons.Unarchive else MOTIcons.Archive,
-              contentDescription = archiveLabel,
-              tint = MaterialTheme.colorScheme.onSecondaryContainer,
-            )
-          }
-        }
-        SwipeToDismissBoxValue.EndToStart -> {
-          Box(
-            modifier = Modifier
-              .fillMaxSize()
-              .background(MaterialTheme.colorScheme.errorContainer)
-              .padding(horizontal = MOTSpacing.ListItem.horizontal),
-            contentAlignment = Alignment.CenterEnd,
-          ) {
-            Icon(
-              imageVector = MOTIcons.Delete,
-              contentDescription = "Eliminar",
-              tint = MaterialTheme.colorScheme.onErrorContainer,
-            )
-          }
-        }
-        SwipeToDismissBoxValue.Settled -> Unit
-      }
+      MotSwipeRowBackground(direction = dismissState.dismissDirection, archived = archived)
     },
     content = {
       content { buttonModifier ->
@@ -165,4 +133,54 @@ fun MotSwipeableRow(
       }
     },
   )
+}
+
+/**
+ * Fondo que asoma bajo la fila al deslizarla: [SwipeToDismissBoxValue.StartToEnd] archiva o restaura
+ * (secondaryContainer); [SwipeToDismissBoxValue.EndToStart] elimina (errorContainer).
+ * Público para poder enseñarlo quieto en la documentación; en pantallas se usa a través de [MotSwipeableRow].
+ */
+@Composable
+fun MotSwipeRowBackground(
+  direction: SwipeToDismissBoxValue,
+  archived: Boolean,
+  modifier: Modifier = Modifier,
+) {
+  when (direction) {
+    SwipeToDismissBoxValue.StartToEnd -> {
+      Box(
+        modifier = modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.secondaryContainer)
+          .motPart("archiveBackground")
+          .padding(horizontal = MOTSpacing.ListItem.horizontal),
+        contentAlignment = Alignment.CenterStart,
+      ) {
+        Icon(
+          imageVector = if (archived) MOTIcons.Unarchive else MOTIcons.Archive,
+          contentDescription = if (archived) "Restaurar" else "Archivar",
+          tint = MaterialTheme.colorScheme.onSecondaryContainer,
+          modifier = Modifier.motPart("archiveIcon"),
+        )
+      }
+    }
+    SwipeToDismissBoxValue.EndToStart -> {
+      Box(
+        modifier = modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.errorContainer)
+          .motPart("deleteBackground")
+          .padding(horizontal = MOTSpacing.ListItem.horizontal),
+        contentAlignment = Alignment.CenterEnd,
+      ) {
+        Icon(
+          imageVector = MOTIcons.Delete,
+          contentDescription = "Eliminar",
+          tint = MaterialTheme.colorScheme.onErrorContainer,
+          modifier = Modifier.motPart("deleteIcon"),
+        )
+      }
+    }
+    SwipeToDismissBoxValue.Settled -> Unit
+  }
 }

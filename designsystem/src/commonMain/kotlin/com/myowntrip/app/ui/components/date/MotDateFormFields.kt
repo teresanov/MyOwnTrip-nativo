@@ -20,16 +20,17 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
-import com.myowntrip.app.domain.plan.PlanPlacementLogic
 import com.myowntrip.app.ui.theme.MOTIconButton
 import com.myowntrip.app.ui.theme.MOTIcons
 import com.myowntrip.app.ui.theme.MOTSpacing
-import java.time.LocalDate
-import java.time.LocalTime
+import com.myowntrip.app.ui.theme.motPart
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 
 /**
- * Rango de fechas del viaje: dos [OutlinedTextField] editables (teclado) + calendario acotado.
- * Espejo M3 Input date picker · Type=Range (Date return + icono); modal = [MotDateRangePickerDialog].
+ * Rango de fechas del viaje: dos campos que se pueden escribir con el teclado («dd/mm/aaaa») y un
+ * botón que abre el calendario ([MotDateRangePickerDialog]). Al salir de un campo se comprueba la
+ * fecha; si fin va antes que inicio, se ordenan solas.
  */
 @Composable
 fun MotDateRangeField(
@@ -47,7 +48,7 @@ fun MotDateRangeField(
   pickerMaxDate: LocalDate? = null,
 ) {
   val (acceptedMin, acceptedMax) = resolveMotTripAcceptedDateBounds(minDate, maxDate)
-  val (_, pickerMax) = resolveMotTripPickerDateBounds(minDate, pickerMaxDate)
+  val (_, pickerMax) = resolveMotTripDateBounds(minDate, pickerMaxDate)
 
   var startText by remember { mutableStateOf(formatMotDateInput(startDate)) }
   var endText by remember { mutableStateOf(formatMotDateInput(endDate)) }
@@ -70,9 +71,7 @@ fun MotDateRangeField(
     if (startValidation != MotDateInputValidation.Valid || endValidation != MotDateInputValidation.Valid) {
       return
     }
-    val start = parsedStart!!
-    val end = parsedEnd!!
-    val (rangeStart, rangeEnd) = normalizeMotDateRange(start, end)
+    val (rangeStart, rangeEnd) = normalizeMotDateRange(parsedStart!!, parsedEnd!!)
     startText = formatMotDateInput(rangeStart)
     endText = formatMotDateInput(rangeEnd)
     startLocalError = null
@@ -111,6 +110,7 @@ fun MotDateRangeField(
       singleLine = true,
       modifier = Modifier
         .weight(1f)
+        .motPart("startField")
         .onFocusChanged { focus ->
           if (!focus.isFocused) tryCommitFromInput()
         },
@@ -135,6 +135,7 @@ fun MotDateRangeField(
       singleLine = true,
       modifier = Modifier
         .weight(1f)
+        .motPart("endField")
         .onFocusChanged { focus ->
           if (!focus.isFocused) tryCommitFromInput()
         },
@@ -145,12 +146,11 @@ fun MotDateRangeField(
           tryCommitFromInput()
           showPicker = true
         },
-        modifier = Modifier.align(Alignment.CenterVertically),
+        modifier = Modifier
+          .align(Alignment.CenterVertically)
+          .motPart("calendarButton"),
       ) {
-        Icon(
-          MOTIcons.CalendarMonth,
-          contentDescription = "Abrir calendario de fechas",
-        )
+        Icon(MOTIcons.CalendarMonth, contentDescription = "Abrir calendario de fechas")
       }
     }
   }
@@ -170,9 +170,7 @@ fun MotDateRangeField(
   }
 }
 
-/**
- * Campo de formulario para una fecha. Abre [MotDatePickerDialog] al tocar.
- */
+/** Campo de formulario para una fecha. Al tocarlo se abre [MotDatePickerDialog]. */
 @Composable
 fun MotDateField(
   date: LocalDate?,
@@ -187,33 +185,21 @@ fun MotDateField(
   var showPicker by remember { mutableStateOf(false) }
   val displayValue = date?.let(::formatMotDate).orEmpty()
 
-  OutlinedTextField(
+  MotPickerTextField(
     value = displayValue,
-    onValueChange = {},
-    readOnly = true,
+    label = label,
+    placeholder = placeholder,
     enabled = enabled,
-    label = { Text(label) },
-    placeholder = { Text(placeholder) },
-    modifier = modifier
-      .semantics {
-        contentDescription = if (date != null) "$label, $displayValue" else label
-      }
-      .clickable(enabled = enabled) { showPicker = true },
-    trailingIcon = {
-      if (enabled) {
-        MOTIconButton(onClick = { showPicker = true }) {
-          Icon(
-            MOTIcons.CalendarMonth,
-            contentDescription = "Abrir calendario",
-          )
-        }
-      }
-    },
-  )
+    contentDescription = if (date != null) "$label, $displayValue" else label,
+    onOpen = { showPicker = true },
+    modifier = modifier,
+  ) {
+    Icon(MOTIcons.CalendarMonth, contentDescription = "Abrir calendario")
+  }
 
   if (showPicker) {
     MotDatePickerDialog(
-      initialDate = date ?: LocalDate.now(),
+      initialDate = date ?: motToday(),
       minDate = minDate,
       maxDate = maxDate,
       onDismiss = { showPicker = false },
@@ -225,10 +211,7 @@ fun MotDateField(
   }
 }
 
-/**
- * Campo de formulario para hora (24 h). Abre [MotTimePickerDialog] al tocar.
- * Espejo Figma: `figma-date-product-contract-2026-11-03.md` · Patrón C (`MotTimePickerDialog`).
- */
+/** Campo de formulario para una hora (24 h). Al tocarlo se abre [MotTimePickerDialog]. */
 @Composable
 fun MotTimeField(
   time: LocalTime?,
@@ -241,29 +224,17 @@ fun MotTimeField(
   var showPicker by remember { mutableStateOf(false) }
   val displayValue = time?.let(::formatMotTime).orEmpty()
 
-  OutlinedTextField(
+  MotPickerTextField(
     value = displayValue,
-    onValueChange = {},
-    readOnly = true,
+    label = label,
+    placeholder = placeholder,
     enabled = enabled,
-    label = { Text(label) },
-    placeholder = { Text(placeholder) },
-    modifier = modifier
-      .semantics {
-        contentDescription = if (time != null) "$label, $displayValue" else label
-      }
-      .clickable(enabled = enabled) { showPicker = true },
-    trailingIcon = {
-      if (enabled) {
-        MOTIconButton(onClick = { showPicker = true }) {
-          Icon(
-            MOTIcons.Schedule,
-            contentDescription = "Abrir selector de hora",
-          )
-        }
-      }
-    },
-  )
+    contentDescription = if (time != null) "$label, $displayValue" else label,
+    onOpen = { showPicker = true },
+    modifier = modifier,
+  ) {
+    Icon(MOTIcons.Schedule, contentDescription = "Abrir selector de hora")
+  }
 
   if (showPicker) {
     MotTimePickerDialog(
@@ -277,9 +248,7 @@ fun MotTimeField(
   }
 }
 
-/**
- * Variante texto para flujos que almacenan la hora como [String] (p. ej. plan del día).
- */
+/** Igual que [MotTimeField], para pantallas que guardan la hora como texto («19:30»). */
 @Composable
 fun MotTimeTextField(
   value: String,
@@ -289,13 +258,44 @@ fun MotTimeTextField(
   placeholder: String = "Ej. 19:30",
   enabled: Boolean = true,
 ) {
-  val parsed = remember(value) { PlanPlacementLogic.parseTime(value) }
+  val parsed = remember(value) { parseMotTime(value) }
   MotTimeField(
     time = parsed,
-    onTimeChange = { time -> onValueChange(time?.let(PlanPlacementLogic::formatTime).orEmpty()) },
+    onTimeChange = { time -> onValueChange(time?.let(::formatMotTime).orEmpty()) },
     modifier = modifier,
     label = label,
     placeholder = placeholder,
     enabled = enabled,
+  )
+}
+
+/** Campo de solo lectura que abre un selector al tocarlo o al pulsar su icono final. */
+@Composable
+private fun MotPickerTextField(
+  value: String,
+  label: String,
+  placeholder: String,
+  enabled: Boolean,
+  contentDescription: String,
+  onOpen: () -> Unit,
+  modifier: Modifier,
+  icon: @Composable () -> Unit,
+) {
+  OutlinedTextField(
+    value = value,
+    onValueChange = {},
+    readOnly = true,
+    enabled = enabled,
+    label = { Text(label) },
+    placeholder = { Text(placeholder) },
+    modifier = modifier
+      .motPart("field")
+      .semantics { this.contentDescription = contentDescription }
+      .clickable(enabled = enabled, onClick = onOpen),
+    trailingIcon = {
+      if (enabled) {
+        MOTIconButton(onClick = onOpen, modifier = Modifier.motPart("trailingButton"), content = icon)
+      }
+    },
   )
 }

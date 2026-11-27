@@ -30,11 +30,11 @@
     {
       "id": "date-time-pickers",
       "name": "Date & time pickers",
-      "status": "draft",
+      "status": "in-review",
       "priority": "P0",
       "category": "formularios",
       "href": "components/date-time-pickers.html",
-      "summary": "Fechas y hora: rango de viaje, Wallet y plan — campos Outlined + modales Mot*."
+      "summary": "Fechas y hora: rango de viaje, Wallet y plan. Campos de texto con borde y diálogos propios."
     },
     {
       "id": "filter-chip",
@@ -44,6 +44,24 @@
       "category": "formularios",
       "href": "components/filter-chip.html",
       "summary": "Filtros en Wallet, gastos y journal; Home usa Menu."
+    },
+    {
+      "id": "menu",
+      "name": "Menu",
+      "status": "in-review",
+      "priority": "P1",
+      "category": "formularios",
+      "href": "components/menu.html",
+      "summary": "Lista de opciones para elegir una: filtrar y ordenar los viajes de Home."
+    },
+    {
+      "id": "search-bar",
+      "name": "Search bar",
+      "status": "in-review",
+      "priority": "P1",
+      "category": "formularios",
+      "href": "components/search-bar.html",
+      "summary": "Busca en una lista y abre sus filtros: la lista de viajes de Home."
     },
     {
       "id": "basic-dialog",
@@ -93,7 +111,7 @@
     {
       "id": "swipeable-list-row",
       "name": "Swipeable list row",
-      "status": "draft",
+      "status": "in-review",
       "priority": "P1",
       "category": "contenido",
       "href": "components/swipeable-list-row.html",
@@ -151,7 +169,7 @@
       "priority": "P1",
       "category": "navegacion",
       "href": "components/app-bar.html",
-      "summary": "Barra superior: volver, título de la pantalla y una acción."
+      "summary": "Barra superior: volver, título de la pantalla y sus acciones."
     }
   ]
 }
