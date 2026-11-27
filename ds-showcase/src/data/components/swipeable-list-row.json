@@ -1,10 +1,10 @@
 {
   "id": "swipeable-list-row",
   "name": "Swipeable list row",
-  "status": "ready",
+  "status": "draft",
   "priority": "P1",
   "category": "contenido",
-  "summary": "Fila con archivar y eliminar por swipe, y la misma acción en el menú ⋮.",
+  "summary": "Fila que se desliza para archivar o eliminar, con las mismas acciones en el menú ⋮.",
   "figma": {
     "label": "List Item - Swipe",
     "node": "59106:13321",
@@ -26,12 +26,12 @@
     "chooseVariant": [
       {
         "if": "Lista activa",
-        "use": "showArchivedActions = false",
+        "use": "archived = false",
         "note": "Derecha Archivar · izquierda abre el diálogo de eliminar."
       },
       {
         "if": "Lista de archivados",
-        "use": "showArchivedActions = true",
+        "use": "archived = true",
         "note": "Derecha Restaurar · izquierda eliminar."
       }
     ],
@@ -120,12 +120,12 @@
   },
   "productRules": {
     "dos": [
-      "Misma acción por ⋮ que por swipe.",
-      "Eliminar siempre con diálogo."
+      "El menú ⋮ ofrece las mismas acciones que el deslizamiento.",
+      "Eliminar siempre pide confirmación en un diálogo."
     ],
     "donts": [
-      "No envolver TripHeroCard ni el carrusel Wallet «Próximos».",
-      "No colores primitivos en los fondos."
+      "No hacer deslizables la TripHeroCard ni el carrusel «Próximos» de Wallet.",
+      "No pintar los fondos con colores fijos: usan roles del tema."
     ]
   },
   "screens": [
@@ -190,7 +190,7 @@
     },
     {
       "date": "2026-11-24",
-      "note": "Ficha usage-first en el showcase."
+      "note": "Ficha nueva en el showcase."
     },
     {
       "date": "2026-11-26",

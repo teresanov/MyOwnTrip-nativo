@@ -11,10 +11,10 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61202-16834"
   },
   "usage": {
-    "purpose": "Un eyebrow label marca fase o contexto («Próximo viaje», «En destino», «Recuerdo») sin ser pulsable. Sustituye al Assist chip cuando el fondo es una foto o un scrim y el outline no garantiza contraste. Los chips siguen siendo filtros y acciones.",
+    "purpose": "Un eyebrow label marca fase o contexto («Próximo viaje», «En destino», «Recuerdo») sin ser pulsable. Sustituye al Assist chip cuando el fondo es una foto o un degradado y el borde no garantiza el contraste. Los chips siguen siendo filtros y acciones.",
     "when": [
       "Hay que nombrar la fase de un viaje o una categoría editorial.",
-      "El fondo es variable (portada, scrim) o una superficie plana de card.",
+      "El fondo es variable (portada, degradado) o una superficie plana de card.",
       "El texto se anuncia en el bloque padre: el label no es un control."
     ],
     "whenNot": [
@@ -31,7 +31,7 @@
     ],
     "chooseVariant": [
       {
-        "if": "Sobre foto o scrim (TripHeroCard)",
+        "if": "Sobre foto o degradado (TripHeroCard)",
         "use": "EyebrowLabelColor.Tertiary",
         "note": "tertiaryFixedDim + onTertiaryContainer. Size Medium por defecto."
       },
@@ -150,12 +150,12 @@
   "productRules": {
     "dos": [
       "Fase o contexto: Próximo viaje, En destino, Recuerdo.",
-      "Tertiary sobre fotos. Ancho HUG, no FILL."
+      "Sobre fotos, la variante Tertiary. El ancho se ajusta al texto; no ocupa toda la fila."
     ],
     "donts": [
-      "No sustituir Filter chip.",
-      "No hacerlo clickable.",
-      "No Assist chip Elevated (CUT)."
+      "No usarlo en lugar de un filter chip: no se puede pulsar.",
+      "No hacerlo pulsable.",
+      "No sustituirlo por un assist chip con sombra."
     ]
   },
   "screens": [
@@ -193,9 +193,9 @@
     "snippet": "EyebrowLabel(\n    text = \"Próximo viaje\",\n    color = EyebrowLabelColor.Tertiary,\n)"
   },
   "decisions": {
-    "source": "Compose EyebrowLabel · set de librería 61202:16834",
+    "source": "Compose EyebrowLabel (design system) · componente de la librería de Figma",
     "why": "Etiqueta no interactiva que se lee sobre foto, donde un chip outlined no basta.",
-    "layer": "Componente MOT"
+    "layer": "Componente del design system"
   },
   "changelog": [
     {
@@ -204,7 +204,7 @@
     },
     {
       "date": "2026-11-24",
-      "note": "Ficha usage-first en el showcase."
+      "note": "Ficha nueva en el showcase."
     },
     {
       "date": "2026-11-26",

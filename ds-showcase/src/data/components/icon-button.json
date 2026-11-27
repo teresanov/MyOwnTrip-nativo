@@ -30,7 +30,7 @@
       },
       {
         "case": "Acción principal flotante de la pantalla",
-        "use": "FAB (circular, sin morph)"
+        "use": "FAB"
       }
     ],
     "chooseVariant": [
@@ -47,12 +47,12 @@
       {
         "if": "Necesitas separarlo de una imagen o de un fondo variable",
         "use": "MOTIconButton con colors Filled o Tonal",
-        "note": "No hay wrappers propios: el contenedor se pide con IconButtonDefaults.filledIconButtonColors() o filledTonalIconButtonColors(). Outlined no está disponible en el wrapper."
+        "note": "No hay componentes aparte: el contenedor se pide con IconButtonDefaults.filledIconButtonColors() o filledTonalIconButtonColors(). MOTIconButton no ofrece el estilo Outlined."
       },
       {
         "if": "Representa un estado activable (favorito, marcador)",
         "use": "Pendiente",
-        "note": "El wrapper no expone hoy un modo seleccionable."
+        "note": "MOTIconButton todavía no tiene modo seleccionable."
       }
     ],
     "related": [
@@ -94,14 +94,14 @@
   ],
   "productRules": {
     "dos": [
-      "Todo icon button de producto es MOTIconButton: el morph 0 → 20 dp y el squish vienen del wrapper (ADR 004).",
+      "Todo icon button de la app es MOTIconButton: el morph 0 → 20 dp y la compresión al pulsar vienen de ahí (ADR 004).",
       "Dar el nombre accesible con contentDescription en el Icon o con semantics en el modifier («Borrar búsqueda», «Filtros y ordenación»).",
       "Pintar el icono con roles del tema (onSurfaceVariant para acciones secundarias), nunca con color literal."
     ],
     "donts": [
       "No usar IconButton de M3 suelto: se pierde el morph de forma.",
       "No dejar un icono como único contenido del botón sin nombre accesible en ningún sitio.",
-      "No usar un círculo: Round es un radio de 20 dp, no Corner/Full. El único control circular es el FAB."
+      "No usar un círculo: Round es un radio de 20 dp, no una forma completamente redonda."
     ]
   },
   "variants": [
@@ -115,7 +115,7 @@
       "id": "round",
       "label": "Round",
       "composable": "MOTIconButton(type = Round)",
-      "usage": "Ya redondeado a 20 dp en reposo. No es un círculo: el único control circular es el FAB."
+      "usage": "Ya redondeado a 20 dp en reposo. No es un círculo."
     },
     {
       "id": "standard",
@@ -145,7 +145,7 @@
   "anatomy": [
     "<strong>Contenedor</strong> — superficie pulsable. Radio 0 dp en reposo y 20 dp en interacción (misma regla que Button).",
     "<strong>Icono</strong> — Material Symbols Sharp w300, 24 dp. Su significado debe ser inequívoco.",
-    "<strong>State layer</strong> — capa del color del icono con la opacidad del estado (hover, foco, pulsado).",
+    "<strong>Capa de estado</strong> — velo del color del icono que aparece al pasar por encima, al enfocar o al pulsar.",
     "<strong>Área táctil</strong> — mínimo 48 dp; el IconButton de M3 ya la garantiza."
   ],
   "behavior": {
@@ -222,7 +222,7 @@
     },
     {
       "screen": "SwipeableTripListRow · SwipeableWalletDocumentRow",
-      "uses": "Menú ⋮ equivalente al swipe."
+      "uses": "Menú ⋮ con las mismas acciones que el deslizamiento."
     },
     {
       "screen": "PlanActivityCard · PlanTimelineBlock",
@@ -254,7 +254,7 @@
         "name": "modifier",
         "type": "Modifier",
         "default": "Modifier",
-        "note": "El wrapper le añade el tamaño del contenedor y la compresión al pulsar."
+        "note": "MOTIconButton le añade el tamaño del contenedor y la compresión al pulsar."
       },
       {
         "name": "enabled",
@@ -302,9 +302,9 @@
     "snippet": "MOTIconButton(\n    onClick = { onFilterMenuExpandedChange(true) },\n    modifier = Modifier.semantics { contentDescription = \"Filtros y ordenación\" },\n) {\n    Icon(\n        imageVector = MOTIcons.Tune,\n        contentDescription = null,\n        tint = MaterialTheme.colorScheme.onSurfaceVariant,\n    )\n}"
   },
   "decisions": {
-    "source": "Figma Icon button 57994:10081 · Compose MOTIconButton (designsystem)",
+    "source": "Compose MOTIconButton (design system) · componente Icon button de la librería de Figma",
     "why": "Misma firma de forma que Button: los controles pulsables comparten rectángulo en reposo y redondeo en interacción.",
-    "layer": "Wrapper MOT sobre IconButton de M3",
+    "layer": "Componente del design system sobre el IconButton de Material 3",
     "adr": [
       {
         "label": "ADR 004 — Button shape: reposo 0dp, morph a 20dp",
@@ -319,15 +319,15 @@
     },
     {
       "date": "2026-11-17",
-      "note": "Publish: Icon button ×8 sin la property Show focus indicator."
+      "note": "Figma: publicadas las ocho variantes del Icon button, sin la propiedad del indicador de foco."
     },
     {
       "date": "2026-11-18",
-      "note": "Ficha en el showcase con el esquema Usage-first."
+      "note": "Ficha nueva en el showcase."
     },
     {
       "date": "2026-11-24",
-      "note": "Ejemplar vivo y playground. Un solo enlace de librería; sin tabla Figma ↔ Compose."
+      "note": "Ejemplo interactivo. Un solo enlace a Figma, sin tabla de correspondencias."
     },
     {
       "date": "2026-11-26",

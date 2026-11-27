@@ -70,6 +70,13 @@ function statusChipHtml(status) {
   return statusChip(status);
 }
 
+/** Solo el nombre del archivo o de la clase: «MOTButtons.kt», «OutlinedTextField». */
+function fileName(path) {
+  const p = String(path || "");
+  if (p.includes("/")) return p.split("/").filter(Boolean).pop();
+  return p.split(".").pop();
+}
+
 function formatConsulted(iso) {
   const [y, m, d] = String(iso || "").split("-");
   return y && m && d ? `${d}/${m}/${y}` : iso;
@@ -87,12 +94,10 @@ export function renderComponentHeader(data, figmaLinkLabel = "Component set en F
   const purpose = data.usage?.purpose || data.purpose;
 
   const links = [
-    figma.url
-      ? `<a href="${figma.url}" target="_blank" rel="noopener">${
-          figma.node ? `Figma · ${figma.node}` : figmaLinkLabel
-        } ↗</a>`
+    figma.url ? `<a href="${figma.url}" target="_blank" rel="noopener">Ver en Figma ↗</a>` : "",
+    impl.sourceFile
+      ? `<span class="header-meta">Código: <code title="${impl.sourceFile}">${fileName(impl.sourceFile)}</code></span>`
       : "",
-    impl.sourceFile ? `<span class="header-meta">Código: <code>${impl.sourceFile}</code></span>` : "",
   ]
     .filter(Boolean)
     .join('<span class="header-sep">·</span>');
@@ -431,7 +436,7 @@ export function renderImplementation(impl) {
 
 export function renderDecisions(data) {
   const d = data.decisions || {};
-  const adr = (d.adr || []).map((a) => `<li><code>${a.ref}</code> — ${a.label}</li>`).join("");
+  const adr = (d.adr || []).map((a) => `<li title="${a.ref}">${a.label}</li>`).join("");
 
   return (
     sectionOpen("decisiones", "Decisiones") +

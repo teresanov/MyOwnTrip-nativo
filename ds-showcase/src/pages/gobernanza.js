@@ -9,11 +9,11 @@ const counts = componentsManifest.components.reduce((acc, c) => {
   return acc;
 }, {});
 
-const STATUS_ORDER = ["ready", "in-review", "draft", "deprecated"];
+const STATUS_ORDER = ["ready", "in-review", "draft"];
 const STATUS_NAME = {
   ready: "Listo",
   "in-review": "En revisión",
-  draft: "Borrador",
+  draft: "En construcción",
   deprecated: "Obsoleto",
 };
 
@@ -28,7 +28,11 @@ document.getElementById("page-header").innerHTML = `
 
 document.getElementById("main").innerHTML = `
   <section class="section">
-    <h2 id="estados">Estados de publicación</h2>
+    <h2 id="estados">Estado de cada ficha</h2>
+    <p class="section-lead">
+      Esta web es un trabajo en curso. Cada ficha lleva una etiqueta que dice en qué punto está,
+      con el mismo criterio para todas:
+    </p>
     <table>
       <thead><tr><th>Estado</th><th>Criterio</th><th>Hoy</th></tr></thead>
       <tbody>
@@ -43,7 +47,12 @@ document.getElementById("main").innerHTML = `
       </tbody>
     </table>
     <p class="section-lead" style="margin-top:16px">
-      Cerrar un componente nuevo sin ficha en esta web está <strong>bloqueado</strong>.
+      El ejemplo, la anatomía y las medidas se hacen sobre el componente real de la app, compilado para la web:
+      lo que se ve en la ficha es lo que se ve en el móvil. Si una ficha todavía enseña una recreación en HTML,
+      lo dice debajo del ejemplo.
+    </p>
+    <p class="section-lead">
+      Un componente nuevo no se da por cerrado sin su ficha en esta web.
     </p>
   </section>
 

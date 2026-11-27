@@ -45,7 +45,7 @@ const STATUS_CHIP_CLASS = {
 };
 
 const STATUS_CHIP_LABEL = {
-  draft: "Borrador",
+  draft: "En construcción",
   "in-review": "En revisión",
   ready: "Listo",
   deprecated: "Obsoleto",

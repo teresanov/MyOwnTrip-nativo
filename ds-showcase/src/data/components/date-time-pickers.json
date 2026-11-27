@@ -1,7 +1,7 @@
 {
   "id": "date-time-pickers",
   "name": "Date & time pickers",
-  "status": "ready",
+  "status": "draft",
   "priority": "P0",
   "category": "entrada",
   "summary": "Fechas y horas de viaje, Wallet y plan: campos Outlined + modales Mot*.",
@@ -11,7 +11,7 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=61340-8809"
   },
   "usage": {
-    "purpose": "La entrada de fechas y horas no usa el DatePicker de catálogo M3 tal cual. El producto tiene composables Mot* en ui/components/date/: campos Outlined y modales adaptados. El rango de viaje admite teclado dd/MM/yyyy y un calendario de un mes; Wallet usa fecha única y hora 24 h.",
+    "purpose": "Los campos de fecha y hora recogen cuándo empieza y acaba un viaje, y la fecha y la hora de un documento o de una actividad del plan. No usan tal cual el selector de fechas de Material 3: la app tiene sus propios campos y diálogos (MotDate y MotTime), construidos sobre los de Material 3. El rango del viaje se escribe con el teclado (dd/mm/aaaa) o se elige en un calendario de un mes; Wallet usa una fecha y una hora de 24 h.",
     "when": [
       "Hay que recoger inicio y fin de un viaje.",
       "Hay que recoger la fecha o la hora de un documento o de un bloque del plan."
@@ -27,17 +27,17 @@
       {
         "if": "Crear o editar viaje",
         "use": "MotDateRangeField",
-        "note": "Dos OutlinedTextField + icono calendario → MotDateRangePickerDialog (un mes, no lista vertical)."
+        "note": "Dos campos de texto y un botón de calendario que abre MotDateRangePickerDialog: un mes cada vez, no una lista vertical de meses."
       },
       {
         "if": "Fecha de un documento (Wallet)",
         "use": "MotDateField",
-        "note": "Campo read-only + MotDatePickerDialog."
+        "note": "Campo de solo lectura que abre MotDatePickerDialog."
       },
       {
         "if": "Hora (Wallet, plan)",
         "use": "MotTimeField",
-        "note": "TimeInput 24 h por defecto; reloj M3 opcional."
+        "note": "Hora de 24 h escrita con el teclado; la esfera de reloj de Material 3 es opcional."
       }
     ],
     "related": [
@@ -47,36 +47,36 @@
     ]
   },
   "variants": [
-    { "id": "mot-date-range-field", "label": "MotDateRangeField", "composable": "MotDateRangeField", "usage": "Inicio y fin de viaje. Teclado + calendario." },
-    { "id": "mot-date-range-dialog", "label": "MotDateRangePickerDialog", "composable": "MotDateRangePickerDialog", "usage": "Un mes (Days · Year · Month)." },
+    { "id": "mot-date-range-field", "label": "MotDateRangeField", "composable": "MotDateRangeField", "usage": "Inicio y fin del viaje, con el teclado o con el calendario." },
+    { "id": "mot-date-range-dialog", "label": "MotDateRangePickerDialog", "composable": "MotDateRangePickerDialog", "usage": "Calendario de un mes, con vistas de días, años y meses." },
     { "id": "mot-date-field", "label": "MotDateField", "composable": "MotDateField", "usage": "Fecha única en Wallet." },
-    { "id": "mot-date-dialog", "label": "MotDatePickerDialog", "composable": "MotDatePickerDialog", "usage": "Día único, sin mode toggle." },
-    { "id": "mot-time-field", "label": "MotTimeField", "composable": "MotTimeField", "usage": "Hora 24 h." },
-    { "id": "mot-time-dialog", "label": "MotTimePickerDialog", "composable": "MotTimePickerDialog", "usage": "Teclado horario; reloj opcional." }
+    { "id": "mot-date-dialog", "label": "MotDatePickerDialog", "composable": "MotDatePickerDialog", "usage": "Un solo día, sin botón para cambiar al teclado." },
+    { "id": "mot-time-field", "label": "MotTimeField", "composable": "MotTimeField", "usage": "Hora en formato de 24 h." },
+    { "id": "mot-time-dialog", "label": "MotTimePickerDialog", "composable": "MotTimePickerDialog", "usage": "Hora escrita con el teclado; esfera de reloj opcional." }
   ],
   "anatomy": [
-    "<strong>Rango</strong> — dos OutlinedTextField + MOTIconButton calendario.",
-    "<strong>Fecha</strong> — OutlinedTextField read-only + trailing calendario.",
-    "<strong>Hora</strong> — OutlinedTextField read-only + trailing schedule.",
-    "<strong>Modales</strong> — DatePickerDialog / Dialog extraLarge; acciones MOTTextButton."
+    "<strong>Rango</strong> — dos campos de texto y un icon button de calendario.",
+    "<strong>Fecha</strong> — campo de solo lectura con un icono de calendario al final.",
+    "<strong>Hora</strong> — campo de solo lectura con un icono de reloj al final.",
+    "<strong>Diálogos</strong> — el selector se abre en un diálogo de radio Extra-large, con acciones MOTTextButton."
   ],
   "behavior": {
-    "lead": "Los modales reales viven en Compose. Este HTML ilustra el campo, no el calendario.",
+    "lead": "Esta ficha todavía no tiene el componente real: el ejemplo es una recreación del campo, sin el calendario.",
     "rows": [
-      { "state": "Teclado (rango)", "detail": "dd/MM/yyyy. Límites: hoy → +10 años." },
-      { "state": "Calendario (rango)", "detail": "Un mes con flechas. Límites: hoy → +2 años. No DateRangePicker vertical." },
-      { "state": "Hora", "detail": "TimeInput 24 h. Cancelar no muta; Aceptar confirma." }
+      { "state": "Teclado (rango)", "detail": "dd/mm/aaaa. Desde hoy hasta dentro de 10 años." },
+      { "state": "Calendario (rango)", "detail": "Un mes, con flechas para cambiar de mes. Desde hoy hasta dentro de 2 años. Sin la lista vertical de meses de Material 3." },
+      { "state": "Hora", "detail": "Hora de 24 h con el teclado. Cancelar no cambia nada; Aceptar guarda." }
     ],
     "notes": [
-      "No se usan los sets de catálogo M3 archivados (Input date picker, Modal date picker).",
-      "MotTripDatePickerDialog no es patrón de producto hasta que una pantalla lo consuma."
+      "No se usan tal cual los selectores de fecha de Material 3 (Input date picker, Modal date picker): están archivados en Figma.",
+      "MotTripDatePickerDialog existe en el código, pero ninguna pantalla lo usa todavía: no forma parte del sistema hasta entonces."
     ]
   },
   "a11y": [
-    "Campos read-only: contentDescription con label + valor.",
-    "Trailing: «Abrir calendario» / «Abrir selector de hora».",
-    "Errores de parseo en supporting text al perder foco.",
-    "Aceptar deshabilitado hasta rango completo."
+    "Los campos de solo lectura se anuncian con su etiqueta y su valor.",
+    "El icono del final tiene nombre: «Abrir calendario», «Abrir selector de hora».",
+    "Si la fecha escrita no es válida, el error aparece en el texto de apoyo al salir del campo.",
+    "Aceptar está deshabilitado hasta que el rango tiene inicio y fin."
   ],
   "tokens": {
     "color": [
@@ -107,10 +107,10 @@
   ],
   "productRules": {
     "dos": [
-      "Crear/editar viaje → MotDateRangeField. Wallet → MotDateField + MotTimeField."
+      "Crear o editar un viaje: MotDateRangeField. Wallet: MotDateField y MotTimeField."
     ],
     "donts": [
-      "No promover el Keyboard picker de archivo como SoT."
+      "No tomar como referencia el selector por teclado archivado en Figma."
     ]
   },
   "screens": [
@@ -120,19 +120,19 @@
   ],
   "implementation": {
     "module": "app",
-    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/components/date",
+    "sourceFile": "app/src/main/java/com/myowntrip/app/ui/components/date/MotDateFormFields.kt",
     "import": "com.myowntrip.app.ui.components.date.MotDateRangeField",
     "composable": "MotDateRangeField",
-    "note": "Familia MotDate* / MotTime* sobre OutlinedTextField y diálogos M3.",
+    "note": "Familia de campos y diálogos MotDate y MotTime, construidos sobre el campo de texto y los diálogos de Material 3.",
     "snippet": "MotDateRangeField(\n    startDate = state.start,\n    endDate = state.end,\n    onRangeChange = viewModel::onDatesChange,\n    modifier = Modifier.fillMaxWidth(),\n)"
   },
   "decisions": {
-    "source": "Compose ui/components/date/*",
-    "why": "El rango editable de un mes y la hora 24 h son del producto, no del catálogo M3.",
-    "layer": "Wrappers Mot* sobre M3"
+    "source": "Compose: campos y diálogos MotDate y MotTime (app)",
+    "why": "El calendario de un mes y la hora de 24 h son decisiones de la app, no lo que trae Material 3.",
+    "layer": "Componentes de la app sobre Material 3"
   },
   "changelog": [
     { "date": "2026-11-18", "note": "Ficha inicial." },
-    { "date": "2026-11-24", "note": "Ficha usage-first; se retiran las tablas de node-ids PRODUCT/ARCHIVE." }
+    { "date": "2026-11-24", "note": "Ficha nueva, sin tablas de correspondencias con Figma." }
   ]
 }

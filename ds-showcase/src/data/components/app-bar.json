@@ -1,7 +1,7 @@
 {
   "id": "app-bar",
   "name": "App bar",
-  "status": "ready",
+  "status": "in-review",
   "priority": "P1",
   "category": "navegacion",
   "summary": "Barra superior con volver, título y acciones.",

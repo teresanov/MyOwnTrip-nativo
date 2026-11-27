@@ -30,7 +30,7 @@
     {
       "id": "date-time-pickers",
       "name": "Date & time pickers",
-      "status": "ready",
+      "status": "draft",
       "priority": "P0",
       "category": "formularios",
       "href": "components/date-time-pickers.html",
@@ -79,7 +79,7 @@
       "priority": "P1",
       "category": "contenido",
       "href": "components/trip-hero-card.html",
-      "summary": "Portada del viaje destacado en Home (imagen, scrim y CTA)."
+      "summary": "Portada del viaje destacado en Home: foto, fase y un botón."
     },
     {
       "id": "eyebrow-label",
@@ -93,16 +93,16 @@
     {
       "id": "swipeable-list-row",
       "name": "Swipeable list row",
-      "status": "ready",
+      "status": "draft",
       "priority": "P1",
       "category": "contenido",
       "href": "components/swipeable-list-row.html",
-      "summary": "Swipe para archivar o eliminar, con alternativa accesible."
+      "summary": "Se desliza para archivar o eliminar, con las mismas acciones en el menú ⋮."
     },
     {
       "id": "list-item",
       "name": "List item",
-      "status": "ready",
+      "status": "in-review",
       "priority": "P1",
       "category": "contenido",
       "href": "components/list-item.html",
@@ -111,7 +111,7 @@
     {
       "id": "tabs",
       "name": "Tabs",
-      "status": "ready",
+      "status": "in-review",
       "priority": "P1",
       "category": "navegacion",
       "href": "components/tabs.html",
@@ -120,7 +120,7 @@
     {
       "id": "divider",
       "name": "Divider",
-      "status": "ready",
+      "status": "in-review",
       "priority": "P2",
       "category": "contenido",
       "href": "components/divider.html",
@@ -129,7 +129,7 @@
     {
       "id": "assist-chip",
       "name": "Assist chip",
-      "status": "ready",
+      "status": "in-review",
       "priority": "P2",
       "category": "acciones",
       "href": "components/assist-chip.html",
@@ -138,7 +138,7 @@
     {
       "id": "fab",
       "name": "FAB",
-      "status": "ready",
+      "status": "in-review",
       "priority": "P1",
       "category": "acciones",
       "href": "components/fab.html",
@@ -147,7 +147,7 @@
     {
       "id": "app-bar",
       "name": "App bar",
-      "status": "ready",
+      "status": "in-review",
       "priority": "P1",
       "category": "navegacion",
       "href": "components/app-bar.html",

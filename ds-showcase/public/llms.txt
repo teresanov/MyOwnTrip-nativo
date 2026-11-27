@@ -28,9 +28,9 @@ Contexto completo en texto plano: [ds-context.md](https://teresanov.github.io/My
 - [Basic dialog](https://teresanov.github.io/MyOwnTrip-nativo/components/basic-dialog.html): Confirmar, eliminar o descartar antes de un cambio irreversible.
 - [Snackbar](https://teresanov.github.io/MyOwnTrip-nativo/components/snackbar.html): Feedback breve tras guardar, con opción de deshacer.
 - [Stacked card](https://teresanov.github.io/MyOwnTrip-nativo/components/stacked-card.html): Stacked y Horizontal — contenedor de viaje, gasto o entrada.
-- [TripHeroCard](https://teresanov.github.io/MyOwnTrip-nativo/components/trip-hero-card.html): Portada del viaje destacado en Home (imagen, scrim y CTA).
+- [TripHeroCard](https://teresanov.github.io/MyOwnTrip-nativo/components/trip-hero-card.html): Portada del viaje destacado en Home: foto, fase y un botón.
 - [Eyebrow label](https://teresanov.github.io/MyOwnTrip-nativo/components/eyebrow-label.html): Etiqueta informativa no interactiva sobre media o surface.
-- [Swipeable list row](https://teresanov.github.io/MyOwnTrip-nativo/components/swipeable-list-row.html): Swipe para archivar o eliminar, con alternativa accesible.
+- [Swipeable list row](https://teresanov.github.io/MyOwnTrip-nativo/components/swipeable-list-row.html): Se desliza para archivar o eliminar, con las mismas acciones en el menú ⋮.
 - [List item](https://teresanov.github.io/MyOwnTrip-nativo/components/list-item.html): Fila de lista con icono, titular, texto de apoyo y acciones al final (Wallet).
 - [Tabs](https://teresanov.github.io/MyOwnTrip-nativo/components/tabs.html): Cambia entre vistas hermanas: Plan y Diario, o las secciones de un viaje.
 - [Divider](https://teresanov.github.io/MyOwnTrip-nativo/components/divider.html): Línea fina que separa filas de lista y bloques de formulario.

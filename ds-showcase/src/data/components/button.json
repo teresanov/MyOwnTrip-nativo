@@ -62,7 +62,7 @@
       {
         "if": "El botón necesita separarse de un fondo con patrón o de una imagen",
         "use": "Button de M3 + elevation",
-        "note": "No hay wrapper MOT para elevated; poco uso en Compose."
+        "note": "El sistema no tiene versión propia del botón Elevated y la app casi no lo usa."
       }
     ],
     "related": [
@@ -114,7 +114,7 @@
     "<strong>Contenedor</strong> — superficie pulsable. El radio no es fijo: 0 dp en reposo y 20 dp en interacción (ver Comportamiento).",
     "<strong>Label</strong> — verbo en Inter <code>labelLarge</code>. Nunca Fraunces.",
     "<strong>Icono opcional</strong> — Material Symbols Sharp w300, antes del label.",
-    "<strong>State layer</strong> — capa de color en runtime sobre el rol <code>on*</code>; es lo que comunica hover, focus y pressed.",
+    "<strong>Capa de estado</strong> — velo del color del texto que aparece al pasar por encima, al enfocar o al pulsar. Es lo que comunica la interacción.",
     "<strong>Área táctil</strong> — mínimo 48 dp de alto, aunque el contenedor visible mida menos."
   ],
   "behavior": {
@@ -157,10 +157,10 @@
       "El squish solo actúa en <strong>pressed</strong>. Hover y focus morfan la esquina sin escalar.",
       "Con <code>LocalReduceMotion</code> activo, ambas animaciones pasan a <code>snap()</code>: cambio instantáneo, sin movimiento.",
       "Todos los tamaños y todos los estilos (filled, tonal, outlined, text, elevated) comparten la misma pareja reposo/interactivo.",
-      "El radio <strong>no sustituye</strong> al feedback de color: los state layers siguen aplicándose en runtime."
+      "El radio <strong>no sustituye</strong> al color: la capa de estado se sigue aplicando al interactuar."
     ],
     "exceptions": [
-      "<strong>FAB y Extended FAB</strong> — circulares, sin morph.",
+      "<strong>FAB</strong> — esquina de 16 dp, la de Material 3, sin morph. Solo el botón del menú del FAB, cuando está abierto, es circular.",
       "<strong>Cards</strong> — 12 dp fijo.",
       "<strong>Chips</strong> — 8 dp fijo; <em>selected</em> se comunica con color, no con radio."
     ]
@@ -169,7 +169,7 @@
     "Área táctil mínima de 48 dp de alto, aunque el contenedor visible sea más bajo (Tonal con padding XSmall queda en 32 dp visibles).",
     "El morph a 20 dp no es el indicador de foco: el foco necesita su propio anillo visible, separado del contenido.",
     "Disabled se comunica con opacidad (38 % contenido, 12 % contenedor), nunca con un color distinto.",
-    "La etiqueta debe entenderse fuera de contexto: «Guardar gasto», no «Aceptar». TalkBack la lee sola.",
+    "La etiqueta debe entenderse fuera de contexto: «Guardar gasto», no «Aceptar». El lector de pantalla la lee sola.",
     "Si la acción falla, el error se comunica con icono y texto; nunca solo con color."
   ],
   "tokens": {
@@ -242,9 +242,9 @@
   ],
   "productRules": {
     "dos": [
-      "Un solo botón Filled como CTA principal por pantalla.",
+      "Un solo botón Filled por pantalla, para la acción principal.",
       "Etiquetas con verbos en Inter (labelLarge).",
-      "Estados interactivos vía state layers M3, no colores custom por estado.",
+      "Los estados de interacción se ven con la capa de estado de Material 3, no con un color propio para cada estado.",
       "Pasar siempre el mismo interactionSource que recibe el botón: si no, el squish nunca se dispara."
     ],
     "donts": [
@@ -259,7 +259,7 @@
     "sourceFile": "designsystem/src/main/java/com/myowntrip/app/ui/theme/MOTButtons.kt",
     "import": "com.myowntrip.app.ui.theme.MOTButton",
     "composable": "MOTButton",
-    "note": "Los wrappers MOT existen por una sola razón: aplicar el morph de forma (ADR 004) y el squish. Delegan en el componente M3 y no añaden ejes propios.",
+    "note": "MOTButton y sus variantes existen por una sola razón: aplicar el morph de forma (ADR 004) y la compresión al pulsar. Por dentro usan el botón de Material 3 y no añaden opciones propias.",
     "params": [
       {
         "name": "onClick",
@@ -271,7 +271,7 @@
         "name": "modifier",
         "type": "Modifier",
         "default": "Modifier",
-        "note": "El wrapper le añade motButtonPressSquish."
+        "note": "MOTButton le añade la compresión al pulsar (motButtonPressSquish)."
       },
       {
         "name": "enabled",
@@ -314,9 +314,9 @@
     "variantsSnippet": "// Secundaria con énfasis moderado\nMOTTonalButton(onClick = onNext) { Text(\"Siguiente\") }\n\n// Alternativa o salida del flujo\nMOTOutlinedButton(onClick = onCancel) { Text(\"Cancelar\") }\n\n// Baja prioridad / acciones de diálogo\nMOTTextButton(onClick = onDiscard) { Text(\"Descartar\") }"
   },
   "decisions": {
-    "source": "Figma Button 57994:2227 · Compose MOTButton (designsystem)",
-    "why": "M3 directo para la jerarquía por variantes; el wrapper MOT solo añade el morph de forma y el squish de pulsación.",
-    "layer": "Wrapper MOT sobre componente M3",
+    "source": "Compose MOTButton (design system) · componente Button de la librería de Figma",
+    "why": "La jerarquía entre variantes es la de Material 3; MOTButton solo añade el morph de forma y la compresión al pulsar.",
+    "layer": "Componente del design system sobre el botón de Material 3",
     "adr": [
       {
         "label": "ADR 004 — Button shape: reposo 0dp, morph a 20dp",
@@ -335,7 +335,7 @@
     },
     {
       "date": "2026-11-11",
-      "note": "Corregido: el runtime es MOTButton, no Button de M3. Añadido Comportamiento (morph 0→20, squish, reduce motion), tabla de parámetros y bloque de elección de variante. Nodo de Figma alineado con figma-compose-bindings.md."
+      "note": "Corregido: el componente es MOTButton, no el Button de Material 3. Añadidos Comportamiento (morph 0→20, compresión al pulsar, movimiento reducido), la tabla de parámetros y la guía para elegir variante."
     }
   ],
   "anatomyDiagram": {

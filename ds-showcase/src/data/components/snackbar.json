@@ -41,7 +41,7 @@
         "note": "Permanece hasta actuar o descartar."
       },
       {
-        "if": "El copy no cabe en una línea",
+        "if": "El texto no cabe en una línea",
         "use": "Two lines",
         "note": "No recortes a One line."
       }
@@ -173,12 +173,12 @@
   ],
   "productRules": {
     "dos": [
-      "Duración corta M3; acción con verbo claro.",
-      "Copy de dos líneas → Two lines."
+      "Duración corta de Material 3; la acción lleva un verbo claro («Deshacer»).",
+      "Si el texto ocupa dos líneas, se usa la variante de dos líneas."
     ],
     "donts": [
-      "No sustituir confirmaciones H7 Wallet.",
-      "No tokens snackbar/hover."
+      "No usarlo en lugar de un diálogo de confirmación de Wallet.",
+      "No crear colores propios para sus estados."
     ]
   },
   "screens": [
@@ -220,7 +220,7 @@
   "decisions": {
     "source": "Compose Snackbar (M3) · set de la librería de Figma",
     "why": "Confirmar o deshacer sin interrumpir la pantalla.",
-    "layer": "M3 directo en SnackbarHost"
+    "layer": "Material 3 directo, mostrado con SnackbarHost"
   },
   "changelog": [
     {
@@ -229,7 +229,7 @@
     },
     {
       "date": "2026-11-24",
-      "note": "Ficha usage-first en el showcase."
+      "note": "Ficha nueva en el showcase."
     },
     {
       "date": "2026-11-26",

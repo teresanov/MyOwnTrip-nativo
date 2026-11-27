@@ -1,7 +1,7 @@
 {
   "id": "assist-chip",
   "name": "Assist chip",
-  "status": "ready",
+  "status": "in-review",
   "priority": "P2",
   "category": "acciones",
   "summary": "Chip de aviso con acción, ligado al contenido.",

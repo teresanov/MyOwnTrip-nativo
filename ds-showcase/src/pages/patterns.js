@@ -6,7 +6,7 @@ initShowcasePage("patterns");
 
 document.getElementById("page-header").innerHTML = `
   <p class="page-header__eyebrow">Patrones</p>
-  <h1>Patrones de producto</h1>
+  <h1>Patrones de producto ${statusChip("draft")}</h1>
   <p class="page-header__lead">${patterns.lead}</p>
 `;
 

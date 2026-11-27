@@ -11,7 +11,7 @@
     "url": "https://www.figma.com/design/zrGAL4v6MEMc9hzZemU432/MyOwnTrip_nativo---Design-System?node-id=50723-10929"
   },
   "usage": {
-    "purpose": "Un diálogo básico interrumpe la tarea para pedir confirmación o advertir de una pérdida de datos. En MyOwnTrip cubre guardar en Wallet, eliminar una entrada, descartar cambios y salir de un formulario sin guardar. El runtime es AlertDialog de Material 3 con MOTTextButton en las acciones.",
+    "purpose": "Un diálogo básico interrumpe la tarea para pedir confirmación o advertir de una pérdida de datos. En MyOwnTrip cubre guardar en Wallet, eliminar una entrada, descartar cambios y salir de un formulario sin guardar. Es el AlertDialog de Material 3, con MOTTextButton en las acciones.",
     "when": [
       "Hay que confirmar una acción irreversible o que pierde datos.",
       "La persona tiene que decidir ahora: no puede seguir con la pantalla de detrás hasta responder.",
@@ -36,12 +36,12 @@
       {
         "if": "Confirmación neutra (guardar, continuar)",
         "use": "AlertDialog sin icono",
-        "note": "WalletConfirmDialog: Cancelar / Guardar. El cuerpo puede llevar un Switch de «Añadir al plan» porque Compose lo tiene; no es un eje del set."
+        "note": "Confirmar guardado en Wallet: Cancelar / Guardar. El texto puede llevar un interruptor «Añadir al plan»; es contenido de esa pantalla, no una variante del diálogo."
       },
       {
         "if": "Riesgo o pérdida (eliminar, descartar)",
         "use": "AlertDialog + icono error",
-        "note": "Confirm destructivo en color error. WalletDeleteEntryDialog, WalletDiscardDialog, DeleteTripDialog."
+        "note": "La acción que borra o descarta va en color error. Se usa al eliminar un documento o un viaje y al descartar cambios."
       }
     ],
     "related": [
@@ -74,11 +74,11 @@
     }
   ],
   "anatomy": [
-    "<strong>Scrim</strong> — overlay que bloquea la pantalla de detrás. Clic fuera o Back descartan si onDismissRequest lo permite.",
-    "<strong>Contenedor</strong> — surfaceContainerHigh, radio 28 dp (<code>Corner/Extra-large</code> ↔ <code>shapes.extraLarge</code>).",
-    "<strong>Icono</strong> — opcional; tint error cuando la acción destruye o descarta.",
-    "<strong>Headline</strong> — pregunta o afirmación concreta. Rol headline (Fraunces). Nunca «¿Estás seguro?» ni «¡Atención!».",
-    "<strong>Supporting text</strong> — body medium; explica la consecuencia.",
+    "<strong>Velo</strong> — oscurece y bloquea la pantalla de detrás. Tocar fuera o el gesto Atrás cierran el diálogo, salvo que la pantalla lo impida.",
+    "<strong>Contenedor</strong> — surfaceContainerHigh, radio de 28 dp (<code>shapes.extraLarge</code>).",
+    "<strong>Icono</strong> — opcional; en color error cuando la acción borra o descarta.",
+    "<strong>Título</strong> — pregunta o afirmación concreta, en estilo headline (Fraunces). Nunca «¿Estás seguro?» ni «¡Atención!».",
+    "<strong>Texto de apoyo</strong> — bodyMedium; explica la consecuencia.",
     "<strong>Acciones</strong> — dos <code>MOTTextButton</code> alineados al final: descartar a la izquierda, confirmar a la derecha."
   ],
   "behavior": {
@@ -86,28 +86,28 @@
     "rows": [
       {
         "state": "Abrir",
-        "detail": "Scrim + panel. Foco al botón de descartar (el seguro)."
+        "detail": "Aparecen el velo y el panel. El foco va al botón de descartar, que es el seguro."
       },
       {
         "state": "Descartar",
-        "detail": "Cancelar, clic en scrim o Back llaman onDismissRequest. Esa acción nunca se deshabilita."
+        "detail": "Cancelar, tocar el velo o el gesto Atrás cierran sin hacer nada. Esa salida nunca se deshabilita."
       },
       {
         "state": "Confirmar",
-        "detail": "Cierra y ejecuta. Si es destructivo, el label va en error y el supporting text ya dijo la consecuencia."
+        "detail": "Cierra y ejecuta la acción. Si borra o descarta, la etiqueta va en color error y el texto de apoyo ya explicó la consecuencia."
       }
     ],
     "notes": [
       "Como máximo dos acciones. Si hay una sola, es confirmar lectura.",
       "Confirmar se puede deshabilitar hasta que haya una elección; descartar no.",
-      "WalletConfirmDialog mete un Switch y un selector de día en el texto de apoyo: es contenido de producto dentro del AlertDialog, no una variante del set.",
-      "BackHandler solo con cambios sin guardar, y el diálogo tiene que ser descartable."
+      "Al guardar en Wallet, el texto de apoyo incluye un interruptor y un selector de día: es contenido de esa pantalla dentro del diálogo, no una variante.",
+      "El gesto Atrás solo abre este aviso si hay cambios sin guardar, y el aviso siempre se puede cerrar."
     ]
   },
   "a11y": [
-    "Foco atrapado; Escape / Back cierran cuando aplique.",
-    "Headline se lee antes que el supporting text (alertdialog + labelledby / describedby).",
-    "El icono es decorativo: contentDescription = null si el título ya nombra el riesgo.",
+    "El foco no sale del diálogo mientras está abierto; Escape o Atrás lo cierran.",
+    "El lector de pantalla lee el título antes que el texto de apoyo.",
+    "El icono es decorativo: no se anuncia cuando el título ya nombra el riesgo.",
     "El botón destructivo no se entiende solo por el color: el texto de apoyo lleva la consecuencia."
   ],
   "tokens": {
@@ -118,7 +118,7 @@
       },
       {
         "token": "onSurface / onSurfaceVariant",
-        "use": "Headline y supporting text."
+        "use": "Título y texto de apoyo."
       },
       {
         "token": "error",
@@ -191,14 +191,14 @@
   ],
   "productRules": {
     "dos": [
-      "Icono + texto en errores; confirm destructivo con <code>colorScheme.error</code> en el label.",
-      "Trazar cada diálogo de producto a su composable: WalletConfirmDialog, WalletDeleteEntryDialog, WalletDiscardDialog.",
-      "BackHandler + diálogo descartable solo con cambios sin guardar."
+      "Icono y texto en los avisos de riesgo; la acción que borra o descarta lleva la etiqueta en color error.",
+      "Cada diálogo de la app vive en un componente con nombre propio: WalletConfirmDialog, WalletDeleteEntryDialog, WalletDiscardDialog.",
+      "Avisar al salir solo si hay cambios sin guardar, con un diálogo que siempre se puede cerrar."
     ],
     "donts": [
-      "No mezclar el radio de cards (Medium) en el diálogo.",
-      "No bloquear el dismiss sin copy claro (Seguir editando / Cancelar).",
-      "No documentar el diálogo con node-ids de caps: la ficha vive aquí."
+      "No usar en el diálogo el radio de las cards (12 dp, Medium).",
+      "No impedir cerrar el diálogo: la salida lleva un texto claro («Seguir editando», «Cancelar»).",
+      "No poner más de dos acciones: si hacen falta más, la tarea va en una pantalla."
     ]
   },
   "implementation": {
@@ -212,25 +212,25 @@
         "name": "onDismissRequest",
         "type": "() -> Unit",
         "default": "—",
-        "note": "Scrim y Back."
+        "note": "Al tocar el velo o con Atrás."
       },
       {
         "name": "icon",
         "type": "@Composable (() -> Unit)?",
         "default": "null",
-        "note": "MOTIcons.Error + tint error en eliminar/descartar."
+        "note": "MOTIcons.Error en color error al eliminar o descartar."
       },
       {
         "name": "title",
         "type": "@Composable () -> Unit",
         "default": "—",
-        "note": "Headline."
+        "note": "Título."
       },
       {
         "name": "text",
         "type": "@Composable (() -> Unit)?",
         "default": "null",
-        "note": "Supporting; puede anidar Switch en confirmar guardado."
+        "note": "Texto de apoyo; al guardar en Wallet incluye un interruptor."
       },
       {
         "name": "confirmButton",
@@ -250,20 +250,20 @@
   "decisions": {
     "source": "Compose AlertDialog + MOTTextButton · set de la librería de Figma",
     "why": "Interrumpir solo para confirmar o advertir pérdida de datos.",
-    "layer": "M3 AlertDialog; acciones MOTTextButton"
+    "layer": "AlertDialog de Material 3; acciones con MOTTextButton del design system"
   },
   "changelog": [
     {
       "date": "2026-10-29",
-      "note": "Extra-large + variables de espaciado del diálogo."
+      "note": "Radio Extra-large y espaciado del diálogo enlazados a variables."
     },
     {
       "date": "2026-10-30",
-      "note": "Playground modal con Escape y scrim."
+      "note": "Ejemplo interactivo con Escape y velo."
     },
     {
       "date": "2026-11-24",
-      "note": "Ficha usage-first: anatomía, medidas y pantallas Compose. Se retira la tabla de node-ids de Wallet en Figma."
+      "note": "Ficha nueva en el showcase, con anatomía, medidas y pantallas de la app."
     },
     {
       "date": "2026-11-26",

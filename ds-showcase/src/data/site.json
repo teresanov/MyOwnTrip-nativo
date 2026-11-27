@@ -86,9 +86,9 @@
     }
   ],
   "statusLabels": {
-    "draft": "Borrador — existe en Figma o en código, sin ficha",
-    "in-review": "En revisión — ficha escrita; falta validar o migrar al esquema Usage-first",
-    "ready": "Listo — Figma publicado, ficha completa y Compose alineado",
+    "draft": "En construcción — A la ficha le falta el ejemplo con el componente real, la anatomía o las medidas",
+    "in-review": "En revisión — Ejemplo con el componente real, anatomía y medidas hechos; falta la revisión de diseño",
+    "ready": "Listo — Ejemplo con el componente real, anatomía y medidas, revisados por diseño",
     "deprecated": "Obsoleto — no usar en pantallas nuevas"
   }
 }

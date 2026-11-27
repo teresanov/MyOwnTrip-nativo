@@ -1,7 +1,7 @@
 {
   "id": "fab",
   "name": "FAB",
-  "status": "ready",
+  "status": "in-review",
   "priority": "P1",
   "category": "acciones",
   "summary": "Acción principal flotante de la pantalla.",

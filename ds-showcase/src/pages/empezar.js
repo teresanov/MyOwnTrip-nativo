@@ -34,10 +34,11 @@ document.getElementById("main").innerHTML = `
       </li>
     </ol>
     <div class="callout">
-      El estado de cada ficha dice cuánto puedes fiarte de ella.
-      <strong>Listo</strong>: Figma publicado, ficha completa y Compose alineado.
-      <strong>En revisión</strong>: hay ficha, pero falta validar o migrar al esquema Usage-first.
-      <strong>Borrador</strong>: existe en Figma o en código y aún no hay ficha en el índice.
+      El estado de cada ficha dice en qué punto está.
+      <strong>Listo</strong>: ejemplo con el componente real, anatomía y medidas, revisados por diseño.
+      <strong>En revisión</strong>: todo eso está hecho y falta la revisión de diseño.
+      <strong>En construcción</strong>: falta el ejemplo real, la anatomía o las medidas.
+      El criterio completo está en <a href="${assetUrl("gobernanza.html")}#estados">Gobernanza</a>.
     </div>
   </section>
 

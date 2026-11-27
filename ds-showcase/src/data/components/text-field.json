@@ -31,7 +31,7 @@
     ],
     "chooseVariant": [
       {
-        "if": "Formulario de producto (viajes, Wallet, gastos)",
+        "if": "Formulario de la app (viajes, Wallet, gastos)",
         "use": "OutlinedTextField",
         "note": "Única variante en flujos nuevos."
       },
@@ -67,13 +67,13 @@
       "id": "outlined-focus",
       "label": "Outlined · Focused",
       "composable": "OutlinedTextField",
-      "usage": "Borde y label en primary; state layer en runtime."
+      "usage": "Borde y etiqueta en primary."
     },
     {
       "id": "outlined-error",
       "label": "Outlined · Error",
       "composable": "OutlinedTextField",
-      "usage": "Borde + supporting text + icono. Nunca solo color."
+      "usage": "Borde, texto de apoyo e icono en color error. Nunca solo el color."
     },
     {
       "id": "outlined-disabled",
@@ -84,40 +84,40 @@
   ],
   "anatomy": [
     "<strong>Contenedor</strong> — caja outlined, radio 4 dp (<code>shapes.extraSmall</code>).",
-    "<strong>Label</strong> — Inter bodySmall, flotante. Nunca Fraunces.",
-    "<strong>Input</strong> — Inter bodyLarge.",
+    "<strong>Etiqueta</strong> — Inter. Dentro de la caja mientras está vacía; con foco o con texto sube al borde en bodySmall. Nunca Fraunces.",
+    "<strong>Texto escrito</strong> — Inter bodyLarge.",
     "<strong>Texto de apoyo</strong> — opcional: una pista breve. Con error es obligatorio, porque explica qué falla (bodySmall en color error).",
     "<strong>Icono final</strong> — opcional. En la app solo aparece en campos de fecha (calendario, abre el selector) y en desplegables (chevron). No hay icono inicial ni botón de borrar."
   ],
   "behavior": {
-    "lead": "El estado se lee de un vistazo: vacío, con texto, foco, error, disabled.",
+    "lead": "El estado se lee de un vistazo: vacío, con texto, con foco, con error o deshabilitado.",
     "rows": [
       {
         "state": "Enabled",
-        "detail": "Borde outline, label onSurfaceVariant."
+        "detail": "Borde outline, etiqueta onSurfaceVariant."
       },
       {
         "state": "Focused",
-        "detail": "Borde y label primary."
+        "detail": "Borde y etiqueta en primary."
       },
       {
         "state": "Error",
-        "detail": "Borde error, supporting text e icono."
+        "detail": "Borde, texto de apoyo e icono en color error."
       },
       {
         "state": "Disabled",
-        "detail": "Opacidad 38/12. Sin color de estado guardado."
+        "detail": "Contenido al 38 % de opacidad y borde al 12 %. No hay un color propio para este estado."
       }
     ],
     "notes": [
-      "Filled no entra en flujos nuevos salvo gap documentado.",
+      "La variante Filled no se usa en pantallas nuevas salvo que haya un motivo documentado.",
       "El espacio interior lo pone OutlinedTextField de Material 3; la sección Medidas lo mide en el componente real."
     ]
   },
   "a11y": [
-    "Label asociado: TalkBack lee label + valor + error.",
-    "Supporting text de error en liveRegion tras submit.",
-    "ImeAction Next / Done coherente con el formulario."
+    "La etiqueta va unida al campo: el lector de pantalla lee etiqueta, valor y error.",
+    "Al enviar el formulario, el texto de error se anuncia en cuanto aparece.",
+    "La tecla de acción del teclado pasa al campo siguiente y, en el último, termina el formulario."
   ],
   "tokens": {
     "color": [
@@ -178,10 +178,10 @@
   ],
   "productRules": {
     "dos": [
-      "Strings de producto para labels y errores (CreateTrip, Wallet, Expenses)."
+      "Etiquetas y errores con los textos de la app (crear viaje, Wallet, gastos)."
     ],
     "donts": [
-      "No TextField Filled en flujos nuevos sin gap explícito."
+      "No usar el campo Filled en pantallas nuevas sin un motivo documentado."
     ]
   },
   "screens": [
@@ -241,7 +241,7 @@
   "decisions": {
     "source": "Compose OutlinedTextField (M3) · set de la librería de Figma",
     "why": "Recoger texto en formularios con el campo outlined del tema.",
-    "layer": "M3 directo"
+    "layer": "Material 3 directo, sin componente propio"
   },
   "changelog": [
     {
@@ -250,7 +250,7 @@
     },
     {
       "date": "2026-11-24",
-      "note": "Ficha usage-first en el showcase."
+      "note": "Ficha nueva en el showcase."
     },
     {
       "date": "2026-11-26",

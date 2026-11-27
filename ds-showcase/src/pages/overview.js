@@ -9,9 +9,6 @@ const total = componentsManifest.components.length;
 const ready = componentsManifest.components.filter((c) => c.status === "ready").length;
 const review = componentsManifest.components.filter((c) => c.status === "in-review").length;
 const draft = componentsManifest.components.filter((c) => c.status === "draft").length;
-const inReviewNames = componentsManifest.components
-  .filter((c) => c.status === "in-review")
-  .map((c) => c.name);
 
 const FOUNDATIONS = site.nav.find((n) => n.id === "foundations")?.children || [];
 
@@ -80,35 +77,24 @@ document.getElementById("main").innerHTML = `
   <section class="section">
     <h2 id="estado">Estado del sistema</h2>
     <p class="section-lead">
-      Las ${total} fichas del índice están escritas. ${ready} están <strong>listas</strong>
-      (Figma publicado, ficha y Compose alineados). ${
-        review
-          ? `${review} ${review === 1 ? "sigue" : "siguen"} <strong>en revisión</strong>: hay ficha, falta validar.`
-          : "Ninguna está en revisión."
-      }
-      No hay borradores: la deuda ya no es «falta la ficha», es «falta cerrar».
+      Esta web es un trabajo en curso: cada ficha dice en qué punto está, con el criterio que explica
+      <a href="${assetUrl("gobernanza.html")}#estados">Gobernanza</a>.
+      De ${total} fichas, ${ready} están <strong>listas</strong> (ejemplo con el componente real, anatomía y medidas,
+      revisados por diseño), ${review} están <strong>en revisión</strong> y ${draft}
+      ${draft === 1 ? "sigue" : "siguen"} <strong>en construcción</strong>.
     </p>
-    ${
-      inReviewNames.length
-        ? `<p class="section-lead">En revisión: <strong>${inReviewNames.join("</strong>, <strong>")}</strong>.${
-            inReviewNames.includes("Swipeable list row")
-              ? " Esa ficha aún no usa el esquema Usage-first del resto del índice."
-              : ""
-          }</p>`
-        : `<p class="section-lead">Todas las fichas del índice están listas.</p>`
-    }
     <p class="section-lead">
       <strong>Search bar</strong> y <strong>Menu</strong> viven en Figma y en Compose pero no tienen
       ficha en el índice; Home los documenta en
       <a href="${assetUrl("patterns.html")}#home-filter-menu">Patrones · menú de filtros</a>.
-      La paridad Figma (state layers, iconos, etc.) se sigue en el log del repo, no en esta tabla.
+      Las diferencias pendientes entre Figma y la app se siguen en el repositorio, no en esta tabla.
     </p>
     <table>
       <thead><tr><th>Componente</th><th>Estado</th><th>Prioridad</th></tr></thead>
       <tbody>
         ${[...componentsManifest.components]
           .sort((a, b) => {
-            const order = { "in-review": 0, draft: 1, ready: 2, deprecated: 3 };
+            const order = { draft: 0, "in-review": 1, ready: 2 };
             return (order[a.status] ?? 9) - (order[b.status] ?? 9);
           })
           .map(

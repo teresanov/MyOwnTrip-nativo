@@ -43,7 +43,7 @@
       {
         "if": "La opción no está activa",
         "use": "FilterChip selected = false",
-        "note": "Outline sobre el fondo; label onSurface."
+        "note": "Borde outline sobre el fondo; etiqueta onSurface."
       },
       {
         "if": "La opción está activa",
@@ -81,8 +81,8 @@
     }
   ],
   "anatomy": [
-    "<strong>Contenedor</strong> — píldora outlined, radio fijo 8 dp (<code>Corner/Small</code> ↔ <code>shapes.small</code>). No morfa.",
-    "<strong>Label</strong> — Inter <code>labelLarge</code>. Sustantivo de categoría, no un verbo de acción.",
+    "<strong>Contenedor</strong> — con borde y radio fijo de 8 dp (<code>shapes.small</code>). No cambia de forma al tocarlo.",
+    "<strong>Etiqueta</strong> — Inter <code>labelLarge</code>. Sustantivo de categoría, no un verbo de acción.",
     "<strong>Fila</strong> — scroll horizontal, hueco <code>MOTSpacing.componentSm</code> (8 dp) entre chips.",
     "<strong>Icono inicial</strong> — opcional (<code>leadingIcon</code>). El producto no lo usa: la selección se ve en el relleno del contenedor."
   ],
@@ -99,7 +99,7 @@
       },
       {
         "state": "Hover / pressed",
-        "detail": "State layer M3 sobre onSurface (unselected) o onSecondaryContainer (selected). Sin elevación."
+        "detail": "Capa de estado de Material 3 en onSurface (sin seleccionar) o en onSecondaryContainer (seleccionado). Sin sombra."
       },
       {
         "state": "Disabled",
@@ -108,14 +108,14 @@
     ],
     "notes": [
       "Home no usa FilterChip para el filtro de viajes: el patrón es Menu.",
-      "Elevated se retiró del set (Fase D). No reintroducirlo.",
+      "La variante Elevated se retiró del sistema y no se vuelve a usar.",
       "Selección única y múltiple no se mezclan en la misma pantalla."
     ]
   },
   "a11y": [
-    "Cada chip es un toggle: anunciar selected / unselected (<code>aria-pressed</code> en este HTML; estado de FilterChip en Compose).",
+    "Cada chip se activa y se desactiva: el lector de pantalla anuncia si está seleccionado o no. FilterChip ya lo hace.",
     "La fila puede hacer scroll; el mismo filtro tiene que ser alcanzable sin gesto horizontal (p. ej. Menu en Home).",
-    "Área táctil ≥ 48 dp de alto vía padding M3, aunque el contenedor visible mida 32 dp."
+    "Área táctil de al menos 48 dp de alto, que añade Material 3, aunque el contenedor visible mida 32 dp."
   ],
   "tokens": {
     "color": [
@@ -184,12 +184,12 @@
     "dos": [
       "Fila con scroll y <code>Arrangement.spacedBy(MOTSpacing.componentSm)</code>.",
       "Una sola opción seleccionada por eje de filtro.",
-      "Copy corto en español; en Figma cambia la propiedad Label de la instancia."
+      "Textos cortos en español; en Figma se cambia la propiedad Label de la instancia."
     ],
     "donts": [
-      "No reintroduzcas Elevated.",
-      "No uses esquinas Extra-small.",
-      "No dibujes chips con frames sueltos en el design-file.",
+      "No vuelvas a usar la variante Elevated.",
+      "No bajes el radio a 4 dp (Extra-small).",
+      "No dibujes chips a mano en los diseños de pantalla: usa el componente de la librería.",
       "No sustituyas el menú de filtro de Home por FilterChip."
     ]
   },
@@ -230,7 +230,7 @@
   "decisions": {
     "source": "Compose FilterChip (M3) · set de la librería de Figma",
     "why": "Elegir una opción dentro de un conjunto pequeño con un toque, sin cerrar la pantalla.",
-    "layer": "M3 directo, sin wrapper"
+    "layer": "Material 3 directo, sin componente propio"
   },
   "changelog": [
     {
@@ -243,7 +243,7 @@
     },
     {
       "date": "2026-11-24",
-      "note": "Ficha usage-first: anatomía y medidas en el showcase; la librería deja de ser la documentación."
+      "note": "Ficha nueva en el showcase, con anatomía y medidas: la documentación deja de vivir en la librería de Figma."
     },
     {
       "date": "2026-11-26",

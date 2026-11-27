@@ -1,7 +1,7 @@
 {
   "id": "list-item",
   "name": "List item",
-  "status": "ready",
+  "status": "in-review",
   "priority": "P1",
   "category": "contenido",
   "summary": "Fila de lista con icono, titular, texto de apoyo y acciones al final (Wallet).",
@@ -79,15 +79,15 @@
   ],
   "productRules": {
     "dos": [
-      "El glifo inicial sale del tipo de documento: flight, hotel, directions_car, confirmation_number (entryTypeIcon).",
-      "El icono va en un círculo de 40 dp con el glifo de 24 dp (Show circle).",
-      "Cuando el plan se desvía del documento: borde izquierdo en warning, punto de 10 dp en la esquina del círculo y frase de drift en el texto de apoyo.",
-      "El contentDescription de la fila resume tipo, título, fecha, drift y disponibilidad offline."
+      "El icono sale del tipo de documento: vuelo, hotel, coche, entrada…",
+      "El icono, de 24 dp, va dentro de un círculo de 40 dp.",
+      "Cuando el plan cambia respecto al documento: borde izquierdo y punto de 10 dp en color warning, y una frase de aviso al final del texto de apoyo.",
+      "La fila se anuncia entera con una frase: tipo, título, fecha, aviso del plan y si está disponible sin conexión."
     ],
     "donts": [
-      "No pintar el punto de drift dentro del glifo de 24 dp: va en la esquina del círculo.",
-      "No poner el color warning como único indicador de drift: va también el texto de apoyo.",
-      "No crear filas con Card y Text a mano que repliquen esta fila."
+      "No pintar el punto de aviso encima del icono: va en la esquina del círculo.",
+      "No usar el color warning como único indicador del aviso: el texto de apoyo también lo dice.",
+      "No construir a mano filas que imiten esta."
     ]
   },
   "variants": [
@@ -311,19 +311,19 @@
   "changelog": [
     {
       "date": "2026-11-10",
-      "note": "List items de Wallet: Icon swap por tipo y Show circle; flight_drift con Drift dot visible."
+      "note": "Figma: filas de Wallet con el icono según el tipo de documento, dentro de un círculo, y el punto de aviso visible."
     },
     {
       "date": "2026-11-13",
-      "note": "List Item - Swipe: eje Content = List item | Horizontal card."
+      "note": "Figma: la fila deslizable admite como contenido un list item o una horizontal card."
     },
     {
       "date": "2026-11-18",
-      "note": "Ficha en el showcase con el esquema Usage-first."
+      "note": "Ficha nueva en el showcase."
     },
     {
       "date": "2026-11-24",
-      "note": "Ejemplar vivo. Sin tabla de node-ids."
+      "note": "Ejemplo interactivo."
     },
     {
       "date": "2026-11-26",

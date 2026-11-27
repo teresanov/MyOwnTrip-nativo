@@ -174,12 +174,12 @@
   ],
   "productRules": {
     "dos": [
-      "Outlined en feeds; Elevated en promos.",
-      "Home vacío: HomeEmptyStackedCard."
+      "Outlined en listas de contenido; Elevated en tarjetas promocionales.",
+      "En la Home sin viajes, la tarjeta de bienvenida (HomeEmptyStackedCard)."
     ],
     "donts": [
-      "No Filled.",
-      "No OutlinedCard ad hoc si encaja este layout."
+      "No usar la variante Filled.",
+      "No construir a mano una card con borde si esta disposición sirve."
     ]
   },
   "screens": [
@@ -239,9 +239,9 @@
     "snippet": "MotStackedCard(\n    style = MotCardStyle.Outlined,\n    headerText = \"Sin viajes todavía\",\n    subheadText = \"Planea tu primera aventura\",\n    image = painterResource(R.drawable.home_empty_map),\n    imageContentDescription = \"Mapa con chincheta de viaje\",\n)"
   },
   "decisions": {
-    "source": "Compose MotStackedCard · set de librería 52346:27573",
+    "source": "Compose MotStackedCard (design system) · componente de la librería de Figma",
     "why": "Card editorial distinta de la portada de viaje y de la fila de lista.",
-    "layer": "Componente MOT"
+    "layer": "Componente del design system"
   },
   "changelog": [
     {
@@ -250,7 +250,7 @@
     },
     {
       "date": "2026-11-24",
-      "note": "Ficha usage-first en el showcase."
+      "note": "Ficha nueva en el showcase."
     },
     {
       "date": "2026-11-26",
