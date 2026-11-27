@@ -1,4 +1,4 @@
-import{i as a,c as d,s as t,d as s}from"./bootstrap-CvbCOqHc.js";a("governance");const i=d.components.reduce((e,o)=>(e[o.status]=(e[o.status]||0)+1,e),{}),n=["ready","in-review","draft","deprecated"],c={ready:"Listo","in-review":"En revisión",draft:"Borrador",deprecated:"Obsoleto"};document.getElementById("page-header").innerHTML=`
+import{i as t,c as d,s as a,d as s}from"./bootstrap-Bpr3y4NI.js";t("governance");const n=d.components.reduce((e,o)=>(e[o.status]=(e[o.status]||0)+1,e),{}),i=["ready","in-review","draft"],c={ready:"Listo","in-review":"En revisión",draft:"En construcción",deprecated:"Obsoleto"};document.getElementById("page-header").innerHTML=`
   <p class="page-header__eyebrow">Gobernanza</p>
   <h1>Reglas del sistema</h1>
   <p class="page-header__lead">
@@ -7,20 +7,29 @@ import{i as a,c as d,s as t,d as s}from"./bootstrap-CvbCOqHc.js";a("governance")
   </p>
 `;document.getElementById("main").innerHTML=`
   <section class="section">
-    <h2 id="estados">Estados de publicación</h2>
+    <h2 id="estados">Estado de cada ficha</h2>
+    <p class="section-lead">
+      Esta web es un trabajo en curso. Cada ficha lleva una etiqueta que dice en qué punto está,
+      con el mismo criterio para todas:
+    </p>
     <table>
       <thead><tr><th>Estado</th><th>Criterio</th><th>Hoy</th></tr></thead>
       <tbody>
-        ${n.map(e=>{var o;return`
+        ${i.map(e=>{var o;return`
           <tr>
             <td><span class="chip chip--${e==="in-review"?"review":e}">${c[e]}</span></td>
-            <td>${((o=t.statusLabels[e].split("—")[1])==null?void 0:o.trim())||t.statusLabels[e]}</td>
-            <td>${i[e]||0}</td>
+            <td>${((o=a.statusLabels[e].split("—")[1])==null?void 0:o.trim())||a.statusLabels[e]}</td>
+            <td>${n[e]||0}</td>
           </tr>`}).join("")}
       </tbody>
     </table>
     <p class="section-lead" style="margin-top:16px">
-      Cerrar un componente nuevo sin ficha en esta web está <strong>bloqueado</strong>.
+      El ejemplo, la anatomía y las medidas se hacen sobre el componente real de la app, compilado para la web:
+      lo que se ve en la ficha es lo que se ve en el móvil. Si una ficha todavía enseña una recreación en HTML,
+      lo dice debajo del ejemplo.
+    </p>
+    <p class="section-lead">
+      Un componente nuevo no se da por cerrado sin su ficha en esta web.
     </p>
   </section>
 

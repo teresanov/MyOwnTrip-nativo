@@ -1,4 +1,4 @@
-import{i as a,b as e,d as o}from"./bootstrap-CvbCOqHc.js";a("empezar");document.getElementById("page-header").innerHTML=`
+import{i as a,b as e,d as o}from"./bootstrap-Bpr3y4NI.js";a("empezar");document.getElementById("page-header").innerHTML=`
   <p class="page-header__eyebrow">Empezar aquí</p>
   <h1>Cómo se usa este sistema</h1>
   <p class="page-header__lead">
@@ -27,10 +27,11 @@ import{i as a,b as e,d as o}from"./bootstrap-CvbCOqHc.js";a("empezar");document.
       </li>
     </ol>
     <div class="callout">
-      El estado de cada ficha dice cuánto puedes fiarte de ella.
-      <strong>Listo</strong>: Figma publicado, ficha completa y Compose alineado.
-      <strong>En revisión</strong>: hay ficha, pero falta validar o migrar al esquema Usage-first.
-      <strong>Borrador</strong>: existe en Figma o en código y aún no hay ficha en el índice.
+      El estado de cada ficha dice en qué punto está.
+      <strong>Listo</strong>: ejemplo con el componente real, anatomía y medidas, revisados por diseño.
+      <strong>En revisión</strong>: todo eso está hecho y falta la revisión de diseño.
+      <strong>En construcción</strong>: falta el ejemplo real, la anatomía o las medidas.
+      El criterio completo está en <a href="${e("gobernanza.html")}#estados">Gobernanza</a>.
     </div>
   </section>
 

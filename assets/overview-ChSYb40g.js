@@ -1,4 +1,4 @@
-import{i as p,c as a,s as m,b as t,a as h,d as u}from"./bootstrap-CvbCOqHc.js";p("overview");const i=a.components.length,r=a.components.filter(e=>e.status==="ready").length,s=a.components.filter(e=>e.status==="in-review").length,c=a.components.filter(e=>e.status==="draft").length,n=a.components.filter(e=>e.status==="in-review").map(e=>e.name);var l;const g=((l=m.nav.find(e=>e.id==="foundations"))==null?void 0:l.children)||[],b={color:"Roles M3, paleta gris-azul y acento ocre",typography:"Fraunces en titulares, Inter en el resto",shape:"Roles de superficie y el morph del botón",spacing:"MOTSpacing de pantalla y padding de componente",iconography:"Material Symbols Sharp, peso 300",motion:"Duraciones, el muelle de liberación y reduce motion"};document.getElementById("page-header").innerHTML=`
+import{i as d,c as n,s as p,b as t,a as m,d as u}from"./bootstrap-Bpr3y4NI.js";d("overview");const s=n.components.length,i=n.components.filter(e=>e.status==="ready").length,r=n.components.filter(e=>e.status==="in-review").length,o=n.components.filter(e=>e.status==="draft").length;var c;const h=((c=p.nav.find(e=>e.id==="foundations"))==null?void 0:c.children)||[],g={color:"Roles M3, paleta gris-azul y acento ocre",typography:"Fraunces en titulares, Inter en el resto",shape:"Roles de superficie y el morph del botón",spacing:"MOTSpacing de pantalla y padding de componente",iconography:"Material Symbols Sharp, peso 300",motion:"Duraciones, el muelle de liberación y reduce motion"};document.getElementById("page-header").innerHTML=`
   <p class="page-header__eyebrow">Design System · MyOwnTrip Nativo</p>
   <h1>Material 3 con voz editorial</h1>
   <p class="page-header__lead">
@@ -24,7 +24,7 @@ import{i as p,c as a,s as m,b as t,a as h,d as u}from"./bootstrap-CvbCOqHc.js";p
     </a>
     <a class="entry-card" href="${t("components.html")}">
       <h3>Componentes</h3>
-      <p>${i} fichas: ${r} listas, ${s} en revisión${c?`, ${c} en borrador`:""}.</p>
+      <p>${s} fichas: ${i} listas, ${r} en revisión${o?`, ${o} en borrador`:""}.</p>
     </a>
     <a class="entry-card" href="${t("gobernanza.html")}">
       <h3>Gobernanza</h3>
@@ -39,10 +39,10 @@ import{i as p,c as a,s as m,b as t,a as h,d as u}from"./bootstrap-CvbCOqHc.js";p
       en el código, no en esta web.
     </p>
     <div class="component-grid">
-      ${g.map(e=>`
+      ${h.map(e=>`
         <a class="component-link" href="${t(e.href)}">
           <h3>${e.label}</h3>
-          <p>${b[e.id]||""}</p>
+          <p>${g[e.id]||""}</p>
         </a>`).join("")}
     </div>
   </section>
@@ -50,24 +50,25 @@ import{i as p,c as a,s as m,b as t,a as h,d as u}from"./bootstrap-CvbCOqHc.js";p
   <section class="section">
     <h2 id="estado">Estado del sistema</h2>
     <p class="section-lead">
-      Las ${i} fichas del índice están escritas. ${r} están <strong>listas</strong>
-      (Figma publicado, ficha y Compose alineados). ${s?`${s} ${s===1?"sigue":"siguen"} <strong>en revisión</strong>: hay ficha, falta validar.`:"Ninguna está en revisión."}
-      No hay borradores: la deuda ya no es «falta la ficha», es «falta cerrar».
+      Esta web es un trabajo en curso: cada ficha dice en qué punto está, con el criterio que explica
+      <a href="${t("gobernanza.html")}#estados">Gobernanza</a>.
+      De ${s} fichas, ${i} están <strong>listas</strong> (ejemplo con el componente real, anatomía y medidas,
+      revisados por diseño), ${r} están <strong>en revisión</strong> y ${o}
+      ${o===1?"sigue":"siguen"} <strong>en construcción</strong>.
     </p>
-    ${n.length?`<p class="section-lead">En revisión: <strong>${n.join("</strong>, <strong>")}</strong>.${n.includes("Swipeable list row")?" Esa ficha aún no usa el esquema Usage-first del resto del índice.":""}</p>`:'<p class="section-lead">Todas las fichas del índice están listas.</p>'}
     <p class="section-lead">
       <strong>Search bar</strong> y <strong>Menu</strong> viven en Figma y en Compose pero no tienen
       ficha en el índice; Home los documenta en
       <a href="${t("patterns.html")}#home-filter-menu">Patrones · menú de filtros</a>.
-      La paridad Figma (state layers, iconos, etc.) se sigue en el log del repo, no en esta tabla.
+      Las diferencias pendientes entre Figma y la app se siguen en el repositorio, no en esta tabla.
     </p>
     <table>
       <thead><tr><th>Componente</th><th>Estado</th><th>Prioridad</th></tr></thead>
       <tbody>
-        ${[...a.components].sort((e,d)=>{const o={"in-review":0,draft:1,ready:2,deprecated:3};return(o[e.status]??9)-(o[d.status]??9)}).map(e=>`
+        ${[...n.components].sort((e,l)=>{const a={draft:0,"in-review":1,ready:2};return(a[e.status]??9)-(a[l.status]??9)}).map(e=>`
           <tr>
             <td>${e.href==="components.html"?e.name:`<a href="${t(e.href)}">${e.name}</a>`}</td>
-            <td>${h(e.status)}</td>
+            <td>${m(e.status)}</td>
             <td>${e.priority}</td>
           </tr>`).join("")}
       </tbody>
